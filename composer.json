@@ -1,0 +1,55 @@
+{
+    "name": "bengor/user-bundle",
+    "description": "Symfony bundle on top of BenGor's user library",
+    "keywords": ["user", "bundle", "ddd"],
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Beñat Espiña Diaz",
+            "email": "benatespina@gmail.com",
+            "homepage": "http://benatespina.com"
+        },
+        {
+            "name": "Gorka Laucirica Ibarra",
+            "email": "gorka.lauzirika@gmail.com",
+            "homepage": "http://gorkalaucirica.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+
+        "bengor/user": "^0.1.0",
+        "symfony/framework-bundle": "^2.7"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "^1.10",
+        "mmoreram/php-formatter": "^1.0",
+        "phpspec/phpspec": "^2.3"
+    },
+    "scripts": {
+        "cs": [
+            "php-cs-fixer fix --config-file=.php_cs",
+            "php-cs-fixer fix --config-file=.phpspec_cs",
+            "php-formatter f:h:f src",
+            "php-formatter f:h:f spec",
+            "php-formatter f:u:s src",
+            "php-formatter f:u:s spec"
+        ],
+        "test": "phpspec run"
+    },
+    "suggest": {
+        "doctrine/doctrine-bundle": "Required to mapping the user attributes in the Symfony way",
+        "symfony/security-bundle": "Required to use the Symfony password encoder as a service"
+    },
+    "autoload": {
+        "psr-4": {
+            "BenGor\\UserBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\BenGor\\UserBundle\\": "spec/"
+        }
+    }
+}
