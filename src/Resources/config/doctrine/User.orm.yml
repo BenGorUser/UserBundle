@@ -7,7 +7,7 @@
 # file that was distributed with this source code.
 
 BenGor\User\Domain\Model\User:
-    type: entity
+    type: mappedSuperclass
     repositoryClass: BenGor\User\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
     table: user
     embedded:

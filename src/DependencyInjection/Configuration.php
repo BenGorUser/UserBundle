@@ -28,7 +28,25 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('bengor_user');
+        $treeBuilder->root('ben_gor_user')
+            ->children()
+                ->arrayNode('domain')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('model')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('user')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('class')->isRequired()->defaultValue('BenGor\User\Domain\Model\User')->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }
