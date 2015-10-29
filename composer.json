@@ -44,12 +44,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BenGor\\UserBundle\\": "src/"
+            "BenGor\\UserBundle\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\BenGor\\UserBundle\\": "spec/"
+            "spec\\BenGor\\UserBundle\\": "spec"
         }
     }
 }
