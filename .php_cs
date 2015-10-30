@@ -34,5 +34,4 @@ return Symfony\CS\Config\Config::create()
         'short_echo_tag',
         'strict',
         'strict_param'
-    ])
-    ->setUsingCache(true);
+    ]);
