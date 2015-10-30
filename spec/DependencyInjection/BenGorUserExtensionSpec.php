@@ -13,6 +13,8 @@
 namespace spec\BenGor\UserBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
+use Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -32,12 +34,10 @@ class BenGorUserExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\HttpKernel\DependencyInjection\Extension');
     }
 
-    function it_loads(ContainerBuilder $container)
+    function it_does_not_loads_because_required_configuration_is_missing(ContainerBuilder $container)
     {
-        $container->setParameter('bengor_user.config', [
-            'domain' => ['model' => ['user_class' => ['user' => 'BenGor\User\Domain\Model\User']]],
-        ])->shouldBeCalled();
-
-        $this->load([], $container);
+        $this->shouldThrow(
+            new InvalidConfigurationException('The child node "user_class" at path "ben_gor_user" must be configured.')
+        )->duringLoad([], $container);
     }
 }
