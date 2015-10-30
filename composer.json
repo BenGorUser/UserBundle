@@ -19,7 +19,7 @@
     "require": {
         "php": ">=5.4",
 
-        "bengor/user": "^0.1.0",
+        "bengor/user": "^0.2.0",
         "symfony/framework-bundle": "^2.7"
     },
     "require-dev": {
@@ -44,12 +44,17 @@
     },
     "autoload": {
         "psr-4": {
-            "BenGor\\UserBundle\\": "src"
+            "BenGor\\UserBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\BenGor\\UserBundle\\": "spec"
+            "spec\\BenGor\\UserBundle\\": "spec/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     }
 }
