@@ -16,7 +16,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Bengor user bundle configuration class.
+ * BenGor user bundle configuration class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -36,11 +36,8 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('model')
                             ->addDefaultsIfNotSet()
                             ->children()
-                                ->arrayNode('user')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('class')->isRequired()->defaultValue('BenGor\User\Domain\Model\User')->end()
-                                    ->end()
+                                ->arrayNode('user_class')->defaultValue(['user' => 'BenGor\User\Domain\Model\User'])
+                                    ->prototype('scalar')->end()
                                 ->end()
                             ->end()
                         ->end()

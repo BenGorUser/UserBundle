@@ -34,6 +34,10 @@ class BenGorUserExtensionSpec extends ObjectBehavior
 
     function it_loads(ContainerBuilder $container)
     {
+        $container->setParameter('bengor_user.config', [
+            'domain' => ['model' => ['user_class' => ['user' => 'BenGor\User\Domain\Model\User']]],
+        ])->shouldBeCalled();
+
         $this->load([], $container);
     }
 }

@@ -13,6 +13,8 @@
 namespace spec\BenGor\UserBundle;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Spec file of bengor user bundle class.
@@ -29,5 +31,14 @@ class BenGorUserBundleSpec extends ObjectBehavior
     function it_extends_symfony_bundle()
     {
         $this->shouldHaveType('Symfony\Component\HttpKernel\Bundle\Bundle');
+    }
+
+    function it_builds(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(
+            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass')
+        )->shouldBeCalled()->willReturn($container);
+
+        $this->build($container);
     }
 }
