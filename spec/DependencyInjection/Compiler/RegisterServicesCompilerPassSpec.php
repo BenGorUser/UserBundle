@@ -36,7 +36,7 @@ class RegisterServicesCompilerPassSpec extends ObjectBehavior
     function it_processes(ContainerBuilder $container)
     {
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
-            'domain' => ['model' => ['user_class' => ['user' => 'BenGor\Domain\Model\User']]],
+            'user_class' => ['user' => 'BenGor\Domain\Model\User'],
         ]);
 
         $container->getDefinition('user_password_encoder')->shouldBeCalled();

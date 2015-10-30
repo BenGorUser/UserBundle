@@ -64,7 +64,7 @@ class User extends BaseUser
 Finally you have to configure the bundle to work with the specific needs of your application inside
 `app/config/config.yml`:
 ```yml
-ben_gor:
+ben_gor_user:
     user_class:
         user: AppBundle\Entity\User
 ```

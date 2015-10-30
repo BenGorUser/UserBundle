@@ -41,7 +41,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
             )
         );
 
-        foreach ($config['domain']['model']['user_class'] as $key => $class) {
+        foreach ($config['user_class'] as $key => $class) {
             $container->setDefinition(
                 $key . '_password_encoder',
                 (new Definition(
@@ -102,7 +102,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                             'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
                         ),
                         $container->getDefinition(
-                            'bengor.user.infrastructure.security.symfony.user_password_encoder'
+                            'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
                         ),
                     ]
                 )
@@ -116,7 +116,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                             'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
                         ),
                         $container->getDefinition(
-                            'bengor.user.infrastructure.security.symfony.user_password_encoder'
+                            'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
                         ),
                     ]
                 )
@@ -130,7 +130,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                             'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
                         ),
                         $container->getDefinition(
-                            'bengor.user.infrastructure.security.symfony.user_password_encoder'
+                            'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
                         ),
                     ]
                 )
@@ -155,7 +155,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                             'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
                         ),
                         $container->getDefinition(
-                            'bengor.user.infrastructure.security.symfony.user_password_encoder'
+                            'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
                         ),
                     ]
                 )
@@ -180,7 +180,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                             'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
                         ),
                         $container->getDefinition(
-                            'bengor.user.infrastructure.security.symfony.user_password_encoder'
+                            'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
                         ),
                         $container->getDefinition(
                             'bengor.user.infrastructure.domain.model.' . $key . '_factory'
