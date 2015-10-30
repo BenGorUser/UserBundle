@@ -8,6 +8,17 @@
 [![Latest Stable Version](https://poser.pugx.org/bengor/user-bundle/v/stable.svg)](https://packagist.org/packages/bengor/user-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/bengor/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor/user-bundle)
 
+##Installation
+The easiest way to instal this component is using **[Composer][8]**
+```bash
+$ composer require bengor/user-bundle
+```
+##Documentation
+
+All the documentation is stored in the `docs` folder.
+
+[Show me the docs!](docs/index.md)
+
 ##Tests
 This bundle is completely tested by **[PHPSpec][1], SpecBDD framework for PHP**.
 
@@ -49,3 +60,4 @@ This bundle is created by:
 [5]: http://cs.sensiolabs.org/
 [6]: https://github.com/mmoreram/php-formatter
 [7]: https://github.com/BenGor/User
+[8]: http://getcomposer.org
