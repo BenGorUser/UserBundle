@@ -1,4 +1,4 @@
-##Getting started
+#Getting started
 
 The first step is enable the bundle in the `app/config/AppKernel.php`:
 ```php
@@ -59,6 +59,14 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
 }
+```
+
+Finally you have to configure the bundle to work with the specific needs of your application inside
+`app/config/config.yml`:
+```yml
+ben_gor:
+    user_class:
+        user: AppBundle\Entity\User
 ```
 
 That's all! Now that the bundle is configured, the last thing you need to do is update your database schema because

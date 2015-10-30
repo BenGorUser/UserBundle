@@ -30,18 +30,8 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('ben_gor_user')
             ->children()
-                ->arrayNode('domain')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('model')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->arrayNode('user_class')->defaultValue(['user' => 'BenGor\User\Domain\Model\User'])
-                                    ->prototype('scalar')->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                ->arrayNode('user_class')->isRequired()
+                    ->prototype('scalar')->end()
                 ->end()
             ->end();
 
