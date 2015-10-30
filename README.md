@@ -1,5 +1,5 @@
-#User Symfony bundle
-> Symfony bundle on top of [Bengor's user][7] library
+#BenGorUserBundle
+> Symfony bundle on top of [BenGorUser][7] library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6/mini.png)](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6)
 [![Build Status](https://travis-ci.org/BenGor/UserBundle.svg?branch=master)](https://travis-ci.org/BenGor/UserBundle)
