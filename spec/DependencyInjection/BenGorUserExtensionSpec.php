@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the User bundle.
+ * This file is part of the BenGorUserBundle bundle.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -13,7 +13,6 @@
 namespace spec\BenGor\UserBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

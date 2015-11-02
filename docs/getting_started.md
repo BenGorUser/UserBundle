@@ -60,6 +60,24 @@ class User extends BaseUser
 {
 }
 ```
+In case if you want to use registration by invitation system you have to extend our `BenGor\Domain\Model\UserGuest`
+for the same reason of User itself.
+```php
+<?php
+
+namespace AppBundle\Entity;
+
+use BenGor\User\Domain\Model\UserGuest as BaseUserGuest;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="bengor_user_guest")
+ */
+class UserGuest extends BaseUserGuest
+{
+}
+```
 
 Finally you have to configure the bundle to work with the specific needs of your application inside
 `app/config/config.yml`:

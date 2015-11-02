@@ -17,15 +17,14 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-
-        "bengor/user": "^0.2.0",
+        "php":                      ">=5.4",
+        "bengor/user":              "^0.2.0",
         "symfony/framework-bundle": "^2.7"
     },
     "require-dev": {
-        "fabpot/php-cs-fixer": "^1.10",
-        "mmoreram/php-formatter": "^1.0",
-        "phpspec/phpspec": "^2.3"
+        "fabpot/php-cs-fixer":      "^1.10",
+        "mmoreram/php-formatter":   "^1.0",
+        "phpspec/phpspec":          "^2.3"
     },
     "scripts": {
         "cs": [

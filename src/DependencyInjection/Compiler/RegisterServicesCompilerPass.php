@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the User bundle.
+ * This file is part of the BenGorUserBundle bundle.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -40,8 +40,19 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                 'BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository'
             )
         );
+        $container->setDefinition(
+            'bengor.user.infrastructure.persistence.in_memory.user_guest_repository',
+            new Definition(
+                'BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserGuestRepository'
+            )
+        );
 
         foreach ($config['user_class'] as $key => $class) {
+            $guestClass = null;
+            if (class_exists($class . 'Guest')) {
+                $guestClass = $class . 'Guest';
+            }
+
             $container->setDefinition(
                 $key . '_password_encoder',
                 (new Definition(
@@ -78,10 +89,21 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
+            if (null !== $guestClass) {
+                $container->setDefinition(
+                    'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository',
+                    new Definition(
+                        'BenGor\User\Infrastructure\Persistence\Doctrine\DoctrineUserGuestRepository',
+                        [
+                            $container->getDefinition('doctrine.orm.default_entity_manager'), $guestClass,
+                        ]
+                    )
+                );
+            }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////// APPLICATION SERVICES /////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////// APPLICATION SERVICES ///////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             $container->setDefinition(
                 'bengor.user.application.service.activate_' . $key . '_account',
                 new Definition(
@@ -121,6 +143,22 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
+            if (null !== $guestClass) {
+                $container->setDefinition(
+                    'bengor.user.application.service.invite_' . $key,
+                    new Definition(
+                        'BenGor\User\Application\Service\InviteUserService',
+                        [
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            ),
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository'
+                            ),
+                        ]
+                    )
+                );
+            }
             $container->setDefinition(
                 'bengor.user.application.service.log_in_' . $key,
                 new Definition(
@@ -171,6 +209,28 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
+            if (null !== $guestClass) {
+                $container->setDefinition(
+                    'bengor.user.application.service.sign_up_' . $key . '_by_invitation',
+                    new Definition(
+                        'BenGor\User\Application\Service\SignUpUserByInvitationService',
+                        [
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            ),
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository'
+                            ),
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
+                            ),
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+                            ),
+                        ]
+                    )
+                );
+            }
             $container->setDefinition(
                 'bengor.user.application.service.sign_up_' . $key,
                 new Definition(

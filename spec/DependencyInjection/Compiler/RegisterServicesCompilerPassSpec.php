@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the User bundle.
+ * This file is part of the BenGorUserBundle bundle.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -51,6 +51,10 @@ class RegisterServicesCompilerPassSpec extends ObjectBehavior
 
         $container->setDefinition(
             'bengor.user.infrastructure.persistence.in_memory.user_repository',
+            Argument::type('Symfony\Component\DependencyInjection\Definition')
+        )->shouldBeCalled();
+        $container->setDefinition(
+            'bengor.user.infrastructure.persistence.in_memory.user_guest_repository',
             Argument::type('Symfony\Component\DependencyInjection\Definition')
         )->shouldBeCalled();
         $container->setDefinition(
