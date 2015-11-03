@@ -14,6 +14,7 @@ namespace spec\BenGor\UserBundle;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -36,7 +37,8 @@ class BenGorUserBundleSpec extends ObjectBehavior
     function it_builds(ContainerBuilder $container)
     {
         $container->addCompilerPass(
-            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass')
+            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass'),
+            PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $this->build($container);
