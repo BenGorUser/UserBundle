@@ -256,7 +256,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                     [
                         $container->getDefinition('router.default'),
                         $container->getDefinition('bengor.user.application.service.log_in_' . $key),
-                        $user['firewall']['pattern']
+                        $user['firewall']['pattern'],
                     ]
                 )
             );

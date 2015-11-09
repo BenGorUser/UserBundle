@@ -13,9 +13,6 @@
 namespace spec\BenGor\UserBundle\Routing;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Spec file of security routes loader class.

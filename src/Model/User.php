@@ -12,8 +12,8 @@
 
 namespace BenGor\UserBundle\Model;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use BenGor\User\Domain\Model\User as BenGorUser;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User bundle class.

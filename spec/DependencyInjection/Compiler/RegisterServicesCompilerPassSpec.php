@@ -39,10 +39,10 @@ class RegisterServicesCompilerPassSpec extends ObjectBehavior
             'user_class' => [
                 'user' => [
                     'class' => 'BenGor\Domain\Model\User', 'firewall' => [
-                        'name' => 'user', 'pattern' => ''
-                    ]
-                ]
-            ]
+                        'name' => 'user', 'pattern' => '',
+                    ],
+                ],
+            ],
         ]);
 
         $container->getDefinition('user_password_encoder')->shouldBeCalled();

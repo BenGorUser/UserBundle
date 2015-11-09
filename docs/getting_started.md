@@ -89,7 +89,7 @@ ben_gor_user:
             firewall:
                 name: main
 ```
-If ypu plan to implement a login system, you need to configure the `app/config/config/security.yml`:
+If ypu plan to implement a login system, you need to configure the `app/config/security.yml`:
 ```yml
 security:
     encoders:

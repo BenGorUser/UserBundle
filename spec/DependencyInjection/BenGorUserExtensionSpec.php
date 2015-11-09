@@ -13,7 +13,6 @@
 namespace spec\BenGor\UserBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**

@@ -17,17 +17,11 @@ use BenGor\User\Application\Service\LogInUserService;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
-use BenGor\User\Domain\Model\UserPasswordEncoder;
-use BenGor\User\Domain\Model\UserRepository;
 use BenGor\User\Infrastructure\Domain\Model\UserFactory;
 use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
-use BenGor\User\Infrastructure\Security\Symfony\SymfonyUserPasswordEncoder;
 use BenGor\UserBundle\Model\User;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use spec\BenGor\UserBundle\Security\DummyUserPasswordEncoder;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

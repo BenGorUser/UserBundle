@@ -36,7 +36,7 @@ class SecurityController extends Controller
         return $this->render('@BenGorUser/security/login.html.twig', [
             'last_email'  => $helper->getLastUsername(),
             'error'       => $helper->getLastAuthenticationError(),
-            'login_check' => sprintf('%s_check', $request->attributes->get('_route'))
+            'login_check' => sprintf('%s_check', $request->attributes->get('_route')),
         ]);
     }
 

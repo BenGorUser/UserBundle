@@ -16,9 +16,6 @@ use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Spec file of bengor user class.
