@@ -12,6 +12,7 @@
 
 namespace BenGor\UserBundle;
 
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,5 +32,6 @@ class BenGorUserBundle extends Bundle
     {
         parent::build($container);
         $container->addCompilerPass(new RegisterServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new LoadRoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE);
     }
 }

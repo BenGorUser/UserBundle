@@ -46,11 +46,10 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                 'BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserGuestRepository'
             )
         );
-
-        foreach ($config['user_class'] as $key => $class) {
+        foreach ($config['user_class'] as $key => $user) {
             $guestClass = null;
-            if (class_exists($class . 'Guest')) {
-                $guestClass = $class . 'Guest';
+            if (class_exists($user['class'] . 'Guest')) {
+                $guestClass = $user['class'] . 'Guest';
             }
 
             $container->setDefinition(
@@ -58,7 +57,7 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                 (new Definition(
                     'Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder',
                     [
-                        $class,
+                        $user['class'],
                     ]
                 ))->setFactory([new Reference('security.encoder_factory'), 'getEncoder'])
             );
@@ -71,23 +70,24 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
+
             $container->setDefinition(
                 'bengor.user.infrastructure.domain.model.' . $key . '_factory',
                 new Definition(
                     'BenGor\User\Infrastructure\Domain\Model\UserFactory',
                     [
-                        $class,
+                        $user['class'],
                     ]
                 )
             );
             $container->setDefinition(
                 'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository',
-                new Definition(
+                (new Definition(
                     'BenGor\User\Infrastructure\Persistence\Doctrine\DoctrineUserRepository',
                     [
-                        $container->getDefinition('doctrine.orm.default_entity_manager'), $class,
+                        $user['class'],
                     ]
-                )
+                ))->setFactory([new Reference('doctrine.orm.default_entity_manager'), 'getRepository'])
             );
             if (null !== $guestClass) {
                 $container->setDefinition(
@@ -245,6 +245,18 @@ class RegisterServicesCompilerPass implements CompilerPassInterface
                         $container->getDefinition(
                             'bengor.user.infrastructure.domain.model.' . $key . '_factory'
                         ),
+                    ]
+                )
+            );
+
+            $container->setDefinition(
+                'bengor.user_bundle.security.form_login_' . $key . '_authenticator',
+                new Definition(
+                    'BenGor\UserBundle\Security\FormLoginAuthenticator',
+                    [
+                        $container->getDefinition('router.default'),
+                        $container->getDefinition('bengor.user.application.service.log_in_' . $key),
+                        $user['firewall']['pattern']
                     ]
                 )
             );

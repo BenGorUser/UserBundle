@@ -37,6 +37,11 @@ class BenGorUserBundleSpec extends ObjectBehavior
     function it_builds(ContainerBuilder $container)
     {
         $container->addCompilerPass(
+            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass'),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->addCompilerPass(
             Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass'),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);

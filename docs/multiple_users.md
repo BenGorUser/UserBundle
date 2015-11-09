@@ -11,7 +11,10 @@ only this user in mind.
 ```yml
 ben_gor_user:
     user_class:
-        user: AppBundle\Entity\User
+        user:
+            class: AppBundle\Entity\User
+            firewall:
+                name: main
 ```
 And for example if you execute the `php app/console debug:container | grep bengor.user.application.service.log_in`
 you'll see the following:
@@ -22,11 +25,63 @@ Otherwise, if your `user_class` contains multiple choices for example something 
 ```yml
 ben_gor_user:
     user_class:
-        applicant: AppBundle\Entity\Applicant
-        employee: AppBundle\Entity\Employee
+        applicant:
+            class: AppBundle\Entity\Applicant
+            firewall:
+                name: applicant
+        employee:
+            class: AppBundle\Entity\Employee
+            firewall:
+                name: employee
+                pattern: admin
 ```
 the above command will print the following:
 ```bash
 bengor.user.application.service.log_in_applicant         BenGor\User\Application\Service\LogOutUserService
 bengor.user.application.service.log_in_employee          BenGor\User\Application\Service\LogOutUserService
+```
+
+
+Furthermore, the basic security configuration that it is appear in the [Getting started](getting_started.md) chapter
+can be modified to something like this, and it can be take advantage of the configuration to create different firewalls
+for each user.
+```yml
+security:
+    encoders:
+        BenGor\UserBundle\Model\User: bcrypt
+    providers:
+        database_employees:
+            entity: { class: AppBundle:Employee, property: email }
+        database_applicants:
+            entity: { class: AppBundle:Applicant, property: email }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        employee:
+            anonymous: ~
+            pattern: ^/admin/
+            guard:
+                authenticators:
+                    - bengor.user_bundle.security.form_login_employee_authenticator
+            provider: database_employees
+            form_login:
+                check_path: bengor_user_admin_security_login_check
+                login_path: bengor_user_admin_security_login
+                failure_path: bengor_user_admin_security_login
+            logout:
+                path: bengor_user_admin_security_logout
+                target: /
+        applicant:
+            anonymous: ~
+            guard:
+                authenticators:
+                    - bengor.user_bundle.security.form_login_applicant_authenticator
+            provider: database_applicants
+            logout:
+                path: bengor_user_security_logout
+                target: /
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 ```

@@ -35,8 +35,6 @@ class BenGorUserExtensionSpec extends ObjectBehavior
 
     function it_does_not_loads_because_required_configuration_is_missing(ContainerBuilder $container)
     {
-        $this->shouldThrow(
-            new InvalidConfigurationException('The child node "user_class" at path "ben_gor_user" must be configured.')
-        )->duringLoad([], $container);
+        $this->load([], $container);
     }
 }

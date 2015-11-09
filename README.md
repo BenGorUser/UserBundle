@@ -9,6 +9,9 @@
 [![Latest Unstable Version](https://poser.pugx.org/bengor/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor/user-bundle)
 
 ##Installation
+>**CAUTION: this bundle uses the new Symfony [Authentication guard component](http://symfony.com/blog/new-in-symfony-2-8-guard-authentication-component) so,
+it requires Symfony 2.8 or higher.**
+
 The easiest way to instal this component is using **[Composer][8]**
 ```bash
 $ composer require bengor/user-bundle

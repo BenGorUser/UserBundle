@@ -6,10 +6,6 @@
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
 
-BenGor\User\Domain\Model\UserToken:
-    type: embeddable
-    fields:
-        token:
-            type: string
-            length: 36
-            nullable: true
+bengor_user_routes:
+    resource: .
+    type: bengor_user

@@ -79,12 +79,39 @@ class UserGuest extends BaseUserGuest
 }
 ```
 
-Finally you have to configure the bundle to work with the specific needs of your application inside
+Next, you have to configure the bundle to work with the specific needs of your application inside
 `app/config/config.yml`:
 ```yml
 ben_gor_user:
     user_class:
-        user: AppBundle\Entity\User
+        user:
+            class: AppBundle\Entity\User
+            firewall:
+                name: main
+```
+If ypu plan to implement a login system, you need to configure the `app/config/config/security.yml`:
+```yml
+security:
+    encoders:
+        BenGor\UserBundle\Model\User: bcrypt
+    providers:
+        database_users:
+            entity: { class: AppBundle:Employee, property: email }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        applicant:
+            anonymous: ~
+            guard:
+                authenticators:
+                    - bengor.user_bundle.security.form_login_user_authenticator
+            provider: database_users
+            logout:
+                path: bengor_user_security_logout
+                target: /
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 ```
 
 That's all! Now that the bundle is configured, the last thing you need to do is update your database schema because

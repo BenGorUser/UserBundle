@@ -33,6 +33,7 @@ BenGor\User\Domain\Model\User:
         lastLogin:
             column: last_login
             type: datetime
+            nullable: true
         updatedOn:
             column: updated_on
             type: datetime
