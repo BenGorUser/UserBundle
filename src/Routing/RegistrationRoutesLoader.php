@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Security routes loader class.
+ * Registration routes loader class.
  *
- * Service that loads dynamically routes of security.
+ * Service that loads dynamically routes of registration.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityRoutesLoader implements LoaderInterface
+class RegistrationRoutesLoader implements LoaderInterface
 {
     /**
      * Boolean that checks if the routes are already loaded or not.
@@ -34,20 +34,20 @@ class SecurityRoutesLoader implements LoaderInterface
     private $loaded;
 
     /**
-     * Array which contains the patterns.
+     * Array which contains the routes.
      *
      * @var array
      */
-    private $patterns;
+    private $routes;
 
     /**
      * Constructor.
      *
-     * @param array $patterns Array which contains the patterns
+     * @param array $routes Array which contains the routes
      */
-    public function __construct(array $patterns)
+    public function __construct(array $routes)
     {
-        $this->patterns = $patterns;
+        $this->routes = $routes;
         $this->loaded = false;
     }
 
@@ -61,34 +61,14 @@ class SecurityRoutesLoader implements LoaderInterface
         }
 
         $routes = new RouteCollection();
-        foreach ($this->patterns as $name => $pattern) {
-            $routes->add('bengor_user' . $name . '_security_login', new Route(
-                '/' . $pattern . '/login',
-                ['_controller' => 'BenGorUserBundle:Security:login'],
-                [],
-                [],
-                '',
-                [],
-                ['GET', 'POST']
-            ));
-            $routes->add('bengor_user' . $name . '_security_login_check', new Route(
-                '/' . $pattern . '/login_check',
-                ['_controller' => 'BenGorUserBundle:Security:loginCheck'],
-                [],
-                [],
-                '',
-                [],
-                ['POST']
-            ));
-            $routes->add('bengor_user' . $name . '_security_logout', new Route(
-                '/' . $pattern . '/logout',
-                ['_controller' => 'BenGorUserBundle:Security:logout'],
-                [],
-                [],
-                '',
-                [],
-                ['GET']
-            ));
+        foreach ($this->routes as $name => $route) {
+            $routes->add('bengor_user_' . $name . '_registration', new Route(
+                $route['path'], [
+                '_controller' => 'BenGorUserBundle:Registration:' . $route['action'],
+                'userClass'   => $name,
+                'firewall'    => $route['firewall'],
+                'pattern'     => $route['pattern'],
+            ], [], [], '', [], ['GET', 'POST']));
         }
         $this->loaded = true;
 
@@ -100,7 +80,7 @@ class SecurityRoutesLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'ben_gor_user_security' === $type;
+        return 'ben_gor_user_registration' === $type;
     }
 
     /**

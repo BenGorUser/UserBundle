@@ -6,6 +6,8 @@
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
 
-bengor_user_routes:
-    resource: .
-    type: bengor_user
+ben_gor_security:
+    resource: security.yml
+
+ben_gor_registration:
+    resource: registration.yml

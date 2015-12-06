@@ -19,4 +19,7 @@ All available services are listed below with their associated class.
  bengor.user.infrastructure.persistence.in_memory.user_repository                    BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository
 
  bengor.user.infrastructure.security.symfony.user_password_encoder                   BenGor\User\Infrastructure\Security\Symfony\SymfonyUserPasswordEncoder
+
+ bengor.user_bundle.form.type.registration_user                                      BenGor\UserBundle\Form\Type\RegistrationType
+ bengor.user_bundle.security.form_login_user_authenticator                           BenGor\UserBundle\Security\FormLoginAuthenticator
 ```

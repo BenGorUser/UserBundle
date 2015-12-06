@@ -49,7 +49,7 @@ The following snippet is the minimum code that bundle needs to work.
 
 namespace AppBundle\Entity;
 
-use BenGor\User\Domain\Model\User as BaseUser;
+use BenGor\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -93,7 +93,7 @@ This bundles comes with some defined routes, you have to enable adding the follo
 `app/config/routing.yml`:
 ```yml
 ben_gor_user:
-    resource: '@BenGorUserBundle/Resources/config/routing.yml'
+    resource: '@BenGorUserBundle/Resources/config/routing/all.yml'
 ```
 If ypu plan to implement a login system, you need to configure the `app/config/security.yml`:
 ```yml

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if error is defined %}
+        {{ error }}
+    {% endif %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    {{ form_end(form) }}
+{% endblock %}

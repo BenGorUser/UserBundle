@@ -4,9 +4,12 @@ All available configuration options are listed below with their default values.
 ```yml
 ben_gor_user:
     user_class:
-        user:                # Required at least one element, the name is not relevant
-            class: ~         # Required
+        user:                       # Required at least one element, the name is not relevant
+            class: ~                # Required
             firewall:
-                name: ~      # Required
+                name: ~             # Required
                 pattern: ''
+            registration:
+                type: ~             # Required, it can be "none", "default" or "by_invitation"
+                path: /register
 ```
