@@ -16,7 +16,7 @@ ben_gor_user:
             firewall:
                 name: main
 ```
-And for example if you execute the `php app/console debug:container | grep bengor.user.application.service.log_in`
+And for example if you execute the `bin/console debug:container | grep bengor.user.application.service.log_in`
 you'll see the following:
 ```bash
 bengor.user.application.service.log_in_user              BenGor\User\Application\Service\LogOutUserService
@@ -48,7 +48,8 @@ for each user.
 ```yml
 security:
     encoders:
-        BenGor\UserBundle\Model\User: bcrypt
+        AppBundle\Entity\Employee: bcrypt
+        AppBundle\Entity\Applicant: bcrypt
     providers:
         database_employees:
             entity: { class: AppBundle:Employee, property: email }

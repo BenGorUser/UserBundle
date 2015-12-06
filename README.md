@@ -9,7 +9,8 @@
 [![Latest Unstable Version](https://poser.pugx.org/bengor/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor/user-bundle)
 
 ##Requirements
-BenGorUserBundle is supported on **PHP >= 5.4** and **Symfony >= 2.8** 
+PHP >= 5.4</br>
+Symfony >= 2.8 
 
 ##Installation
 The easiest way to instal this component is using **[Composer][8]**

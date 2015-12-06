@@ -93,15 +93,15 @@ If ypu plan to implement a login system, you need to configure the `app/config/s
 ```yml
 security:
     encoders:
-        BenGor\UserBundle\Model\User: bcrypt
+        AppBundle\Entity\User: bcrypt
     providers:
         database_users:
-            entity: { class: AppBundle:Employee, property: email }
+            entity: { class: AppBundle:User, property: email }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        applicant:
+        main:
             anonymous: ~
             guard:
                 authenticators:
@@ -117,5 +117,5 @@ security:
 That's all! Now that the bundle is configured, the last thing you need to do is update your database schema because
 you have added your new awesome user class.
 ```bash
-$ php app/console doctrine:schema:update --force
+$ bin/console doctrine:schema:update --force
 ```
