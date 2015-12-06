@@ -89,6 +89,12 @@ ben_gor_user:
             firewall:
                 name: main
 ```
+This bundles comes with some defined routes, you have to enable adding the following lines in your
+`app/config/routing.yml`:
+```yml
+ben_gor_user:
+    resource: '@BenGorUserBundle/Resources/config/routing.yml'
+```
 If ypu plan to implement a login system, you need to configure the `app/config/security.yml`:
 ```yml
 security:
