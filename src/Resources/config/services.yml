@@ -22,3 +22,25 @@ services:
         public: false
         tags:
             - { name: routing.loader }
+
+
+    bengor.user.infrastructure.mailing.swift_mailer:
+        class: BenGor\User\Infrastructure\Mailing\SwiftMailer\SwiftMailerUserMailer
+        arguments:
+            - '@mailer'
+
+    bengor.user.domain.event.user_registered_mailer_subscriber:
+        class: BenGor\User\Domain\Event\UserRegisteredMailerSubscriber
+        arguments:
+            - '@bengor.user.infrastructure.mailing.swift_mailer'
+            - 'prueba@prueba.com'
+            - 'esto es una prueba'
+        tags:
+            - { name: event_subscriber, subscribes_to: BenGor\User\Domain\Model\Event\UserRegistered }
+
+    bengor.user.domain.event_publisher:
+        class: BenGor\UserBundle\EventListener\DomainEventRequestListener
+        arguments:
+            - ['@bengor.user.domain.event.user_registered_mailer_subscriber']
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest}

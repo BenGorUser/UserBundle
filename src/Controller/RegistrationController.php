@@ -39,32 +39,35 @@ class RegistrationController extends Controller
     public function registerAction(Request $request, $userClass, $firewall, $pattern)
     {
         $form = $this->createForm(RegistrationType::class);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $service = new TransactionalApplicationService(
-                $this->get('bengor.user.application.service.sign_up_' . $userClass),
-                new DoctrineSession($this->get('doctrine')->getManager())
-            );
 
-            try {
-                $response = $service->execute($form->getData());
-            } catch (UserAlreadyExistException $exception) {
-                return $this->render('@BenGorUser/registration/register.html.twig', [
-                    'form'  => $form->createView(),
-                    'error' => 'This email is already in use',
-                ]);
-            }
-
-            $this
-                ->get('security.authentication.guard_handler')
-                ->authenticateUserAndHandleSuccess(
-                    $response->user(),
-                    $request,
-                    $this->get('bengor.user_bundle.security.form_login_' . $userClass . '_authenticator'),
-                    $firewall
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $service = new TransactionalApplicationService(
+                    $this->get('bengor.user.application.service.sign_up_' . $userClass),
+                    new DoctrineSession($this->get('doctrine')->getManager())
                 );
 
-            return $this->redirectToRoute($pattern . 'homepage');
+                try {
+                    $response = $service->execute($form->getData());
+
+                    $this
+                        ->get('security.authentication.guard_handler')
+                        ->authenticateUserAndHandleSuccess(
+                            $response->user(),
+                            $request,
+                            $this->get('bengor.user_bundle.security.form_login_' . $userClass . '_authenticator'),
+                            $firewall
+                        );
+                    $this->addFlash('notice', 'Your changes were saved!');
+
+                    return $this->redirectToRoute($pattern . 'homepage');
+                } catch (UserAlreadyExistException $exception) {
+                    $this->addFlash('error', 'The email is already in use.');
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                }
+            }
         }
 
         return $this->render('@BenGorUser/registration/register.html.twig', [
