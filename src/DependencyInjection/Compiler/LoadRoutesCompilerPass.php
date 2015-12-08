@@ -57,7 +57,7 @@ class LoadRoutesCompilerPass implements CompilerPassInterface
 
         $container->getDefinition(
             'bengor.user_bundle.routing.security_routes_loader'
-        )->replaceArgument(0, array_unique($patterns));
+        )->replaceArgument(0, array_unique($patterns, SORT_REGULAR));
     }
 
     /**
@@ -85,8 +85,8 @@ class LoadRoutesCompilerPass implements CompilerPassInterface
             }
 
             $pattern = '';
-            if ('' !== $pattern = $user['firewall']['pattern']) {
-                $pattern = $pattern . '_';
+            if ('' !== $user['firewall']['pattern']) {
+                $pattern = $user['firewall']['pattern'] . '_';
             }
 
             $routes[$name] = [
@@ -99,6 +99,6 @@ class LoadRoutesCompilerPass implements CompilerPassInterface
 
         $container->getDefinition(
             'bengor.user_bundle.routing.registration_routes_loader'
-        )->replaceArgument(0, array_unique($routes));
+        )->replaceArgument(0, array_unique($routes, SORT_REGULAR));
     }
 }
