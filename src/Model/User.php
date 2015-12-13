@@ -31,7 +31,9 @@ class User extends BenGorUser implements UserInterface
      */
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return array_map(function ($role) {
+            return $role->role();
+        }, $this->roles());
     }
 
     /**

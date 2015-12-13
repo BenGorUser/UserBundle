@@ -19,12 +19,14 @@
     "require": {
         "php":                      ">=5.4",
         "bengor/user":              "^0.2.0",
-        "symfony/framework-bundle": "^2.8|^3.0"
+        "symfony/framework-bundle": "^2.8|^3.0",
+        "symfony/security-bundle":  "^2.8|^3.0",
+        "symfony/twig-bundle":      "^2.8|^3.0"
     },
     "require-dev": {
         "fabpot/php-cs-fixer":      "^1.10",
         "mmoreram/php-formatter":   "^1.0",
-        "phpspec/phpspec":          "^2.3"
+        "phpspec/phpspec":          "~2.3.0"
     },
     "scripts": {
         "cs": [
@@ -38,8 +40,7 @@
         "test": "phpspec run"
     },
     "suggest": {
-        "doctrine/doctrine-bundle": "Required to mapping the user attributes in the Symfony way",
-        "symfony/security-bundle": "Required to use the Symfony password encoder as a service"
+        "doctrine/doctrine-bundle": "Required to mapping the user attributes in the Symfony way"
     },
     "autoload": {
         "psr-4": {
