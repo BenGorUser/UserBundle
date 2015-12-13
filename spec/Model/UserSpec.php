@@ -15,6 +15,7 @@ namespace spec\BenGor\UserBundle\Model;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
+use BenGor\User\Domain\Model\UserRole;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -29,7 +30,11 @@ class UserSpec extends ObjectBehavior
         $this->beConstructedWith(
             new UserId(),
             new UserEmail('test@test.com'),
-            UserPassword::fromEncoded('123456', 'dummy-salt')
+            UserPassword::fromEncoded('123456', 'dummy-salt'),
+            [
+                new UserRole('ROLE_USER'),
+                new UserRole('ROLE_ADMIN'),
+            ]
         );
     }
 
@@ -50,7 +55,7 @@ class UserSpec extends ObjectBehavior
 
     function it_gets_roles()
     {
-        $this->getRoles()->shouldReturn(['ROLE_USER']);
+        $this->getRoles()->shouldReturn(['ROLE_USER', 'ROLE_ADMIN']);
     }
 
     function it_gets_password()
