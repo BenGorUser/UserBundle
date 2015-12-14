@@ -9,7 +9,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/bengor/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor/user-bundle)
 
 ##Requirements
-PHP >= 5.4</br>
+PHP >= 5.5</br>
 Symfony >= 2.8 
 
 ##Installation

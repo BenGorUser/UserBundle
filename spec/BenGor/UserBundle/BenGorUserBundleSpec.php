@@ -12,10 +12,15 @@
 
 namespace spec\BenGor\UserBundle;
 
+use BenGor\UserBundle\BenGorUserBundle;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Spec file of bengor user bundle class.
@@ -26,28 +31,28 @@ class BenGorUserBundleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\BenGorUserBundle');
+        $this->shouldHaveType(BenGorUserBundle::class);
     }
 
     function it_extends_symfony_bundle()
     {
-        $this->shouldHaveType('Symfony\Component\HttpKernel\Bundle\Bundle');
+        $this->shouldHaveType(Bundle::class);
     }
 
     function it_builds(ContainerBuilder $container)
     {
         $container->addCompilerPass(
-            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass'),
+            Argument::type(LoadRoutesCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass'),
+            Argument::type(LoadDoctrineCustomTypesCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type('BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass'),
+            Argument::type(RegisterServicesCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 

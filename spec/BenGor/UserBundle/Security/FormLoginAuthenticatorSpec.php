@@ -20,14 +20,18 @@ use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
 use BenGor\User\Infrastructure\Domain\Model\UserFactory;
 use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
+use BenGor\User\Infrastructure\Security\Test\DummyUserPasswordEncoder;
 use BenGor\UserBundle\Model\User;
+use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 
 /**
  * Spec file of form login authenticator class.
@@ -57,18 +61,18 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         );
 
         $this->beConstructedWith(
-            $router, $this->service, new UserFactory('BenGor\User\Bundle\Model\User'), ''
+            $router, $this->service, new UserFactory(User::class), ''
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\Security\FormLoginAuthenticator');
+        $this->shouldHaveType(FormLoginAuthenticator::class);
     }
 
     function it_extends_abstract_form_login_authenticator()
     {
-        $this->shouldHaveType('Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator');
+        $this->shouldHaveType(AbstractFormLoginAuthenticator::class);
     }
 
     function it_gets_credentials(
@@ -88,7 +92,7 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $request->getSession()->shouldBeCalled()->willReturn($session);
         $session->set(Security::LAST_USERNAME, 'test@test.com')->shouldBeCalled();
 
-        $this->getCredentials($request)->shouldReturnAnInstanceOf('BenGor\User\Application\Service\LogInUserRequest');
+        $this->getCredentials($request)->shouldReturnAnInstanceOf(LogInUserRequest::class);
     }
 
     function it_gets_user(UserProviderInterface $userProvider)
@@ -96,7 +100,7 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $credentials = new LogInUserRequest('test@test.com', '111111');
         $this->service->execute($credentials);
 
-        $this->getUser($credentials, $userProvider)->shouldReturnAnInstanceOf('Symfony\Component\Security\Core\User\UserInterface');
+        $this->getUser($credentials, $userProvider)->shouldReturnAnInstanceOf(UserInterface::class);
     }
 
     function it_checks_credentials()

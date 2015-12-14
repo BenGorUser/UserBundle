@@ -12,6 +12,7 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
+use BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -36,7 +37,7 @@ class LoadDoctrineCustomTypesCompilerPass implements CompilerPassInterface
         $customTypes = $container->getParameter('doctrine.dbal.connection_factory.types');
         $customTypes = array_merge($customTypes, [
             'user_roles' => [
-                'class'     => 'BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType',
+                'class'     => UserRolesType::class,
                 'commented' => true,
             ],
         ]);

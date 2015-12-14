@@ -12,9 +12,12 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
+use BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Spec file of register services compiler pass.
@@ -25,12 +28,12 @@ class RegisterServicesCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass');
+        $this->shouldHaveType(RegisterServicesCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
     {
-        $this->shouldImplement('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
+        $this->shouldImplement(CompilerPassInterface::class);
     }
 
     function it_processes(ContainerBuilder $container)
@@ -58,64 +61,64 @@ class RegisterServicesCompilerPassSpec extends ObjectBehavior
 
         $container->setDefinition(
             'bengor.user.infrastructure.persistence.in_memory.user_repository',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.infrastructure.persistence.in_memory.user_guest_repository',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'user_password_encoder',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.infrastructure.security.symfony.user_password_encoder',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.infrastructure.domain.model.user_factory',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
 
         $container->setDefinition(
             'bengor.user.infrastructure.persistence.doctrine.user_repository',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.activate_user_account',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.change_user_password',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.change_user_password_using_remember_password_token',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.log_in_user',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.log_out_user',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.remove_user',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.request_user_remember_password_token',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.sign_up_user',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user_bundle.security.form_login_user_authenticator',
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
 
         $this->process($container);

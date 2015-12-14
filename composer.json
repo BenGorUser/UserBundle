@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php":                      ">=5.4",
-        "bengor/user":              "^0.2.0",
+        "php":                      ">=5.5",
+        "bengor/user":              "^0.3.0",
         "symfony/framework-bundle": "^2.8|^3.0",
         "symfony/security-bundle":  "^2.8|^3.0",
         "symfony/twig-bundle":      "^2.8|^3.0"
@@ -26,7 +26,7 @@
     "require-dev": {
         "fabpot/php-cs-fixer":      "^1.10",
         "mmoreram/php-formatter":   "^1.0",
-        "phpspec/phpspec":          "~2.3.0"
+        "phpspec/phpspec":          "^2.4"
     },
     "scripts": {
         "cs": [
@@ -44,13 +44,9 @@
     },
     "autoload": {
         "psr-4": {
-            "BenGor\\UserBundle\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "spec\\BenGor\\UserBundle\\": "spec/"
-        }
+            "": "src/"
+        },
+        "exclude-from-classmap": ["/spec/"]
     },
     "extra": {
         "branch-alias": {

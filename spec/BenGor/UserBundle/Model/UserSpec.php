@@ -16,7 +16,9 @@ use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
+use BenGor\UserBundle\Model\User;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Spec file of bengor user class.
@@ -40,17 +42,17 @@ class UserSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\Model\User');
+        $this->shouldHaveType(User::class);
     }
 
     function it_extends_user()
     {
-        $this->shouldHaveType('BenGor\User\Domain\Model\User');
+        $this->shouldHaveType(User::class);
     }
 
     function it_implements_user()
     {
-        $this->shouldHaveType('Symfony\Component\Security\Core\User\UserInterface');
+        $this->shouldHaveType(UserInterface::class);
     }
 
     function it_gets_roles()

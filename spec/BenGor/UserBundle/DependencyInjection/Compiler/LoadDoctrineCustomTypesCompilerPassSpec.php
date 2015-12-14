@@ -12,7 +12,10 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
+use BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -25,12 +28,12 @@ class LoadDoctrineCustomTypesCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass');
+        $this->shouldHaveType(LoadDoctrineCustomTypesCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
     {
-        $this->shouldImplement('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
+        $this->shouldImplement(CompilerPassInterface::class);
     }
 
     function it_processes(ContainerBuilder $container, Definition $definition)
@@ -40,7 +43,7 @@ class LoadDoctrineCustomTypesCompilerPassSpec extends ObjectBehavior
 
         $container->setParameter('doctrine.dbal.connection_factory.types', [
             'user_roles' => [
-                'class'     => 'BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType',
+                'class'     => UserRolesType::class,
                 'commented' => true,
             ],
         ])->shouldBeCalled();

@@ -13,6 +13,7 @@
 namespace BenGor\UserBundle\Model;
 
 use BenGor\User\Domain\Model\User as BenGorUser;
+use BenGor\User\Domain\Model\UserRole;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -31,7 +32,7 @@ class User extends BenGorUser implements UserInterface
      */
     public function getRoles()
     {
-        return array_map(function ($role) {
+        return array_map(function (UserRole $role) {
             return $role->role();
         }, $this->roles());
     }

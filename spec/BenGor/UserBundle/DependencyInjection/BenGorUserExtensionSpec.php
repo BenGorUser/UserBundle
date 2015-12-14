@@ -12,8 +12,10 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection;
 
+use BenGor\UserBundle\DependencyInjection\BenGorUserExtension;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
 /**
  * Spec file of bengor user extension class.
@@ -24,12 +26,12 @@ class BenGorUserExtensionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\DependencyInjection\BenGorUserExtension');
+        $this->shouldHaveType(BenGorUserExtension::class);
     }
 
     function it_extends_symfony_extension()
     {
-        $this->shouldHaveType('Symfony\Component\HttpKernel\DependencyInjection\Extension');
+        $this->shouldHaveType(Extension::class);
     }
 
     function it_does_not_loads_because_required_configuration_is_missing(ContainerBuilder $container)

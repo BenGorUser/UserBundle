@@ -12,7 +12,10 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection;
 
+use BenGor\UserBundle\DependencyInjection\Configuration;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Spec file of configuration class.
@@ -23,18 +26,16 @@ class ConfigurationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\DependencyInjection\Configuration');
+        $this->shouldHaveType(Configuration::class);
     }
 
     function it_implements_symfony_configuration_interface()
     {
-        $this->shouldHaveType('Symfony\Component\Config\Definition\ConfigurationInterface');
+        $this->shouldHaveType(ConfigurationInterface::class);
     }
 
     function it_gets_config_tree_builder()
     {
-        $this->getConfigTreeBuilder()->shouldReturnAnInstanceOf(
-            'Symfony\Component\Config\Definition\Builder\TreeBuilder'
-        );
+        $this->getConfigTreeBuilder()->shouldReturnAnInstanceOf(TreeBuilder::class);
     }
 }

@@ -12,7 +12,9 @@
 
 namespace spec\BenGor\UserBundle\Controller;
 
+use BenGor\UserBundle\Controller\SecurityController;
 use PhpSpec\ObjectBehavior;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -34,12 +36,12 @@ class SecurityControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\Controller\SecurityController');
+        $this->shouldHaveType(SecurityController::class);
     }
 
     function it_extends_controller()
     {
-        $this->shouldHaveType('Symfony\Bundle\FrameworkBundle\Controller\Controller');
+        $this->shouldHaveType(Controller::class);
     }
 
     function it_login_action(

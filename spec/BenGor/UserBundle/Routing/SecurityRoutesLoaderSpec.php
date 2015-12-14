@@ -12,7 +12,9 @@
 
 namespace spec\BenGor\UserBundle\Routing;
 
+use BenGor\UserBundle\Routing\SecurityRoutesLoader;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
  * Spec file of security routes loader class.
@@ -28,12 +30,12 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('BenGor\UserBundle\Routing\SecurityRoutesLoader');
+        $this->shouldHaveType(SecurityRoutesLoader::class);
     }
 
     function it_implements_loader_interface()
     {
-        $this->shouldHaveType('Symfony\Component\Config\Loader\LoaderInterface');
+        $this->shouldHaveType(LoaderInterface::class);
     }
 
     function it_loads()
