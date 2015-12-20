@@ -14,11 +14,12 @@ namespace BenGor\UserBundle\Security;
 
 use BenGor\User\Application\Service\LogInUserRequest;
 use BenGor\User\Application\Service\LogInUserService;
-use BenGor\User\Domain\Model\Exception\UserInvalidPasswordException;
+use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserFactory;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
+use BenGor\User\Domain\Model\UserRole;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Security;
@@ -109,11 +110,12 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         try {
             $response = $this->service->execute($credentials);
         } catch (\Exception $exception) {
-            if ($exception instanceof UserInvalidPasswordException) {
+            if ($exception instanceof UserPasswordInvalidException) {
                 return $this->factory->register(
                     new UserId(),
                     new UserEmail('bengoruser@bengoruser.com'),
-                    UserPassword::fromEncoded('0', 'this-is-trade-off')
+                    UserPassword::fromEncoded('0', 'this-is-trade-off'),
+                    [new UserRole('ROLE_USER')]
                 );
             }
 
