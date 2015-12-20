@@ -18,8 +18,8 @@ public function registerBundles()
 does not correspond with the Symfony standard structure and the **`doctrine-bundle`'s auto-mapping does not work
 properly with this bundle**.
 
-So, to avoid any problem related with the above reminder you have to disabled the auto-mapping inside doctrine section
-of `app/config/config.yml` file and added mappings manually. The following code is the minimum needed to work in the
+So, to avoid any problem related with the above reminder you have to register the BenGorUserBundle mappings manually
+inside doctrine section of `app/config/config.yml`. The following code is the minimum needed to work in the
 Symfony standard edition.
 ```yml
 doctrine:
@@ -28,17 +28,12 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
         mappings:
-            BenGorUser:
+            BenGorUserBundle:
                 mapping: true
                 type: yml
-                dir: "%kernel.root_dir%/../vendor/bengor/user-bundle/src/Resources/config/doctrine"
                 prefix: 'BenGor\User\Domain\Model'
-                is_bundle: false
-            AppBundle:
-                mapping: true
-                type: annotation
-                prefix: 'AppBundle\Entity'
                 is_bundle: true
 ```
 
