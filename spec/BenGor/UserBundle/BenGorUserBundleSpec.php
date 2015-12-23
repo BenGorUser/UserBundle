@@ -13,9 +13,11 @@
 namespace spec\BenGor\UserBundle;
 
 use BenGor\UserBundle\BenGorUserBundle;
+use BenGor\UserBundle\DependencyInjection\Compiler\AliasDoctrineServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\RegisterServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\RegisterTransactionalServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -42,7 +44,17 @@ class BenGorUserBundleSpec extends ObjectBehavior
     function it_builds(ContainerBuilder $container)
     {
         $container->addCompilerPass(
-            Argument::type(LoadRoutesCompilerPass::class),
+            Argument::type(RegisterServicesCompilerPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->addCompilerPass(
+            Argument::type(RegisterTransactionalServicesCompilerPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->addCompilerPass(
+            Argument::type(AliasDoctrineServicesCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
@@ -52,7 +64,7 @@ class BenGorUserBundleSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(RegisterServicesCompilerPass::class),
+            Argument::type(LoadRoutesCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
