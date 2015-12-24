@@ -68,6 +68,18 @@ class BenGorUserBundleSpec extends ObjectBehavior
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
+        $container->loadFromExtension('doctrine', [
+            'orm' => [
+                'mappings' => [
+                    'BenGorUserBundle' => [
+                        'type'      => 'yml',
+                        'is_bundle' => true,
+                        'prefix'    => 'BenGor\\User\\Domain\\Model',
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled()->willReturn($container);
+
         $this->build($container);
     }
 }
