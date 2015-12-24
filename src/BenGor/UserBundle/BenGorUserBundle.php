@@ -57,7 +57,7 @@ class BenGorUserBundle extends Bundle
                     'BenGorUserBundle' => [
                         'type'      => 'yml',
                         'is_bundle' => true,
-                        'prefix'    => 'BenGor\User\Domain\Model',
+                        'prefix'    => 'BenGor\\User\\Domain\\Model',
                     ],
                 ],
             ],
