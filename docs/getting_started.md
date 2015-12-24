@@ -14,29 +14,6 @@ public function registerBundles()
 }
 ```
 
-> Please, keep in mind that *BenGorUser* is built with **Domain-Driven design** approach so the directory structure
-does not correspond with the Symfony standard structure and the **`doctrine-bundle`'s auto-mapping does not work
-properly with this bundle**.
-
-So, to avoid any problem related with the above reminder you have to register the BenGorUserBundle mappings manually
-inside doctrine section of `app/config/config.yml`. The following code is the minimum needed to work in the
-Symfony standard edition.
-```yml
-doctrine:
-    (...)
-
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
-        mappings:
-            BenGorUserBundle:
-                mapping: true
-                type: yml
-                prefix: 'BenGor\User\Domain\Model'
-                is_bundle: true
-```
-
 After that, you need to extend our `BenGor\Domain\Model\User` class in order to build the Doctrine mapping properly.
 The following snippet is the minimum code that bundle needs to work.
 ```php

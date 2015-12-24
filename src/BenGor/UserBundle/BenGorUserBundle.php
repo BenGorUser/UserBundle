@@ -50,5 +50,17 @@ class BenGorUserBundle extends Bundle
         $container->addCompilerPass(
             new LoadRoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
+
+        $container->loadFromExtension('doctrine', [
+            'orm' => [
+                'mappings' => [
+                    'BenGorUserBundle' => [
+                        'type'      => 'yml',
+                        'is_bundle' => true,
+                        'prefix'    => 'BenGor\User\Domain\Model',
+                    ],
+                ],
+            ],
+        ]);
     }
 }
