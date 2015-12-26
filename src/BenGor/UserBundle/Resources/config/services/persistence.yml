@@ -1,0 +1,36 @@
+# This file is part of the BenGorUserBundle bundle.
+#
+# (c) Beñat Espiña <benatespina@gmail.com>
+# (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+services:
+    pdo:
+        class: PDO
+        arguments:
+            - "mysql:dbname=%database_name%"
+            - '%database_user%'
+            - '%database_password%'
+        public: false
+
+    ddd.infrastructure.application.service.doctrine_session:
+        class: Ddd\Infrastructure\Application\Service\DoctrineSession
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        public: false
+
+    bengor.user.infrastructure.persistence.in_memory.user_repository:
+        class: BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository
+    bengor.user.infrastructure.persistence.in_memory.user_guest_repository:
+        class: BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserGuestRepository
+
+    bengor.user.infrastructure.persistence.sql.user_repository:
+        class: BenGor\User\Infrastructure\Persistence\Sql\SqlUserRepository
+        arguments:
+            - '@pdo'
+    bengor.user.infrastructure.persistence.sql.user_guest_repository:
+        class: BenGor\User\Infrastructure\Persistence\Sql\SqlUserGuestRepository
+        arguments:
+            - '@pdo'
