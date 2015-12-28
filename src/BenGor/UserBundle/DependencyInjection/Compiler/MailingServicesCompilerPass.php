@@ -46,7 +46,7 @@ class MailingServicesCompilerPass implements CompilerPassInterface
      */
     private function swiftMailer(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('mailer')) {
+        if (!$container->hasDefinition('swiftmailer.mailer.default')) {
             return;
         }
 
@@ -55,7 +55,7 @@ class MailingServicesCompilerPass implements CompilerPassInterface
             new Definition(
                 SwiftMailerUserMailer::class, [
                     $container->getDefinition(
-                        'mailer'
+                        'swiftmailer.mailer.default'
                     ),
                 ]
             )

@@ -33,6 +33,7 @@ class BenGorUserExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/services'));
 
+        $loader->load('event_subscribers.yml');
         $loader->load('persistence.yml');
         $loader->load('routing.yml');
 
