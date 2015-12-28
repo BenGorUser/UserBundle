@@ -13,22 +13,22 @@
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType;
-use BenGor\UserBundle\DependencyInjection\Compiler\AliasDoctrineServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Spec file of alias doctrine services compiler pass.
+ * Spec file of alias services compiler pass.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class AliasDoctrineServicesCompilerPassSpec extends ObjectBehavior
+class AliasServicesCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(AliasDoctrineServicesCompilerPass::class);
+        $this->shouldHaveType(AliasServicesCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
