@@ -39,8 +39,8 @@ class MailingServicesCompilerPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container)
     {
-        $container->hasDefinition('mailer')->shouldBeCalled()->willReturn(true);
-        $container->getDefinition('mailer')->shouldBeCalled();
+        $container->hasDefinition('swiftmailer.mailer.default')->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('swiftmailer.mailer.default')->shouldBeCalled();
 
         $container->setDefinition(
             'bengor.user.infrastructure.mailing.swift_mailer.user_mailer',

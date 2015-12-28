@@ -13,12 +13,3 @@ services:
             - []
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-    bengor.user.domain.event.user_registered_mailer_subscriber:
-        class: BenGor\User\Domain\Event\UserRegisteredMailerSubscriber
-        arguments:
-            - '@bengor.user.infrastructure.mailing.swift_mailer.user_mailer'
-            - 'prueba@prueba.com'
-            - 'esto es una prueba'
-        tags:
-            - { name: bengor_user_subscriber, subscribes_to: BenGor\User\Domain\Model\Event\UserRegistered }

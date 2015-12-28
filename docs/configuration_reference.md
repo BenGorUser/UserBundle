@@ -9,4 +9,6 @@ ben_gor_user:
             firewall:
                 name: ~      # Required
                 pattern: ''
+    subscribers: ~           # there are 3 implemented subscribers: "invited_mailer", "registered_mailer" and
+                             # "remember_password_requested": their values can be "swift_mailer" or "mandrill"
 ```
