@@ -14,8 +14,3 @@ services:
         public: false
         tags:
             - { name: routing.loader }
-
-    ddd.infrastructure.application.service.doctrine_session:
-        class: Ddd\Infrastructure\Application\Service\DoctrineSession
-        arguments:
-            - '@doctrine.orm.entity_manager'

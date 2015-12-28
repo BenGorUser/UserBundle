@@ -20,14 +20,14 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Register transactional services compiler pass.
+ * Register application transactional services compiler pass.
  *
  * The services are decorate with transactional
  * application service to simplify the use of them.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegisterTransactionalServicesCompilerPass implements CompilerPassInterface
+class TransactionalApplicationServicesCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
