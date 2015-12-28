@@ -36,17 +36,17 @@ class LoadSubscribersCompilerPass implements CompilerPassInterface
     {
         $this->loadImplementedSubscribers($container);
 
-//        $definition = $container->findDefinition(
-//            'bengor.user_bundle.event_listener.domain_event_publisher'
-//        );
-//
-//        $taggedServices = $container->findTaggedServiceIds('bengor_user_subscriber');
-//
-//        $references = [];
-//        foreach ($taggedServices as $id => $tags) {
-//            $references[] = new Reference($id);
-//        }
-//        $definition->replaceArgument(0, $references);
+        $definition = $container->findDefinition(
+            'bengor.user_bundle.event_listener.domain_event_publisher'
+        );
+
+        $taggedServices = $container->findTaggedServiceIds('bengor_user_subscriber');
+
+        $references = [];
+        foreach ($taggedServices as $id => $tags) {
+            $references[] = new Reference($id);
+        }
+        $definition->replaceArgument(0, $references);
     }
 
     /**

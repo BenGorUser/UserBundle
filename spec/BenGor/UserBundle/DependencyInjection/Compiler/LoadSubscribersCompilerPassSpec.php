@@ -22,6 +22,7 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Spec file of load subscribers compiler pass.
@@ -88,6 +89,18 @@ class LoadSubscribersCompilerPassSpec extends ObjectBehavior
             'subscribes_to' => UserRememberPasswordRequested::class,
         ])->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
+
+        $container->findDefinition(
+            'bengor.user_bundle.event_listener.domain_event_publisher'
+        )->shouldBeCalled()->willReturn($definition);
+        $container->findTaggedServiceIds('bengor_user_subscriber')
+            ->shouldBeCalled()->willReturn([
+                'bengor.user.domain.event.user_invited_mailer_subscriber'              => [],
+                'bengor.user.domain.event.user_registered_mailer_subscriber'           => [],
+                'bengor.user.domain.event.user_remember_password_requested_subscriber' => [],
+            ]);
+        $definition->replaceArgument(0, Argument::type('array'))
+            ->shouldBeCalled()->willReturn($definition);
 
 
         $this->process($container);
