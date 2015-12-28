@@ -49,14 +49,6 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
         ]);
 
         $container->setAlias(
-            'bengor_user.in_memory_user_repository',
-            'bengor.user.infrastructure.persistence.in_memory.user_repository'
-        )->shouldBeCalled();
-        $container->setAlias(
-            'bengor_user.in_memory_user_guest_repository',
-            'bengor.user.infrastructure.persistence.in_memory.user_guest_repository'
-        )->shouldBeCalled();
-        $container->setAlias(
             'bengor_user.symfony_user_password_encoder',
             'bengor.user.infrastructure.security.symfony.user_password_encoder'
         )->shouldBeCalled();
