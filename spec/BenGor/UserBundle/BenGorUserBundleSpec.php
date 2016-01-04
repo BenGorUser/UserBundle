@@ -110,6 +110,12 @@ class BenGorUserBundleSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled()->willReturn($container);
 
+        $container->loadFromExtension('twig', [
+            'paths' => [
+                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
+            ],
+        ])->shouldBeCalled()->willReturn($container);
+
         $this->build($container);
     }
 }

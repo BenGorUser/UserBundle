@@ -57,18 +57,39 @@ class LoadSubscribersCompilerPass implements CompilerPassInterface
     private function loadImplementedSubscribers(ContainerBuilder $container)
     {
         $config = $container->getParameter('bengor_user.config');
-        foreach ($config['subscribers'] as $key => $mailer) {
+        foreach ($config['subscribers'] as $key => $values) {
+            $content = $values['content'];
+            if (null === $content) {
+                $values['mail'] = 'twig_swift_mailer';
+                $content = $values['twig'];
+            }
+
             if ('invited_mailer' === $key) {
                 $this->buildSubscriber(
-                    $container, $key, UserInvitedMailerSubscriber::class, $mailer, UserInvited::class
+                    $container,
+                    $key,
+                    UserInvitedMailerSubscriber::class,
+                    $values['mail'],
+                    $content,
+                    UserInvited::class
                 );
             } elseif ('registered_mailer' === $key) {
                 $this->buildSubscriber(
-                    $container, $key, UserRegisteredMailerSubscriber::class, $mailer, UserRegistered::class
+                    $container,
+                    $key,
+                    UserRegisteredMailerSubscriber::class,
+                    $values['mail'],
+                    $content,
+                    UserRegistered::class
                 );
             } elseif ('remember_password_requested' === $key) {
                 $this->buildSubscriber(
-                    $container, $key, UserRememberPasswordRequested::class, $mailer, UserRememberPasswordRequested::class
+                    $container,
+                    $key,
+                    UserRememberPasswordRequested::class,
+                    $values['mail'],
+                    $content,
+                    UserRememberPasswordRequested::class
                 );
             }
         }
@@ -81,9 +102,10 @@ class LoadSubscribersCompilerPass implements CompilerPassInterface
      * @param string           $name        The subscriber name
      * @param string           $subscriber  The subscriber fully qualified namespace
      * @param string           $mailer      The type of mailer
+     * @param string           $content     The email content
      * @param string           $domainEvent The domain event fully qualified namespace
      */
-    private function buildSubscriber(ContainerBuilder $container, $name, $subscriber, $mailer, $domainEvent)
+    private function buildSubscriber(ContainerBuilder $container, $name, $subscriber, $mailer, $content, $domainEvent)
     {
         $container->setDefinition(
             'bengor.user.domain.event.user_' . $name . '_subscriber',
@@ -93,7 +115,7 @@ class LoadSubscribersCompilerPass implements CompilerPassInterface
                         'bengor.user.infrastructure.mailing.' . $mailer . '.user_mailer'
                     ),
                     $container->getParameter('mailer_user'),
-                    'Body test content',
+                    $content,
                 ]
             )
         )->addTag('bengor_user_subscriber', [

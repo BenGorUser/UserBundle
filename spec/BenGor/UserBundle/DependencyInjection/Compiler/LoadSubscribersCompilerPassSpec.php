@@ -52,14 +52,26 @@ class LoadSubscribersCompilerPassSpec extends ObjectBehavior
                 ],
             ],
             'subscribers' => [
-                'invited_mailer'              => 'mandrill',
-                'registered_mailer'           => 'mandrill',
-                'remember_password_requested' => 'mandrill',
+                'invited_mailer'              => [
+                    'mail'    => 'mandrill',
+                    'content' => null,
+                    'twig'    => '@bengor_user/Email/invite.html.twig',
+                ],
+                'registered_mailer'           => [
+                    'mail'    => 'mandrill',
+                    'content' => null,
+                    'twig'    => '@bengor_user/Email/register.html.twig',
+                ],
+                'remember_password_requested' => [
+                    'mail'    => 'mandrill',
+                    'content' => null,
+                    'twig'    => '@bengor_user/Email/remeber_password_request.html.twig',
+                ],
             ],
         ]);
 
         $container->getDefinition(
-            'bengor.user.infrastructure.mailing.mandrill.user_mailer'
+            'bengor.user.infrastructure.mailing.twig_swift_mailer.user_mailer'
         )->shouldBeCalled();
         $container->getParameter('mailer_user')->shouldBeCalled();
 

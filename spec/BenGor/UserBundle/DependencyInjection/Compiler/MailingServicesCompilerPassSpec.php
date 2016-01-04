@@ -47,6 +47,14 @@ class MailingServicesCompilerPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled();
 
+        $container->hasDefinition('twig')->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('twig')->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.infrastructure.mailing.twig_swift_mailer.user_mailer',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+
         $this->process($container);
     }
 }

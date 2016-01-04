@@ -82,5 +82,11 @@ class BenGorUserBundle extends Bundle
                 ],
             ],
         ]);
+
+        $container->loadFromExtension('twig', [
+            'paths' => [
+                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
+            ],
+        ]);
     }
 }
