@@ -9,17 +9,4 @@ ben_gor_user:
             firewall:
                 name: ~                                                     # Required
                 pattern: ''
-    subscribers:                                                            # By default is null
-        invited_mailer:
-            mail: ~                                                         # Required, can be swift_mailer or mandrill
-            content: ~
-            twig: @bengor_user/Email/invite.html.twig
-        registered_mailer:
-            mail: ~                                                         # Required, can be swift_mailer or mandrill
-            content: ~
-            twig: @bengor_user/Email/register.html.twig
-        remember_password_requested:
-            mail: ~                                                         # Required, can be swift_mailer or mandrill
-            content: ~
-            twig: @bengor_user/Email/remember_password_requested.html.twig
 ```
