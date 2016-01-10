@@ -17,6 +17,7 @@ use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPa
 use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesCompilerPass;
@@ -66,6 +67,9 @@ class BenGorUserBundle extends Bundle
         $container->addCompilerPass(
             new LoadRoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
+        $container->addCompilerPass(
+            new LoadSubscribersCompilerPass(), PassConfig::TYPE_OPTIMIZE
+        );
 
         $container->loadFromExtension('doctrine', [
             'orm' => [
@@ -76,6 +80,12 @@ class BenGorUserBundle extends Bundle
                         'prefix'    => 'BenGor\\User\\Domain\\Model',
                     ],
                 ],
+            ],
+        ]);
+
+        $container->loadFromExtension('twig', [
+            'paths' => [
+                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
             ],
         ]);
     }

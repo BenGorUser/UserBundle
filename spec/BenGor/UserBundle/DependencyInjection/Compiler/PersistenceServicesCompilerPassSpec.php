@@ -13,7 +13,6 @@
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

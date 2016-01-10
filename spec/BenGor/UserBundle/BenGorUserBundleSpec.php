@@ -18,6 +18,7 @@ use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPa
 use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesCompilerPass;
@@ -92,6 +93,11 @@ class BenGorUserBundleSpec extends ObjectBehavior
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
+        $container->addCompilerPass(
+            Argument::type(LoadSubscribersCompilerPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
         $container->loadFromExtension('doctrine', [
             'orm' => [
                 'mappings' => [
@@ -101,6 +107,12 @@ class BenGorUserBundleSpec extends ObjectBehavior
                         'prefix'    => 'BenGor\\User\\Domain\\Model',
                     ],
                 ],
+            ],
+        ])->shouldBeCalled()->willReturn($container);
+
+        $container->loadFromExtension('twig', [
+            'paths' => [
+                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
             ],
         ])->shouldBeCalled()->willReturn($container);
 

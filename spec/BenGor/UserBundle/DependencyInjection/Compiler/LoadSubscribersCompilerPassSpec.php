@@ -12,8 +12,7 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,15 +20,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Spec file of mailing services compiler pass.
+ * Spec file of load subscribers compiler pass.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class MailingServicesCompilerPassSpec extends ObjectBehavior
+class LoadSubscribersCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(MailingServicesCompilerPass::class);
+        $this->shouldHaveType(LoadSubscribersCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
@@ -37,15 +36,16 @@ class MailingServicesCompilerPassSpec extends ObjectBehavior
         $this->shouldImplement(CompilerPassInterface::class);
     }
 
-    function it_processes(ContainerBuilder $container)
+    function it_processes(ContainerBuilder $container, Definition $definition)
     {
-        $container->hasDefinition('swiftmailer.mailer.default')->shouldBeCalled()->willReturn(true);
-        $container->getDefinition('swiftmailer.mailer.default')->shouldBeCalled();
-
-        $container->setDefinition(
-            'bengor.user.infrastructure.mailing.mailer.swift_mailer',
-            Argument::type(Definition::class)
-        )->shouldBeCalled();
+        $container->findDefinition(
+            'bengor.user_bundle.event_listener.domain_event_publisher'
+        )->shouldBeCalled()->willReturn($definition);
+        $container->findTaggedServiceIds('bengor_user_subscriber')
+            ->shouldBeCalled()->willReturn([
+            ]);
+        $definition->replaceArgument(0, Argument::type('array'))
+            ->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);
     }
