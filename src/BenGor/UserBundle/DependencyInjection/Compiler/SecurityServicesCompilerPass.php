@@ -13,7 +13,6 @@
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Infrastructure\Security\Symfony\SymfonyUserPasswordEncoder;
-use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

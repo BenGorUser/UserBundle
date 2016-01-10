@@ -14,7 +14,6 @@ namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Infrastructure\Mailing\Mandrill\MandrillUserMailer;
 use BenGor\User\Infrastructure\Mailing\SwiftMailer\SwiftMailerUserMailer;
-use BenGor\User\Infrastructure\Mailing\SwiftMailer\TwigSwiftMailerUserMailer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -51,26 +50,12 @@ class MailingServicesCompilerPass implements CompilerPassInterface
         }
 
         $container->setDefinition(
-            'bengor.user.infrastructure.mailing.swift_mailer.user_mailer',
+            'bengor.user.infrastructure.mailing.mailer.swift_mailer',
             new Definition(
                 SwiftMailerUserMailer::class, [
                     $container->getDefinition(
                         'swiftmailer.mailer.default'
                     ),
-                ]
-            )
-        );
-
-        if (!$container->hasDefinition('twig')) {
-            return;
-        }
-
-        $container->setDefinition(
-            'bengor.user.infrastructure.mailing.twig_swift_mailer.user_mailer',
-            new Definition(
-                TwigSwiftMailerUserMailer::class, [
-                    $container->getDefinition('swiftmailer.mailer.default'),
-                    $container->getDefinition('twig'),
                 ]
             )
         );
@@ -99,7 +84,7 @@ class MailingServicesCompilerPass implements CompilerPassInterface
         )->setPublic(false);
 
         $container->setDefinition(
-            'bengor.user.infrastructure.mailing.mandrill.user_mailer',
+            'bengor.user.infrastructure.mailing.mailer.mandrill',
             new Definition(
                 MandrillUserMailer::class, [
                     $container->getDefinition(

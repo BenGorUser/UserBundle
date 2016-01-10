@@ -34,6 +34,7 @@ class BenGorUserExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/services'));
 
         $loader->load('event_subscribers.yml');
+        $loader->load('mailing.yml');
         $loader->load('persistence.yml');
         $loader->load('routing.yml');
 

@@ -143,7 +143,7 @@ class TransactionalApplicationServicesCompilerPass implements CompilerPassInterf
                         $user['firewall']['pattern'],
                     ]
                 )
-            );
+            )->setPublic(false);
         }
     }
 }

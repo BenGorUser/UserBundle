@@ -1,0 +1,27 @@
+# This file is part of the BenGorUserBundle bundle.
+#
+# (c) Beñat Espiña <benatespina@gmail.com>
+# (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+services:
+    bengor.user.infrastructure.mailing.mailable.twig.invite_user_mailable_factory:
+        class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+        arguments:
+            - '@twig'
+            - 'Email/invite.html.twig'
+            - '%mailer_user%'
+    bengor.user.infrastructure.mailing.mailable.twig.register_user_mailable_factory:
+        class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+        arguments:
+            - '@twig'
+            - 'Email/register.html.twig'
+            - '%mailer_user%'
+    bengor.user.infrastructure.mailing.mailable.twig.remember_password_request_user_mailable_factory:
+        class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+        arguments:
+            - '@twig'
+            - 'Email/remember_password_request.html.twig'
+            - '%mailer_user%'

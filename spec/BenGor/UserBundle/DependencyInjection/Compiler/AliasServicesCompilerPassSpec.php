@@ -12,7 +12,6 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType;
 use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -95,7 +94,7 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
         )->shouldBeCalled();
         $container->setAlias(
             'bengor_user.form_login_user_authenticator',
-            'bengor.user_bundle.security.form_login_user_authenticator'
+            'bengor.user_bundle.security.form_login_user_authenticator_doctrine_transactional'
         )->shouldBeCalled();
 
         $this->process($container);

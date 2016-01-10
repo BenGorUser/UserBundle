@@ -12,17 +12,12 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Domain\Model\Event\UserInvited;
-use BenGor\User\Domain\Model\Event\UserRegistered;
-use BenGor\User\Domain\Model\Event\UserRememberPasswordRequested;
-use BenGor\User\Domain\Model\User;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Spec file of load subscribers compiler pass.
@@ -51,7 +46,6 @@ class LoadSubscribersCompilerPassSpec extends ObjectBehavior
             ]);
         $definition->replaceArgument(0, Argument::type('array'))
             ->shouldBeCalled()->willReturn($definition);
-
 
         $this->process($container);
     }

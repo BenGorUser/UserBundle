@@ -43,15 +43,7 @@ class MailingServicesCompilerPassSpec extends ObjectBehavior
         $container->getDefinition('swiftmailer.mailer.default')->shouldBeCalled();
 
         $container->setDefinition(
-            'bengor.user.infrastructure.mailing.swift_mailer.user_mailer',
-            Argument::type(Definition::class)
-        )->shouldBeCalled();
-
-        $container->hasDefinition('twig')->shouldBeCalled()->willReturn(true);
-        $container->getDefinition('twig')->shouldBeCalled();
-
-        $container->setDefinition(
-            'bengor.user.infrastructure.mailing.twig_swift_mailer.user_mailer',
+            'bengor.user.infrastructure.mailing.mailer.swift_mailer',
             Argument::type(Definition::class)
         )->shouldBeCalled();
 

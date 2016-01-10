@@ -12,7 +12,6 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Domain\Event\UserRegisteredMailerSubscriber;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
