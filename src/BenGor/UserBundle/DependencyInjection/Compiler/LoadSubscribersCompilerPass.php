@@ -12,14 +12,9 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Domain\Event\UserInvitedMailerSubscriber;
 use BenGor\User\Domain\Event\UserRegisteredMailerSubscriber;
-use BenGor\User\Domain\Model\Event\UserInvited;
-use BenGor\User\Domain\Model\Event\UserRegistered;
-use BenGor\User\Domain\Model\Event\UserRememberPasswordRequested;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -34,8 +29,6 @@ class LoadSubscribersCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $this->loadImplementedSubscribers($container);
-
         $definition = $container->findDefinition(
             'bengor.user_bundle.event_listener.domain_event_publisher'
         );
@@ -47,79 +40,5 @@ class LoadSubscribersCompilerPass implements CompilerPassInterface
             $references[] = new Reference($id);
         }
         $definition->replaceArgument(0, $references);
-    }
-
-    /**
-     * Loads default subscribers assigned into config.yml.
-     *
-     * @param ContainerBuilder $container The container builder
-     */
-    private function loadImplementedSubscribers(ContainerBuilder $container)
-    {
-        $config = $container->getParameter('bengor_user.config');
-        foreach ($config['subscribers'] as $key => $values) {
-            $content = $values['content'];
-            if (null === $content) {
-                $values['mail'] = 'twig_swift_mailer';
-                $content = $values['twig'];
-            }
-
-            if ('invited_mailer' === $key) {
-                $this->buildSubscriber(
-                    $container,
-                    $key,
-                    UserInvitedMailerSubscriber::class,
-                    $values['mail'],
-                    $content,
-                    UserInvited::class
-                );
-            } elseif ('registered_mailer' === $key) {
-                $this->buildSubscriber(
-                    $container,
-                    $key,
-                    UserRegisteredMailerSubscriber::class,
-                    $values['mail'],
-                    $content,
-                    UserRegistered::class
-                );
-            } elseif ('remember_password_requested' === $key) {
-                $this->buildSubscriber(
-                    $container,
-                    $key,
-                    UserRememberPasswordRequested::class,
-                    $values['mail'],
-                    $content,
-                    UserRememberPasswordRequested::class
-                );
-            }
-        }
-    }
-
-    /**
-     * Builds a subscriber service with the given parameters.
-     *
-     * @param ContainerBuilder $container   The container builder
-     * @param string           $name        The subscriber name
-     * @param string           $subscriber  The subscriber fully qualified namespace
-     * @param string           $mailer      The type of mailer
-     * @param string           $content     The email content
-     * @param string           $domainEvent The domain event fully qualified namespace
-     */
-    private function buildSubscriber(ContainerBuilder $container, $name, $subscriber, $mailer, $content, $domainEvent)
-    {
-        $container->setDefinition(
-            'bengor.user.domain.event.user_' . $name . '_subscriber',
-            new Definition(
-                $subscriber, [
-                    $container->getDefinition(
-                        'bengor.user.infrastructure.mailing.' . $mailer . '.user_mailer'
-                    ),
-                    $container->getParameter('mailer_user'),
-                    $content,
-                ]
-            )
-        )->addTag('bengor_user_subscriber', [
-            'subscribes_to' => $domainEvent,
-        ])->setPublic(false);
     }
 }

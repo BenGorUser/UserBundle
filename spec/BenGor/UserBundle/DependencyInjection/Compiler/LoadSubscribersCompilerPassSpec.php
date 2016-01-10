@@ -43,73 +43,11 @@ class LoadSubscribersCompilerPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container, Definition $definition)
     {
-        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
-            'user_class'  => [
-                'user' => [
-                    'class' => User::class, 'firewall' => [
-                        'name' => 'user', 'pattern' => '',
-                    ],
-                ],
-            ],
-            'subscribers' => [
-                'invited_mailer'              => [
-                    'mail'    => 'mandrill',
-                    'content' => null,
-                    'twig'    => '@bengor_user/Email/invite.html.twig',
-                ],
-                'registered_mailer'           => [
-                    'mail'    => 'mandrill',
-                    'content' => null,
-                    'twig'    => '@bengor_user/Email/register.html.twig',
-                ],
-                'remember_password_requested' => [
-                    'mail'    => 'mandrill',
-                    'content' => null,
-                    'twig'    => '@bengor_user/Email/remeber_password_request.html.twig',
-                ],
-            ],
-        ]);
-
-        $container->getDefinition(
-            'bengor.user.infrastructure.mailing.twig_swift_mailer.user_mailer'
-        )->shouldBeCalled();
-        $container->getParameter('mailer_user')->shouldBeCalled();
-
-        $container->setDefinition(
-            'bengor.user.domain.event.user_invited_mailer_subscriber', Argument::type(Definition::class)
-        )->shouldBeCalled()->willReturn($definition);
-        $definition->addTag(
-            'bengor_user_subscriber', [
-            'subscribes_to' => UserInvited::class,
-        ])->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
-
-        $container->setDefinition(
-            'bengor.user.domain.event.user_registered_mailer_subscriber', Argument::type(Definition::class)
-        )->shouldBeCalled()->willReturn($definition);
-        $definition->addTag(
-            'bengor_user_subscriber', [
-            'subscribes_to' => UserRegistered::class,
-        ])->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
-
-        $container->setDefinition(
-            'bengor.user.domain.event.user_remember_password_requested_subscriber', Argument::type(Definition::class)
-        )->shouldBeCalled()->willReturn($definition);
-        $definition->addTag(
-            'bengor_user_subscriber', [
-            'subscribes_to' => UserRememberPasswordRequested::class,
-        ])->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
-
         $container->findDefinition(
             'bengor.user_bundle.event_listener.domain_event_publisher'
         )->shouldBeCalled()->willReturn($definition);
         $container->findTaggedServiceIds('bengor_user_subscriber')
             ->shouldBeCalled()->willReturn([
-                'bengor.user.domain.event.user_invited_mailer_subscriber'              => [],
-                'bengor.user.domain.event.user_registered_mailer_subscriber'           => [],
-                'bengor.user.domain.event.user_remember_password_requested_subscriber' => [],
             ]);
         $definition->replaceArgument(0, Argument::type('array'))
             ->shouldBeCalled()->willReturn($definition);
