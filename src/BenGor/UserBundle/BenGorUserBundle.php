@@ -15,6 +15,7 @@ namespace BenGor\UserBundle;
 use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadDefaultRolesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
@@ -40,6 +41,9 @@ class BenGorUserBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(
+            new LoadDefaultRolesCompilerPass(), PassConfig::TYPE_OPTIMIZE
+        );
         $container->addCompilerPass(
             new DomainServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
