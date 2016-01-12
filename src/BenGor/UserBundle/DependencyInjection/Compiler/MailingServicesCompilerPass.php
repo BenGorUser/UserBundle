@@ -12,8 +12,8 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Infrastructure\Mailing\Mandrill\MandrillUserMailer;
-use BenGor\User\Infrastructure\Mailing\SwiftMailer\SwiftMailerUserMailer;
+use BenGor\User\Infrastructure\Mailing\Mailer\Mandrill\MandrillUserMailer;
+use BenGor\User\Infrastructure\Mailing\Mailer\SwiftMailer\SwiftMailerUserMailer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

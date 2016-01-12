@@ -53,11 +53,11 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
             if (null !== $guestClass) {
                 $container->setDefinition(
                     'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository',
-                    new Definition(
+                    (new Definition(
                         DoctrineUserGuestRepository::class, [
-                            $container->getDefinition('doctrine.orm.default_entity_manager'), $guestClass,
+                            $guestClass,
                         ]
-                    )
+                    ))->setFactory([new Reference('doctrine.orm.default_entity_manager'), 'getRepository'])
                 );
             }
         }

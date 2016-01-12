@@ -13,6 +13,7 @@
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Infrastructure\Domain\Model\UserFactory;
+use BenGor\User\Infrastructure\Domain\Model\UserGuestFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -43,6 +44,17 @@ class DomainServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
+
+            if (class_exists($user['class'] . 'Guest')) {
+                $container->setDefinition(
+                    'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory',
+                    new Definition(
+                        UserGuestFactory::class, [
+                            $user['class'] . 'Guest',
+                        ]
+                    )
+                );
+            }
         }
     }
 }

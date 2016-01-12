@@ -11,17 +11,17 @@ services:
         class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
         arguments:
             - '@twig'
-            - 'Email/invite.html.twig'
+            - '@@bengor_user/Email/register.html.twig'
             - '%mailer_user%'
     bengor.user.infrastructure.mailing.mailable.twig.register_user_mailable_factory:
         class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
         arguments:
             - '@twig'
-            - 'Email/register.html.twig'
+            - '@@bengor_user/Email/register.html.twig'
             - '%mailer_user%'
     bengor.user.infrastructure.mailing.mailable.twig.remember_password_request_user_mailable_factory:
         class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
         arguments:
             - '@twig'
-            - 'Email/remember_password_request.html.twig'
+            - '@@bengor_user/Email/remember_password_request.html.twig'
             - '%mailer_user%'
