@@ -6,6 +6,8 @@ ben_gor_user:
     user_class:
         user:                                  # Required at least one element, the name is not relevant
             class: ~                           # Required
+            default_roles:
+                - ROLE_USER
             firewall:
                 name: ~                        # Required
                 pattern: ''
