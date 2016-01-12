@@ -14,7 +14,6 @@ namespace BenGor\UserBundle\Form\Type;
 
 use BenGor\User\Application\Service\SignUpUserRequest;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -31,6 +30,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RegistrationType extends AbstractType
 {
     /**
+     * Array which contains the default role|roles.
+     *
+     * @var array
+     */
+    protected $roles;
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -46,6 +52,8 @@ class RegistrationType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Register',
             ]);
+
+        $this->roles = $options['roles'];
     }
 
     /**
@@ -53,12 +61,14 @@ class RegistrationType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired(['roles']);
         $resolver->setDefaults([
             'data_class' => SignUpUserRequest::class,
             'empty_data' => function (FormInterface $form) {
                 return new SignUpUserRequest(
                     $form->get('email')->getData(),
-                    $form->get('password')->getData()
+                    $form->get('password')->getData(),
+                    $this->roles
                 );
             },
 

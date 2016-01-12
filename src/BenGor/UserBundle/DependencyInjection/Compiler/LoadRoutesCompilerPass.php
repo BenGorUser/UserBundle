@@ -69,11 +69,14 @@ class LoadRoutesCompilerPass implements CompilerPassInterface
         }
         $config = $container->getParameter('bengor_user.config');
         $routes = [];
-        foreach ($config['user_class'] as $name => $user) {
+        foreach ($config['user_class'] as $key => $user) {
             if ('none' === $type = $user['registration']['type']) {
                 continue;
             }
-
+            $name = '_' . $user['firewall']['pattern'];
+            if ('' === $pattern = $user['firewall']['pattern']) {
+                $name = '';
+            }
             $pattern = '';
             if ('' !== $user['firewall']['pattern']) {
                 $pattern = $user['firewall']['pattern'] . '_';
@@ -81,6 +84,7 @@ class LoadRoutesCompilerPass implements CompilerPassInterface
 
             $path = $user['registration']['path'];
             $action = 'register';
+            $routes[$name] = [];
             if ('by_invitation' === $type) {
                 $path .= '/{invitationToken}';
                 $action .= 'ByInvitation';
@@ -95,6 +99,7 @@ class LoadRoutesCompilerPass implements CompilerPassInterface
                 'register_path' => $path,
                 'firewall'      => $user['firewall']['name'],
                 'pattern'       => $pattern,
+                'userClass'     => $key,
             ]);
         }
         $container->getDefinition(

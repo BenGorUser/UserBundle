@@ -19,8 +19,6 @@ use BenGor\User\Domain\Model\UserToken;
 use BenGor\UserBundle\Form\Type\InvitationType;
 use BenGor\UserBundle\Form\Type\RegistrationByInvitationType;
 use BenGor\UserBundle\Form\Type\RegistrationType;
-use Ddd\Application\Service\TransactionalApplicationService;
-use Ddd\Infrastructure\Application\Service\DoctrineSession;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,8 +41,9 @@ class RegistrationController extends Controller
      */
     public function registerAction(Request $request, $userClass, $firewall, $pattern)
     {
-        $form = $this->createForm(RegistrationType::class);
-
+        $form = $this->createForm(RegistrationType::class, null, [
+            'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
+        ]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -67,6 +66,7 @@ class RegistrationController extends Controller
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
                 } catch (\Exception $exception) {
+                    dump($exception);
                     $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
                 }
             }
@@ -88,7 +88,6 @@ class RegistrationController extends Controller
     public function inviteAction(Request $request, $userClass)
     {
         $form = $this->createForm(InvitationType::class);
-
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -128,9 +127,11 @@ class RegistrationController extends Controller
         if (!$userGuest instanceof UserGuest) {
             throw $this->createNotFoundException('Invitation token does not exist');
         }
-        $request->request->set('invitationToken', $invitationToken);
 
-        $form = $this->createForm(RegistrationByInvitationType::class);
+        $form = $this->createForm(RegistrationByInvitationType::class, null, [
+            'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
+            'invitation_token' => $invitationToken,
+        ]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {

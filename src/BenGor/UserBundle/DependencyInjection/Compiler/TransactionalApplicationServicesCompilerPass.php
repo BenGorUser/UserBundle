@@ -12,11 +12,9 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use Ddd\Application\Service\TransactionalApplicationService;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -125,24 +123,6 @@ class TransactionalApplicationServicesCompilerPass implements CompilerPassInterf
                 new Reference('bengor.user.application.service.sign_up_' . $key)
             )->addArgument(
                 new Reference('ddd.infrastructure.application.service.doctrine_session')
-            )->setPublic(false);
-
-            $container->setDefinition(
-                'bengor.user_bundle.security.form_login_' . $key . '_authenticator_doctrine_transactional',
-                new Definition(
-                    FormLoginAuthenticator::class, [
-                        $container->getDefinition(
-                            'router.default'
-                        ),
-                        $container->getDefinition(
-                            'bengor.user.application.service.log_in_' . $key . '_doctrine_transactional'
-                        ),
-                        $container->getDefinition(
-                            'bengor.user.infrastructure.domain.model.' . $key . '_factory'
-                        ),
-                        $user['firewall']['pattern'],
-                    ]
-                )
             )->setPublic(false);
         }
     }

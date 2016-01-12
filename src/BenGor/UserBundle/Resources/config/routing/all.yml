@@ -6,8 +6,8 @@
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
 
-ben_gor_security:
+bengor_security:
     resource: security.yml
 
-ben_gor_registration:
+bengor_registration:
     resource: registration.yml

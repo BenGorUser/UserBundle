@@ -63,12 +63,12 @@ class RegistrationRoutesLoader implements LoaderInterface
         $routes = new RouteCollection();
         foreach ($this->patterns as $name => $route) {
             $routes->add(
-                'bengor_user_' . $name . '_registration',
+                'bengor_user' . $name . '_registration_register',
                 new Route(
                     $route['register_path'],
                     [
                         '_controller' => 'BenGorUserBundle:Registration:' . $route['action'],
-                        'userClass'   => $name,
+                        'userClass'   => $route['userClass'],
                         'firewall'    => $route['firewall'],
                         'pattern'     => $route['pattern'],
                     ],
@@ -79,21 +79,23 @@ class RegistrationRoutesLoader implements LoaderInterface
                     ['GET', 'POST']
                 )
             );
-            $routes->add(
-                'bengor_user_' . $name . '_invite',
-                new Route(
-                    $route['invite_path'],
-                    [
-                        '_controller' => 'BenGorUserBundle:Registration:invite',
-                        'userClass'   => $name,
-                    ],
-                    [],
-                    [],
-                    '',
-                    [],
-                    ['GET', 'POST']
-                )
-            );
+            if (array_key_exists('invite_path', $route)) {
+                $routes->add(
+                    'bengor_user' . $name . '_registration_invite',
+                    new Route(
+                        $route['invite_path'],
+                        [
+                            '_controller' => 'BenGorUserBundle:Registration:invite',
+                            'userClass'   => $route['userClass'],
+                        ],
+                        [],
+                        [],
+                        '',
+                        [],
+                        ['GET', 'POST']
+                    )
+                );
+            }
         }
         $this->loaded = true;
 
