@@ -16,6 +16,7 @@ use BenGor\UserBundle\BenGorUserBundle;
 use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\LoadDefaultRolesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
@@ -48,6 +49,11 @@ class BenGorUserBundleSpec extends ObjectBehavior
 
     function it_builds(ContainerBuilder $container)
     {
+        $container->addCompilerPass(
+            Argument::type(LoadDefaultRolesCompilerPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
         $container->addCompilerPass(
             Argument::type(DomainServicesCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
