@@ -66,7 +66,6 @@ class RegistrationController extends Controller
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
                 } catch (\Exception $exception) {
-                    dump($exception);
                     $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
                 }
             }

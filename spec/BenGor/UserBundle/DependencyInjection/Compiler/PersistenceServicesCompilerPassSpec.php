@@ -49,8 +49,6 @@ class PersistenceServicesCompilerPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->getDefinition('doctrine.orm.default_entity_manager')->shouldBeCalled();
-
         $container->setDefinition(
             'bengor.user.infrastructure.persistence.doctrine.user_repository',
             Argument::type(Definition::class)

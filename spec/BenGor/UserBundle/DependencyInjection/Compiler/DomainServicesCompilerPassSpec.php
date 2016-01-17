@@ -54,6 +54,11 @@ class DomainServicesCompilerPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled();
 
+        $container->setDefinition(
+            'bengor.user.infrastructure.domain.model.user_guest_factory',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+
         $this->process($container);
     }
 }

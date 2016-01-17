@@ -18,10 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Alias services compiler pass.
  *
- * In most cases, this bundles is going to be used in
- * conjunction with Doctrine and its transactionallity so,
- * this class adds more readable and concise aliases
- * for this kind of services.
+ * In order to simplify the long names of most used
+ * services, this class adds more readable and
+ * concise aliases for this kind of services.
  *
  * @author Gorka Laucirica <gorka.lauzirika@gmail.com>
  * @author Beñat Espiña <benatespina@gmail.com>

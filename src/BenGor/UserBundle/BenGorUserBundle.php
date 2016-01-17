@@ -14,14 +14,14 @@ namespace BenGor\UserBundle;
 
 use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadDefaultRolesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadDoctrineCustomTypesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\RoutesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\TransactionalApplicationServicesCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -42,7 +42,7 @@ class BenGorUserBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(
-            new LoadDefaultRolesCompilerPass(), PassConfig::TYPE_OPTIMIZE
+            new DefaultRolesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
             new DomainServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
@@ -54,7 +54,7 @@ class BenGorUserBundle extends Bundle
             new SecurityServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
-            new LoadDoctrineCustomTypesCompilerPass(), PassConfig::TYPE_OPTIMIZE
+            new DoctrineCustomTypesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
             new MailingServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
@@ -69,10 +69,10 @@ class BenGorUserBundle extends Bundle
             new AliasServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
-            new LoadRoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
+            new RoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
-            new LoadSubscribersCompilerPass(), PassConfig::TYPE_OPTIMIZE
+            new SubscribersCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
 
         $container->loadFromExtension('doctrine', [
@@ -89,8 +89,7 @@ class BenGorUserBundle extends Bundle
 
         $container->loadFromExtension('twig', [
             'paths' => [
-                $container->getParameter('kernel.root_dir') .
-                '/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
+                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
             ],
         ]);
     }

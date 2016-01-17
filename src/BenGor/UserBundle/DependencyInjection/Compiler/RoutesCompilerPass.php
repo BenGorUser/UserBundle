@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadRoutesCompilerPass implements CompilerPassInterface
+class RoutesCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

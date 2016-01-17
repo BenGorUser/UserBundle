@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadSubscribersCompilerPass implements CompilerPassInterface
+class SubscribersCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

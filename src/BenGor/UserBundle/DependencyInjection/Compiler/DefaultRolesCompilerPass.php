@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadDefaultRolesCompilerPass implements CompilerPassInterface
+class DefaultRolesCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

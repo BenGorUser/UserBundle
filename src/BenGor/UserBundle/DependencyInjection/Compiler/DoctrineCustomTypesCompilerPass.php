@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadDoctrineCustomTypesCompilerPass implements CompilerPassInterface
+class DoctrineCustomTypesCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

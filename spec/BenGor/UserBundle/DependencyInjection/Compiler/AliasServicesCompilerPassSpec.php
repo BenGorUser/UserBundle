@@ -16,7 +16,6 @@ use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Spec file of alias services compiler pass.
@@ -35,7 +34,7 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
         $this->shouldImplement(CompilerPassInterface::class);
     }
 
-    function it_processes(ContainerBuilder $container, Definition $definition)
+    function it_processes(ContainerBuilder $container)
     {
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
@@ -94,7 +93,7 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
         )->shouldBeCalled();
         $container->setAlias(
             'bengor_user.form_login_user_authenticator',
-            'bengor.user_bundle.security.form_login_user_authenticator_doctrine_transactional'
+            'bengor.user_bundle.security.form_login_user_authenticator'
         )->shouldBeCalled();
 
         $this->process($container);

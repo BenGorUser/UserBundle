@@ -13,7 +13,7 @@
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadDefaultRolesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,11 +23,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadDefaultRolesCompilerPassSpec extends ObjectBehavior
+class DefaultRolesCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(LoadDefaultRolesCompilerPass::class);
+        $this->shouldHaveType(DefaultRolesCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
