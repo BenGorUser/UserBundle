@@ -62,23 +62,25 @@ class RegistrationRoutesLoader implements LoaderInterface
 
         $routes = new RouteCollection();
         foreach ($this->patterns as $name => $route) {
-            $routes->add(
-                'bengor_user' . $name . '_registration_register',
-                new Route(
-                    $route['register_path'],
-                    [
-                        '_controller' => 'BenGorUserBundle:Registration:' . $route['action'],
-                        'userClass'   => $route['userClass'],
-                        'firewall'    => $route['firewall'],
-                        'pattern'     => $route['pattern'],
-                    ],
-                    [],
-                    [],
-                    '',
-                    [],
-                    ['GET', 'POST']
-                )
-            );
+            if (array_key_exists('register_path', $route)) {
+                $routes->add(
+                    'bengor_user' . $name . '_registration_register',
+                    new Route(
+                        $route['register_path'],
+                        [
+                            '_controller' => 'BenGorUserBundle:Registration:' . $route['action'],
+                            'userClass'   => $route['userClass'],
+                            'firewall'    => $route['firewall'],
+                            'pattern'     => $route['pattern'],
+                        ],
+                        [],
+                        [],
+                        '',
+                        [],
+                        ['GET', 'POST']
+                    )
+                );
+            }
             if (array_key_exists('invite_path', $route)) {
                 $routes->add(
                     'bengor_user' . $name . '_registration_invite',

@@ -46,7 +46,6 @@ class InvitationType extends AbstractType
                     $form->get('email')->getData()
                 );
             },
-
         ]);
     }
 }
