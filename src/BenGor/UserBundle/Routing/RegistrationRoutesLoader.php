@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Security routes loader class.
+ * Registration routes loader class.
  *
- * Service that loads dynamically routes of security.
+ * Service that loads dynamically routes of registration.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityRoutesLoader implements LoaderInterface
+class RegistrationRoutesLoader implements LoaderInterface
 {
     /**
      * Boolean that checks if the routes are already loaded or not.
@@ -61,34 +61,43 @@ class SecurityRoutesLoader implements LoaderInterface
         }
 
         $routes = new RouteCollection();
-        foreach ($this->patterns as $name => $pattern) {
-            $routes->add('bengor_user' . $name . '_security_login', new Route(
-                '/' . $pattern . '/login',
-                ['_controller' => 'BenGorUserBundle:Security:login'],
-                [],
-                [],
-                '',
-                [],
-                ['GET', 'POST']
-            ));
-            $routes->add('bengor_user' . $name . '_security_login_check', new Route(
-                '/' . $pattern . '/login_check',
-                ['_controller' => 'BenGorUserBundle:Security:loginCheck'],
-                [],
-                [],
-                '',
-                [],
-                ['POST']
-            ));
-            $routes->add('bengor_user' . $name . '_security_logout', new Route(
-                '/' . $pattern . '/logout',
-                ['_controller' => 'BenGorUserBundle:Security:logout'],
-                [],
-                [],
-                '',
-                [],
-                ['GET']
-            ));
+        foreach ($this->patterns as $name => $route) {
+            if (array_key_exists('register_path', $route)) {
+                $routes->add(
+                    'bengor_user' . $name . '_registration_register',
+                    new Route(
+                        $route['register_path'],
+                        [
+                            '_controller' => 'BenGorUserBundle:Registration:' . $route['action'],
+                            'userClass'   => $route['userClass'],
+                            'firewall'    => $route['firewall'],
+                            'pattern'     => $route['pattern'],
+                        ],
+                        [],
+                        [],
+                        '',
+                        [],
+                        ['GET', 'POST']
+                    )
+                );
+            }
+            if (array_key_exists('invite_path', $route)) {
+                $routes->add(
+                    'bengor_user' . $name . '_registration_invite',
+                    new Route(
+                        $route['invite_path'],
+                        [
+                            '_controller' => 'BenGorUserBundle:Registration:invite',
+                            'userClass'   => $route['userClass'],
+                        ],
+                        [],
+                        [],
+                        '',
+                        [],
+                        ['GET', 'POST']
+                    )
+                );
+            }
         }
         $this->loaded = true;
 
@@ -100,7 +109,7 @@ class SecurityRoutesLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_security' === $type;
+        return 'bengor_user_registration' === $type;
     }
 
     /**

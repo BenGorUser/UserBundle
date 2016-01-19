@@ -97,6 +97,9 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                             $container->getDefinition(
                                 'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository'
                             ),
+                            $container->getDefinition(
+                                'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory'
+                            ),
                         ]
                     )
                 );

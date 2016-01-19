@@ -12,23 +12,23 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadRoutesCompilerPass;
+use BenGor\User\Infrastructure\Persistence\Doctrine\Types\UserRolesType;
+use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Spec file of load routes compiler pass.
+ * Spec file of load doctrine custom types compiler pass.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadRoutesCompilerPassSpec extends ObjectBehavior
+class DoctrineCustomTypesCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(LoadRoutesCompilerPass::class);
+        $this->shouldHaveType(DoctrineCustomTypesCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
@@ -38,20 +38,19 @@ class LoadRoutesCompilerPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container, Definition $definition)
     {
-        $container->hasDefinition('bengor.user_bundle.routing.security_routes_loader')
-            ->shouldBeCalled()->willReturn(true);
-        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
-            'user_class' => [
-                'user' => [
-                    'class' => User::class, 'firewall' => [
-                        'name' => 'user', 'pattern' => '',
-                    ],
-                ],
+        $container->hasDefinition('doctrine.dbal.connection_factory')->shouldBeCalled()->willReturn(true);
+        $container->getParameter('doctrine.dbal.connection_factory.types')->shouldBeCalled()->willReturn([]);
+
+        $container->setParameter('doctrine.dbal.connection_factory.types', [
+            'user_roles' => [
+                'class'     => UserRolesType::class,
+                'commented' => true,
             ],
-        ]);
-        $container->getDefinition('bengor.user_bundle.routing.security_routes_loader')
+        ])->shouldBeCalled();
+
+        $container->findDefinition('doctrine.dbal.connection_factory')->shouldBeCalled()->willReturn($definition);
+        $definition->replaceArgument(0, '%doctrine.dbal.connection_factory.types%')
             ->shouldBeCalled()->willReturn($definition);
-        $definition->replaceArgument(0, ['' => ''])->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);
     }

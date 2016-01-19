@@ -12,7 +12,7 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\UserBundle\DependencyInjection\Compiler\LoadSubscribersCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -24,11 +24,11 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadSubscribersCompilerPassSpec extends ObjectBehavior
+class SubscribersCompilerPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(LoadSubscribersCompilerPass::class);
+        $this->shouldHaveType(SubscribersCompilerPass::class);
     }
 
     function it_implmements_compiler_pass_interface()

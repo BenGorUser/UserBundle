@@ -16,36 +16,33 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Load routes compiler pass.
+ * Load default roles compiler pass.
  *
  * Based on configuration the routes are created dynamically.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LoadRoutesCompilerPass implements CompilerPassInterface
+class DefaultRolesCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('bengor.user_bundle.routing.security_routes_loader')) {
-            return;
-        }
-
         $config = $container->getParameter('bengor_user.config');
-
-        $patterns = [];
-        foreach ($config['user_class'] as $user) {
-            $name = '_' . $user['firewall']['pattern'];
-            if ('' === $pattern = $user['firewall']['pattern']) {
-                $name = '';
+        foreach ($config['user_class'] as $key => $user) {
+            $roles = $user['class']::availableRoles();
+            $defaultRoles = $user['default_roles'];
+            if (count($defaultRoles) !== count(array_intersect($defaultRoles, $roles))) {
+                throw new \InvalidArgumentException('Passed roles must be elements inside "availableRoles" method');
             }
-            $patterns[$name] = $pattern;
-        }
+            if (empty($defaultRoles)) {
+                if (false === empty($roles)) {
+                    $defaultRoles[] = $roles[0];
+                }
+            }
 
-        $container->getDefinition(
-            'bengor.user_bundle.routing.security_routes_loader'
-        )->replaceArgument(0, array_unique($patterns));
+            $container->setParameter('bengor_user.' . $key . '_default_roles', array_unique($defaultRoles));
+        }
     }
 }

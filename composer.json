@@ -19,13 +19,14 @@
     "require": {
         "php":                      ">=5.5",
         "bengor/user":              "^0.4.0",
+        "symfony/form":             "^2.8|^3.0",
         "symfony/framework-bundle": "^2.8|^3.0",
         "symfony/security-bundle":  "^2.8|^3.0",
         "symfony/twig-bundle":      "^2.8|^3.0"
     },
     "require-dev": {
-        "fabpot/php-cs-fixer":      "^1.10",
-        "mmoreram/php-formatter":   "^1.0",
+        "fabpot/php-cs-fixer":      "^1.11",
+        "mmoreram/php-formatter":   "^1.1",
         "phpspec/phpspec":          "^2.4"
     },
     "scripts": {

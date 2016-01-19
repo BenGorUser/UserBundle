@@ -18,10 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Alias services compiler pass.
  *
- * In most cases, this bundles is going to be used in
- * conjunction with Doctrine and its transactionallity so,
- * this class adds more readable and concise aliases
- * for this kind of services.
+ * In order to simplify the long names of most used
+ * services, this class adds more readable and
+ * concise aliases for this kind of services.
  *
  * @author Gorka Laucirica <gorka.lauzirika@gmail.com>
  * @author Beñat Espiña <benatespina@gmail.com>
@@ -55,7 +54,7 @@ class AliasServicesCompilerPass implements CompilerPassInterface
                 'bengor_user.remove_' . $key                                             => 'bengor.user.application.service.remove_' . $key . '_doctrine_transactional',
                 'bengor_user.request_' . $key . '_remember_password_token'               => 'bengor.user.application.service.request_' . $key . '_remember_password_token_doctrine_transactional',
                 'bengor_user.sign_up_' . $key                                            => 'bengor.user.application.service.sign_up_' . $key . '_doctrine_transactional',
-                'bengor_user.form_login_' . $key . '_authenticator'                      => 'bengor.user_bundle.security.form_login_' . $key . '_authenticator_doctrine_transactional',
+                'bengor_user.form_login_' . $key . '_authenticator'                      => 'bengor.user_bundle.security.form_login_' . $key . '_authenticator',
             ], $aliasMap);
             if (null !== $guestClass) {
                 $aliasMap = array_merge([

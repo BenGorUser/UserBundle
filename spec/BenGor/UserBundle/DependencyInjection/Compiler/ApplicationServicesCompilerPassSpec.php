@@ -59,6 +59,7 @@ class ApplicationServicesCompilerPassSpec extends ObjectBehavior
         )->shouldBeCalled();
         $container->getDefinition('router.default')->shouldBeCalled();
         $container->getDefinition('bengor.user.application.service.log_in_user')->shouldBeCalled();
+        $container->getDefinition('bengor.user.infrastructure.domain.model.user_guest_factory')->shouldBeCalled();
 
         $container->setDefinition(
             'bengor.user.application.service.activate_user_account',

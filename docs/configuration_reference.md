@@ -11,4 +11,8 @@ ben_gor_user:
             firewall:
                 name: ~                        # Required
                 pattern: ''
+            registration:
+                type: default                  # Also, it can be 'none' or 'by_invitation'
+                path: /register
+                invite_path: /invite
 ```
