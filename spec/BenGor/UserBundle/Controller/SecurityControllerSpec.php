@@ -18,8 +18,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -47,11 +51,16 @@ class SecurityControllerSpec extends ObjectBehavior
     function it_login_action(
         Request $request,
         ContainerInterface $container,
+        AuthorizationCheckerInterface $authorizationChecker,
         AuthenticationUtils $helper,
         ParameterBagInterface $parameterBag,
         TwigEngine $templating,
         Response $response
     ) {
+        $container->get('security.authorization_checker')->shouldBeCalled()->willReturn($authorizationChecker);
+        $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')
+            ->shouldBeCalled()->willReturn(false);
+
         $container->get('security.authentication_utils')->shouldBeCalled()->willReturn($helper);
         $helper->getLastUsername()->shouldBeCalled()->willReturn('last@email.com');
         $helper->getLastAuthenticationError()->shouldBeCalled()->willReturn('error');
@@ -66,7 +75,22 @@ class SecurityControllerSpec extends ObjectBehavior
             'login_check' => 'login_check',
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->loginAction($request)->shouldReturn($response);
+        $this->loginAction($request, 'admin')->shouldReturn($response);
+    }
+
+    function it_is_already_logged_action(
+        Request $request,
+        ContainerInterface $container,
+        AuthorizationCheckerInterface $authorizationChecker,
+        Router $router
+    ) {
+        $container->get('security.authorization_checker')->shouldBeCalled()->willReturn($authorizationChecker);
+        $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')->shouldBeCalled()->willReturn(true);
+
+        $container->get('router')->shouldBeCalled()->willReturn($router);
+        $router->generate('admin_homepage', [], 1)->shouldBeCalled()->willReturn('/');
+
+        $this->loginAction($request, 'admin');
     }
 
     function it_login_check_action()

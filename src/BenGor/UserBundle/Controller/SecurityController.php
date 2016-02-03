@@ -26,11 +26,15 @@ class SecurityController extends Controller
      * Login action.
      *
      * @param Request $request The request
+     * @param string  $pattern Extra parameter that contains the pattern success url
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function loginAction(Request $request)
+    public function loginAction(Request $request, $pattern)
     {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute($pattern . '_homepage');
+        }
         $helper = $this->get('security.authentication_utils');
 
         return $this->render('@BenGorUser/security/login.html.twig', [

@@ -64,7 +64,10 @@ class SecurityRoutesLoader implements LoaderInterface
         foreach ($this->patterns as $name => $pattern) {
             $routes->add('bengor_user' . $name . '_security_login', new Route(
                 '/' . $pattern . '/login',
-                ['_controller' => 'BenGorUserBundle:Security:login'],
+                [
+                    '_controller' => 'BenGorUserBundle:Security:login',
+                    'pattern'     => $pattern,
+                ],
                 [],
                 [],
                 '',
