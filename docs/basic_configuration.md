@@ -83,8 +83,8 @@ That's all! Now that the bundle is configured, the last thing you need to do is 
 $ bin/console doctrine:schema:update --force
 ```
 
-With this basic configuration you have single user login, logout and registration page.
+With this basic configuration you have single user login, logout and registration without confirmation.
 
-- For multiple users check [this guide](multiple_users.md)
-- In case you one to send invitation emails to users to join your app follow [this guide](invitation_system.md)
+- For multiple users check [this guide](multiple_users.md).
+- In case you one to send invitation emails to users to join your app follow [this guide](invitation_system.md).
 
