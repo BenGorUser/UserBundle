@@ -12,8 +12,11 @@
 
 namespace BenGor\UserBundle\DependencyInjection;
 
+use BenGor\UserBundle\Command\ActivateUserAccountCommand;
+use BenGor\UserBundle\Command\SignUpUserCommand;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -39,5 +42,27 @@ class BenGorUserExtension extends Extension
         $loader->load('routing.yml');
 
         $container->setParameter('bengor_user.config', $config);
+
+        $this->loadCommands($container, $config);
+    }
+
+    /**
+     * Loads commands as a service inside Symfony console.
+     *
+     * @param ContainerBuilder $container The container
+     * @param array            $config    The bengor user configuration tree
+     */
+    private function loadCommands(ContainerBuilder $container, $config)
+    {
+        foreach ($config['user_class'] as $key => $user) {
+            $container->setDefinition(
+                'bengor.user_bundle.command.sign_up_' . $key . '_command',
+                (new Definition(SignUpUserCommand::class))->addTag('console.command')
+            );
+            $container->setDefinition(
+                'bengor.user_bundle.command.activate_' . $key . '_account_command',
+                (new Definition(ActivateUserAccountCommand::class))->addTag('console.command')
+            );
+        }
     }
 }

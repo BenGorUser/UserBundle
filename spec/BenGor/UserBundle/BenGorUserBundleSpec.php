@@ -15,6 +15,7 @@ namespace spec\BenGor\UserBundle;
 use BenGor\UserBundle\BenGorUserBundle;
 use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\CommandsServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
@@ -102,6 +103,9 @@ class BenGorUserBundleSpec extends ObjectBehavior
         $container->addCompilerPass(
             Argument::type(SubscribersCompilerPass::class),
             PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+        $container->addCompilerPass(
+            Argument::type(CommandsServicesCompilerPass::class), PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->loadFromExtension('doctrine', [
