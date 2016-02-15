@@ -13,8 +13,6 @@
 namespace BenGor\UserBundle\Command;
 
 use BenGor\User\Application\Service\SignUpUserRequest;
-use BenGor\User\Domain\Model\User;
-use BenGor\User\Domain\Model\UserRole;
 use Ddd\Application\Service\TransactionalApplicationService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -174,15 +172,8 @@ EOT
                 if (empty($roles)) {
                     throw new \Exception('Al least, one role is required');
                 }
-                $roles = explode(' ', $roles);
 
-                return array_map(function ($role) {
-                    if (false === call_user_func([$this->fqcn, 'isRoleAllowed'], new UserRole($role))) {
-                        throw new \Exception('Please choose roles from above array');
-                    }
-
-                    return $role;
-                }, $roles);
+                return explode(' ', $roles);
             });
             $questions['roles'] = $question;
         }
