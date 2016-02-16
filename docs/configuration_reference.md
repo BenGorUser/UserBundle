@@ -10,9 +10,18 @@ ben_gor_user:
                 - ROLE_USER
             firewall:
                 name: ~                        # Required
-                pattern: ''
+                route_prefix_name: ''
+                route_prefix_path: ''
+                success_route_name: homepage
+                success_route_path: /
+            security:
+                path: /login
+                success_route_name: ~
+                success_route_path: ~
             registration:
                 type: default                  # Also, it can be 'none' or 'by_invitation'
                 path: /register
                 invite_path: /invite
+                success_route_name: ~
+                success_route_path: ~
 ```
