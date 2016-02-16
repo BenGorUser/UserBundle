@@ -43,6 +43,7 @@ ben_gor_user:
             class: AppBundle\Entity\User
             firewall:
                 name: main
+                pattern: admin
             registration: ~
 ```
 
@@ -60,15 +61,17 @@ security:
             security: false
         main:
             anonymous: ~
+            pattern: ^/admin
             guard:
                 authenticators:
                     - bengor.user_bundle.security.form_login_user_authenticator
             provider: database_users
             logout:
-                path: bengor_user_security_logout
+                path: bengor_user_admin_security_logout
                 target: /
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin$, role: IS_AUTHENTICATED_REMEMBERED }
 ```
 
 This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
@@ -87,4 +90,3 @@ With this basic configuration you have single user login, logout and registratio
 
 - For multiple users check [this guide](multiple_users.md).
 - In case you one to send invitation emails to users to join your app follow [this guide](invitation_system.md).
-
