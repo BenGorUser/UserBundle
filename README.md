@@ -1,5 +1,5 @@
 #BenGorUserBundle
-> Symfony bundle on top of [BenGorUser][7] library
+> Fully featured and test covered user Symfony bundle built on top of [BenGorUser][7] library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6/mini.png)](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6)
 [![Build Status](https://travis-ci.org/BenGor/UserBundle.svg?branch=master)](https://travis-ci.org/BenGor/UserBundle)
@@ -13,7 +13,7 @@ PHP >= 5.5</br>
 Symfony >= 2.8 
 
 ##Installation
-The easiest way to instal this component is using **[Composer][8]**
+The easiest way to install this component is using **[Composer][8]**
 ```bash
 $ composer require bengor/user-bundle
 ```
@@ -26,11 +26,11 @@ All the documentation is stored in the `docs` folder.
 ##Tests
 This bundle is completely tested by **[PHPSpec][1], SpecBDD framework for PHP**.
 
-Because you want to contribute or simply because you want to throw the tests, you have to type the following command
-in your terminal.
+In case you want to contribute or just run the tests, use the following command.
 ```bash
 $ vendor/bin/phpspec run -fpretty
 ```
+
 ##Contributing
 This bundle follows PHP coding standards, so pull requests need to execute the Fabien Potencier's [PHP-CS-Fixer][5]
 and Marc Morera's [PHP-Formatter][6]. Furthermore, if the PR creates some not-PHP file remember that you have to put

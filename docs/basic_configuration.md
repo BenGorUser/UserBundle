@@ -14,14 +14,14 @@ public function registerBundles()
 }
 ```
 
-After that, you need to extend our `BenGor\Domain\Model\User` class in order to build the Doctrine mapping properly.
+After that, you need to extend our `BenGor\UserBundle\Model\User` class in order to build the Doctrine mapping properly.
 The following snippet is the minimum code that bundle needs to work.
 ```php
 <?php
 
 namespace AppBundle\Entity;
 
-use BenGor\User\Domain\Model\User as BaseUser;
+use BenGor\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,24 +32,7 @@ class User extends BaseUser
 {
 }
 ```
-In case if you want to use registration by invitation system you have to extend our `BenGor\Domain\Model\UserGuest`
-for the same reason of User itself.
-```php
-<?php
 
-namespace AppBundle\Entity;
-
-use BenGor\User\Domain\Model\UserGuest as BaseUserGuest;
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Entity
- * @ORM\Table(name="bengor_user_guest")
- */
-class UserGuest extends BaseUserGuest
-{
-}
-```
 
 Next, you have to configure the bundle to work with the specific needs of your application inside
 `app/config/config.yml`:
@@ -60,14 +43,10 @@ ben_gor_user:
             class: AppBundle\Entity\User
             firewall:
                 name: main
+            registration: ~
 ```
-This bundles comes with some defined routes, you have to enable adding the following lines in your
-`app/config/routing.yml`:
-```yml
-ben_gor_user:
-    resource: '@BenGorUserBundle/Resources/config/routing.yml'
-```
-If ypu plan to implement a login system, you need to configure the `app/config/security.yml`:
+
+If you plan to implement a login system, you need to configure the `app/config/security.yml`:
 ```yml
 security:
     encoders:
@@ -92,8 +71,20 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 ```
 
-That's all! Now that the bundle is configured, the last thing you need to do is update your database schema because
-you have added your new awesome user class.
+This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
+to your `app/config/routing.yml`:
+```yml
+ben_gor_user:
+    resource: '@BenGorUserBundle/Resources/config/routing/all.yml'
+```
+
+That's all! Now that the bundle is configured, the last thing you need to do is update your database:
 ```bash
 $ bin/console doctrine:schema:update --force
 ```
+
+With this basic configuration you have single user login, logout and registration without confirmation.
+
+- For multiple users check [this guide](multiple_users.md).
+- In case you one to send invitation emails to users to join your app follow [this guide](invitation_system.md).
+
