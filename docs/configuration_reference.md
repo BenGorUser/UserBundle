@@ -4,24 +4,32 @@ All available configuration options are listed below with their default values.
 ```yml
 ben_gor_user:
     user_class:
-        user:                                  # Required at least one element, the name is not relevant
+        user:
             class: ~                           # Required
+            persistence: doctrine              # Also, it can be "sql"
             default_roles:
                 - ROLE_USER
             firewall:
                 name: ~                        # Required
-                route_prefix_name: ''
-                route_prefix_path: ''
-                success_route_name: homepage
-                success_route_path: /
-            security:
-                path: /login
-                success_route_name: ~
-                success_route_path: ~
-            registration:
-                type: default                  # Also, it can be 'none' or 'by_invitation'
-                path: /register
-                invite_path: /invite
-                success_route_name: ~
-                success_route_path: ~
+            routes:
+                security:
+                    enable: true
+                    login:
+                        name: bengor_user_user_security_login
+                        path: /user/login
+                    login_check:
+                        name: bengor_user_user_security_login_check
+                        path: /user/login_check
+                    logout:
+                        name: bengor_user_user_security_logout
+                        path: /user/logout
+                    success_redirection_route: bengor_user_user_homepage
+                registration:
+                    enable: true
+                    type: default              # Also, it can be "by_invitation"
+                    name: bengor_user_user_registration
+                    path: /user/register
+                    invitation_name: bengor_user_user_invitation
+                    invitation_path: /user/invite
+                    success_redirection_route: bengor_user_user_homepage
 ```

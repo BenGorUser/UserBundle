@@ -43,8 +43,6 @@ ben_gor_user:
             class: AppBundle\Entity\User
             firewall:
                 name: main
-                pattern: admin
-            registration: ~
 ```
 
 If you plan to implement a login system, you need to configure the `app/config/security.yml`:
@@ -67,11 +65,13 @@ security:
                     - bengor.user_bundle.security.form_login_user_authenticator
             provider: database_users
             logout:
-                path: bengor_user_admin_security_logout
+                path: bengor_user_user_security_logout
                 target: /
     access_control:
-        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin$, role: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, role: ROLE_USER }
 ```
 
 This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
@@ -79,6 +79,26 @@ to your `app/config/routing.yml`:
 ```yml
 ben_gor_user:
     resource: '@BenGorUserBundle/Resources/config/routing/all.yml'
+```
+
+It requires a route with its related controller action for `success_redirection_route`, so, the following code it can
+be a plain and simple example for that.
+```php
+namespace AppBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+class DefaultController extends Controller
+{
+    /**
+     * @Route("/admin", name="bengor_user_homepage")
+     */
+    public function adminAction()
+    {
+        // ...
+    }
+}
 ```
 
 That's all! Now that the bundle is configured, the last thing you need to do is update your database:

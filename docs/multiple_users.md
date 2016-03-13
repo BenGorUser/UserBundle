@@ -33,7 +33,6 @@ ben_gor_user:
             class: AppBundle\Entity\Employee
             firewall:
                 name: employee
-                pattern: admin
 ```
 the above command will print the following:
 ```bash
@@ -59,30 +58,41 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        employee:
-            anonymous: ~
-            pattern: ^/admin/
-            guard:
-                authenticators:
-                    - bengor.user_bundle.security.form_login_employee_authenticator
-            provider: database_employees
-            form_login:
-                check_path: bengor_user_admin_security_login_check
-                login_path: bengor_user_admin_security_login
-                failure_path: bengor_user_admin_security_login
-            logout:
-                path: bengor_user_admin_security_logout
-                target: /
         applicant:
             anonymous: ~
             guard:
                 authenticators:
                     - bengor.user_bundle.security.form_login_applicant_authenticator
             provider: database_applicants
+            form_login:
+                check_path: bengor_user_applicant_security_login_check
+                login_path: bengor_user_applicant_security_login
+                failure_path: bengor_user_applicant_security_login
             logout:
-                path: bengor_user_security_logout
+                path: bengor_user_applicant_security_logout
+                target: /
+        employee:
+            anonymous: ~
+            pattern: ^/admin
+            guard:
+                authenticators:
+                    - bengor.user_bundle.security.form_login_employee_authenticator
+            provider: database_employees
+            form_login:
+                check_path: bengor_user_employee_security_login_check
+                login_path: bengor_user_employee_security_login
+                failure_path: bengor_user_employee_security_login
+            logout:
+                path: bengor_user_employee_security_logout
                 target: /
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/me, role: ROLE_USER }
+        
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, role: ROLE_USER }
 ```
