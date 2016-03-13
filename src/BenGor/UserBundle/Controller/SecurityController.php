@@ -33,7 +33,11 @@ class SecurityController extends Controller
     public function loginAction(Request $request, $pattern)
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute($pattern . '_homepage');
+            $redirectRoute = null !== $pattern && '' !== $pattern
+                ? $pattern . '_homepage'
+                : 'homepage';
+
+            return $this->redirectToRoute($redirectRoute);
         }
         $helper = $this->get('security.authentication_utils');
 
