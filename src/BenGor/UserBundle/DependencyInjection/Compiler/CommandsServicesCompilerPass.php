@@ -36,7 +36,7 @@ class CommandsServicesCompilerPass implements CompilerPassInterface
             $container->findDefinition('bengor.user_bundle.command.sign_up_' . $key . '_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor.user.application.service.sign_up_' . $key . '_doctrine_transactional'
+                        'bengor.user.application.service.sign_up_' . $key . '_transactional'
                     ),
                     $key,
                     $user['class'],
@@ -44,7 +44,7 @@ class CommandsServicesCompilerPass implements CompilerPassInterface
             $container->findDefinition('bengor.user_bundle.command.activate_' . $key . '_account_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor.user.application.service.activate_' . $key . '_account_doctrine_transactional'
+                        'bengor.user.application.service.activate_' . $key . '_account_transactional'
                     ),
                     $key,
                 ]);

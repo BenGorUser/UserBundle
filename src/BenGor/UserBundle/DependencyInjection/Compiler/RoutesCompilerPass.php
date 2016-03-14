@@ -44,17 +44,34 @@ class RoutesCompilerPass implements CompilerPassInterface
             return;
         }
         $config = $container->getParameter('bengor_user.config');
-        $patterns = [];
-        foreach ($config['user_class'] as $user) {
-            $name = '_' . $user['firewall']['pattern'];
-            if ('' === $pattern = $user['firewall']['pattern']) {
-                $name = '';
+        foreach ($config['user_class'] as $key => $user) {
+            $securityRoutes = $user['routes']['security'];
+
+            if (null === $securityRoutes['login']['name']) {
+                $config['user_class'][$key]['routes']['security']['login']['name'] = 'bengor_user_' . $key . '_security_login';
             }
-            $patterns[$name] = $pattern;
+            if (null === $securityRoutes['login']['path']) {
+                $config['user_class'][$key]['routes']['security']['login']['path'] = '/' . $key . '/login';
+            }
+            if (null === $securityRoutes['login_check']['name']) {
+                $config['user_class'][$key]['routes']['security']['login_check']['name'] = 'bengor_user_' . $key . '_security_login_check';
+            }
+            if (null === $securityRoutes['login_check']['path']) {
+                $config['user_class'][$key]['routes']['security']['login_check']['path'] = '/' . $key . '/login_check';
+            }
+            if (null === $securityRoutes['logout']['name']) {
+                $config['user_class'][$key]['routes']['security']['logout']['name'] = 'bengor_user_' . $key . '_security_logout';
+            }
+            if (null === $securityRoutes['logout']['path']) {
+                $config['user_class'][$key]['routes']['security']['logout']['path'] = '/' . $key . '/logout';
+            }
+            if (null === $securityRoutes['success_redirection_route']) {
+                $config['user_class'][$key]['routes']['security']['success_redirection_route'] = 'bengor_user_' . $key . '_homepage';
+            }
         }
         $container->getDefinition(
             'bengor.user_bundle.routing.security_routes_loader'
-        )->replaceArgument(0, array_unique($patterns, SORT_REGULAR));
+        )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
     }
 
     /**
@@ -68,42 +85,27 @@ class RoutesCompilerPass implements CompilerPassInterface
             return;
         }
         $config = $container->getParameter('bengor_user.config');
-        $routes = [];
         foreach ($config['user_class'] as $key => $user) {
-            if ('none' === $type = $user['registration']['type']) {
-                continue;
-            }
-            $name = '_' . $user['firewall']['pattern'];
-            if ('' === $pattern = $user['firewall']['pattern']) {
-                $name = '';
-            }
-            $pattern = '';
-            if ('' !== $user['firewall']['pattern']) {
-                $pattern = $user['firewall']['pattern'] . '_';
-            }
+            $registrationRoutes = $user['routes']['registration'];
 
-            $path = $user['registration']['path'];
-            $action = 'register';
-            $routes[$name] = [];
-            if ('by_invitation' === $type) {
-                $path .= '/{invitationToken}';
-                $action .= 'ByInvitation';
-
-                $routes[$name] = [
-                    'invite_path' => $user['registration']['invite_path'],
-                ];
+            if (null === $registrationRoutes['name']) {
+                $config['user_class'][$key]['routes']['registration']['name'] = 'bengor_user_' . $key . '_registration';
             }
-
-            $routes[$name] = array_merge($routes[$name], [
-                'action'        => $action,
-                'register_path' => $path,
-                'firewall'      => $user['firewall']['name'],
-                'pattern'       => $pattern,
-                'userClass'     => $key,
-            ]);
+            if (null === $registrationRoutes['path']) {
+                $config['user_class'][$key]['routes']['registration']['path'] = '/' . $key . '/register';
+            }
+            if (null === $registrationRoutes['invitation_name']) {
+                $config['user_class'][$key]['routes']['registration']['invitation_name'] = 'bengor_user_' . $key . '_invite';
+            }
+            if (null === $registrationRoutes['invitation_path']) {
+                $config['user_class'][$key]['routes']['registration']['invitation_path'] = '/' . $key . '/invite';
+            }
+            if (null === $registrationRoutes['success_redirection_route']) {
+                $config['user_class'][$key]['routes']['registration']['success_redirection_route'] = 'bengor_user_' . $key . '_homepage';
+            }
         }
         $container->getDefinition(
             'bengor.user_bundle.routing.registration_routes_loader'
-        )->replaceArgument(0, array_unique($routes, SORT_REGULAR));
+        )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
     }
 }

@@ -13,8 +13,7 @@ ben_gor_user:
     user_class:
         user:
             class: AppBundle\Entity\User
-            firewall:
-                name: main
+            firewall: main
 ```
 And for example if you execute the `bin/console debug:container | grep bengor.user.application.service.log_in`
 you'll see the following:
@@ -27,12 +26,10 @@ ben_gor_user:
     user_class:
         applicant:
             class: AppBundle\Entity\Applicant
-            firewall:
-                name: applicant
+            firewall: applicant
         employee:
             class: AppBundle\Entity\Employee
-            firewall:
-                name: employee
+            firewall: employee
 ```
 the above command will print the following:
 ```bash

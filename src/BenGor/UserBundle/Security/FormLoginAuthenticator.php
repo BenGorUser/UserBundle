@@ -45,20 +45,32 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     private $factory;
 
     /**
-     * The prefix of urls.
-     *
-     * The pattern of the configuration.
-     *
-     * @var string
-     */
-    private $pattern;
-
-    /**
      * The Symfony router component.
      *
      * @var Router
      */
     private $router;
+
+    /**
+     * The login route name
+     *
+     * @var string
+     */
+    private $loginRoute;
+
+    /**
+     * The login_check route name
+     *
+     * @var string
+     */
+    private $loginCheckRoute;
+
+    /**
+     * The success redirection route name
+     *
+     * @var string
+     */
+    private $successRedirectionRoute;
 
     /**
      * The log in user service.
@@ -70,21 +82,20 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Constructor.
      *
-     * @param Router           $aRouter  The Symfony router component
-     * @param LogInUserService $aService The log in user service
-     * @param UserFactory      $aFactory The user factory
-     * @param string           $aPattern The pattern
+     * @param Router           $aRouter        The Symfony router component
+     * @param LogInUserService $aService       The log in user service
+     * @param UserFactory      $aFactory       The user factory
+     * @param array            $securityRoutes The routes related with security (login, login_check and logout)
      */
-    public function __construct(Router $aRouter, LogInUserService $aService, UserFactory $aFactory, $aPattern)
+    public function __construct(Router $aRouter, LogInUserService $aService, UserFactory $aFactory, $securityRoutes)
     {
         $this->factory = $aFactory;
         $this->router = $aRouter;
         $this->service = $aService;
 
-        $this->pattern = '';
-        if ('' !== $aPattern) {
-            $this->pattern = $aPattern . '_';
-        }
+        $this->loginRoute = $securityRoutes['login'];
+        $this->loginCheckRoute = $securityRoutes['login_check'];
+        $this->successRedirectionRoute = $securityRoutes['success_redirection_route'];
     }
 
     /**
@@ -92,7 +103,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if ('bengor_user_' . $this->pattern . 'security_login_check' !== $request->attributes->get('_route')) {
+        if ($this->loginCheckRoute !== $request->attributes->get('_route')) {
             return;
         }
         $email = $request->request->get('_email');
@@ -138,7 +149,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getLoginUrl()
     {
-        return $this->router->generate('bengor_user_' . $this->pattern . 'security_login');
+        return $this->router->generate($this->loginRoute);
     }
 
     /**
@@ -146,6 +157,6 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getDefaultSuccessRedirectUrl()
     {
-        return $this->router->generate($this->pattern . 'homepage');
+        return $this->router->generate($this->successRedirectionRoute);
     }
 }

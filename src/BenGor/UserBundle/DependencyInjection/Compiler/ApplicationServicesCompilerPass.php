@@ -55,7 +55,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     ActivateUserAccountService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                     ]
                 )
@@ -65,7 +65,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     ChangeUserPasswordService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                         $container->getDefinition(
                             'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
@@ -78,7 +78,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     ChangeUserPasswordUsingRememberPasswordTokenService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                         $container->getDefinition(
                             'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
@@ -92,10 +92,10 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                     new Definition(
                         InviteUserService::class, [
                             $container->getDefinition(
-                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                                'bengor.user.infrastructure.persistence.' . $key . '_repository'
                             ),
                             $container->getDefinition(
-                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository'
+                                'bengor.user.infrastructure.persistence.' . $key . '_guest_repository'
                             ),
                             $container->getDefinition(
                                 'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory'
@@ -109,7 +109,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     LogInUserService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                         $container->getDefinition(
                             'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
@@ -122,7 +122,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     LogOutUserService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                     ]
                 )
@@ -132,7 +132,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     RemoveUserService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                         $container->getDefinition(
                             'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
@@ -145,7 +145,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     RequestRememberPasswordTokenService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                     ]
                 )
@@ -156,10 +156,10 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                     new Definition(
                         SignUpUserByInvitationService::class, [
                             $container->getDefinition(
-                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                                'bengor.user.infrastructure.persistence.' . $key . '_repository'
                             ),
                             $container->getDefinition(
-                                'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository'
+                                'bengor.user.infrastructure.persistence.' . $key . '_guest_repository'
                             ),
                             $container->getDefinition(
                                 'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
@@ -176,7 +176,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 new Definition(
                     SignUpUserService::class, [
                         $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository'
+                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
                         $container->getDefinition(
                             'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
@@ -198,7 +198,11 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                         $container->getDefinition('router.default'),
                         $container->getDefinition('bengor.user.application.service.log_in_' . $key),
                         $container->getDefinition('bengor.user.infrastructure.domain.model.' . $key . '_factory'),
-                        $user['firewall']['pattern'],
+                        [
+                            'login'                     => $user['routes']['security']['login']['name'],
+                            'login_check'               => $user['routes']['security']['login_check']['name'],
+                            'success_redirection_route' => $user['routes']['security']['success_redirection_route'],
+                        ],
                     ]
                 )
             );

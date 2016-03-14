@@ -41,8 +41,7 @@ ben_gor_user:
     user_class:
         user:
             class: AppBundle\Entity\User
-            firewall:
-                name: main
+            firewall: main
 ```
 
 If you plan to implement a login system, you need to configure the `app/config/security.yml`:

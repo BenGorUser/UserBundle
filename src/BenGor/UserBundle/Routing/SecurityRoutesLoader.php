@@ -34,20 +34,20 @@ class SecurityRoutesLoader implements LoaderInterface
     private $loaded;
 
     /**
-     * Array which contains the patterns.
+     * Array which contains the routes configuration.
      *
      * @var array
      */
-    private $patterns;
+    private $config;
 
     /**
      * Constructor.
      *
-     * @param array $patterns Array which contains the patterns
+     * @param array $config Array which contains the routes configuration
      */
-    public function __construct(array $patterns)
+    public function __construct(array $config)
     {
-        $this->patterns = $patterns;
+        $this->config = $config;
         $this->loaded = false;
     }
 
@@ -61,12 +61,17 @@ class SecurityRoutesLoader implements LoaderInterface
         }
 
         $routes = new RouteCollection();
-        foreach ($this->patterns as $name => $pattern) {
-            $routes->add('bengor_user' . $name . '_security_login', new Route(
-                '/' . $pattern . '/login',
+        foreach ($this->config as $userConfig) {
+            $securityRouteConfig = $userConfig['routes']['security'];
+            if (false === $securityRouteConfig['enabled']) {
+                continue;
+            }
+
+            $routes->add($securityRouteConfig['login']['name'], new Route(
+                $securityRouteConfig['login']['path'],
                 [
-                    '_controller' => 'BenGorUserBundle:Security:login',
-                    'pattern'     => $pattern,
+                    '_controller'  => 'BenGorUserBundle:Security:login',
+                    'successRoute' => $securityRouteConfig['success_redirection_route'],
                 ],
                 [],
                 [],
@@ -74,18 +79,22 @@ class SecurityRoutesLoader implements LoaderInterface
                 [],
                 ['GET', 'POST']
             ));
-            $routes->add('bengor_user' . $name . '_security_login_check', new Route(
-                '/' . $pattern . '/login_check',
-                ['_controller' => 'BenGorUserBundle:Security:loginCheck'],
+            $routes->add($securityRouteConfig['login_check']['name'], new Route(
+                $securityRouteConfig['login_check']['path'],
+                [
+                    '_controller' => 'BenGorUserBundle:Security:loginCheck',
+                ],
                 [],
                 [],
                 '',
                 [],
                 ['POST']
             ));
-            $routes->add('bengor_user' . $name . '_security_logout', new Route(
-                '/' . $pattern . '/logout',
-                ['_controller' => 'BenGorUserBundle:Security:logout'],
+            $routes->add($securityRouteConfig['logout']['name'], new Route(
+                $securityRouteConfig['logout']['path'],
+                [
+                    '_controller' => 'BenGorUserBundle:Security:logout',
+                ],
                 [],
                 [],
                 '',

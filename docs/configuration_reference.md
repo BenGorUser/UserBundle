@@ -6,14 +6,13 @@ ben_gor_user:
     user_class:
         user:
             class: ~                           # Required
+            firewall: ~                        # Required
             persistence: doctrine              # Also, it can be "sql"
             default_roles:
                 - ROLE_USER
-            firewall:
-                name: ~                        # Required
             routes:
                 security:
-                    enable: true
+                    enabled: true
                     login:
                         name: bengor_user_user_security_login
                         path: /user/login
@@ -25,7 +24,7 @@ ben_gor_user:
                         path: /user/logout
                     success_redirection_route: bengor_user_user_homepage
                 registration:
-                    enable: true
+                    enabled: true
                     type: default              # Also, it can be "by_invitation"
                     name: bengor_user_user_registration
                     path: /user/register

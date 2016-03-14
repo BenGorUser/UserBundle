@@ -38,7 +38,6 @@ class BenGorUserExtension extends Extension
 
         $loader->load('event_subscribers.yml');
         $loader->load('mailing.yml');
-        $loader->load('persistence.yml');
         $loader->load('routing.yml');
 
         $container->setParameter('bengor_user.config', $config);

@@ -32,14 +32,14 @@ class RegistrationController extends Controller
     /**
      * Register action.
      *
-     * @param Request $request   The request
-     * @param string  $userClass Extra parameter that contains the user type
-     * @param string  $firewall  Extra parameter that contains the firewall name
-     * @param string  $pattern   Extra parameter that contains the pattern success url
+     * @param Request $request      The request
+     * @param string  $userClass    Extra parameter that contains the user type
+     * @param string  $firewall     Extra parameter that contains the firewall name
+     * @param string  $successRoute Extra parameter that contains the success route name
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function registerAction(Request $request, $userClass, $firewall, $pattern)
+    public function registerAction(Request $request, $userClass, $firewall, $successRoute)
     {
         $form = $this->createForm(RegistrationType::class, null, [
             'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
@@ -62,7 +62,7 @@ class RegistrationController extends Controller
                         );
                     $this->addFlash('notice', 'Your changes were saved!');
 
-                    return $this->redirectToRoute($pattern . 'homepage');
+                    return $this->redirectToRoute($successRoute);
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
                 } catch (\Exception $exception) {
@@ -115,13 +115,13 @@ class RegistrationController extends Controller
      * @param string  $invitationToken The invitation token
      * @param string  $userClass       Extra parameter that contains the user type
      * @param string  $firewall        Extra parameter that contains the firewall name
-     * @param string  $pattern         Extra parameter that contains the pattern success url
+     * @param string  $successRoute    Extra parameter that contains the success route name
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function registerByInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $pattern)
+    public function registerByInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $successRoute)
     {
-        $userGuest = $this->get('bengor_user.doctrine_' . $userClass . '_guest_repository')
+        $userGuest = $this->get('bengor_user.' . $userClass . '_guest_repository')
             ->userGuestOfInvitationToken(new UserToken($invitationToken));
         if (!$userGuest instanceof UserGuest) {
             throw $this->createNotFoundException('Invitation token does not exist');
@@ -149,7 +149,7 @@ class RegistrationController extends Controller
                         );
                     $this->addFlash('notice', 'Your changes were saved!');
 
-                    return $this->redirectToRoute($pattern . 'homepage');
+                    return $this->redirectToRoute($successRoute);
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
                 } catch (UserGuestDoesNotExistException $exception) {
