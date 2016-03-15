@@ -41,7 +41,6 @@ class RegistrationController extends Controller
      */
     public function registerAction(Request $request, $userClass, $firewall, $successRoute)
     {
-        dump($successRoute);
         $form = $this->createForm(RegistrationType::class, null, [
             'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
         ]);

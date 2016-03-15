@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
  * Spec file of persistence services compiler pass.
@@ -37,24 +38,69 @@ class PersistenceServicesCompilerPassSpec extends ObjectBehavior
         $this->shouldImplement(CompilerPassInterface::class);
     }
 
-    function it_processes(ContainerBuilder $container)
-    {
+    function it_does_not_process_because_doctrine_bundle_is_not_register_and_the_persistence_layer_is_doctrine(
+        ContainerBuilder $container
+    ) {
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class' => User::class, 'firewall' => [
-                        'name' => 'user', 'pattern' => '',
-                    ],
+                    'class'       => 'BenGor\User\Domain\Model\User',
+                    'persistence' => 'doctrine',
+                    'firewall'    => 'main',
                 ],
             ],
         ]);
 
+        $container->hasDefinition('doctrine.orm.default_entity_manager')->shouldBeCalled()->willReturn(false);
+
+        $this->shouldThrow(new RuntimeException(
+            'When the persistence layer is "doctrine" requires ' .
+            'the installation and set up of the DoctrineBundle'
+        ))->duringProcess($container);
+    }
+
+    function it_processes(ContainerBuilder $container)
+    {
+        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
+            'user_class' => [
+                'user'      => [
+                    'class'       => 'BenGor\User\Domain\Model\User',
+                    'persistence' => 'doctrine',
+                    'firewall'    => 'main',
+                ],
+                'applicant' => [
+                    'class'       => 'BenGor\User\Domain\Model\User',
+                    'persistence' => 'sql',
+                    'firewall'    => 'main',
+                ],
+            ],
+        ]);
+
+        $container->hasDefinition('doctrine.orm.default_entity_manager')->shouldBeCalled()->willReturn(true);
+
         $container->setDefinition(
-            'bengor.user.infrastructure.persistence.doctrine.user_repository',
+            'bengor.user.infrastructure.persistence.user_repository',
             Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
-            'bengor.user.infrastructure.persistence.doctrine.user_guest_repository',
+            'bengor.user.infrastructure.persistence.user_guest_repository',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+
+        $container->getParameter('database_name')->shouldBeCalled()->willReturn('dbname');
+        $container->getParameter('database_user')->shouldBeCalled()->willReturn('dbuser');
+        $container->getParameter('database_password')->shouldBeCalled()->willReturn('dbpass');
+        $container->setDefinition(
+            'pdo',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.infrastructure.persistence.applicant_repository',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+        $container->setDefinition(
+            'bengor.user.infrastructure.persistence.applicant_guest_repository',
             Argument::type(Definition::class)
         )->shouldBeCalled();
 

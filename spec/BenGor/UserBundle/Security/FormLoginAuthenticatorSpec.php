@@ -61,7 +61,11 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         );
 
         $this->beConstructedWith(
-            $router, $this->service, new UserFactory(User::class), ''
+            $router, $this->service, new UserFactory(User::class), [
+                'login'                     => 'bengor_user_user_security_login',
+                'login_check'               => 'bengor_user_user_security_login_check',
+                'success_redirection_route' => 'bengor_user_user_security_homepage',
+            ]
         );
     }
 
@@ -84,7 +88,7 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $parameterBag->get('_email')->shouldBeCalled()->willReturn('test@test.com');
         $parameterBag->get('_password')->shouldBeCalled()->willReturn('111111');
         $attributesBag->get('_route')->shouldBeCalled()->willReturn(
-            'bengor_user_security_login_check'
+            'bengor_user_user_security_login_check'
         );
         $request->request = $parameterBag;
         $request->attributes = $attributesBag;

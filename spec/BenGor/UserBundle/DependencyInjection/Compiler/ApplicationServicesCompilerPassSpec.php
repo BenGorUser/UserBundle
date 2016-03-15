@@ -42,15 +42,41 @@ class ApplicationServicesCompilerPassSpec extends ObjectBehavior
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class' => User::class, 'firewall' => [
-                        'name' => 'user', 'pattern' => '',
+                    'class'    => 'BenGor\User\Domain\Model\User',
+                    'firewall' => 'main',
+                    'routes'   => [
+                        'security'     => [
+                            'enabled'                   => true,
+                            'login'                     => [
+                                'name' => 'bengor_user_user_security_login',
+                                'path' => '/login',
+                            ],
+                            'login_check'               => [
+                                'name' => 'bengor_user_user_security_login_check',
+                                'path' => '/login_check',
+                            ],
+                            'logout'                    => [
+                                'name' => 'bengor_user_user_security_logout',
+                                'path' => '/logout',
+                            ],
+                            'success_redirection_route' => 'bengor_user_user_homepage',
+                        ],
+                        'registration' => [
+                            'enabled'                   => true,
+                            'type'                      => 'by_invitation',
+                            'name'                      => 'bengor_user_user_registration',
+                            'path'                      => '/user/register',
+                            'invitation_name'           => 'bengor_user_user_invitation',
+                            'invitation_path'           => '/user/invite',
+                            'success_redirection_route' => 'bengor_user_user_homepage',
+                        ],
                     ],
                 ],
             ],
         ]);
 
-        $container->getDefinition('bengor.user.infrastructure.persistence.doctrine.user_repository')->shouldBeCalled();
-        $container->getDefinition('bengor.user.infrastructure.persistence.doctrine.user_guest_repository')->shouldBeCalled();
+        $container->getDefinition('bengor.user.infrastructure.persistence.user_repository')->shouldBeCalled();
+        $container->getDefinition('bengor.user.infrastructure.persistence.user_guest_repository')->shouldBeCalled();
         $container->getDefinition(
             'bengor.user.infrastructure.security.symfony.user_password_encoder'
         )->shouldBeCalled();

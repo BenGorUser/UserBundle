@@ -87,7 +87,9 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
                     DoctrineUserGuestRepository::class, [
                         $guestClass,
                     ]
-                ))->setFactory([new Reference('doctrine.orm.default_entity_manager'), 'getRepository'])
+                ))->setFactory([
+                    new Reference('doctrine.orm.default_entity_manager'), 'getRepository'
+                ])->setPublic(false)
             );
         }
     }

@@ -46,16 +46,15 @@ class CommandsServicesCompilerPassSpec extends ObjectBehavior
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class' => User::class, 'firewall' => [
-                        'name' => 'user', 'pattern' => '',
-                    ],
+                    'class'    => User::class,
+                    'firewall' => 'main',
                 ],
             ],
         ]);
 
-        $container->getDefinition('bengor.user.application.service.sign_up_user_doctrine_transactional')
+        $container->getDefinition('bengor.user.application.service.sign_up_user_transactional')
             ->shouldBeCalled()->willReturn($signUpDefinition);
-        $container->getDefinition('bengor.user.application.service.activate_user_account_doctrine_transactional')
+        $container->getDefinition('bengor.user.application.service.activate_user_account_transactional')
             ->shouldBeCalled()->willReturn($activateAccountDefinition);
 
         $container->findDefinition('bengor.user_bundle.command.sign_up_user_command')

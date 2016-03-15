@@ -15,6 +15,7 @@ namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 use BenGor\User\Domain\Model\User;
 use BenGor\UserBundle\DependencyInjection\Compiler\TransactionalApplicationServicesCompilerPass;
 use Ddd\Application\Service\TransactionalApplicationService;
+use Ddd\Infrastructure\Application\Service\DoctrineSession;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -44,91 +45,88 @@ class TransactionalApplicationServicesCompilerPassSpec extends ObjectBehavior
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class' => User::class, 'firewall' => [
-                        'name' => 'user', 'pattern' => '',
-                    ],
+                    'class'       => User::class,
+                    'firewall'    => 'main',
+                    'persistence' => 'doctrine',
                 ],
             ],
         ]);
 
         $container->register(
-            'bengor.user.application.service.activate_user_account_doctrine_transactional',
-            TransactionalApplicationService::class
+            'bengor.user.infrastructure.application.service.doctrine_session',
+            DoctrineSession::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.change_user_password_doctrine_transactional',
+            'bengor.user.application.service.activate_user_account_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.change_user_password_using_remember_password_token_doctrine_transactional',
+            'bengor.user.application.service.change_user_password_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.invite_user_doctrine_transactional',
+            'bengor.user.application.service.change_user_password_using_remember_password_token_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.log_in_user_doctrine_transactional',
+            'bengor.user.application.service.invite_user_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.log_out_user_doctrine_transactional',
+            'bengor.user.application.service.log_in_user_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.remove_user_doctrine_transactional',
+            'bengor.user.application.service.log_out_user_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.request_user_remember_password_token_doctrine_transactional',
+            'bengor.user.application.service.remove_user_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.sign_up_user_by_invitation_doctrine_transactional',
+            'bengor.user.application.service.request_user_remember_password_token_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.sign_up_user_doctrine_transactional',
+            'bengor.user.application.service.sign_up_user_by_invitation_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))
-            ->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
+        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
+
+        $container->register(
+            'bengor.user.application.service.sign_up_user_transactional',
+            TransactionalApplicationService::class
+        )->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);

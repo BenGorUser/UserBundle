@@ -26,18 +26,21 @@ class RegistrationRoutesLoaderSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith([
-            [
-                'register_path' => '/register',
-                'action'        => 'register',
-                'userClass'     => 'user',
-                'firewall'      => 'main',
-                'pattern'       => '',
-            ],
-            [
-                'invite_path' => '/invite',
-                'action'      => 'invite',
-                'userClass'   => 'user',
+            'user' => [
+                'class'       => 'AppBundle\Entity\User',
+                'persistence' => 'doctrine',
                 'firewall'    => 'main',
+                'routes'      => [
+                    'registration' => [
+                        'enabled'                   => true,
+                        'type'                      => 'by_invitation',
+                        'name'                      => 'bengor_user_user_registration',
+                        'path'                      => '/user/register',
+                        'invitation_name'           => 'bengor_user_user_invitation',
+                        'invitation_path'           => '/user/invite',
+                        'success_redirection_route' => 'bengor_user_user_homepage',
+                    ],
+                ],
             ],
         ]);
     }

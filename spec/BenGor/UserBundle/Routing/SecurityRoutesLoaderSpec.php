@@ -25,7 +25,31 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['']);
+        $this->beConstructedWith([
+            'user' => [
+                'class'       => 'AppBundle\Entity\User',
+                'persistence' => 'doctrine',
+                'firewall'    => 'main',
+                'routes'      => [
+                    'security' => [
+                        'enabled'                   => true,
+                        'login'                     => [
+                            'name' => 'bengor_user_user_security_login',
+                            'path' => '/login',
+                        ],
+                        'login_check'               => [
+                            'name' => 'bengor_user_user_security_login_check',
+                            'path' => '/login_check',
+                        ],
+                        'logout'                    => [
+                            'name' => 'bengor_user_user_security_logout',
+                            'path' => '/logout',
+                        ],
+                        'success_redirection_route' => 'bengor_user_user_homepage',
+                    ],
+                ],
+            ],
+        ]);
     }
 
     function it_is_initializable()

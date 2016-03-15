@@ -97,7 +97,7 @@ class RegistrationControllerSpec extends ObjectBehavior
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerAction($request, 'user', 'main', '')->shouldReturn($response);
+        $this->registerAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
     }
 
     function it_registers_action(
@@ -105,10 +105,11 @@ class RegistrationControllerSpec extends ObjectBehavior
         ContainerInterface $container,
         GuardAuthenticatorHandler $handler,
         FormLoginAuthenticator $formLoginAuthenticator,
-        Router $router,
         Session $session,
+        TwigEngine $templating,
         FlashBagInterface $flashBag,
         FormInterface $form,
+        FormView $formView,
         FormFactoryInterface $formFactory
     ) {
         $passwordEncoder = new DummyUserPasswordEncoder('dummy');
@@ -147,11 +148,11 @@ class RegistrationControllerSpec extends ObjectBehavior
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
 
-        $container->get('router')->shouldBeCalled()->willReturn($router);
-        $router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH)
-            ->shouldBeCalled()->willReturn('/');
+        $container->has('templating')->shouldBeCalled()->willReturn(true);
+        $container->get('templating')->shouldBeCalled()->willReturn($templating);
+        $form->createView()->shouldBeCalled()->willReturn($formView);
 
-        $this->registerAction($request, 'user', 'main', '');
+        $this->registerAction($request, 'user', 'main', 'bengor_user_user_homepage');
     }
 
     function it_does_not_register_action(
@@ -179,7 +180,7 @@ class RegistrationControllerSpec extends ObjectBehavior
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerAction($request, 'user', 'main', '')->shouldReturn($response);
+        $this->registerAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
     }
 
     function it_renders_invite_action(
@@ -282,13 +283,13 @@ class RegistrationControllerSpec extends ObjectBehavior
         UserGuestRepository $userGuestRepository
     ) {
         $invitationToken = new UserToken('invitation-token');
-        $container->get('bengor_user.doctrine_user_guest_repository')
+        $container->get('bengor_user.user_guest_repository')
             ->shouldBeCalled()->willReturn($userGuestRepository);
         $userGuestRepository->userGuestOfInvitationToken($invitationToken)
             ->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow(NotFoundHttpException::class)->duringRegisterByInvitationAction(
-            $request, $invitationToken, 'user', 'main', ''
+            $request, $invitationToken, 'user', 'main', 'bengor_user_user_homepage'
         );
     }
 
@@ -305,7 +306,7 @@ class RegistrationControllerSpec extends ObjectBehavior
     ) {
         $invitationToken = new UserToken('invitation-token');
         $email = new UserEmail('bengor@user.com');
-        $container->get('bengor_user.doctrine_user_guest_repository')
+        $container->get('bengor_user.user_guest_repository')
             ->shouldBeCalled()->willReturn($userGuestRepository);
         $userGuestRepository->userGuestOfInvitationToken($invitationToken)
             ->shouldBeCalled()->willReturn($userGuest);
@@ -328,7 +329,9 @@ class RegistrationControllerSpec extends ObjectBehavior
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerByInvitationAction($request, $invitationToken, 'user', 'main', '')->shouldReturn($response);
+        $this->registerByInvitationAction(
+            $request, $invitationToken, 'user', 'main', 'bengor_user_user_homepage'
+        )->shouldReturn($response);
     }
 
     function it_registers_by_invitation_action(
@@ -357,7 +360,7 @@ class RegistrationControllerSpec extends ObjectBehavior
         $invitationToken = new UserToken('invitation-token');
         $email = new UserEmail('bengor@user.com');
 
-        $container->get('bengor_user.doctrine_user_guest_repository')
+        $container->get('bengor_user.user_guest_repository')
             ->shouldBeCalled()->willReturn($userGuestRepository);
         $userGuestRepository->userGuestOfInvitationToken($invitationToken)
             ->shouldBeCalled()->willReturn($userGuest);
@@ -390,7 +393,9 @@ class RegistrationControllerSpec extends ObjectBehavior
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerByInvitationAction($request, $invitationToken, 'user', 'main', '')->shouldReturn($response);
+        $this->registerByInvitationAction(
+            $request, $invitationToken, 'user', 'main', 'bengor_user_user_homepage'
+        )->shouldReturn($response);
     }
 
     function it_does_not_register_by_invitation_action(
@@ -406,7 +411,7 @@ class RegistrationControllerSpec extends ObjectBehavior
     ) {
         $invitationToken = new UserToken('invitation-token');
         $email = new UserEmail('bengor@user.com');
-        $container->get('bengor_user.doctrine_user_guest_repository')
+        $container->get('bengor_user.user_guest_repository')
             ->shouldBeCalled()->willReturn($userGuestRepository);
         $userGuestRepository->userGuestOfInvitationToken($invitationToken)
             ->shouldBeCalled()->willReturn($userGuest);
@@ -431,6 +436,8 @@ class RegistrationControllerSpec extends ObjectBehavior
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerByInvitationAction($request, $invitationToken, 'user', 'main', '')->shouldReturn($response);
+        $this->registerByInvitationAction(
+            $request, $invitationToken, 'user', 'main', 'bengor_user_user_homepage'
+        )->shouldReturn($response);
     }
 }

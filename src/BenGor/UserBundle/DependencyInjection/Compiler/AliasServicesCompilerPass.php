@@ -58,7 +58,7 @@ class AliasServicesCompilerPass implements CompilerPassInterface
             ], $aliasMap);
             if (null !== $guestClass) {
                 $aliasMap = array_merge([
-                    'bengor_user.doctrine_' . $key . '_guest_repository' => 'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
+                    'bengor_user.' . $key . '_guest_repository' => 'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
                     'bengor_user.invite_' . $key                         => 'bengor.user.application.service.invite_' . $key . '_transactional',
                     'bengor_user.sign_up_' . $key . '_by_invitation'     => 'bengor.user.application.service.sign_up_' . $key . '_by_invitation_transactional',
                 ], $aliasMap);
