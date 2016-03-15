@@ -84,10 +84,10 @@ class TransactionalApplicationServicesCompilerPass implements CompilerPassInterf
             )->addArgument(
                 new Reference('bengor.user.application.service.log_in_' . $key)
             )->addArgument(
-                new Reference('ddd.infrastructure.application.service.doctrine_session')
+                new Reference('bengor.user.infrastructure.application.service.' . $user['persistence'] . '_session')
             )->setPublic(false);
             $container->register(
-                'bengor.user.application.service.log_out_' . $key . '_doctrine_transactional',
+                'bengor.user.application.service.log_out_' . $key . '_transactional',
                 TransactionalApplicationService::class
             )->addArgument(
                 new Reference('bengor.user.application.service.log_out_' . $key)
