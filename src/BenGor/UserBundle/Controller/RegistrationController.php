@@ -41,6 +41,7 @@ class RegistrationController extends Controller
      */
     public function registerAction(Request $request, $userClass, $firewall, $successRoute)
     {
+        dump($successRoute);
         $form = $this->createForm(RegistrationType::class, null, [
             'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
         ]);
@@ -66,6 +67,7 @@ class RegistrationController extends Controller
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
                 } catch (\Exception $exception) {
+                    $this->addFlash('error', $exception->getMessage());
                     $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
                 }
             }

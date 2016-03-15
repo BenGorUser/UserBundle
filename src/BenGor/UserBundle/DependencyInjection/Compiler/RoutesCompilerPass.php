@@ -69,6 +69,7 @@ class RoutesCompilerPass implements CompilerPassInterface
                 $config['user_class'][$key]['routes']['security']['success_redirection_route'] = 'bengor_user_' . $key . '_homepage';
             }
         }
+        $container->setParameter('bengor_user.config', $config);
         $container->getDefinition(
             'bengor.user_bundle.routing.security_routes_loader'
         )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
@@ -104,6 +105,7 @@ class RoutesCompilerPass implements CompilerPassInterface
                 $config['user_class'][$key]['routes']['registration']['success_redirection_route'] = 'bengor_user_' . $key . '_homepage';
             }
         }
+        $container->setParameter('bengor_user.config', $config);
         $container->getDefinition(
             'bengor.user_bundle.routing.registration_routes_loader'
         )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));

@@ -1,1 +1,12 @@
-{# TODO: make simple but extensible layout #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block bengor_user_title %}{% endblock %}</title>
+        {% block bengor_user_stylesheets %}{% endblock %}
+    </head>
+    <body>
+    {% block bengor_user_content %}{% endblock %}
+    {% block bengor_user_javascripts %}{% endblock %}
+    </body>
+</html>
