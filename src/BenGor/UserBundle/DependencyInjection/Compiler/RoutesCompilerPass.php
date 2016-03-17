@@ -29,8 +29,42 @@ class RoutesCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $this->processInvitationRoutes($container);
         $this->processSecurityRoutes($container);
         $this->processRegistrationRoutes($container);
+
+        $this->processActivateAccountRoutes($container);
+    }
+
+    /**
+     * Process the activate account routes.
+     *
+     * @param ContainerBuilder $container The container
+     */
+    private function processActivateAccountRoutes(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('bengor.user_bundle.routing.activate_account_routes_loader')) {
+            return;
+        }
+        $config = $container->getParameter('bengor_user.config');
+        foreach ($config['user_class'] as $key => $user) {
+            $activateAccountRoutes = $user['routes']['activate_account'];
+
+            if (null === $activateAccountRoutes['name']) {
+                $config['user_class'][$key]['routes']['activate_account']['name'] = 'bengor_user_' . $key . '_activate_account';
+            }
+            if (null === $activateAccountRoutes['path']) {
+                $config['user_class'][$key]['routes']['activate_account']['path'] = '/' . $key . '/activate-account';
+            }
+            if (null === $activateAccountRoutes['success_redirection_route']) {
+                $config['user_class'][$key]['routes']['activate_account']['success_redirection_route'] = $config['user_class'][$key]['routes']['security']['success_redirection_route'];
+            }
+        }
+
+        $container->setParameter('bengor_user.config', $config);
+        $container->getDefinition(
+            'bengor.user_bundle.routing.activate_account_routes_loader'
+        )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
     }
 
     /**
@@ -76,6 +110,25 @@ class RoutesCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * Process the registration by invitation routes.
+     *
+     * @param ContainerBuilder $container The container
+     */
+    private function processInvitationRoutes(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('bengor.user_bundle.routing.invitation_routes_loader')) {
+            return;
+        }
+        $config = $container->getParameter('bengor_user.config');
+        $config = $this->buildRegistrationConfiguration($config);
+
+        $container->setParameter('bengor_user.config', $config);
+        $container->getDefinition(
+            'bengor.user_bundle.routing.invitation_routes_loader'
+        )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
+    }
+
+    /**
      * Process the registration routes.
      *
      * @param ContainerBuilder $container The container
@@ -86,6 +139,23 @@ class RoutesCompilerPass implements CompilerPassInterface
             return;
         }
         $config = $container->getParameter('bengor_user.config');
+        $config = $this->buildRegistrationConfiguration($config);
+
+        $container->setParameter('bengor_user.config', $config);
+        $container->getDefinition(
+            'bengor.user_bundle.routing.registration_routes_loader'
+        )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
+    }
+
+    /**
+     * Builds the empty registration route configuration.
+     *
+     * @param array $config The configurantion tree
+     *
+     * @return array
+     */
+    private function buildRegistrationConfiguration($config)
+    {
         foreach ($config['user_class'] as $key => $user) {
             $registrationRoutes = $user['routes']['registration'];
 
@@ -105,9 +175,7 @@ class RoutesCompilerPass implements CompilerPassInterface
                 $config['user_class'][$key]['routes']['registration']['success_redirection_route'] = 'bengor_user_' . $key . '_homepage';
             }
         }
-        $container->setParameter('bengor_user.config', $config);
-        $container->getDefinition(
-            'bengor.user_bundle.routing.registration_routes_loader'
-        )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
+
+        return $config;
     }
 }

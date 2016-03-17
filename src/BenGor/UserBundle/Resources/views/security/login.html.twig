@@ -1,6 +1,12 @@
 {% extends '@BenGorUser/layout.html.twig' %}
 
-{% block body %}
+{% block bengor_user_content %}
+    {% for flash_message in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+
     <form action="{{ path(login_check) }}" method="post">
         {% if error %}
             <div class="alert alert-danger">

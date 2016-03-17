@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Registration routes loader class.
+ * Activate account routes loader class.
  *
- * Service that loads dynamically routes of registration.
+ * Service that loads dynamically routes of activate account.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationRoutesLoader implements LoaderInterface
+class ActivateAccountRoutesLoader implements LoaderInterface
 {
     /**
      * Boolean that checks if the routes are already loaded or not.
@@ -62,28 +62,28 @@ class RegistrationRoutesLoader implements LoaderInterface
 
         $routes = new RouteCollection();
         foreach ($this->config as $userClass => $userConfig) {
-            $registrationRouteConfig = $userConfig['routes']['registration'];
+            $activateAccountRouteConfig = $userConfig['routes']['activate_account'];
 
-            if (false === $registrationRouteConfig['enabled']
-                || 'by_invitation' === $registrationRouteConfig['type']
-            ) {
+            if (false === $userConfig['routes']['registration']['enabled']) {
                 continue;
             }
 
-            $routes->add($registrationRouteConfig['name'], new Route(
-                $registrationRouteConfig['path'],
-                [
-                    '_controller'  => 'BenGorUserBundle:Registration:register',
-                    'userClass'    => $userClass,
-                    'firewall'     => $userConfig['firewall'],
-                    'successRoute' => $registrationRouteConfig['success_redirection_route'],
-                ],
-                [],
-                [],
-                '',
-                [],
-                ['GET', 'POST']
-            ));
+            $routes->add(
+                $activateAccountRouteConfig['name'],
+                new Route(
+                    $activateAccountRouteConfig['path'],
+                    [
+                        '_controller'  => 'BenGorUserBundle:AccountActivation:activateAccount',
+                        'userClass'    => $userClass,
+                        'successRoute' => $activateAccountRouteConfig['success_redirection_route'],
+                    ],
+                    [],
+                    [],
+                    '',
+                    [],
+                    ['GET']
+                )
+            );
         }
         $this->loaded = true;
 
@@ -95,7 +95,7 @@ class RegistrationRoutesLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_registration' === $type;
+        return 'bengor_user_activate_account' === $type;
     }
 
     /**

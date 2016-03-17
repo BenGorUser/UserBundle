@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Registration routes loader class.
+ * Registration by invitation routes loader class.
  *
- * Service that loads dynamically routes of registration.
+ * Service that loads dynamically routes of registration by invitation.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationRoutesLoader implements LoaderInterface
+class InvitationRoutesLoader implements LoaderInterface
 {
     /**
      * Boolean that checks if the routes are already loaded or not.
@@ -65,15 +65,31 @@ class RegistrationRoutesLoader implements LoaderInterface
             $registrationRouteConfig = $userConfig['routes']['registration'];
 
             if (false === $registrationRouteConfig['enabled']
-                || 'by_invitation' === $registrationRouteConfig['type']
+                || 'default' === $registrationRouteConfig['type']
             ) {
                 continue;
             }
 
+            $routes->add(
+                $registrationRouteConfig['invitation_name'],
+                new Route(
+                    $registrationRouteConfig['invitation_path'],
+                    [
+                        '_controller' => 'BenGorUserBundle:Registration:invite',
+                        'userClass'   => $userClass,
+                    ],
+                    [],
+                    [],
+                    '',
+                    [],
+                    ['GET', 'POST']
+                )
+            );
+
             $routes->add($registrationRouteConfig['name'], new Route(
                 $registrationRouteConfig['path'],
                 [
-                    '_controller'  => 'BenGorUserBundle:Registration:register',
+                    '_controller'  => 'BenGorUserBundle:Registration:registerByInvitation',
                     'userClass'    => $userClass,
                     'firewall'     => $userConfig['firewall'],
                     'successRoute' => $registrationRouteConfig['success_redirection_route'],
@@ -95,7 +111,7 @@ class RegistrationRoutesLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_registration' === $type;
+        return 'bengor_user_invitation' === $type;
     }
 
     /**

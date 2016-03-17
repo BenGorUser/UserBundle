@@ -31,4 +31,8 @@ ben_gor_user:
                     invitation_name: bengor_user_user_invitation
                     invitation_path: /user/invite
                     success_redirection_route: bengor_user_user_homepage
+                activate_account:
+                    name: bengor_user_user_activate_account
+                    path: /user/confirmation-token
+                    success_redirection_route: bengor_user_user_security_login
 ```

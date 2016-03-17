@@ -1,6 +1,6 @@
 {% extends '@BenGorUser/layout.html.twig' %}
 
-{% block body %}
+{% block bengor_user_content %}
     {% if app.session.flashbag.peekAll|length > 0 %}
         {% for type, messages in app.session.flashbag.all %}
             {% for message in messages %}
