@@ -2,7 +2,7 @@
 
 All available services are listed below with their associated class.
 ```bash
-bengor.user.application.service.activate_user_account                                               BenGor\User\Application\Service\ActivateUserAccountService
+bengor.user.application.service.enable_user                                                         BenGor\User\Application\Service\ActivateUserAccountService
 bengor.user.application.service.change_user_password                                                BenGor\User\Application\Service\ChangeUserPasswordService
 bengor.user.application.service.change_user_password_using_remember_password_token                  BenGor\User\Application\Service\ChangeUserPasswordUsingRememberPasswordTokenService
 bengor.user.application.service.invite_user                                                         BenGor\User\Application\Service\InviteUserService
@@ -11,7 +11,6 @@ bengor.user.application.service.log_out_user                                    
 bengor.user.application.service.remove_user                                                         BenGor\User\Application\Service\RemoveUserService
 bengor.user.application.service.request_user_remember_password_token                                BenGor\User\Application\Service\RequestRememberPasswordTokenService
 bengor.user.application.service.sign_up_user                                                        BenGor\User\Application\Service\SignUpUserService
-bengor.user.application.service.sign_up_user_by_invitation                                          BenGor\User\Application\Service\SignUpUserByInvitationService
 
 bengor_user.user_factory                                                                            BenGor\User\Infrastructure\Domain\Model\UserFactory
 
@@ -36,7 +35,7 @@ bengor.user_bundle.event_listener.domain_event_publisher                        
 
 // Aliases of transactional services
 
-bengor_user.activate_user_account                                                        Ddd\Application\Service\TransactionalApplicationService
+bengor_user.enable_user                                                                  Ddd\Application\Service\TransactionalApplicationService
 bengor_user.change_user_password                                                         Ddd\Application\Service\TransactionalApplicationService
 bengor_user.change_user_password_using_remember_password_token                           Ddd\Application\Service\TransactionalApplicationService
 bengor_user.invite_user                                                                  Ddd\Application\Service\TransactionalApplicationService
@@ -45,5 +44,4 @@ bengor_user.log_out_user                                                        
 bengor_user.remove_user                                                                  Ddd\Application\Service\TransactionalApplicationService
 bengor_user.request_user_remember_password_token                                         Ddd\Application\Service\TransactionalApplicationService
 bengor_user.sign_up_user                                                                 Ddd\Application\Service\TransactionalApplicationService
-bengor_user.sign_up_user_by_invitation                                                   Ddd\Application\Service\TransactionalApplicationService
 ```

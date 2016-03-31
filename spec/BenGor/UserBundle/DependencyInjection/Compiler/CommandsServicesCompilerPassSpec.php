@@ -40,28 +40,32 @@ class CommandsServicesCompilerPassSpec extends ObjectBehavior
     function it_processes(
         ContainerBuilder $container,
         Definition $definition,
-        Definition $signUpDefinition,
-        Definition $activateAccountDefinition
+        Definition $userRepositoryDefinition,
+        Definition $userPasswordEncoderDefinition,
+        Definition $userFactoryDefinition,
+        Definition $doctrineSession
     ) {
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class'    => User::class,
-                    'firewall' => 'main',
+                    'class'       => User::class,
+                    'firewall'    => 'main',
+                    'persistence' => 'doctrine',
                 ],
             ],
         ]);
 
-        $container->getDefinition('bengor.user.application.service.sign_up_user_transactional')
-            ->shouldBeCalled()->willReturn($signUpDefinition);
-        $container->getDefinition('bengor.user.application.service.enable_user_transactional')
-            ->shouldBeCalled()->willReturn($activateAccountDefinition);
+        $container->getDefinition('bengor.user.infrastructure.persistence.user_repository')
+            ->shouldBeCalled()->willReturn($userRepositoryDefinition);
+        $container->getDefinition('bengor.user.infrastructure.security.symfony.user_password_encoder')
+            ->shouldBeCalled()->willReturn($userPasswordEncoderDefinition);
+        $container->getDefinition('bengor.user.infrastructure.domain.model.user_factory')
+            ->shouldBeCalled()->willReturn($userFactoryDefinition);
 
-        $container->findDefinition('bengor.user_bundle.command.sign_up_user_command')
-            ->shouldBeCalled()->willReturn($definition);
-        $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
+        $container->getDefinition('bengor.user.infrastructure.application.service.doctrine_session')
+            ->shouldBeCalled()->willReturn($doctrineSession);
 
-        $container->findDefinition('bengor.user_bundle.command.enable_user_command')
+        $container->findDefinition('bengor.user_bundle.command.create_user_command')
             ->shouldBeCalled()->willReturn($definition);
         $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
 

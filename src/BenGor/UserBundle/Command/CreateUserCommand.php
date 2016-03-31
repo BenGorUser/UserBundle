@@ -12,8 +12,13 @@
 
 namespace BenGor\UserBundle\Command;
 
+use BenGor\User\Application\Service\SignUpAndEnableUserService;
 use BenGor\User\Application\Service\SignUpUserRequest;
+use BenGor\User\Domain\Model\UserFactory;
+use BenGor\User\Domain\Model\UserPasswordEncoder;
+use BenGor\User\Domain\Model\UserRepository;
 use Ddd\Application\Service\TransactionalApplicationService;
+use Ddd\Application\Service\TransactionalSession;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,11 +26,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 /**
- * Sign up user command.
+ * Create user command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SignUpUserCommand extends Command
+class CreateUserCommand extends Command
 {
     /**
      * Fully qualified class name.
@@ -35,11 +40,11 @@ class SignUpUserCommand extends Command
     private $fqcn;
 
     /**
-     * The sign up user service.
+     * The transactional session.
      *
-     * @var TransactionalApplicationService
+     * @var TransactionalSession
      */
-    private $service;
+    private $session;
 
     /**
      * The type of user class.
@@ -49,16 +54,49 @@ class SignUpUserCommand extends Command
     private $userClass;
 
     /**
+     * The user repository.
+     *
+     * @var UserRepository
+     */
+    private $repository;
+
+    /**
+     * The user password encoder.
+     *
+     * @var UserPasswordEncoder
+     */
+    private $encoder;
+
+    /**
+     * The user factory.
+     *
+     * @var UserFactory
+     */
+    private $factory;
+
+    /**
      * Constructor.
      *
-     * @param TransactionalApplicationService $service   The sign up user service
-     * @param string                          $userClass The user class
-     * @param string                          $fqcn      The fully qualified class name
+     * @param UserRepository       $repository The user repository
+     * @param UserPasswordEncoder  $encoder    The password encoder
+     * @param UserFactory          $factory    The user factory
+     * @param TransactionalSession $session    The transactional session
+     * @param string               $userClass  The user class
+     * @param string               $fqcn       The fully qualified class name
      */
-    public function __construct(TransactionalApplicationService $service, $userClass, $fqcn)
-    {
+    public function __construct(
+        UserRepository $repository,
+        UserPasswordEncoder $encoder,
+        UserFactory $factory,
+        TransactionalSession $session,
+        $userClass,
+        $fqcn
+    ) {
+        $this->encoder = $encoder;
+        $this->factory = $factory;
         $this->fqcn = $fqcn;
-        $this->service = $service;
+        $this->repository = $repository;
+        $this->session = $session;
         $this->userClass = $userClass;
 
         parent::__construct();
@@ -109,29 +147,22 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $response = $this->service->execute(
+        $service = new TransactionalApplicationService(
+            new SignUpAndEnableUserService($this->repository, $this->encoder, $this->factory),
+            $this->session
+        );
+
+        $response = $service->execute(
             new SignUpUserRequest(
                 $input->getArgument('email'),
                 $input->getArgument('password'),
                 $input->getArgument('roles')
             )
         );
-        $user = $response->user();
 
-        $outputMessage = sprintf(
-            'Created %s <comment>%s</comment>, if you want to enable the %s this is the confirmation' .
-            'token <comment>%s</comment>',
-            $this->userClass,
-            $user->email(),
-            $this->userClass,
-            $user->confirmationToken()
-        );
-        if (null === $user->confirmationToken()) {
-            $outputMessage = sprintf(
-                'Created %s: <comment>%s</comment>', $this->userClass, $user->email()
-            );
-        }
-        $output->writeln($outputMessage);
+        $output->writeln(sprintf(
+            'Created %s: <comment>%s</comment>', $this->userClass, $response->user()->email()
+        ));
     }
 
     /**
