@@ -12,7 +12,6 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Application\Service\ActivateUserAccountService;
 use BenGor\User\Application\Service\ChangeUserPasswordService;
 use BenGor\User\Application\Service\ChangeUserPasswordUsingRememberPasswordTokenService;
 use BenGor\User\Application\Service\EnableUserService;

@@ -13,9 +13,6 @@
 namespace BenGor\UserBundle\Controller;
 
 use BenGor\User\Domain\Model\Exception\UserAlreadyExistException;
-use BenGor\User\Domain\Model\Exception\UserGuestDoesNotExistException;
-use BenGor\User\Domain\Model\UserGuest;
-use BenGor\User\Domain\Model\UserToken;
 use BenGor\UserBundle\Form\Type\RegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

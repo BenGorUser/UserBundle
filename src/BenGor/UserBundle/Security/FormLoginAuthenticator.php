@@ -52,21 +52,21 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     private $router;
 
     /**
-     * The login route name
+     * The login route name.
      *
      * @var string
      */
     private $loginRoute;
 
     /**
-     * The login_check route name
+     * The login_check route name.
      *
      * @var string
      */
     private $loginCheckRoute;
 
     /**
-     * The success redirection route name
+     * The success redirection route name.
      *
      * @var string
      */

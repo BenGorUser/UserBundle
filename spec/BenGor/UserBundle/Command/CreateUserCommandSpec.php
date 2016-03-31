@@ -12,25 +12,14 @@
 
 namespace spec\BenGor\UserBundle\Command;
 
-use BenGor\User\Application\Service\SignUpAndEnableUserService;
-use BenGor\User\Application\Service\SignUpUserRequest;
-use BenGor\User\Application\Service\SignUpUserResponse;
-use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserFactory;
-use BenGor\User\Domain\Model\UserId;
-use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserPasswordEncoder;
 use BenGor\User\Domain\Model\UserRepository;
-use BenGor\User\Domain\Model\UserRole;
 use BenGor\UserBundle\Command\CreateUserCommand;
 use BenGor\UserBundle\Model\User;
-use Ddd\Application\Service\TransactionalApplicationService;
 use Ddd\Application\Service\TransactionalSession;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Spec file of create user command.

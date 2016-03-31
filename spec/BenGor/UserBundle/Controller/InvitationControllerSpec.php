@@ -16,8 +16,6 @@ use BenGor\User\Application\Service\InviteUserRequest;
 use BenGor\User\Application\Service\InviteUserService;
 use BenGor\User\Application\Service\SignUpUserByInvitationRequest;
 use BenGor\User\Application\Service\SignUpUserByInvitationService;
-use BenGor\User\Application\Service\SignUpUserRequest;
-use BenGor\User\Application\Service\SignUpUserService;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserGuest;
 use BenGor\User\Domain\Model\UserGuestRepository;
@@ -34,7 +32,6 @@ use BenGor\UserBundle\Model\User;
 use Ddd\Application\Service\TransactionalApplicationService;
 use Ddd\Infrastructure\Application\Service\DummySession;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -46,16 +43,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
  * Spec file of invitation controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationControllerSpec extends ObjectBehavior
+class InvitationControllerSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)
     {
@@ -266,7 +260,7 @@ class RegistrationControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.sign_up_user_by_invitation')->shouldBeCalled()->willReturn($service);
+        $container->get('bengor_user.sign_up_user')->shouldBeCalled()->willReturn($service);
         $form->getData()->shouldBeCalled()->willReturn($serviceRequest);
 
         $container->has('session')->shouldBeCalled()->willReturn(true);

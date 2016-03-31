@@ -14,8 +14,6 @@ namespace BenGor\UserBundle\Controller;
 
 use BenGor\User\Application\Service\EnableUserRequest;
 use BenGor\User\Domain\Model\Exception\UserTokenNotFoundException;
-use BenGor\User\Domain\Model\UserGuest;
-use BenGor\User\Domain\Model\UserToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 

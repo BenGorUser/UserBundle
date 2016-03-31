@@ -12,19 +12,9 @@
 
 namespace spec\BenGor\UserBundle\Controller;
 
-use BenGor\User\Application\Service\InviteUserRequest;
-use BenGor\User\Application\Service\InviteUserService;
-use BenGor\User\Application\Service\SignUpUserByInvitationRequest;
-use BenGor\User\Application\Service\SignUpUserByInvitationService;
 use BenGor\User\Application\Service\SignUpUserRequest;
 use BenGor\User\Application\Service\SignUpUserService;
-use BenGor\User\Domain\Model\UserEmail;
-use BenGor\User\Domain\Model\UserGuest;
-use BenGor\User\Domain\Model\UserGuestRepository;
-use BenGor\User\Domain\Model\UserToken;
 use BenGor\User\Infrastructure\Domain\Model\UserFactory;
-use BenGor\User\Infrastructure\Domain\Model\UserGuestFactory;
-use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserGuestRepository;
 use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
 use BenGor\User\Infrastructure\Security\Test\DummyUserPasswordEncoder;
 use BenGor\UserBundle\Controller\RegistrationController;
@@ -45,9 +35,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
