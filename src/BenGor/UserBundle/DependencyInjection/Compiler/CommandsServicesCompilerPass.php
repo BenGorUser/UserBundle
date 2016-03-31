@@ -33,20 +33,22 @@ class CommandsServicesCompilerPass implements CompilerPassInterface
         $config = $container->getParameter('bengor_user.config');
 
         foreach ($config['user_class'] as $key => $user) {
-            $container->findDefinition('bengor.user_bundle.command.sign_up_' . $key . '_command')
+            $container->findDefinition('bengor.user_bundle.command.create_' . $key . '_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor.user.application.service.sign_up_' . $key . '_doctrine_transactional'
+                        'bengor.user.infrastructure.persistence.' . $key . '_repository'
+                    ),
+                    $container->getDefinition(
+                        'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
+                    ),
+                    $container->getDefinition(
+                        'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+                    ),
+                    $container->getDefinition(
+                        'bengor.user.infrastructure.application.service.' . $user['persistence'] . '_session'
                     ),
                     $key,
                     $user['class'],
-                ]);
-            $container->findDefinition('bengor.user_bundle.command.activate_' . $key . '_account_command')
-                ->setArguments([
-                    $container->getDefinition(
-                        'bengor.user.application.service.activate_' . $key . '_account_doctrine_transactional'
-                    ),
-                    $key,
                 ]);
         }
     }

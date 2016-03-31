@@ -9,7 +9,7 @@
     * Remember password
     * User management
     * Role management
-* Commands
+* [Commands](commands.md)
 * Custom views, overriding twig files
 * Advanced customization
     * Custom urls for controllers

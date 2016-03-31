@@ -12,16 +12,16 @@
 
 namespace spec\BenGor\UserBundle\Routing;
 
-use BenGor\UserBundle\Routing\SecurityRoutesLoader;
+use BenGor\UserBundle\Routing\InvitationRoutesLoader;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Spec file of security routes loader class.
+ * Spec file of invitation routes loader class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityRoutesLoaderSpec extends ObjectBehavior
+class InvitationRoutesLoaderSpec extends ObjectBehavior
 {
     function let()
     {
@@ -31,23 +31,18 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
                 'persistence' => 'doctrine',
                 'firewall'    => 'main',
                 'use_cases'   => [
-                    'security' => [
+                    'registration' => [
                         'enabled' => true,
+                        'type'    => 'by_invitation',
                     ],
                 ],
                 'routes'      => [
-                    'security' => [
-                        'login'                     => [
-                            'name' => 'bengor_user_user_security_login',
-                            'path' => '/login',
-                        ],
-                        'login_check'               => [
-                            'name' => 'bengor_user_user_security_login_check',
-                            'path' => '/login_check',
-                        ],
-                        'logout'                    => [
-                            'name' => 'bengor_user_user_security_logout',
-                            'path' => '/logout',
+                    'registration' => [
+                        'name'                      => 'bengor_user_user_registration',
+                        'path'                      => '/user/register',
+                        'invitation'                => [
+                            'name' => 'bengor_user_user_invitation',
+                            'path' => '/user/invite',
                         ],
                         'success_redirection_route' => 'bengor_user_user_homepage',
                     ],
@@ -58,7 +53,7 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SecurityRoutesLoader::class);
+        $this->shouldHaveType(InvitationRoutesLoader::class);
     }
 
     function it_implements_loader_interface()

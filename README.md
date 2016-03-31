@@ -1,5 +1,5 @@
 #BenGorUserBundle
-> Fully featured and test covered user Symfony bundle built on top of [BenGorUser][7] library
+> Fully featured and test covered user Symfony bundle built on top of [BenGorUser][6] library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6/mini.png)](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6)
 [![Build Status](https://travis-ci.org/BenGor/UserBundle.svg?branch=master)](https://travis-ci.org/BenGor/UserBundle)
@@ -13,7 +13,7 @@ PHP >= 5.5</br>
 Symfony >= 2.8 
 
 ##Installation
-The easiest way to install this component is using **[Composer][8]**
+The easiest way to install this component is using **[Composer][7]**
 ```bash
 $ composer require bengor/user-bundle
 ```
@@ -32,10 +32,9 @@ $ vendor/bin/phpspec run -fpretty
 ```
 
 ##Contributing
-This bundle follows PHP coding standards, so pull requests need to execute the Fabien Potencier's [PHP-CS-Fixer][5]
-and Marc Morera's [PHP-Formatter][6]. Furthermore, if the PR creates some not-PHP file remember that you have to put
-the license header manually. In order to simplify we provide a Composer script that wraps all the commands related with
-this process.
+This bundle follows PHP coding standards, so pull requests need to execute the Fabien Potencier's [PHP-CS-Fixer][5].
+Furthermore, if the PR creates some not-PHP file remember that you have to put the license header manually. In
+order to simplify we provide a Composer script that wraps all the commands related with this process.
 ```bash
 $ composer run-script cs
 ```
@@ -62,6 +61,5 @@ This bundle is created by:
 [3]: http://symfony.com/doc/current/contributing/code/patches.html#check-list
 [4]: http://symfony.com/doc/current/contributing/code/patches.html#make-a-pull-request
 [5]: http://cs.sensiolabs.org/
-[6]: https://github.com/mmoreram/php-formatter
-[7]: https://github.com/BenGor/User
-[8]: http://getcomposer.org
+[6]: https://github.com/BenGor/User
+[7]: http://getcomposer.org

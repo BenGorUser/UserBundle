@@ -61,6 +61,9 @@ class BenGorUserBundle extends Bundle
             new MailingServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
+            new RoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
+        );
+        $container->addCompilerPass(
             new ApplicationServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
@@ -68,9 +71,6 @@ class BenGorUserBundle extends Bundle
         );
         $container->addCompilerPass(
             new AliasServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new RoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
             new SubscribersCompilerPass(), PassConfig::TYPE_OPTIMIZE

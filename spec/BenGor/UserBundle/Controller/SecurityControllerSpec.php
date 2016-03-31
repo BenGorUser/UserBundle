@@ -86,7 +86,7 @@ class SecurityControllerSpec extends ObjectBehavior
         $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')->shouldBeCalled()->willReturn(true);
 
         $container->get('router')->shouldBeCalled()->willReturn($router);
-        $router->generate('admin_homepage', [], 1)->shouldBeCalled()->willReturn('/');
+        $router->generate('admin', [], 1)->shouldBeCalled()->willReturn('/');
 
         $this->loginAction($request, 'admin');
     }

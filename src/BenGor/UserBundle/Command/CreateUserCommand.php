@@ -12,8 +12,13 @@
 
 namespace BenGor\UserBundle\Command;
 
+use BenGor\User\Application\Service\SignUpAndEnableUserService;
 use BenGor\User\Application\Service\SignUpUserRequest;
+use BenGor\User\Domain\Model\UserFactory;
+use BenGor\User\Domain\Model\UserPasswordEncoder;
+use BenGor\User\Domain\Model\UserRepository;
 use Ddd\Application\Service\TransactionalApplicationService;
+use Ddd\Application\Service\TransactionalSession;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,11 +26,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 /**
- * Sign up user command.
+ * Create user command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SignUpUserCommand extends Command
+class CreateUserCommand extends Command
 {
     /**
      * Fully qualified class name.
@@ -35,11 +40,11 @@ class SignUpUserCommand extends Command
     private $fqcn;
 
     /**
-     * The sign up user service.
+     * The transactional session.
      *
-     * @var TransactionalApplicationService
+     * @var TransactionalSession
      */
-    private $service;
+    private $session;
 
     /**
      * The type of user class.
@@ -49,19 +54,52 @@ class SignUpUserCommand extends Command
     private $userClass;
 
     /**
+     * The user repository.
+     *
+     * @var UserRepository
+     */
+    private $repository;
+
+    /**
+     * The user password encoder.
+     *
+     * @var UserPasswordEncoder
+     */
+    private $encoder;
+
+    /**
+     * The user factory.
+     *
+     * @var UserFactory
+     */
+    private $factory;
+
+    /**
      * Constructor.
      *
-     * @param TransactionalApplicationService $service   The sign up user service
-     * @param string                          $userClass The user class
-     * @param string                          $fqcn      The fully qualified class name
+     * @param UserRepository       $repository The user repository
+     * @param UserPasswordEncoder  $encoder    The password encoder
+     * @param UserFactory          $factory    The user factory
+     * @param TransactionalSession $session    The transactional session
+     * @param string               $userClass  The user class
+     * @param string               $fqcn       The fully qualified class name
      */
-    public function __construct(TransactionalApplicationService $service, $userClass, $fqcn)
-    {
-        parent::__construct();
-
+    public function __construct(
+        UserRepository $repository,
+        UserPasswordEncoder $encoder,
+        UserFactory $factory,
+        TransactionalSession $session,
+        $userClass,
+        $fqcn
+    ) {
+        $this->encoder = $encoder;
+        $this->factory = $factory;
         $this->fqcn = $fqcn;
-        $this->service = $service;
+        $this->repository = $repository;
+        $this->session = $session;
         $this->userClass = $userClass;
+
+        parent::__construct();
     }
 
     /**
@@ -70,8 +108,8 @@ class SignUpUserCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('bengor:user:create')
-            ->setDescription('Create a user.')
+            ->setName(sprintf('bengor:user:%s:create', $this->userClass))
+            ->setDescription(sprintf('Create a %s.', $this->userClass))
             ->setDefinition([
                 new InputArgument(
                     'email',
@@ -90,15 +128,15 @@ class SignUpUserCommand extends Command
                 ),
             ])
             ->setHelp(<<<EOT
-The <info>bengor:user:create</info> command creates a user:
+The <info>bengor:user:$this->userClass:create</info> command creates a $this->userClass:
 
-  <info>php bin/console bengor:user:create benatespina@gmail.com</info>
+  <info>php bin/console bengor:user:$this->userClass:create benatespina@gmail.com</info>
 
 This interactive shell will ask you for a password and then roles.
 
 You can alternatively specify the password and roles as the second and third arguments:
 
-  <info>php bin/console bengor:user:create benatespina@gmail.com 123456 ROLE_USER ROLE_ADMIN</info>
+  <info>php bin/console bengor:user:$this->userClass:create benatespina@gmail.com 123456 ROLE_USER ROLE_ADMIN</info>
 
 EOT
             );
@@ -109,27 +147,22 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $response = $this->service->execute(
+        $service = new TransactionalApplicationService(
+            new SignUpAndEnableUserService($this->repository, $this->encoder, $this->factory),
+            $this->session
+        );
+
+        $response = $service->execute(
             new SignUpUserRequest(
                 $input->getArgument('email'),
                 $input->getArgument('password'),
                 $input->getArgument('roles')
             )
         );
-        $user = $response->user();
 
-        $output->writeln(
-            sprintf(
-                'Created user <comment>%s</comment>',
-                $user->email()->email()
-            )
-        );
-        $output->writeln(
-            sprintf(
-                'If you want to activate account this is the confirmation token <comment>%s</comment>',
-                $user->confirmationToken()->token()
-            )
-        );
+        $output->writeln(sprintf(
+            'Created %s: <comment>%s</comment>', $this->userClass, $response->user()->email()
+        ));
     }
 
     /**
@@ -170,7 +203,7 @@ EOT
             );
             $question->setValidator(function ($roles) {
                 if (empty($roles)) {
-                    throw new \Exception('Al least, one role is required');
+                    $roles = implode(' ', call_user_func([$this->fqcn, 'availableRoles']));
                 }
 
                 return explode(' ', $roles);

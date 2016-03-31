@@ -44,23 +44,22 @@ class AliasServicesCompilerPass implements CompilerPassInterface
             $aliasMap = array_merge([
                 'bengor_user.symfony_' . $key . '_password_encoder' => 'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder',
                 'bengor_user.' . $key . '_factory'                  => 'bengor.user.infrastructure.domain.model.' . $key . '_factory',
-                'bengor_user.doctrine_' . $key . '_repository'      => 'bengor.user.infrastructure.persistence.doctrine.' . $key . '_repository',
+                'bengor_user.' . $key . '_repository'               => 'bengor.user.infrastructure.persistence.' . $key . '_repository',
 
-                'bengor_user.activate_' . $key . '_account'                              => 'bengor.user.application.service.activate_' . $key . '_account_doctrine_transactional',
-                'bengor_user.change_' . $key . '_password'                               => 'bengor.user.application.service.change_' . $key . '_password_doctrine_transactional',
-                'bengor_user.change_' . $key . '_password_using_remember_password_token' => 'bengor.user.application.service.change_' . $key . '_password_using_remember_password_token_doctrine_transactional',
-                'bengor_user.log_in_' . $key                                             => 'bengor.user.application.service.log_in_' . $key . '_doctrine_transactional',
-                'bengor_user.log_out_' . $key                                            => 'bengor.user.application.service.log_out_' . $key . '_doctrine_transactional',
-                'bengor_user.remove_' . $key                                             => 'bengor.user.application.service.remove_' . $key . '_doctrine_transactional',
-                'bengor_user.request_' . $key . '_remember_password_token'               => 'bengor.user.application.service.request_' . $key . '_remember_password_token_doctrine_transactional',
-                'bengor_user.sign_up_' . $key                                            => 'bengor.user.application.service.sign_up_' . $key . '_doctrine_transactional',
+                'bengor_user.enable_' . $key                                             => 'bengor.user.application.service.enable_' . $key . '_transactional',
+                'bengor_user.change_' . $key . '_password'                               => 'bengor.user.application.service.change_' . $key . '_password_transactional',
+                'bengor_user.change_' . $key . '_password_using_remember_password_token' => 'bengor.user.application.service.change_' . $key . '_password_using_remember_password_token_transactional',
+                'bengor_user.log_in_' . $key                                             => 'bengor.user.application.service.log_in_' . $key . '_transactional',
+                'bengor_user.log_out_' . $key                                            => 'bengor.user.application.service.log_out_' . $key . '_transactional',
+                'bengor_user.remove_' . $key                                             => 'bengor.user.application.service.remove_' . $key . '_transactional',
+                'bengor_user.request_' . $key . '_remember_password_token'               => 'bengor.user.application.service.request_' . $key . '_remember_password_token_transactional',
+                'bengor_user.sign_up_' . $key                                            => 'bengor.user.application.service.sign_up_' . $key . '_transactional',
                 'bengor_user.form_login_' . $key . '_authenticator'                      => 'bengor.user_bundle.security.form_login_' . $key . '_authenticator',
             ], $aliasMap);
             if (null !== $guestClass) {
                 $aliasMap = array_merge([
-                    'bengor_user.doctrine_' . $key . '_guest_repository' => 'bengor.user.infrastructure.persistence.doctrine.' . $key . '_guest_repository',
-                    'bengor_user.invite_' . $key                         => 'bengor.user.application.service.invite_' . $key . '_doctrine_transactional',
-                    'bengor_user.sign_up_' . $key . '_by_invitation'     => 'bengor.user.application.service.sign_up_' . $key . '_by_invitation_doctrine_transactional',
+                    'bengor_user.' . $key . '_guest_repository' => 'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
+                    'bengor_user.invite_' . $key                => 'bengor.user.application.service.invite_' . $key . '_transactional',
                 ], $aliasMap);
             }
         }

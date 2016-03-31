@@ -34,20 +34,20 @@ class RegistrationRoutesLoader implements LoaderInterface
     private $loaded;
 
     /**
-     * Array which contains the patterns.
+     * Array which contains the routes configuration.
      *
      * @var array
      */
-    private $patterns;
+    private $config;
 
     /**
      * Constructor.
      *
-     * @param array $patterns Array which contains the patterns
+     * @param array $config Array which contains the routes configuration
      */
-    public function __construct(array $patterns)
+    public function __construct(array $config)
     {
-        $this->patterns = $patterns;
+        $this->config = $config;
         $this->loaded = false;
     }
 
@@ -61,43 +61,31 @@ class RegistrationRoutesLoader implements LoaderInterface
         }
 
         $routes = new RouteCollection();
-        foreach ($this->patterns as $name => $route) {
-            if (array_key_exists('register_path', $route)) {
-                $routes->add(
-                    'bengor_user' . $name . '_registration_register',
-                    new Route(
-                        $route['register_path'],
-                        [
-                            '_controller' => 'BenGorUserBundle:Registration:' . $route['action'],
-                            'userClass'   => $route['userClass'],
-                            'firewall'    => $route['firewall'],
-                            'pattern'     => $route['pattern'],
-                        ],
-                        [],
-                        [],
-                        '',
-                        [],
-                        ['GET', 'POST']
-                    )
-                );
+        foreach ($this->config as $userClass => $userConfig) {
+            $registrationRouteConfig = $userConfig['routes']['registration'];
+            $registrationUseCaseConfig = $userConfig['use_cases']['registration'];
+
+            if (false === $registrationUseCaseConfig['enabled']
+                || 'by_invitation' === $registrationUseCaseConfig['type']
+                || 'full' === $registrationUseCaseConfig['type']
+            ) {
+                continue;
             }
-            if (array_key_exists('invite_path', $route)) {
-                $routes->add(
-                    'bengor_user' . $name . '_registration_invite',
-                    new Route(
-                        $route['invite_path'],
-                        [
-                            '_controller' => 'BenGorUserBundle:Registration:invite',
-                            'userClass'   => $route['userClass'],
-                        ],
-                        [],
-                        [],
-                        '',
-                        [],
-                        ['GET', 'POST']
-                    )
-                );
-            }
+
+            $routes->add($registrationRouteConfig['name'], new Route(
+                $registrationRouteConfig['path'],
+                [
+                    '_controller'  => 'BenGorUserBundle:Registration:register',
+                    'userClass'    => $userClass,
+                    'firewall'     => $userConfig['firewall'],
+                    'successRoute' => $registrationRouteConfig['success_redirection_route'],
+                ],
+                [],
+                [],
+                '',
+                [],
+                ['GET', 'POST']
+            ));
         }
         $this->loaded = true;
 

@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Security routes loader class.
+ * Enable user routes loader class.
  *
- * Service that loads dynamically routes of security.
+ * Service that loads dynamically routes of activate account.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityRoutesLoader implements LoaderInterface
+class EnableUserRoutesLoader implements LoaderInterface
 {
     /**
      * Boolean that checks if the routes are already loaded or not.
@@ -61,47 +61,33 @@ class SecurityRoutesLoader implements LoaderInterface
         }
 
         $routes = new RouteCollection();
-        foreach ($this->config as $userConfig) {
-            $securityRouteConfig = $userConfig['routes']['security'];
-            $securityUseCaseConfig = $userConfig['use_cases']['security'];
-            if (false === $securityUseCaseConfig['enabled']) {
+        foreach ($this->config as $userClass => $userConfig) {
+            $registrationRouteConfig = $userConfig['routes']['registration'];
+            $registrationUseCaseConfig = $userConfig['use_cases']['registration'];
+
+            if (false === $registrationUseCaseConfig['enabled']
+                || 'default' === $registrationUseCaseConfig['type']
+                || 'by_invitation' === $registrationUseCaseConfig['type']
+            ) {
                 continue;
             }
 
-            $routes->add($securityRouteConfig['login']['name'], new Route(
-                $securityRouteConfig['login']['path'],
-                [
-                    '_controller'  => 'BenGorUserBundle:Security:login',
-                    'successRoute' => $securityRouteConfig['success_redirection_route'],
-                ],
-                [],
-                [],
-                '',
-                [],
-                ['GET', 'POST']
-            ));
-            $routes->add($securityRouteConfig['login_check']['name'], new Route(
-                $securityRouteConfig['login_check']['path'],
-                [
-                    '_controller' => 'BenGorUserBundle:Security:loginCheck',
-                ],
-                [],
-                [],
-                '',
-                [],
-                ['POST']
-            ));
-            $routes->add($securityRouteConfig['logout']['name'], new Route(
-                $securityRouteConfig['logout']['path'],
-                [
-                    '_controller' => 'BenGorUserBundle:Security:logout',
-                ],
-                [],
-                [],
-                '',
-                [],
-                ['GET']
-            ));
+            $routes->add(
+                $registrationRouteConfig['user_enable']['name'],
+                new Route(
+                    $registrationRouteConfig['user_enable']['path'],
+                    [
+                        '_controller'  => 'BenGorUserBundle:EnableUser:enable',
+                        'userClass'    => $userClass,
+                        'successRoute' => $registrationRouteConfig['success_redirection_route'],
+                    ],
+                    [],
+                    [],
+                    '',
+                    [],
+                    ['GET']
+                )
+            );
         }
         $this->loaded = true;
 
@@ -113,7 +99,7 @@ class SecurityRoutesLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_security' === $type;
+        return 'bengor_user_user_enable' === $type;
     }
 
     /**

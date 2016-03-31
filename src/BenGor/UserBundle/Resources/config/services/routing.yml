@@ -7,6 +7,22 @@
 # file that was distributed with this source code.
 
 services:
+    bengor.user_bundle.routing.enable_user_routes_loader:
+        class: BenGor\UserBundle\Routing\EnableUserRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.invitation_routes_loader:
+        class: BenGor\UserBundle\Routing\InvitationRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
     bengor.user_bundle.routing.security_routes_loader:
         class: BenGor\UserBundle\Routing\SecurityRoutesLoader
         arguments:

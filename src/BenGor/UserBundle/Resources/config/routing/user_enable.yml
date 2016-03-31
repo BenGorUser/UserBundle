@@ -6,14 +6,6 @@
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
 
-bengor_user_user_enable:
-    resource: user_enable.yml
-
-bengor_user_invitation:
-    resource: invitation.yml
-
-bengor_user_security:
-    resource: security.yml
-
-bengor_user_registration:
-    resource: registration.yml
+bengor_user_user_enable_routes:
+    resource: .
+    type: bengor_user_user_enable
