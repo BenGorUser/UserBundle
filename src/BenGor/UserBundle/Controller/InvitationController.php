@@ -86,7 +86,7 @@ class InvitationController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $service = $this->get('bengor_user.sign_up_' . $userClass . '_by_invitation');
+                $service = $this->get('bengor_user.sign_up_' . $userClass);
 
                 try {
                     $response = $service->execute($form->getData());

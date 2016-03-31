@@ -88,7 +88,7 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
                         $guestClass,
                     ]
                 ))->setFactory([
-                    new Reference('doctrine.orm.default_entity_manager'), 'getRepository'
+                    new Reference('doctrine.orm.default_entity_manager'), 'getRepository',
                 ])->setPublic(false)
             );
         }
@@ -128,7 +128,7 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
                 'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
                 (new Definition(
                     SqlUserGuestRepository::class, [
-                        $guestClass,
+                        new Reference('pdo'),
                     ]
                 ))->setPublic(false)
             );

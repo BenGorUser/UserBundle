@@ -44,9 +44,9 @@ class AliasServicesCompilerPass implements CompilerPassInterface
             $aliasMap = array_merge([
                 'bengor_user.symfony_' . $key . '_password_encoder' => 'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder',
                 'bengor_user.' . $key . '_factory'                  => 'bengor.user.infrastructure.domain.model.' . $key . '_factory',
-                'bengor_user.' . $key . '_repository'      => 'bengor.user.infrastructure.persistence.' . $key . '_repository',
+                'bengor_user.' . $key . '_repository'               => 'bengor.user.infrastructure.persistence.' . $key . '_repository',
 
-                'bengor_user.activate_' . $key . '_account'                              => 'bengor.user.application.service.activate_' . $key . '_account_transactional',
+                'bengor_user.enable_' . $key                                             => 'bengor.user.application.service.enable_' . $key . '_transactional',
                 'bengor_user.change_' . $key . '_password'                               => 'bengor.user.application.service.change_' . $key . '_password_transactional',
                 'bengor_user.change_' . $key . '_password_using_remember_password_token' => 'bengor.user.application.service.change_' . $key . '_password_using_remember_password_token_transactional',
                 'bengor_user.log_in_' . $key                                             => 'bengor.user.application.service.log_in_' . $key . '_transactional',
@@ -59,8 +59,7 @@ class AliasServicesCompilerPass implements CompilerPassInterface
             if (null !== $guestClass) {
                 $aliasMap = array_merge([
                     'bengor_user.' . $key . '_guest_repository' => 'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
-                    'bengor_user.invite_' . $key                         => 'bengor.user.application.service.invite_' . $key . '_transactional',
-                    'bengor_user.sign_up_' . $key . '_by_invitation'     => 'bengor.user.application.service.sign_up_' . $key . '_by_invitation_transactional',
+                    'bengor_user.invite_' . $key                => 'bengor.user.application.service.invite_' . $key . '_transactional',
                 ], $aliasMap);
             }
         }

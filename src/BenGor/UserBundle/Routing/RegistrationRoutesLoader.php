@@ -63,9 +63,11 @@ class RegistrationRoutesLoader implements LoaderInterface
         $routes = new RouteCollection();
         foreach ($this->config as $userClass => $userConfig) {
             $registrationRouteConfig = $userConfig['routes']['registration'];
+            $registrationUseCaseConfig = $userConfig['use_cases']['registration'];
 
-            if (false === $registrationRouteConfig['enabled']
-                || 'by_invitation' === $registrationRouteConfig['type']
+            if (false === $registrationUseCaseConfig['enabled']
+                || 'by_invitation' === $registrationUseCaseConfig['type']
+                || 'full' === $registrationUseCaseConfig['type']
             ) {
                 continue;
             }

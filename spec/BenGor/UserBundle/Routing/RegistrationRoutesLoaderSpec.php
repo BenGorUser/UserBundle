@@ -30,10 +30,14 @@ class RegistrationRoutesLoaderSpec extends ObjectBehavior
                 'class'       => 'AppBundle\Entity\User',
                 'persistence' => 'doctrine',
                 'firewall'    => 'main',
+                'use_cases'   => [
+                    'registration' => [
+                        'enabled' => true,
+                        'type'    => 'by_invitation',
+                    ],
+                ],
                 'routes'      => [
                     'registration' => [
-                        'enabled'                   => true,
-                        'type'                      => 'by_invitation',
                         'name'                      => 'bengor_user_user_registration',
                         'path'                      => '/user/register',
                         'invitation_name'           => 'bengor_user_user_invitation',

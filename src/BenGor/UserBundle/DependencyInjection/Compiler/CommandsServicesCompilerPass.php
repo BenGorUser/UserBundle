@@ -41,10 +41,10 @@ class CommandsServicesCompilerPass implements CompilerPassInterface
                     $key,
                     $user['class'],
                 ]);
-            $container->findDefinition('bengor.user_bundle.command.activate_' . $key . '_account_command')
+            $container->findDefinition('bengor.user_bundle.command.enable_' . $key . '_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor.user.application.service.activate_' . $key . '_account_transactional'
+                        'bengor.user.application.service.enable_' . $key . '_transactional'
                     ),
                     $key,
                 ]);

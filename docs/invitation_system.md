@@ -30,7 +30,7 @@ ben_gor_user:
             class: AppBundle\Entity\User
             firewall:
                 name: main
-            routes:
+            use_cases:
                 registration:
                     type: by_invitation
 ```

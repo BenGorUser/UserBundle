@@ -7,8 +7,8 @@
 # file that was distributed with this source code.
 
 services:
-    bengor.user_bundle.routing.activate_account_routes_loader:
-        class: BenGor\UserBundle\Routing\ActivateAccountRoutesLoader
+    bengor.user_bundle.routing.enable_user_routes_loader:
+        class: BenGor\UserBundle\Routing\EnableUserRoutesLoader
         arguments:
             - []
         public: false

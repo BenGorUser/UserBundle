@@ -42,11 +42,19 @@ class ApplicationServicesCompilerPassSpec extends ObjectBehavior
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class'    => 'BenGor\User\Domain\Model\User',
-                    'firewall' => 'main',
-                    'routes'   => [
+                    'class'     => User::class,
+                    'firewall'  => 'main',
+                    'use_cases' => [
                         'security'     => [
-                            'enabled'                   => true,
+                            'enabled' => true,
+                        ],
+                        'registration' => [
+                            'enabled' => true,
+                            'type'    => 'by_invitation',
+                        ],
+                    ],
+                    'routes'    => [
+                        'security'     => [
                             'login'                     => [
                                 'name' => 'bengor_user_user_security_login',
                                 'path' => '/login',
@@ -62,13 +70,13 @@ class ApplicationServicesCompilerPassSpec extends ObjectBehavior
                             'success_redirection_route' => 'bengor_user_user_homepage',
                         ],
                         'registration' => [
-                            'enabled'                   => true,
-                            'type'                      => 'by_invitation',
                             'name'                      => 'bengor_user_user_registration',
                             'path'                      => '/user/register',
-                            'invitation_name'           => 'bengor_user_user_invitation',
-                            'invitation_path'           => '/user/invite',
                             'success_redirection_route' => 'bengor_user_user_homepage',
+                            'invitation'                => [
+                                'name' => 'bengor_user_user_invitation',
+                                'path' => '/user/invite',
+                            ],
                         ],
                     ],
                 ],
@@ -88,7 +96,7 @@ class ApplicationServicesCompilerPassSpec extends ObjectBehavior
         $container->getDefinition('bengor.user.infrastructure.domain.model.user_guest_factory')->shouldBeCalled();
 
         $container->setDefinition(
-            'bengor.user.application.service.activate_user_account',
+            'bengor.user.application.service.enable_user',
             Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(
@@ -117,10 +125,6 @@ class ApplicationServicesCompilerPassSpec extends ObjectBehavior
         )->shouldBeCalled();
         $container->setDefinition(
             'bengor.user.application.service.request_user_remember_password_token',
-            Argument::type(Definition::class)
-        )->shouldBeCalled();
-        $container->setDefinition(
-            'bengor.user.application.service.sign_up_user_by_invitation',
             Argument::type(Definition::class)
         )->shouldBeCalled();
         $container->setDefinition(

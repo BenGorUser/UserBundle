@@ -12,8 +12,8 @@
 
 namespace spec\BenGor\UserBundle\Command;
 
-use BenGor\User\Application\Service\ActivateUserAccountRequest;
-use BenGor\UserBundle\Command\ActivateUserAccountCommand;
+use BenGor\User\Application\Service\EnableUserRequest;
+use BenGor\UserBundle\Command\EnableUserCommand;
 use Ddd\Application\Service\TransactionalApplicationService;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,11 +22,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Spec file of activate user account command.
+ * Spec file of enable user command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ActivateUserAccountCommandSpec extends ObjectBehavior
+class EnableUserCommandSpec extends ObjectBehavior
 {
     function let(TransactionalApplicationService $service)
     {
@@ -35,7 +35,7 @@ class ActivateUserAccountCommandSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ActivateUserAccountCommand::class);
+        $this->shouldHaveType(EnableUserCommand::class);
     }
 
     function it_extends_command()
@@ -45,7 +45,7 @@ class ActivateUserAccountCommandSpec extends ObjectBehavior
 
     function it_executes(InputInterface $input, OutputInterface $output, TransactionalApplicationService $service)
     {
-        $service->execute(Argument::type(ActivateUserAccountRequest::class))->shouldBeCalled();
+        $service->execute(Argument::type(EnableUserRequest::class))->shouldBeCalled();
         $output->writeln(sprintf('Enabled <comment>%s</comment>', 'user'))->shouldBeCalled();
 
         $this->run($input, $output)->shouldReturn(0);

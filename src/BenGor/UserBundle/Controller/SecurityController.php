@@ -14,6 +14,7 @@ namespace BenGor\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 
 /**
  * Security controller.
@@ -32,7 +33,7 @@ class SecurityController extends Controller
      */
     public function loginAction(Request $request, $successRoute)
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->get('security.authorization_checker')->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)) {
             return $this->redirectToRoute($successRoute);
         }
         $helper = $this->get('security.authentication_utils');

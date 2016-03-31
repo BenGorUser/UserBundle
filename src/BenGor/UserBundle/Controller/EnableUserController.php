@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\Controller;
 
-use BenGor\User\Application\Service\ActivateUserAccountRequest;
+use BenGor\User\Application\Service\EnableUserRequest;
 use BenGor\User\Domain\Model\Exception\UserTokenNotFoundException;
 use BenGor\User\Domain\Model\UserGuest;
 use BenGor\User\Domain\Model\UserToken;
@@ -20,14 +20,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Account activation controller.
+ * Enable user controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class AccountActivationController extends Controller
+class EnableUserController extends Controller
 {
     /**
-     * Activate account action.
+     * Enable user action.
      *
      * @param Request $request      The request
      * @param string  $userClass    Extra parameter that contains the user type
@@ -35,7 +35,7 @@ class AccountActivationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function activateAccountAction(Request $request, $userClass, $successRoute)
+    public function enableAction(Request $request, $userClass, $successRoute)
     {
         $confirmationToken = $request->query->get('confirmation-token');
         if (null === $confirmationToken) {
@@ -43,12 +43,12 @@ class AccountActivationController extends Controller
         }
 
         try {
-            $this->get('bengor_user.activate_' . $userClass . '_account')->execute(
-                new ActivateUserAccountRequest(
+            $this->get('bengor_user.enable_' . $userClass)->execute(
+                new EnableUserRequest(
                     $confirmationToken
                 )
             );
-            $this->addFlash('notice', 'Account is successfully activated');
+            $this->addFlash('notice', 'User is successfully enabled');
         } catch (UserTokenNotFoundException $exception) {
             $this->addFlash('error', 'The confirmation token is invalid');
         } catch (\Exception $exception) {

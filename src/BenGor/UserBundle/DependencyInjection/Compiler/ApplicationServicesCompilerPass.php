@@ -15,17 +15,21 @@ namespace BenGor\UserBundle\DependencyInjection\Compiler;
 use BenGor\User\Application\Service\ActivateUserAccountService;
 use BenGor\User\Application\Service\ChangeUserPasswordService;
 use BenGor\User\Application\Service\ChangeUserPasswordUsingRememberPasswordTokenService;
+use BenGor\User\Application\Service\EnableUserService;
 use BenGor\User\Application\Service\InviteUserService;
 use BenGor\User\Application\Service\LogInUserService;
 use BenGor\User\Application\Service\LogOutUserService;
 use BenGor\User\Application\Service\RemoveUserService;
 use BenGor\User\Application\Service\RequestRememberPasswordTokenService;
+use BenGor\User\Application\Service\SignUpAndEnableUserByInvitationService;
+use BenGor\User\Application\Service\SignUpAndEnableUserService;
 use BenGor\User\Application\Service\SignUpUserByInvitationService;
 use BenGor\User\Application\Service\SignUpUserService;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
  * Register application services compiler pass.
@@ -51,9 +55,9 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
             }
 
             $container->setDefinition(
-                'bengor.user.application.service.activate_' . $key . '_account',
+                'bengor.user.application.service.enable_' . $key,
                 new Definition(
-                    ActivateUserAccountService::class, [
+                    EnableUserService::class, [
                         $container->getDefinition(
                             'bengor.user.infrastructure.persistence.' . $key . '_repository'
                         ),
@@ -150,42 +154,16 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
-            if (null !== $guestClass) {
-                $container->setDefinition(
-                    'bengor.user.application.service.sign_up_' . $key . '_by_invitation',
-                    new Definition(
-                        SignUpUserByInvitationService::class, [
-                            $container->getDefinition(
-                                'bengor.user.infrastructure.persistence.' . $key . '_repository'
-                            ),
-                            $container->getDefinition(
-                                'bengor.user.infrastructure.persistence.' . $key . '_guest_repository'
-                            ),
-                            $container->getDefinition(
-                                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
-                            ),
-                            $container->getDefinition(
-                                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
-                            ),
-                        ]
-                    )
+            $registrationType = $user['use_cases']['registration']['type'];
+            if (null === $guestClass && ('by_invitation' === $registrationType || 'full' === $registrationType)) {
+                throw new RuntimeException(
+                    'User guest class is not defined so, the "by_invitation" or "full" registration types are invalid'
                 );
             }
+            $method = 'signUp' . ucfirst(str_replace('_', '', ucwords($registrationType, '_')));
             $container->setDefinition(
                 'bengor.user.application.service.sign_up_' . $key,
-                new Definition(
-                    SignUpUserService::class, [
-                        $container->getDefinition(
-                            'bengor.user.infrastructure.persistence.' . $key . '_repository'
-                        ),
-                        $container->getDefinition(
-                            'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
-                        ),
-                        $container->getDefinition(
-                            'bengor.user.infrastructure.domain.model.' . $key . '_factory'
-                        ),
-                    ]
-                )
+                $this->$method($container, $key)
             );
 
 // This declaration should be in SecurityServicesCompilerPass file but it requires the
@@ -207,5 +185,75 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
                 )
             );
         }
+    }
+
+    protected function signUpDefault(ContainerBuilder $container, $key)
+    {
+        return new Definition(
+            SignUpAndEnableUserService::class, [
+            $container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_repository'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+            ),
+        ]);
+    }
+
+    protected function signUpUserEnable(ContainerBuilder $container, $key)
+    {
+        return new Definition(
+            SignUpUserService::class, [
+            $container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_repository'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+            ),
+        ]);
+    }
+
+    protected function signUpByInvitation(ContainerBuilder $container, $key)
+    {
+        return new Definition(
+            SignUpUserByInvitationService::class, [
+            $container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_repository'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_guest_repository'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+            ),
+        ]);
+    }
+
+    protected function signUpFull(ContainerBuilder $container, $key)
+    {
+        return new Definition(
+            SignUpAndEnableUserByInvitationService::class, [
+            $container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_repository'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_guest_repository'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
+            ),
+            $container->getDefinition(
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+            ),
+        ]);
     }
 }

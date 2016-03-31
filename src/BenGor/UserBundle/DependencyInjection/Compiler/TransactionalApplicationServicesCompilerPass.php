@@ -45,10 +45,10 @@ class TransactionalApplicationServicesCompilerPass implements CompilerPassInterf
             $this->$method($container);
 
             $container->register(
-                'bengor.user.application.service.activate_' . $key . '_account_transactional',
+                'bengor.user.application.service.enable_' . $key . '_transactional',
                 TransactionalApplicationService::class
             )->addArgument(
-                new Reference('bengor.user.application.service.activate_' . $key . '_account')
+                new Reference('bengor.user.application.service.enable_' . $key)
             )->addArgument(
                 new Reference('bengor.user.infrastructure.application.service.' . $user['persistence'] . '_session')
             )->setPublic(false);
@@ -110,16 +110,6 @@ class TransactionalApplicationServicesCompilerPass implements CompilerPassInterf
             )->addArgument(
                 new Reference('bengor.user.infrastructure.application.service.' . $user['persistence'] . '_session')
             )->setPublic(false);
-            if (null !== $guestClass) {
-                $container->register(
-                    'bengor.user.application.service.sign_up_' . $key . '_by_invitation_transactional',
-                    TransactionalApplicationService::class
-                )->addArgument(
-                    new Reference('bengor.user.application.service.sign_up_' . $key . '_by_invitation')
-                )->addArgument(
-                    new Reference('bengor.user.infrastructure.application.service.' . $user['persistence'] . '_session')
-                )->setPublic(false);
-            }
             $container->register(
                 'bengor.user.application.service.sign_up_' . $key . '_transactional',
                 TransactionalApplicationService::class

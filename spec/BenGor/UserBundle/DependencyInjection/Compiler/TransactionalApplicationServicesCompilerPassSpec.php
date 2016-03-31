@@ -60,7 +60,7 @@ class TransactionalApplicationServicesCompilerPassSpec extends ObjectBehavior
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->register(
-            'bengor.user.application.service.activate_user_account_transactional',
+            'bengor.user.application.service.enable_user_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
         $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
@@ -110,13 +110,6 @@ class TransactionalApplicationServicesCompilerPassSpec extends ObjectBehavior
 
         $container->register(
             'bengor.user.application.service.request_user_remember_password_token_transactional',
-            TransactionalApplicationService::class
-        )->shouldBeCalled()->willReturn($definition);
-        $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
-
-        $container->register(
-            'bengor.user.application.service.sign_up_user_by_invitation_transactional',
             TransactionalApplicationService::class
         )->shouldBeCalled()->willReturn($definition);
         $definition->addArgument(Argument::type(Reference::class))->shouldBeCalled()->willReturn($definition);

@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\DependencyInjection;
 
-use BenGor\UserBundle\Command\ActivateUserAccountCommand;
+use BenGor\UserBundle\Command\EnableUserCommand;
 use BenGor\UserBundle\Command\SignUpUserCommand;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -59,8 +59,8 @@ class BenGorUserExtension extends Extension
                 (new Definition(SignUpUserCommand::class))->addTag('console.command')
             );
             $container->setDefinition(
-                'bengor.user_bundle.command.activate_' . $key . '_account_command',
-                (new Definition(ActivateUserAccountCommand::class))->addTag('console.command')
+                'bengor.user_bundle.command.enable_' . $key . '_command',
+                (new Definition(EnableUserCommand::class))->addTag('console.command')
             );
         }
     }

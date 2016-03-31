@@ -63,7 +63,8 @@ class SecurityRoutesLoader implements LoaderInterface
         $routes = new RouteCollection();
         foreach ($this->config as $userConfig) {
             $securityRouteConfig = $userConfig['routes']['security'];
-            if (false === $securityRouteConfig['enabled']) {
+            $securityUseCaseConfig = $userConfig['use_cases']['security'];
+            if (false === $securityUseCaseConfig['enabled']) {
                 continue;
             }
 

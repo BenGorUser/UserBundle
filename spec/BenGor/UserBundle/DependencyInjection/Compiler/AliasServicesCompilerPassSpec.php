@@ -12,6 +12,7 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
+use BenGor\User\Domain\Model\User;
 use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -39,11 +40,19 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class'    => 'BenGor\User\Domain\Model\User',
-                    'firewall' => 'main',
-                    'routes'   => [
+                    'class'     => User::class,
+                    'firewall'  => 'main',
+                    'use_cases' => [
                         'security'     => [
-                            'enabled'                   => true,
+                            'enabled' => true,
+                        ],
+                        'registration' => [
+                            'enabled' => true,
+                            'type'    => 'by_invitation',
+                        ],
+                    ],
+                    'routes'    => [
+                        'security'     => [
                             'login'                     => [
                                 'name' => 'bengor_user_user_security_login',
                                 'path' => '/login',
@@ -59,13 +68,13 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
                             'success_redirection_route' => 'bengor_user_user_homepage',
                         ],
                         'registration' => [
-                            'enabled'                   => true,
-                            'type'                      => 'by_invitation',
                             'name'                      => 'bengor_user_user_registration',
                             'path'                      => '/user/register',
-                            'invitation_name'           => 'bengor_user_user_invitation',
-                            'invitation_path'           => '/user/invite',
                             'success_redirection_route' => 'bengor_user_user_homepage',
+                            'invitation'                => [
+                                'name' => 'bengor_user_user_invitation',
+                                'path' => '/user/invite',
+                            ],
                         ],
                     ],
                 ],
@@ -90,8 +99,8 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
             'bengor.user.infrastructure.persistence.user_guest_repository'
         )->shouldBeCalled();
         $container->setAlias(
-            'bengor_user.activate_user_account',
-            'bengor.user.application.service.activate_user_account_transactional'
+            'bengor_user.enable_user',
+            'bengor.user.application.service.enable_user_transactional'
         )->shouldBeCalled();
         $container->setAlias(
             'bengor_user.change_user_password',
@@ -124,10 +133,6 @@ class AliasServicesCompilerPassSpec extends ObjectBehavior
         $container->setAlias(
             'bengor_user.sign_up_user',
             'bengor.user.application.service.sign_up_user_transactional'
-        )->shouldBeCalled();
-        $container->setAlias(
-            'bengor_user.sign_up_user_by_invitation',
-            'bengor.user.application.service.sign_up_user_by_invitation_transactional'
         )->shouldBeCalled();
         $container->setAlias(
             'bengor_user.form_login_user_authenticator',

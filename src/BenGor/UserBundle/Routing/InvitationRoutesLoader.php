@@ -63,17 +63,19 @@ class InvitationRoutesLoader implements LoaderInterface
         $routes = new RouteCollection();
         foreach ($this->config as $userClass => $userConfig) {
             $registrationRouteConfig = $userConfig['routes']['registration'];
+            $registrationUseCaseConfig = $userConfig['use_cases']['registration'];
 
-            if (false === $registrationRouteConfig['enabled']
-                || 'default' === $registrationRouteConfig['type']
+            if (false === $registrationUseCaseConfig['enabled']
+                || 'default' === $registrationUseCaseConfig['type']
+                || 'user_enable' === $registrationUseCaseConfig['type']
             ) {
                 continue;
             }
 
             $routes->add(
-                $registrationRouteConfig['invitation_name'],
+                $registrationRouteConfig['invitation']['name'],
                 new Route(
-                    $registrationRouteConfig['invitation_path'],
+                    $registrationRouteConfig['invitation']['path'],
                     [
                         '_controller' => 'BenGorUserBundle:Registration:invite',
                         'userClass'   => $userClass,

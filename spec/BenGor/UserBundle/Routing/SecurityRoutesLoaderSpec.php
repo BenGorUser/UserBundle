@@ -30,9 +30,13 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
                 'class'       => 'AppBundle\Entity\User',
                 'persistence' => 'doctrine',
                 'firewall'    => 'main',
+                'use_cases'   => [
+                    'security' => [
+                        'enabled' => true,
+                    ],
+                ],
                 'routes'      => [
                     'security' => [
-                        'enabled'                   => true,
                         'login'                     => [
                             'name' => 'bengor_user_user_security_login',
                             'path' => '/login',

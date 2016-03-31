@@ -10,9 +10,14 @@ ben_gor_user:
             persistence: doctrine              # Also, it can be "sql"
             default_roles:
                 - ROLE_USER
-            routes:
+            use_cases:
                 security:
                     enabled: true
+                registration:
+                    enabled: true
+                    type: default              # Also, it can be "user_enable", "by_invitation" or "full"
+            routes:
+                security:
                     login:
                         name: bengor_user_user_security_login
                         path: /user/login
@@ -24,15 +29,13 @@ ben_gor_user:
                         path: /user/logout
                     success_redirection_route: bengor_user_user_homepage
                 registration:
-                    enabled: true
-                    type: default              # Also, it can be "by_invitation"
                     name: bengor_user_user_registration
                     path: /user/register
-                    invitation_name: bengor_user_user_invitation
-                    invitation_path: /user/invite
                     success_redirection_route: bengor_user_user_homepage
-                activate_account:
-                    name: bengor_user_user_activate_account
-                    path: /user/confirmation-token
-                    success_redirection_route: bengor_user_user_security_login
+                    invitation:
+                        name: bengor_user_user_invitation
+                        path: /user/invite
+                    user_enable:
+                        name: bengor_user_user_enable
+                        path: /user/confirmation-token
 ```

@@ -57,11 +57,11 @@ class SignUpUserCommand extends Command
      */
     public function __construct(TransactionalApplicationService $service, $userClass, $fqcn)
     {
-        parent::__construct();
-
         $this->fqcn = $fqcn;
         $this->service = $service;
         $this->userClass = $userClass;
+
+        parent::__construct();
     }
 
     /**
@@ -70,8 +70,8 @@ class SignUpUserCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('bengor:user:create')
-            ->setDescription('Create a user.')
+            ->setName(sprintf('bengor:user:%s:create', $this->userClass))
+            ->setDescription(sprintf('Create a %s.', $this->userClass))
             ->setDefinition([
                 new InputArgument(
                     'email',
@@ -90,15 +90,15 @@ class SignUpUserCommand extends Command
                 ),
             ])
             ->setHelp(<<<EOT
-The <info>bengor:user:create</info> command creates a user:
+The <info>bengor:user:$this->userClass:create</info> command creates a $this->userClass:
 
-  <info>php bin/console bengor:user:create benatespina@gmail.com</info>
+  <info>php bin/console bengor:user:$this->userClass:create benatespina@gmail.com</info>
 
 This interactive shell will ask you for a password and then roles.
 
 You can alternatively specify the password and roles as the second and third arguments:
 
-  <info>php bin/console bengor:user:create benatespina@gmail.com 123456 ROLE_USER ROLE_ADMIN</info>
+  <info>php bin/console bengor:user:$this->userClass:create benatespina@gmail.com 123456 ROLE_USER ROLE_ADMIN</info>
 
 EOT
             );
@@ -118,18 +118,20 @@ EOT
         );
         $user = $response->user();
 
-        $output->writeln(
-            sprintf(
-                'Created user <comment>%s</comment>',
-                $user->email()->email()
-            )
+        $outputMessage = sprintf(
+            'Created %s <comment>%s</comment>, if you want to enable the %s this is the confirmation' .
+            'token <comment>%s</comment>',
+            $this->userClass,
+            $user->email(),
+            $this->userClass,
+            $user->confirmationToken()
         );
-        $output->writeln(
-            sprintf(
-                'If you want to activate account this is the confirmation token <comment>%s</comment>',
-                $user->confirmationToken()->token()
-            )
-        );
+        if (null === $user->confirmationToken()) {
+            $outputMessage = sprintf(
+                'Created %s: <comment>%s</comment>', $this->userClass, $user->email()
+            );
+        }
+        $output->writeln($outputMessage);
     }
 
     /**
@@ -170,7 +172,7 @@ EOT
             );
             $question->setValidator(function ($roles) {
                 if (empty($roles)) {
-                    throw new \Exception('Al least, one role is required');
+                    $roles = implode(' ', call_user_func([$this->fqcn, 'availableRoles']));
                 }
 
                 return explode(' ', $roles);

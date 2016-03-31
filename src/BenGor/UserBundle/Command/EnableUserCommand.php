@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\Command;
 
-use BenGor\User\Application\Service\ActivateUserAccountRequest;
+use BenGor\User\Application\Service\EnableUserRequest;
 use Ddd\Application\Service\TransactionalApplicationService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,14 +20,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Activate user account command.
+ * Enable user account command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ActivateUserAccountCommand extends Command
+class EnableUserCommand extends Command
 {
     /**
-     * The activate user account service.
+     * The enable user service.
      *
      * @var TransactionalApplicationService
      */
@@ -48,10 +48,10 @@ class ActivateUserAccountCommand extends Command
      */
     public function __construct(TransactionalApplicationService $service, $userClass)
     {
-        parent::__construct();
-
         $this->service = $service;
         $this->userClass = $userClass;
+
+        parent::__construct();
     }
 
     /**
@@ -60,8 +60,8 @@ class ActivateUserAccountCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('bengor:user:enable')
-            ->setDescription('Activate a user account.')
+            ->setName(sprintf('bengor:user:%s:enable', $this->userClass))
+            ->setDescription(sprintf('Enable a %s account.', $this->userClass))
             ->setDefinition([
                 new InputArgument(
                     'confirmation-token',
@@ -70,9 +70,9 @@ class ActivateUserAccountCommand extends Command
                 ),
             ])
             ->setHelp(<<<EOT
-The <info>bengor:user:enable</info> command enables a user:
+The <info>bengor:user:$this->userClass:enable</info> command enables a $this->userClass:
 
-  <info>php bin/console bengor:user:enable confirmation-token</info>
+  <info>php bin/console bengor:user:$this->userClass:enable confirmation-token</info>
 
 EOT
             );
@@ -84,7 +84,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->service->execute(
-            new ActivateUserAccountRequest(
+            new EnableUserRequest(
                 $input->getArgument('confirmation-token')
             )
         );

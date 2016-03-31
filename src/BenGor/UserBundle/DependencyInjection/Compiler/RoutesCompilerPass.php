@@ -29,11 +29,10 @@ class RoutesCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $this->processEnableUserRoutes($container);
         $this->processInvitationRoutes($container);
         $this->processSecurityRoutes($container);
         $this->processRegistrationRoutes($container);
-
-        $this->processActivateAccountRoutes($container);
     }
 
     /**
@@ -41,29 +40,17 @@ class RoutesCompilerPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container The container
      */
-    private function processActivateAccountRoutes(ContainerBuilder $container)
+    private function processEnableUserRoutes(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('bengor.user_bundle.routing.activate_account_routes_loader')) {
+        if (!$container->hasDefinition('bengor.user_bundle.routing.enable_user_routes_loader')) {
             return;
         }
         $config = $container->getParameter('bengor_user.config');
-        foreach ($config['user_class'] as $key => $user) {
-            $activateAccountRoutes = $user['routes']['activate_account'];
-
-            if (null === $activateAccountRoutes['name']) {
-                $config['user_class'][$key]['routes']['activate_account']['name'] = 'bengor_user_' . $key . '_activate_account';
-            }
-            if (null === $activateAccountRoutes['path']) {
-                $config['user_class'][$key]['routes']['activate_account']['path'] = '/' . $key . '/activate-account';
-            }
-            if (null === $activateAccountRoutes['success_redirection_route']) {
-                $config['user_class'][$key]['routes']['activate_account']['success_redirection_route'] = $config['user_class'][$key]['routes']['security']['success_redirection_route'];
-            }
-        }
+        $config = $this->buildRegistrationConfiguration($config);
 
         $container->setParameter('bengor_user.config', $config);
         $container->getDefinition(
-            'bengor.user_bundle.routing.activate_account_routes_loader'
+            'bengor.user_bundle.routing.enable_user_routes_loader'
         )->replaceArgument(0, array_unique($config['user_class'], SORT_REGULAR));
     }
 
@@ -165,11 +152,17 @@ class RoutesCompilerPass implements CompilerPassInterface
             if (null === $registrationRoutes['path']) {
                 $config['user_class'][$key]['routes']['registration']['path'] = '/' . $key . '/register';
             }
-            if (null === $registrationRoutes['invitation_name']) {
-                $config['user_class'][$key]['routes']['registration']['invitation_name'] = 'bengor_user_' . $key . '_invite';
+            if (null === $registrationRoutes['invitation']['name']) {
+                $config['user_class'][$key]['routes']['registration']['invitation']['name'] = 'bengor_user_' . $key . '_invite';
             }
-            if (null === $registrationRoutes['invitation_path']) {
-                $config['user_class'][$key]['routes']['registration']['invitation_path'] = '/' . $key . '/invite';
+            if (null === $registrationRoutes['invitation']['path']) {
+                $config['user_class'][$key]['routes']['registration']['invitation']['path'] = '/' . $key . '/invite';
+            }
+            if (null === $registrationRoutes['user_enable']['name']) {
+                $config['user_class'][$key]['routes']['registration']['user_enable']['name'] = 'bengor_user_' . $key . '_enable';
+            }
+            if (null === $registrationRoutes['user_enable']['path']) {
+                $config['user_class'][$key]['routes']['registration']['user_enable']['path'] = '/' . $key . '/confirmation-token';
             }
             if (null === $registrationRoutes['success_redirection_route']) {
                 $config['user_class'][$key]['routes']['registration']['success_redirection_route'] = 'bengor_user_' . $key . '_homepage';

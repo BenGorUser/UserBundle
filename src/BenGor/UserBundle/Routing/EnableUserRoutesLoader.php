@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Activate account routes loader class.
+ * Enable user routes loader class.
  *
  * Service that loads dynamically routes of activate account.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ActivateAccountRoutesLoader implements LoaderInterface
+class EnableUserRoutesLoader implements LoaderInterface
 {
     /**
      * Boolean that checks if the routes are already loaded or not.
@@ -62,20 +62,24 @@ class ActivateAccountRoutesLoader implements LoaderInterface
 
         $routes = new RouteCollection();
         foreach ($this->config as $userClass => $userConfig) {
-            $activateAccountRouteConfig = $userConfig['routes']['activate_account'];
+            $registrationRouteConfig = $userConfig['routes']['registration'];
+            $registrationUseCaseConfig = $userConfig['use_cases']['registration'];
 
-            if (false === $userConfig['routes']['registration']['enabled']) {
+            if (false === $registrationUseCaseConfig['enabled']
+                || 'default' === $registrationUseCaseConfig['type']
+                || 'by_invitation' === $registrationUseCaseConfig['type']
+            ) {
                 continue;
             }
 
             $routes->add(
-                $activateAccountRouteConfig['name'],
+                $registrationRouteConfig['user_enable']['name'],
                 new Route(
-                    $activateAccountRouteConfig['path'],
+                    $registrationRouteConfig['user_enable']['path'],
                     [
-                        '_controller'  => 'BenGorUserBundle:AccountActivation:activateAccount',
+                        '_controller'  => 'BenGorUserBundle:EnableUser:enable',
                         'userClass'    => $userClass,
-                        'successRoute' => $activateAccountRouteConfig['success_redirection_route'],
+                        'successRoute' => $registrationRouteConfig['success_redirection_route'],
                     ],
                     [],
                     [],
@@ -95,7 +99,7 @@ class ActivateAccountRoutesLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_activate_account' === $type;
+        return 'bengor_user_user_enable' === $type;
     }
 
     /**
