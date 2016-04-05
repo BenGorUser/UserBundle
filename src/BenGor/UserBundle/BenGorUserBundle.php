@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle;
 
-use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\CommandsServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesCompilerPass;
@@ -23,7 +23,6 @@ use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPa
 use BenGor\UserBundle\DependencyInjection\Compiler\RoutesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesCompilerPass;
 use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\TransactionalApplicationServicesCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -43,6 +42,9 @@ class BenGorUserBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(
+            new ApplicationDataTransformersCompilerPass(), PassConfig::TYPE_OPTIMIZE
+        );
+        $container->addCompilerPass(
             new DefaultRolesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
@@ -55,6 +57,9 @@ class BenGorUserBundle extends Bundle
             new SecurityServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
+            new ApplicationServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
+        );
+        $container->addCompilerPass(
             new DoctrineCustomTypesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
@@ -62,15 +67,6 @@ class BenGorUserBundle extends Bundle
         );
         $container->addCompilerPass(
             new RoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new ApplicationServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new TransactionalApplicationServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new AliasServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
         );
         $container->addCompilerPass(
             new SubscribersCompilerPass(), PassConfig::TYPE_OPTIMIZE

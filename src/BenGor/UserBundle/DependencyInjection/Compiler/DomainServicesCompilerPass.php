@@ -44,6 +44,10 @@ class DomainServicesCompilerPass implements CompilerPassInterface
                     ]
                 )
             );
+            $container->setAlias(
+                'bengor_user.' . $key . '_factory',
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+            );
 
             if (class_exists($user['class'] . 'Guest')) {
                 $container->setDefinition(
@@ -53,6 +57,10 @@ class DomainServicesCompilerPass implements CompilerPassInterface
                             $user['class'] . 'Guest',
                         ]
                     )
+                );
+                $container->setAlias(
+                    'bengor_user.' . $key . '_guest_factory',
+                    'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory'
                 );
             }
         }

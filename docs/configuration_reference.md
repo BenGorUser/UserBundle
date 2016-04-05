@@ -7,7 +7,7 @@ ben_gor_user:
         user:
             class: ~                           # Required
             firewall: ~                        # Required
-            persistence: doctrine              # Also, it can be "sql"
+            persistence: doctrine_orm          # Also, it can be "doctrine_odm_mongodb" or "sql"
             default_roles:
                 - ROLE_USER
             use_cases:
@@ -15,7 +15,12 @@ ben_gor_user:
                     enabled: true
                 registration:
                     enabled: true
-                    type: default              # Also, it can be "user_enable", "by_invitation" or "full"
+                    type: default              # Also, it can be "with_confirmation", "by_invitation" or "by_invitation_with_confirmation"
+                change_password:
+                    enabled: true
+                    type: default              # Also, it can be "by_request_remember_password"
+                remove:
+                    enabled: true
             routes:
                 security:
                     login:

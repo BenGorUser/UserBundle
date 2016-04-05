@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php":                      ">=5.5",
+        "php":                      "^5.5|^7.0",
         "bengor/user":              "^1.0@dev",
         "symfony/form":             "^2.8|^3.0",
         "symfony/framework-bundle": "^2.8|^3.0",
@@ -36,7 +36,8 @@
         "test": "phpspec run"
     },
     "suggest": {
-        "doctrine/doctrine-bundle": "Required to mapping the user attributes in the Symfony way",
+        "doctrine/doctrine-bundle": "Required to mapping the user attributes in the Symfony way with Doctrine ORM",
+        "doctrine/mongodb-odm-bundle": "Required to mapping the user attributes in the Symfony way with Doctrine ODM MongoDB",
         "mandrill/mandrill": "Required to send emails using Mandrill",
         "swiftmailer/swiftmailer": "Required to send emails using SwiftMailer"
     },

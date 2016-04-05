@@ -44,7 +44,8 @@ class SecurityServicesCompilerPass implements CompilerPassInterface
                         $user['class'],
                     ]
                 ))->setFactory([new Reference('security.encoder_factory'), 'getEncoder'])
-            );
+            )->setPublic(false);
+
             $container->setDefinition(
                 'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder',
                 new Definition(
@@ -52,6 +53,11 @@ class SecurityServicesCompilerPass implements CompilerPassInterface
                         $container->getDefinition($key . '_password_encoder'),
                     ]
                 )
+            )->setPublic(false);
+
+            $container->setAlias(
+                'bengor_user.symfony_' . $key . '_password_encoder',
+                'bengor.user.infrastructure.security.symfony.' . $key . '_password_encoder'
             );
         }
     }

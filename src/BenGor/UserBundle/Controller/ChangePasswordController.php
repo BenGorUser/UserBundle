@@ -15,10 +15,10 @@ namespace BenGor\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * Remember password controller.
+ * Change password controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RememberPasswordController extends Controller
+class ChangePasswordController extends Controller
 {
 }

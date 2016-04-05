@@ -12,10 +12,15 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\User\Infrastructure\Persistence\Doctrine\DoctrineUserGuestRepository;
-use BenGor\User\Infrastructure\Persistence\Doctrine\DoctrineUserRepository;
+use BenGor\File\Infrastructure\Application\Service\SqlSession;
+use BenGor\User\Infrastructure\Application\Service\DoctrineODMMongoDBSession;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\DoctrineODMMongoDBUserGuestRepository;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\DoctrineODMMongoDBUserRepository;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ORM\DoctrineORMUserGuestRepository;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ORM\DoctrineORMUserRepository;
 use BenGor\User\Infrastructure\Persistence\Sql\SqlUserGuestRepository;
 use BenGor\User\Infrastructure\Persistence\Sql\SqlUserRepository;
+use Ddd\Infrastructure\Application\Service\DoctrineSession;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -45,34 +50,60 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
                 $guestClass = $user['class'] . 'Guest';
             }
 
-            if ('doctrine' === $user['persistence']
-                && !$container->hasDefinition('doctrine.orm.default_entity_manager')
-            ) {
-                throw new RuntimeException(
-                    'When the persistence layer is "doctrine" requires ' .
-                    'the installation and set up of the DoctrineBundle'
-                );
+            if ('doctrine_orm' === $user['persistence']) {
+                if (!$container->hasDefinition('doctrine.orm.default_entity_manager')) {
+                    throw new RuntimeException(
+                        'When the persistence layer is "orm" requires ' .
+                        'the installation and set up of the DoctrineBundle'
+                    );
+                }
+                $this->loadDoctrineOrm($container, $key, $user, $guestClass);
+            } elseif ('doctrine_odm_mongodb' === $user['persistence']) {
+                if (!$container->hasDefinition('doctrine_mongodb.odm.document_manager')) {
+                    throw new RuntimeException(
+                        'When the persistence layer is "odm_mongodb" requires ' .
+                        'the installation and set up of the DoctrineMongoDBBundle'
+                    );
+                }
+                $this->loadDoctrineOdmMongoDB($container, $key, $user, $guestClass);
+            } elseif ('sql' === $user['persistence']) {
+                $this->loadSql($container, $key, $user, $guestClass);
             }
 
-            $method = sprintf('load%sRepository', ucfirst($user['persistence']));
-            $this->$method($container, $key, $user, $guestClass);
+            $container->setAlias(
+                'bengor_user.' . $key . '_repository',
+                'bengor.user.infrastructure.persistence.' . $key . '_repository'
+            );
+            if (null !== $guestClass) {
+                $container->setAlias(
+                    'bengor_user.' . $key . '_guest_repository',
+                    'bengor.user.infrastructure.persistence.' . $key . '_guest_repository'
+                );
+            }
         }
     }
 
     /**
-     * Loads the Doctrine repository.
+     * Loads the Doctrine ORM repository related services.
      *
      * @param ContainerBuilder $container  The container builder
      * @param string           $key        The name of file type
      * @param array            $user       User configuration tree
      * @param string           $guestClass FQCN about user guest class
      */
-    private function loadDoctrineRepository(ContainerBuilder $container, $key, $user, $guestClass)
+    private function loadDoctrineOrm(ContainerBuilder $container, $key, $user, $guestClass)
     {
+        $container->register(
+            'bengor.user.infrastructure.application.service.doctrine_orm_session',
+            DoctrineSession::class
+        )->addArgument(
+            new Reference('doctrine.orm.default_entity_manager')
+        )->setPublic(false);
+
         $container->setDefinition(
             'bengor.user.infrastructure.persistence.' . $key . '_repository',
             (new Definition(
-                DoctrineUserRepository::class, [
+                DoctrineORMUserRepository::class, [
                     $user['class'],
                 ]
             ))->setFactory([
@@ -84,7 +115,7 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
             $container->setDefinition(
                 'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
                 (new Definition(
-                    DoctrineUserGuestRepository::class, [
+                    DoctrineORMUserGuestRepository::class, [
                         $guestClass,
                     ]
                 ))->setFactory([
@@ -95,15 +126,64 @@ class PersistenceServicesCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * Loads the SQL repository.
+     * Loads the Doctrine ODM MongoDB related services.
      *
      * @param ContainerBuilder $container  The container builder
      * @param string           $key        The name of file type
      * @param array            $user       User configuration tree
      * @param string           $guestClass FQCN about user guest class
      */
-    private function loadSqlRepository(ContainerBuilder $container, $key, $user, $guestClass)
+    private function loadDoctrineOdmMongoDB(ContainerBuilder $container, $key, $user, $guestClass)
     {
+        $container->register(
+            'bengor.user.infrastructure.application.service.doctrine_odm_mongodb_session',
+            DoctrineODMMongoDBSession::class
+        )->addArgument(
+            new Reference('doctrine_mongodb.odm.document_manager')
+        )->setPublic(false);
+
+        $container->setDefinition(
+            'bengor.user.infrastructure.persistence.' . $key . '_repository',
+            (new Definition(
+                DoctrineODMMongoDBUserRepository::class, [
+                    $user['class'],
+                ]
+            ))->setFactory([
+                new Reference('doctrine.odm.mongodb.document_manager'), 'getRepository',
+            ])->setPublic(false)
+        );
+
+        if (null !== $guestClass) {
+            $container->setDefinition(
+                'bengor.user.infrastructure.persistence.' . $key . '_guest_repository',
+                (new Definition(
+                    DoctrineODMMongoDBUserGuestRepository::class, [
+                        $guestClass,
+                    ]
+                ))->setFactory([
+                    new Reference('doctrine.odm.mongodb.document_manager'), 'getRepository',
+                ])->setPublic(false)
+            );
+        }
+    }
+
+    /**
+     * Loads the SQL repository related services.
+     *
+     * @param ContainerBuilder $container  The container builder
+     * @param string           $key        The name of file type
+     * @param array            $user       User configuration tree
+     * @param string           $guestClass FQCN about user guest class
+     */
+    private function loadSql(ContainerBuilder $container, $key, $user, $guestClass)
+    {
+        $container->register(
+            'bengor.user.infrastructure.application.service.sql_session',
+            SqlSession::class
+        )->addArgument(
+            new Reference('pdo')
+        )->setPublic(false);
+
         $container->setDefinition(
             'pdo',
             (new Definition(

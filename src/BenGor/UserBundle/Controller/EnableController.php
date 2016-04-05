@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\Controller;
 
-use BenGor\User\Application\Service\EnableUserRequest;
+use BenGor\User\Application\Service\Enable\EnableUserRequest;
 use BenGor\User\Domain\Model\Exception\UserTokenNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class EnableUserController extends Controller
+class EnableController extends Controller
 {
     /**
      * Enable user action.

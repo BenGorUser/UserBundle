@@ -12,13 +12,8 @@
 
 namespace BenGor\UserBundle\Command;
 
-use BenGor\User\Application\Service\SignUpAndEnableUserService;
-use BenGor\User\Application\Service\SignUpUserRequest;
-use BenGor\User\Domain\Model\UserFactory;
-use BenGor\User\Domain\Model\UserPasswordEncoder;
-use BenGor\User\Domain\Model\UserRepository;
+use BenGor\User\Application\Service\SignUp\SignUpUserRequest;
 use Ddd\Application\Service\TransactionalApplicationService;
-use Ddd\Application\Service\TransactionalSession;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,11 +35,11 @@ class CreateUserCommand extends Command
     private $fqcn;
 
     /**
-     * The transactional session.
+     * The service.
      *
-     * @var TransactionalSession
+     * @var TransactionalApplicationService
      */
-    private $session;
+    private $service;
 
     /**
      * The type of user class.
@@ -54,49 +49,16 @@ class CreateUserCommand extends Command
     private $userClass;
 
     /**
-     * The user repository.
-     *
-     * @var UserRepository
-     */
-    private $repository;
-
-    /**
-     * The user password encoder.
-     *
-     * @var UserPasswordEncoder
-     */
-    private $encoder;
-
-    /**
-     * The user factory.
-     *
-     * @var UserFactory
-     */
-    private $factory;
-
-    /**
      * Constructor.
      *
-     * @param UserRepository       $repository The user repository
-     * @param UserPasswordEncoder  $encoder    The password encoder
-     * @param UserFactory          $factory    The user factory
-     * @param TransactionalSession $session    The transactional session
-     * @param string               $userClass  The user class
-     * @param string               $fqcn       The fully qualified class name
+     * @param TransactionalApplicationService $service   The service
+     * @param string                          $userClass The user class
+     * @param string                          $fqcn      The fully qualified class name
      */
-    public function __construct(
-        UserRepository $repository,
-        UserPasswordEncoder $encoder,
-        UserFactory $factory,
-        TransactionalSession $session,
-        $userClass,
-        $fqcn
-    ) {
-        $this->encoder = $encoder;
-        $this->factory = $factory;
+    public function __construct(TransactionalApplicationService $service, $userClass, $fqcn)
+    {
         $this->fqcn = $fqcn;
-        $this->repository = $repository;
-        $this->session = $session;
+        $this->service = $service;
         $this->userClass = $userClass;
 
         parent::__construct();
@@ -147,13 +109,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $service = new TransactionalApplicationService(
-            new SignUpAndEnableUserService($this->repository, $this->encoder, $this->factory),
-            $this->session
-        );
-
-        $response = $service->execute(
-            new SignUpUserRequest(
+        $response = $this->service->execute(
+            SignUpUserRequest::fromEmail(
                 $input->getArgument('email'),
                 $input->getArgument('password'),
                 $input->getArgument('roles')
@@ -161,7 +118,7 @@ EOT
         );
 
         $output->writeln(sprintf(
-            'Created %s: <comment>%s</comment>', $this->userClass, $response->user()->email()
+            'Created %s: <comment>%s</comment>', $this->userClass, $response['email']
         ));
     }
 

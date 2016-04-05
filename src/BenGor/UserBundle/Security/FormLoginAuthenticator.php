@@ -12,8 +12,8 @@
 
 namespace BenGor\UserBundle\Security;
 
-use BenGor\User\Application\Service\LogInUserRequest;
-use BenGor\User\Application\Service\LogInUserService;
+use BenGor\User\Application\Service\LogIn\LogInUserRequest;
+use BenGor\User\Application\Service\LogIn\LogInUserService;
 use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserFactory;

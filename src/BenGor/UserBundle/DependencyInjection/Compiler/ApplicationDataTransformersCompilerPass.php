@@ -12,35 +12,31 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
+use BenGor\User\Application\DataTransformer\UserDTODataTransformer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Register Symfony commands as a service compiler pass.
+ * Register application data transformers compiler pass.
  *
  * Service declaration via PHP allows more
  * flexibility with customization extend users.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class CommandsServicesCompilerPass implements CompilerPassInterface
+class ApplicationDataTransformersCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $config = $container->getParameter('bengor_user.config');
-
-        foreach ($config['user_class'] as $key => $user) {
-            $container->findDefinition('bengor.user_bundle.command.create_' . $key . '_command')
-                ->setArguments([
-                    $container->getDefinition(
-                        'bengor.user.application.service.sign_up_' . $key . '_default_transactional'
-                    ),
-                    $key,
-                    $user['class'],
-                ]);
-        }
+        $container->setDefinition(
+            'bengor.user.application.data_transformer.user_dto',
+            new Definition(
+                UserDTODataTransformer::class
+            )
+        );
     }
 }

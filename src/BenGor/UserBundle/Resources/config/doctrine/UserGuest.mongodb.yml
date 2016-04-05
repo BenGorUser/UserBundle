@@ -8,20 +8,17 @@
 
 BenGor\User\Domain\Model\UserGuest:
     type: mappedSuperclass
-    repositoryClass: BenGor\User\Infrastructure\Persistence\Doctrine\ORM\DoctrineORMUserGuestRepository
-    table: user_guest
-    id:
-        id:
-            column: id
-            type: user_guest_id
-    embedded:
-        email:
-            class: BenGor\User\Domain\Model\UserEmail
-            columnPrefix: false
-        invitationToken:
-            class: BenGor\User\Domain\Model\UserToken
-            columnPrefix: invitation_
+    repositoryClass: BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\DoctrineODMMongoDBUserGuestRepository
+    collection: user_guest
     fields:
+        id:
+            id: true
+            type: user_guest_id
+        email:
+            type: user_email
+        invitationToken:
+            name: invitation_token
+            type: user_token
         createdOn:
-            column: created_on
-            type: datetime
+            name: created_on
+            type: date

@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\Form\Type;
 
-use BenGor\User\Application\Service\InviteUserRequest;
+use BenGor\User\Application\Service\Invite\InviteUserRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
