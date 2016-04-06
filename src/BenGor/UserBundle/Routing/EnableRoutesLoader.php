@@ -13,20 +13,21 @@
 namespace BenGor\UserBundle\Routing;
 
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Invite user routes loader class.
+ * Enable user routes loader class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InviteRoutesLoader extends RoutesLoader
+class EnableRoutesLoader extends RoutesLoader
 {
     /**
      * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_invite' === $type;
+        return 'bengor_user_enable' === $type;
     }
 
     /**
@@ -39,14 +40,15 @@ class InviteRoutesLoader extends RoutesLoader
             new Route(
                 $config['path'],
                 [
-                    '_controller' => 'BenGorUserBundle:Invite:invite',
-                    'userClass'   => $user,
+                    '_controller'  => 'BenGorUserBundle:Enable:enable',
+                    'userClass'    => $user,
+                    'successRoute' => $config['success_redirection_route'],
                 ],
                 [],
                 [],
                 '',
                 [],
-                ['GET', 'POST']
+                ['GET']
             )
         );
     }

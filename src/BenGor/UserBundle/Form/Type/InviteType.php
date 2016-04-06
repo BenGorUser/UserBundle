@@ -20,11 +20,11 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Invitation form type.
+ * Invite user form type.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InvitationType extends AbstractType
+class InviteType extends AbstractType
 {
     /**
      * {@inheritdoc}

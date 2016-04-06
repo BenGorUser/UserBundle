@@ -12,8 +12,9 @@
 
 namespace BenGor\UserBundle\Form\Type;
 
-use BenGor\User\Application\Service\SignUpUserByInvitationRequest;
+use BenGor\User\Application\Service\SignUp\SignUpUserRequest;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,11 +23,13 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Registration by invitation form type.
+ * Sign up user form type.
+ *
+ * It is valid for "default" or "with_confirmation" specifications.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationByInvitationType extends AbstractType
+class SignUpType extends AbstractType
 {
     /**
      * Array which contains the default role|roles.
@@ -36,18 +39,12 @@ class RegistrationByInvitationType extends AbstractType
     protected $roles;
 
     /**
-     * The invitation token.
-     *
-     * @var string
-     */
-    protected $token;
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email', EmailType::class)
             ->add('password', RepeatedType::class, [
                 'type'            => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
@@ -59,7 +56,6 @@ class RegistrationByInvitationType extends AbstractType
             ]);
 
         $this->roles = $options['roles'];
-        $this->token = $options['invitation_token'];
     }
 
     /**
@@ -67,12 +63,12 @@ class RegistrationByInvitationType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['roles', 'invitation_token']);
+        $resolver->setRequired(['roles']);
         $resolver->setDefaults([
-            'data_class' => SignUpUserByInvitationRequest::class,
+            'data_class' => SignUpUserRequest::class,
             'empty_data' => function (FormInterface $form) {
-                return new SignUpUserByInvitationRequest(
-                    $this->token,
+                return SignUpUserRequest::fromEmail(
+                    $form->get('email')->getData(),
                     $form->get('password')->getData(),
                     $this->roles
                 );
