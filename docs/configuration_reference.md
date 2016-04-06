@@ -46,4 +46,16 @@ ben_gor_user:
                     name: bengor_user_user_enable
                     path: /user/confirmation-token
                     success_redirection_route: ~
+                change_password:
+                    name: bengor_user_user_change_password
+                    path: /user/change-password
+                    success_redirection_route: ~
+                request_remember_password:
+                    name: bengor_user_user_reques_remember_password
+                    path: /user/request-remember-password
+                    success_redirection_route: ~
+                remove:
+                    name: bengor_user_user_remove
+                    path: /user/remove
+                    success_redirection_route: ~
 ```

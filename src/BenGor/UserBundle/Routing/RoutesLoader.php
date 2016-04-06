@@ -74,7 +74,7 @@ abstract class RoutesLoader implements LoaderInterface
         $this->routes = new RouteCollection();
         foreach ($this->config as $user => $config) {
             if (true === array_key_exists('type', $config)) {
-                $config['type'] = $this->sanitize($config['type']);
+                $this->config['type'] = $this->sanitize($config['type']);
             }
             $this->register($user, $config);
         }

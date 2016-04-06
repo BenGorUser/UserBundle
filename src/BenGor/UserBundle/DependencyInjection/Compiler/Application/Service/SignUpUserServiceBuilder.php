@@ -80,7 +80,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
         ) {
             throw new RuntimeException(
                 'The sign up user types must be "default" or "with_confirmation"' .
-                '"by_invitation" or "by_invitation_with_confirmation"'
+                'or "by_invitation" or "by_invitation_with_confirmation"'
             );
         }
 
@@ -110,7 +110,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
      *
      * @return Definition
      */
-    protected function defaultSpecification($user)
+    private function defaultSpecification($user)
     {
         return new Definition(
             DefaultSignUpUserSpecification::class

@@ -13,7 +13,6 @@
 namespace BenGor\UserBundle\Routing;
 
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Enable user routes loader class.

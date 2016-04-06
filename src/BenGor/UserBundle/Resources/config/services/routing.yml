@@ -7,16 +7,16 @@
 # file that was distributed with this source code.
 
 services:
-    bengor.user_bundle.routing.enable_user_routes_loader:
-        class: BenGor\UserBundle\Routing\EnableUserRoutesLoader
+    bengor.user_bundle.routing.enable_routes_loader:
+        class: BenGor\UserBundle\Routing\EnableRoutesLoader
         arguments:
             - []
         public: false
         tags:
             - { name: routing.loader }
 
-    bengor.user_bundle.routing.invitation_routes_loader:
-        class: BenGor\UserBundle\Routing\InvitationRoutesLoader
+    bengor.user_bundle.routing.invite_routes_loader:
+        class: BenGor\UserBundle\Routing\InviteRoutesLoader
         arguments:
             - []
         public: false
@@ -31,8 +31,8 @@ services:
         tags:
             - { name: routing.loader }
 
-    bengor.user_bundle.routing.registration_routes_loader:
-        class: BenGor\UserBundle\Routing\RegistrationRoutesLoader
+    bengor.user_bundle.routing.sign_up_routes_loader:
+        class: BenGor\UserBundle\Routing\SignUpRoutesLoader
         arguments:
             - []
         public: false
