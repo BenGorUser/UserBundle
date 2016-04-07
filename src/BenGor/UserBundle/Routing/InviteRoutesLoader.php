@@ -34,6 +34,10 @@ class InviteRoutesLoader extends RoutesLoader
      */
     protected function register($user, array $config)
     {
+        if ('default' === $config['type'] || 'with_confirmation' === $config['type']) {
+            return;
+        }
+
         $this->routes->add(
             $config['name'],
             new Route(

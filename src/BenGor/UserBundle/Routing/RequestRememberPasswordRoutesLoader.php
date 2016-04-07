@@ -34,6 +34,10 @@ class RequestRememberPasswordRoutesLoader extends RoutesLoader
      */
     protected function register($user, array $config)
     {
+        if ('default' === $config['type']) {
+            return;
+        }
+
         $this->routes->add(
             $config['name'],
             new Route(
