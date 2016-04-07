@@ -26,4 +26,20 @@ class RemoveRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return 'bengor.user_bundle.routing.remove_routes_loader';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultRouteName($user)
+    {
+        return sprintf('bengor_user_%s_remove', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultRoutePath($user)
+    {
+        return sprintf('/%s/remove', $user);
+    }
 }

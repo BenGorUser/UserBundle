@@ -26,4 +26,20 @@ class InviteRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return 'bengor.user_bundle.routing.invite_routes_loader';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultRouteName($user)
+    {
+        return sprintf('bengor_user_%s_invite', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultRoutePath($user)
+    {
+        return sprintf('/%s/invite', $user);
+    }
 }

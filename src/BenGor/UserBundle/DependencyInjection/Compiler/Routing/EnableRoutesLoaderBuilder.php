@@ -26,4 +26,20 @@ class EnableRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return 'bengor.user_bundle.routing.enable_routes_loader';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultRouteName($user)
+    {
+        return sprintf('bengor_user_%s_enable', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultRoutePath($user)
+    {
+        return sprintf('/%s/enable', $user);
+    }
 }

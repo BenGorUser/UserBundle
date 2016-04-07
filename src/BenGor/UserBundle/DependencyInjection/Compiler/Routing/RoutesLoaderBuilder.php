@@ -43,7 +43,7 @@ abstract class RoutesLoaderBuilder
      */
     public function __construct(ContainerBuilder $container, array $configuration = [])
     {
-        $this->configuration = $configuration;
+        $this->configuration = $this->sanitize($configuration);
         $this->container = $container;
     }
 
@@ -63,6 +63,49 @@ abstract class RoutesLoaderBuilder
         )->replaceArgument(0, array_unique($this->configuration, SORT_REGULAR));
 
         return $this->container;
+    }
+
+    /**
+     * Sanitizes and validates the given configuration tree.
+     *
+     * @param array $configuration The configuration tree
+     *
+     * @return array
+     */
+    protected function sanitize(array $configuration)
+    {
+        foreach ($configuration as $key => $config) {
+            if (null === $config['name']) {
+                $configuration[$key]['name'] = $this->defaultRouteName($key);
+            }
+            if (null === $config['path']) {
+                $configuration[$key]['path'] = $this->defaultRoutePath($key);
+            }
+        }
+
+        return $configuration;
+    }
+
+    /**
+     * Gets the route loader's default route name.
+     *
+     * @param string $user The user name
+     *
+     * @return string
+     */
+    protected function defaultRouteName($user)
+    {
+    }
+
+    /**
+     * Gets the route loader's default route path.
+     *
+     * @param string $user The user name
+     *
+     * @return string
+     */
+    protected function defaultRoutePath($user)
+    {
     }
 
     /**
