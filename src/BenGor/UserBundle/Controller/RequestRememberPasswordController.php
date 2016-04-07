@@ -16,14 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Change password controller.
+ * Request remember password controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ChangePasswordController extends Controller
+class RequestRememberPasswordController extends Controller
 {
     /**
-     * Changes user password action.
+     * Request remember user password action.
      *
      * @param Request $request      The request
      * @param string  $userClass    Extra parameter that contains the user type
@@ -31,7 +31,7 @@ class ChangePasswordController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function changePasswordAction(Request $request, $userClass, $successRoute)
+    public function requestRememberPasswordAction(Request $request, $userClass, $successRoute)
     {
     }
 }

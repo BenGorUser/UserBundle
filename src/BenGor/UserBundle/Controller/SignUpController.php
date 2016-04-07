@@ -13,55 +13,47 @@
 namespace BenGor\UserBundle\Controller;
 
 use BenGor\User\Domain\Model\Exception\UserAlreadyExistException;
-use BenGor\User\Domain\Model\Exception\UserGuestDoesNotExistException;
 use BenGor\User\Domain\Model\UserGuest;
 use BenGor\User\Domain\Model\UserToken;
-use BenGor\UserBundle\Form\Type\InvitationType;
-use BenGor\UserBundle\Form\Type\RegistrationByInvitationType;
+use BenGor\UserBundle\Form\Type\SignUpByInvitationType;
+use BenGor\UserBundle\Form\Type\SignUpType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Registration by invitation controller.
+ * Sign up user controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InvitationController extends Controller
+class SignUpController extends Controller
 {
     /**
-     * Invite action.
+     * Default action, that it can executes the "default"
+     * or "with_confirmation" specifications.
      *
-     * @param Request $request   The request
-     * @param string  $userClass Extra parameter that contains the user type
+     * @param Request $request      The request
+     * @param string  $userClass    Extra parameter that contains the user type
+     * @param string  $firewall     Extra parameter that contains the firewall name
+     * @param string  $successRoute Extra parameter that contains the success route name
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function inviteAction(Request $request, $userClass)
+    public function defaultAction(Request $request, $userClass, $firewall, $successRoute)
     {
-        $form = $this->createForm(InvitationType::class);
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $service = $this->get('bengor_user.invite_' . $userClass);
+        $form = $this->createForm(SignUpType::class, null, [
+            'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
+        ]);
+        $this->signUp($form, $request, $userClass, $firewall, $successRoute);
 
-                try {
-                    $service->execute($form->getData());
-                    $this->addFlash('notice', 'Invitation is successfully done');
-                } catch (UserAlreadyExistException $exception) {
-                    $this->addFlash('error', 'The email is already in use.');
-                } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
-                }
-            }
-        }
-
-        return $this->render('@BenGorUser/registration/invite.html.twig', [
+        return $this->render('@BenGorUser/sign_up/default.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * Register by invitation action.
+     * By invitation action, that it can executes the "by_invitation"
+     * or "by_invitation_with_confirmation" specifications.
      *
      * @param Request $request         The request
      * @param string  $invitationToken The invitation token
@@ -71,7 +63,7 @@ class InvitationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function registerByInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $successRoute)
+    public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $successRoute)
     {
         $userGuest = $this->get('bengor_user.' . $userClass . '_guest_repository')
             ->userGuestOfInvitationToken(new UserToken($invitationToken));
@@ -79,10 +71,31 @@ class InvitationController extends Controller
             throw $this->createNotFoundException('Invitation token does not exist');
         }
 
-        $form = $this->createForm(RegistrationByInvitationType::class, null, [
+        $form = $this->createForm(SignUpByInvitationType::class, null, [
             'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
             'invitation_token' => $invitationToken,
         ]);
+        $this->signUp($form, $request, $userClass, $firewall, $successRoute);
+
+        return $this->render('@BenGorUser/sign_up/by_invitation.html.twig', [
+            'email' => $userGuest->email()->email(),
+            'form'  => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Sign up base method that extracts the common part of above actions.
+     *
+     * @param FormInterface $form         The form
+     * @param Request       $request      The request
+     * @param string        $userClass    Extra parameter that contains the user type
+     * @param string        $firewall     Extra parameter that contains the firewall name
+     * @param string        $successRoute Extra parameter that contains the success route name
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    private function signUp(FormInterface $form, Request $request, $userClass, $firewall, $successRoute)
+    {
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -104,17 +117,10 @@ class InvitationController extends Controller
                     return $this->redirectToRoute($successRoute);
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
-                } catch (UserGuestDoesNotExistException $exception) {
-                    $this->addFlash('error', 'The guest email does not exist.');
                 } catch (\Exception $exception) {
                     $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
                 }
             }
         }
-
-        return $this->render('@BenGorUser/registration/register_by_invitation.html.twig', [
-            'email' => $userGuest->email()->email(),
-            'form'  => $form->createView(),
-        ]);
     }
 }

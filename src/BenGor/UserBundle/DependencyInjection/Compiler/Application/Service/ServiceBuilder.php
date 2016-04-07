@@ -70,7 +70,12 @@ abstract class ServiceBuilder
     }
 
     /**
-     * {@inheritdoc}
+     * Entry point of service builder to create
+     * the application service inside Symfony DIC.
+     *
+     * @param string $user The user name
+     *
+     * @return ContainerBuilder
      */
     public function build($user)
     {

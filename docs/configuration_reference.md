@@ -3,6 +3,7 @@
 All available configuration options are listed below with their default values.
 ```yml
 ben_gor_user:
+
     user_class:
         user:
             class: ~                           # Required
@@ -13,7 +14,7 @@ ben_gor_user:
             use_cases:
                 security:
                     enabled: true
-                registration:
+                sign_up:
                     enabled: true
                     type: default              # Also, it can be "with_confirmation", "by_invitation" or "by_invitation_with_confirmation"
                 change_password:
@@ -33,14 +34,31 @@ ben_gor_user:
                         name: bengor_user_user_security_logout
                         path: /user/logout
                     success_redirection_route: bengor_user_user_homepage
-                registration:
-                    name: bengor_user_user_registration
-                    path: /user/register
+                sign_up:
+                    name: bengor_user_user_sign_up
+                    path: /user/sign-up
                     success_redirection_route: bengor_user_user_homepage
-                    invitation:
-                        name: bengor_user_user_invitation
-                        path: /user/invite
-                    user_enable:
-                        name: bengor_user_user_enable
-                        path: /user/confirmation-token
+                invite:
+                    name: bengor_user_user_invite
+                    path: /user/invite
+                    success_redirection_route: ~
+                enable:
+                    name: bengor_user_user_enable
+                    path: /user/confirmation-token
+                    success_redirection_route: ~
+                change_password:
+                    name: bengor_user_user_change_password
+                    path: /user/change-password
+                    success_redirection_route: ~
+                request_remember_password:
+                    name: bengor_user_user_request_remember_password
+                    path: /user/remember-password
+                    success_redirection_route: ~
+                remove:
+                    name: bengor_user_user_remove
+                    path: /user/remove
+                    success_redirection_route: ~
 ```
+
+// FALTA ACTUALIZAR EL Configuration.php con los nuevos valores del arbol
+// Añadir los routes loader que faltan (Mirar el RoutesCompilerPass)

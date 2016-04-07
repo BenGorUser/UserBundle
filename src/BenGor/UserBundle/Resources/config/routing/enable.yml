@@ -6,6 +6,6 @@
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
 
-bengor_user_user_enable_routes:
+bengor_user_enable_routes:
     resource: .
-    type: bengor_user_user_enable
+    type: bengor_user_enable
