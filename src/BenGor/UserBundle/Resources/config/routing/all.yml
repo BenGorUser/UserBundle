@@ -6,6 +6,9 @@
 # For the full copyright and license information, please view the LICENSE
 # file that was distributed with this source code.
 
+bengor_user_change_password:
+    resource: change_password.yml
+
 bengor_user_enable:
     resource: enable.yml
 
@@ -17,3 +20,9 @@ bengor_user_security:
 
 bengor_user_sign_up:
     resource: sign_up.yml
+
+bengor_user_remove:
+    resource: remove.yml
+
+bengor_user_request_remember_password:
+    resource: request_remember_password.yml

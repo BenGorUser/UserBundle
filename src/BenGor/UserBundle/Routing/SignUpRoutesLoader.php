@@ -68,6 +68,6 @@ class SignUpRoutesLoader extends RoutesLoader
         ) {
             return 'default';
         }
-        throw new \RuntimeException('Given sign up type is not support');
+        throw new \RuntimeException('Given sign up type is not supported');
     }
 }

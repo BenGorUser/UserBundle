@@ -59,3 +59,6 @@ ben_gor_user:
                     path: /user/remove
                     success_redirection_route: ~
 ```
+
+// FALTA ACTUALIZAR EL Configuration.php con los nuevos valores del arbol
+// Añadir los routes loader que faltan (Mirar el RoutesCompilerPass)

@@ -51,7 +51,7 @@ class ApplicationServicesCompilerPass implements CompilerPassInterface
             ))->build($key);
 
             (new SignUpUserServiceBuilder(
-                $container, $user['persistence'], $user['use_cases']['registration']
+                $container, $user['persistence'], $user['use_cases']['sign_up']
             ))->build($key);
 
             (new ChangeUserPasswordServiceBuilder(

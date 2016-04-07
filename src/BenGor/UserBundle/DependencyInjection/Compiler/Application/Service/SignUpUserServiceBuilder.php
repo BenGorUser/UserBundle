@@ -110,7 +110,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
      *
      * @return Definition
      */
-    private function defaultSpecification($user)
+    protected function defaultSpecification($user)
     {
         return new Definition(
             DefaultSignUpUserSpecification::class

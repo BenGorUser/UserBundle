@@ -73,6 +73,11 @@ abstract class RoutesLoader implements LoaderInterface
 
         $this->routes = new RouteCollection();
         foreach ($this->config as $user => $config) {
+            if (false === array_key_exists('enabled', $config) || false === $config['enabled']) {
+                throw new \RuntimeException(
+                    '"enabled" key is required in configuration array given in RoutesLoader class'
+                );
+            }
             if (true === array_key_exists('type', $config)) {
                 $this->config['type'] = $this->sanitize($config['type']);
             }

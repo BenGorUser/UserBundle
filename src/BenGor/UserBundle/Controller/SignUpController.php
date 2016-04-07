@@ -46,7 +46,7 @@ class SignUpController extends Controller
         ]);
         $this->signUp($form, $request, $userClass, $firewall, $successRoute);
 
-        return $this->render('@BenGorUser/registration/register.html.twig', [
+        return $this->render('@BenGorUser/sign_up/default.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -77,7 +77,7 @@ class SignUpController extends Controller
         ]);
         $this->signUp($form, $request, $userClass, $firewall, $successRoute);
 
-        return $this->render('@BenGorUser/registration/register_by_invitation.html.twig', [
+        return $this->render('@BenGorUser/sign_up/by_invitation.html.twig', [
             'email' => $userGuest->email()->email(),
             'form'  => $form->createView(),
         ]);

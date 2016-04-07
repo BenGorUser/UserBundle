@@ -16,14 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Change password controller.
+ * Remove user controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ChangePasswordController extends Controller
+class RemoveController extends Controller
 {
     /**
-     * Changes user password action.
+     * Remove ser password action.
      *
      * @param Request $request      The request
      * @param string  $userClass    Extra parameter that contains the user type
@@ -31,7 +31,7 @@ class ChangePasswordController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function changePasswordAction(Request $request, $userClass, $successRoute)
+    public function removeAction(Request $request, $userClass, $successRoute)
     {
     }
 }
