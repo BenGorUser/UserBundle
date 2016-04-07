@@ -12,23 +12,23 @@
 
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
-use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersCompilerPass;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ORM\Types\UserRolesType;
+use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesPass;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Spec file of load subscribers compiler pass.
+ * Spec file of load doctrine custom types compiler pass.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SubscribersCompilerPassSpec extends ObjectBehavior
+class DoctrineCustomTypesPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(SubscribersCompilerPass::class);
+        $this->shouldHaveType(DoctrineCustomTypesPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
@@ -38,13 +38,18 @@ class SubscribersCompilerPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container, Definition $definition)
     {
-        $container->findDefinition(
-            'bengor.user_bundle.event_listener.domain_event_publisher'
-        )->shouldBeCalled()->willReturn($definition);
-        $container->findTaggedServiceIds('bengor_user_subscriber')
-            ->shouldBeCalled()->willReturn([
-            ]);
-        $definition->replaceArgument(0, Argument::type('array'))
+        $container->hasDefinition('doctrine.dbal.connection_factory')->shouldBeCalled()->willReturn(true);
+        $container->getParameter('doctrine.dbal.connection_factory.types')->shouldBeCalled()->willReturn([]);
+
+        $container->setParameter('doctrine.dbal.connection_factory.types', [
+            'user_roles' => [
+                'class'     => UserRolesType::class,
+                'commented' => true,
+            ],
+        ])->shouldBeCalled();
+
+        $container->findDefinition('doctrine.dbal.connection_factory')->shouldBeCalled()->willReturn($definition);
+        $definition->replaceArgument(0, '%doctrine.dbal.connection_factory.types%')
             ->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);

@@ -12,12 +12,12 @@
 
 namespace spec\BenGor\UserBundle\Routing;
 
-use BenGor\UserBundle\Routing\InvitationRoutesLoader;
+use BenGor\UserBundle\Routing\InviteRoutesLoader;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Spec file of invitation routes loader class.
+ * Spec file of invitew routes loader class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -53,7 +53,7 @@ class InvitationRoutesLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(InvitationRoutesLoader::class);
+        $this->shouldHaveType(InviteRoutesLoader::class);
     }
 
     function it_implements_loader_interface()

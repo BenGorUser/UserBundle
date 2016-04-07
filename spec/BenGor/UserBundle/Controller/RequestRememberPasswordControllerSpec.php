@@ -12,17 +12,17 @@
 
 namespace spec\BenGor\UserBundle\Controller;
 
-use BenGor\UserBundle\Controller\RememberPasswordController;
+use BenGor\UserBundle\Controller\RequestRememberPasswordController;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Spec file of remember password controller.
+ * Spec file of request remember password controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RememberPasswordControllerSpec extends ObjectBehavior
+class RequestRememberPasswordControllerSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)
     {
@@ -31,7 +31,7 @@ class RememberPasswordControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RememberPasswordController::class);
+        $this->shouldHaveType(RequestRememberPasswordController::class);
     }
 
     function it_extends_controller()

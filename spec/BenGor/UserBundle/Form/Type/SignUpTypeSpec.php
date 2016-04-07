@@ -12,10 +12,11 @@
 
 namespace spec\BenGor\UserBundle\Form\Type;
 
-use BenGor\UserBundle\Form\Type\RegistrationByInvitationType;
+use BenGor\UserBundle\Form\Type\SignUpType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,15 +24,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Spec file of invitation type class.
+ * Spec file of sign up type class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationByInvitationTypeSpec extends ObjectBehavior
+class SignUpTypeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RegistrationByInvitationType::class);
+        $this->shouldHaveType(SignUpType::class);
     }
 
     function it_extends_abstract_type()
@@ -41,6 +42,7 @@ class RegistrationByInvitationTypeSpec extends ObjectBehavior
 
     function it_builds_form(FormBuilderInterface $builder)
     {
+        $builder->add('email', EmailType::class)->shouldBeCalled()->willReturn($builder);
         $builder->add('password', RepeatedType::class, [
             'type'            => PasswordType::class,
             'invalid_message' => 'The password fields must match.',
@@ -51,12 +53,12 @@ class RegistrationByInvitationTypeSpec extends ObjectBehavior
             'label' => 'Register',
         ])->shouldBeCalled()->willReturn($builder);
 
-        $this->buildForm($builder, ['roles' => ['ROLE_USER'], 'invitation_token' => 'invitation-token']);
+        $this->buildForm($builder, ['roles' => ['ROLE_USER']]);
     }
 
     function it_configures_options(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['roles', 'invitation_token'])->shouldBeCalled()->willReturn($resolver);
+        $resolver->setRequired(['roles'])->shouldBeCalled()->willReturn($resolver);
         $resolver->setDefaults(Argument::type('array'))->shouldBeCalled()->willReturn($resolver);
 
         $this->configureOptions($resolver);

@@ -12,12 +12,12 @@
 
 namespace spec\BenGor\UserBundle\Routing;
 
-use BenGor\UserBundle\Routing\RegistrationRoutesLoader;
+use BenGor\UserBundle\Routing\SignUpRoutesLoader;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Spec file of registration routes loader class.
+ * Spec file of sign up routes loader class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -51,7 +51,7 @@ class RegistrationRoutesLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RegistrationRoutesLoader::class);
+        $this->shouldHaveType(SignUpRoutesLoader::class);
     }
 
     function it_implements_loader_interface()

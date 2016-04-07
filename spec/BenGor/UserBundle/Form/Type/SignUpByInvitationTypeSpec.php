@@ -12,11 +12,10 @@
 
 namespace spec\BenGor\UserBundle\Form\Type;
 
-use BenGor\UserBundle\Form\Type\RegistrationType;
+use BenGor\UserBundle\Form\Type\SignUpByInvitationType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,15 +23,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Spec file of registration type class.
+ * Spec file of sign up by invitation type class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationTypeSpec extends ObjectBehavior
+class SignUpByInvitationTypeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RegistrationType::class);
+        $this->shouldHaveType(SignUpByInvitationType::class);
     }
 
     function it_extends_abstract_type()
@@ -42,7 +41,6 @@ class RegistrationTypeSpec extends ObjectBehavior
 
     function it_builds_form(FormBuilderInterface $builder)
     {
-        $builder->add('email', EmailType::class)->shouldBeCalled()->willReturn($builder);
         $builder->add('password', RepeatedType::class, [
             'type'            => PasswordType::class,
             'invalid_message' => 'The password fields must match.',
@@ -53,12 +51,12 @@ class RegistrationTypeSpec extends ObjectBehavior
             'label' => 'Register',
         ])->shouldBeCalled()->willReturn($builder);
 
-        $this->buildForm($builder, ['roles' => ['ROLE_USER']]);
+        $this->buildForm($builder, ['roles' => ['ROLE_USER'], 'invitation_token' => 'invitation-token']);
     }
 
     function it_configures_options(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['roles'])->shouldBeCalled()->willReturn($resolver);
+        $resolver->setRequired(['roles', 'invitation_token'])->shouldBeCalled()->willReturn($resolver);
         $resolver->setDefaults(Argument::type('array'))->shouldBeCalled()->willReturn($resolver);
 
         $this->configureOptions($resolver);

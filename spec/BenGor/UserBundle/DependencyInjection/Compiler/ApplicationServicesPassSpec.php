@@ -13,7 +13,7 @@
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -25,11 +25,11 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ApplicationServicesCompilerPassSpec extends ObjectBehavior
+class ApplicationServicesPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ApplicationServicesCompilerPass::class);
+        $this->shouldHaveType(ApplicationServicesPass::class);
     }
 
     function it_implmements_compiler_pass_interface()

@@ -12,13 +12,12 @@
 
 namespace spec\BenGor\UserBundle\Controller;
 
-use BenGor\User\Application\Service\SignUpUserRequest;
-use BenGor\User\Application\Service\SignUpUserService;
+use BenGor\User\Application\Service\SignUp\SignUpUserRequest;
 use BenGor\User\Infrastructure\Domain\Model\UserFactory;
 use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
 use BenGor\User\Infrastructure\Security\Test\DummyUserPasswordEncoder;
-use BenGor\UserBundle\Controller\RegistrationController;
-use BenGor\UserBundle\Form\Type\RegistrationType;
+use BenGor\UserBundle\Controller\SignUpController;
+use BenGor\UserBundle\Form\Type\SignUpType;
 use BenGor\UserBundle\Model\User;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use Ddd\Application\Service\TransactionalApplicationService;
@@ -38,11 +37,11 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
- * Spec file of registration controller.
+ * Spec file of sign up controller.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RegistrationControllerSpec extends ObjectBehavior
+class SignUpControllerSpec extends ObjectBehavior
 {
     function let(ContainerInterface $container)
     {
@@ -51,7 +50,7 @@ class RegistrationControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RegistrationController::class);
+        $this->shouldHaveType(SignUpController::class);
     }
 
     function it_extends_controller()
@@ -59,7 +58,7 @@ class RegistrationControllerSpec extends ObjectBehavior
         $this->shouldHaveType(Controller::class);
     }
 
-    function it_renders_register_action(
+    function it_renders_default_action(
         Request $request,
         ContainerInterface $container,
         TwigEngine $templating,
@@ -70,7 +69,7 @@ class RegistrationControllerSpec extends ObjectBehavior
     ) {
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
-        $formFactory->create(RegistrationType::class, null, ['roles' => ['ROLE_USER']])
+        $formFactory->create(SignUpType::class, null, ['roles' => ['ROLE_USER']])
             ->shouldBeCalled()->willReturn($form);
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
@@ -78,14 +77,15 @@ class RegistrationControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
-        $templating->renderResponse('@BenGorUser/registration/register.html.twig', [
+        $templating->renderResponse('@BenGorUser/sign_up/default.html.twig', [
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
+        $this->defaultAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
     }
 
-    function it_registers_action(
+    function it_default_action(
+        SignUpUserRequest $signUpUserRequest,
         Request $request,
         ContainerInterface $container,
         GuardAuthenticatorHandler $handler,
@@ -97,19 +97,13 @@ class RegistrationControllerSpec extends ObjectBehavior
         FormView $formView,
         FormFactoryInterface $formFactory
     ) {
-        $passwordEncoder = new DummyUserPasswordEncoder('dummy');
-        $service = new TransactionalApplicationService(
-            new SignUpUserService(
-                new InMemoryUserRepository(),
-                $passwordEncoder,
-                new UserFactory(User::class)
-            ), new DummySession()
-        );
-        $serviceRequest = new SignUpUserRequest('bengor@user.com', 123456, ['ROLE_USER']);
+        $signUpUserRequest->email()->shouldBeCalled()->willReturn('bengor@user.com');
+        $signUpUserRequest->password()->shouldBeCalled()->willReturn(123456);
+        $signUpUserRequest->roles()->shouldBeCalled()->willReturn(['ROLE_USER']);
 
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
-        $formFactory->create(RegistrationType::class, null, ['roles' => ['ROLE_USER']])
+        $formFactory->create(SignUpType::class, null, ['roles' => ['ROLE_USER']])
             ->shouldBeCalled()->willReturn($form);
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
@@ -117,7 +111,7 @@ class RegistrationControllerSpec extends ObjectBehavior
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
         $container->get('bengor_user.sign_up_user')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($serviceRequest);
+        $form->getData()->shouldBeCalled()->willReturn($signUpUserRequest);
 
         $container->get('security.authentication.guard_handler')->shouldBeCalled()->willReturn($handler);
         $container->get('bengor_user.form_login_user_authenticator')
@@ -137,7 +131,7 @@ class RegistrationControllerSpec extends ObjectBehavior
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
 
-        $this->registerAction($request, 'user', 'main', 'bengor_user_user_homepage');
+        $this->defaultAction($request, 'user', 'main', 'bengor_user_user_homepage');
     }
 
     function it_does_not_register_action(
@@ -151,7 +145,7 @@ class RegistrationControllerSpec extends ObjectBehavior
     ) {
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
-        $formFactory->create(RegistrationType::class, null, ['roles' => ['ROLE_USER']])
+        $formFactory->create(SignUpType::class, null, ['roles' => ['ROLE_USER']])
             ->shouldBeCalled()->willReturn($form);
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
@@ -161,10 +155,10 @@ class RegistrationControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
-        $templating->renderResponse('@BenGorUser/registration/register.html.twig', [
+        $templating->renderResponse('@BenGorUser/sign_up/default.html.twig', [
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->registerAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
+        $this->defaultAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
     }
 }

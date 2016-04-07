@@ -27,31 +27,20 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
     {
         $this->beConstructedWith([
             'user' => [
-                'class'       => 'AppBundle\Entity\User',
-                'persistence' => 'doctrine',
-                'firewall'    => 'main',
-                'use_cases'   => [
-                    'security' => [
-                        'enabled' => true,
-                    ],
+                'enabled'                   => true,
+                'login'                     => [
+                    'name' => 'bengor_user_user_login',
+                    'path' => '/user/login',
                 ],
-                'routes'      => [
-                    'security' => [
-                        'login'                     => [
-                            'name' => 'bengor_user_user_security_login',
-                            'path' => '/login',
-                        ],
-                        'login_check'               => [
-                            'name' => 'bengor_user_user_security_login_check',
-                            'path' => '/login_check',
-                        ],
-                        'logout'                    => [
-                            'name' => 'bengor_user_user_security_logout',
-                            'path' => '/logout',
-                        ],
-                        'success_redirection_route' => 'bengor_user_user_homepage',
-                    ],
+                'login_check'               => [
+                    'name' => 'bengor_user_user_login_check',
+                    'path' => '/user/login_check',
                 ],
+                'logout'                    => [
+                    'name' => 'bengor_user_user_logout',
+                    'path' => '/user/logout',
+                ],
+                'success_redirection_route' => 'bengor_user_user_homepage',
             ],
         ]);
     }
@@ -69,5 +58,10 @@ class SecurityRoutesLoaderSpec extends ObjectBehavior
     function it_loads()
     {
         $this->load('resource');
+    }
+
+    function it_supports_bengor_user_security()
+    {
+        $this->supports('resource', 'bengor_user_security')->shouldReturn(true);
     }
 }

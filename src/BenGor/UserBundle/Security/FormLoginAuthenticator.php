@@ -133,7 +133,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
             return;
         }
 
-        return $response->user();
+        return $response;
     }
 
     /**

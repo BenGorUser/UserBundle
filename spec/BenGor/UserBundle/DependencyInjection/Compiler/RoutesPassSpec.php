@@ -13,7 +13,7 @@
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\RoutesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\RoutesPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,11 +24,11 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RoutesCompilerPassSpec extends ObjectBehavior
+class RoutesPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RoutesCompilerPass::class);
+        $this->shouldHaveType(RoutesPass::class);
     }
 
     function it_implmements_compiler_pass_interface()

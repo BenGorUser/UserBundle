@@ -12,7 +12,7 @@
 
 namespace spec\BenGor\UserBundle\Form\Type;
 
-use BenGor\UserBundle\Form\Type\InvitationType;
+use BenGor\UserBundle\Form\Type\InviteType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
@@ -21,15 +21,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Spec file of invitation type class.
+ * Spec file of invite type class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InvitationTypeSpec extends ObjectBehavior
+class InviteTypeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(InvitationType::class);
+        $this->shouldHaveType(InviteType::class);
     }
 
     function it_extends_abstract_type()

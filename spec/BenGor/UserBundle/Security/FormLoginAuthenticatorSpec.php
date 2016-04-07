@@ -12,8 +12,8 @@
 
 namespace spec\BenGor\UserBundle\Security;
 
-use BenGor\User\Application\Service\LogInUserRequest;
-use BenGor\User\Application\Service\LogInUserService;
+use BenGor\User\Application\Service\LogIn\LogInUserRequest;
+use BenGor\User\Application\Service\LogIn\LogInUserService;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
@@ -40,10 +40,9 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  */
 class FormLoginAuthenticatorSpec extends ObjectBehavior
 {
-    private $service;
     private $user;
 
-    function let(Router $router)
+    function let(Router $router, LogInUserService $service)
     {
         $inMemoryUserRepository = new InMemoryUserRepository();
         $this->user = new User(
@@ -55,13 +54,8 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $this->user->enableAccount();
         $inMemoryUserRepository->persist($this->user);
 
-        $this->service = new LogInUserService(
-            $inMemoryUserRepository,
-            new DummyUserPasswordEncoder('111111')
-        );
-
         $this->beConstructedWith(
-            $router, $this->service, new UserFactory(User::class), [
+            $router, $service, new UserFactory(User::class), [
                 'login'                     => 'bengor_user_user_security_login',
                 'login_check'               => 'bengor_user_user_security_login_check',
                 'success_redirection_route' => 'bengor_user_user_security_homepage',
@@ -99,12 +93,16 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $this->getCredentials($request)->shouldReturnAnInstanceOf(LogInUserRequest::class);
     }
 
-    function it_gets_user(UserProviderInterface $userProvider)
+    function it_gets_user(UserProviderInterface $userProvider, LogInUserService $service)
     {
         $credentials = new LogInUserRequest('test@test.com', '111111');
-        $this->service->execute($credentials);
+        $service->execute($credentials)->shouldBeCalled()->willReturn([
+            'id' => 'user-id',
+        ]);
 
-        $this->getUser($credentials, $userProvider)->shouldReturnAnInstanceOf(UserInterface::class);
+        $this->getUser($credentials, $userProvider)->shouldReturn([
+            'id' => 'user-id',
+        ]);
     }
 
     function it_checks_credentials()

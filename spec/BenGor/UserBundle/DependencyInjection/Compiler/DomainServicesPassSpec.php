@@ -13,7 +13,7 @@
 namespace spec\BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Domain\Model\User;
-use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,15 +21,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Spec file of mailing services compiler pass.
+ * Spec file of domain services compiler pass.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class MailingServicesCompilerPassSpec extends ObjectBehavior
+class DomainServicesPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(MailingServicesCompilerPass::class);
+        $this->shouldHaveType(DomainServicesPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
@@ -39,11 +39,23 @@ class MailingServicesCompilerPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container)
     {
-        $container->hasDefinition('swiftmailer.mailer.default')->shouldBeCalled()->willReturn(true);
-        $container->getDefinition('swiftmailer.mailer.default')->shouldBeCalled();
+        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
+            'user_class' => [
+                'user' => [
+                    'class' => User::class, 'firewall' => [
+                        'name' => 'user', 'pattern' => '',
+                    ],
+                ],
+            ],
+        ]);
 
         $container->setDefinition(
-            'bengor.user.infrastructure.mailing.mailer.swift_mailer',
+            'bengor.user.infrastructure.domain.model.user_factory',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.infrastructure.domain.model.user_guest_factory',
             Argument::type(Definition::class)
         )->shouldBeCalled();
 
