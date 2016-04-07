@@ -27,7 +27,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class MailingServicesCompilerPass implements CompilerPassInterface
+class MailingServicesPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

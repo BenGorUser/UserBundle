@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class DomainServicesCompilerPass implements CompilerPassInterface
+class DomainServicesPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

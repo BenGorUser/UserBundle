@@ -12,17 +12,17 @@
 
 namespace BenGor\UserBundle;
 
-use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\CommandsServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\RoutesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\RoutesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -41,39 +41,17 @@ class BenGorUserBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(
-            new ApplicationDataTransformersCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new DefaultRolesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new DomainServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new PersistenceServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new SecurityServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new ApplicationServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new DoctrineCustomTypesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new MailingServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new RoutesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new SubscribersCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
-        $container->addCompilerPass(
-            new CommandsServicesCompilerPass(), PassConfig::TYPE_OPTIMIZE
-        );
+        $container->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new DefaultRolesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new PersistenceServicesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new SecurityServicesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new DoctrineCustomTypesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new MailingServicesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new SubscribersPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
 
         $container->loadFromExtension('doctrine', [
             'orm' => [

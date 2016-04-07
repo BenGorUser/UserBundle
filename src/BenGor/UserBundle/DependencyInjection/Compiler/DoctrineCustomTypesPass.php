@@ -30,7 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class DoctrineCustomTypesCompilerPass implements CompilerPassInterface
+class DoctrineCustomTypesPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

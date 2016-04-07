@@ -35,7 +35,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class PersistenceServicesCompilerPass implements CompilerPassInterface
+class PersistenceServicesPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

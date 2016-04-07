@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityServicesCompilerPass implements CompilerPassInterface
+class SecurityServicesPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
