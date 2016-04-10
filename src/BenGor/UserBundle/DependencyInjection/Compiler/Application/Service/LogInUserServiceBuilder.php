@@ -39,7 +39,7 @@ class LogInUserServiceBuilder extends ServiceBuilder
                         'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
                     ),
                     $this->container->getDefinition(
-                        'bengor.user.application.data_transformer.user_dto'
+                        'bengor.user.application.data_transformer.user_no_transformation'
                     ),
                 ]
             )
@@ -78,7 +78,6 @@ class LogInUserServiceBuilder extends ServiceBuilder
                 FormLoginAuthenticator::class, [
                     $this->container->getDefinition('router.default'),
                     $this->container->getDefinition('bengor.user.application.service.log_in_' . $user),
-                    $this->container->getDefinition('bengor.user.infrastructure.domain.model.' . $user . '_factory'),
                     [
                         'login'                     => $this->configuration['routes']['login']['name'],
                         'login_check'               => $this->configuration['routes']['login_check']['name'],

@@ -14,12 +14,6 @@ namespace spec\BenGor\UserBundle\Security;
 
 use BenGor\User\Application\Service\LogIn\LogInUserRequest;
 use BenGor\User\Application\Service\LogIn\LogInUserService;
-use BenGor\User\Domain\Model\UserEmail;
-use BenGor\User\Domain\Model\UserId;
-use BenGor\User\Domain\Model\UserPassword;
-use BenGor\User\Domain\Model\UserRole;
-use BenGor\User\Infrastructure\Domain\Model\UserFactory;
-use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
 use BenGor\UserBundle\Model\User;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use PhpSpec\ObjectBehavior;
@@ -32,33 +26,19 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 
 /**
- * Spec file of form login authenticator class.
+ * Spec file of FormLoginAuthenticator class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
 class FormLoginAuthenticatorSpec extends ObjectBehavior
 {
-    private $user;
-
     function let(Router $router, LogInUserService $service)
     {
-        $inMemoryUserRepository = new InMemoryUserRepository();
-        $this->user = new User(
-            new UserId(),
-            new UserEmail('test@test.com'),
-            UserPassword::fromEncoded('111111', 'dummy-salt'),
-            [new UserRole('ROLE_USER')]
-        );
-        $this->user->enableAccount();
-        $inMemoryUserRepository->persist($this->user);
-
-        $this->beConstructedWith(
-            $router, $service, new UserFactory(User::class), [
-                'login'                     => 'bengor_user_user_security_login',
-                'login_check'               => 'bengor_user_user_security_login_check',
-                'success_redirection_route' => 'bengor_user_user_security_homepage',
-            ]
-        );
+        $this->beConstructedWith($router, $service, [
+            'login'                     => 'bengor_user_user_security_login',
+            'login_check'               => 'bengor_user_user_security_login_check',
+            'success_redirection_route' => 'bengor_user_user_security_homepage',
+        ]);
     }
 
     function it_is_initializable()
@@ -69,6 +49,15 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
     function it_extends_abstract_form_login_authenticator()
     {
         $this->shouldHaveType(AbstractFormLoginAuthenticator::class);
+    }
+
+    function it_throws_invalid_argument_exception_when_routes_are_not_provided(
+        Router $router,
+        LogInUserService $service
+    ) {
+        $this->beConstructedWith($router, $service, []);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_gets_credentials(
@@ -91,28 +80,19 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $this->getCredentials($request)->shouldReturnAnInstanceOf(LogInUserRequest::class);
     }
 
-    function it_gets_user(UserProviderInterface $userProvider, LogInUserService $service)
-    {
-        $credentials = new LogInUserRequest('test@test.com', '111111');
-        $service->execute($credentials)->shouldBeCalled()->willReturn([
-            'id' => 'user-id',
-        ]);
+    function it_gets_user(
+        UserProviderInterface $userProvider,
+        LogInUserService $service,
+        LogInUserRequest $credentials,
+        User $user
+    ) {
+        $service->execute($credentials)->shouldBeCalled()->willReturn($user);
 
-        $this->getUser($credentials, $userProvider)->shouldReturn([
-            'id' => 'user-id',
-        ]);
+        $this->getUser($credentials, $userProvider)->shouldReturn($user);
     }
 
-    function it_checks_credentials()
+    function it_checks_credentials(LogInUserRequest $credentials, User $user)
     {
-        $credentials = new LogInUserRequest('test@test.com', '111111');
-        $user = new User(
-            new UserId(),
-            new UserEmail('test@test.com'),
-            UserPassword::fromEncoded('111111', 'dummy-salt'),
-            [new UserRole('ROLE_USER')]
-        );
-
         $this->checkCredentials($credentials, $user)->shouldReturn(true);
     }
 }

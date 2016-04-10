@@ -16,10 +16,10 @@ use BenGor\User\Application\Service\LogIn\LogInUserRequest;
 use BenGor\User\Application\Service\LogIn\LogInUserService;
 use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGor\User\Domain\Model\UserEmail;
-use BenGor\User\Domain\Model\UserFactory;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
+use BenGor\UserBundle\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Security;
@@ -37,13 +37,6 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  */
 class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 {
-    /**
-     * The user factory.
-     *
-     * @var UserFactory
-     */
-    private $factory;
-
     /**
      * The Symfony router component.
      *
@@ -82,20 +75,23 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Constructor.
      *
-     * @param Router           $aRouter        The Symfony router component
-     * @param LogInUserService $aService       The log in user service
-     * @param UserFactory      $aFactory       The user factory
-     * @param array            $securityRoutes The routes related with security (login, login_check and logout)
+     * @param Router           $aRouter  The Symfony router component
+     * @param LogInUserService $aService The log in user service
+     * @param array            $routes   The routes related with security (login, login_check and logout)
      */
-    public function __construct(Router $aRouter, LogInUserService $aService, UserFactory $aFactory, $securityRoutes)
+    public function __construct(Router $aRouter, LogInUserService $aService, array $routes)
     {
-        $this->factory = $aFactory;
         $this->router = $aRouter;
         $this->service = $aService;
 
-        $this->loginRoute = $securityRoutes['login'];
-        $this->loginCheckRoute = $securityRoutes['login_check'];
-        $this->successRedirectionRoute = $securityRoutes['success_redirection_route'];
+        if (false === isset($routes['login'], $routes['login_check'], $routes['success_redirection_route'])) {
+            throw new \InvalidArgumentException(
+                '"routes" array should have "login", "login_check" and "success_redirection_route" keys'
+            );
+        }
+        $this->loginRoute = $routes['login'];
+        $this->loginCheckRoute = $routes['login_check'];
+        $this->successRedirectionRoute = $routes['success_redirection_route'];
     }
 
     /**
@@ -115,6 +111,10 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     /**
      * {@inheritdoc}
+     *
+     * User instantiation inside catch is needed to continue the
+     * correct Guard flow. Then, the process will break in
+     * "checkCredentials" method throwing the correct error message.
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
@@ -122,10 +122,10 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
             $response = $this->service->execute($credentials);
         } catch (\Exception $exception) {
             if ($exception instanceof UserPasswordInvalidException) {
-                return $this->factory->register(
+                return new User(
                     new UserId(),
-                    new UserEmail('bengoruser@bengoruser.com'),
-                    UserPassword::fromEncoded('0', 'this-is-trade-off'),
+                    new UserEmail('bengor@user.com'),
+                    UserPassword::fromEncoded('0', 'the-salt'),
                     [new UserRole('ROLE_USER')]
                 );
             }
