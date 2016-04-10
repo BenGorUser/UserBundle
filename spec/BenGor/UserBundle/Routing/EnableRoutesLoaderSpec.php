@@ -12,16 +12,16 @@
 
 namespace spec\BenGor\UserBundle\Routing;
 
-use BenGor\UserBundle\Routing\InviteRoutesLoader;
+use BenGor\UserBundle\Routing\EnableRoutesLoader;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Spec file of InviteRoutesLoader class.
+ * Spec file of EnableRoutesLoader class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InviteRoutesLoaderSpec extends ObjectBehavior
+class EnableRoutesLoaderSpec extends ObjectBehavior
 {
     function let()
     {
@@ -29,8 +29,8 @@ class InviteRoutesLoaderSpec extends ObjectBehavior
             'user' => [
                 'enabled'                   => true,
                 'type'                      => 'default',
-                'name'                      => 'bengor_user_user_invite',
-                'path'                      => '/user/invite',
+                'name'                      => 'bengor_user_user_enable',
+                'path'                      => '/user/confirmation-token',
                 'success_redirection_route' => null,
             ],
         ]);
@@ -38,7 +38,7 @@ class InviteRoutesLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(InviteRoutesLoader::class);
+        $this->shouldHaveType(EnableRoutesLoader::class);
     }
 
     function it_implements_loader_interface()
@@ -51,8 +51,8 @@ class InviteRoutesLoaderSpec extends ObjectBehavior
         $this->load('resource');
     }
 
-    function it_supports_bengor_user_invite()
+    function it_supports_bengor_user_enable()
     {
-        $this->supports('resource', 'bengor_user_invite')->shouldReturn(true);
+        $this->supports('resource', 'bengor_user_enable')->shouldReturn(true);
     }
 }

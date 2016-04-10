@@ -51,7 +51,7 @@ class RequestRememberPasswordRoutesLoader extends RoutesLoader
                 [],
                 '',
                 [],
-                ['GET']
+                ['GET', 'POST']
             )
         );
     }

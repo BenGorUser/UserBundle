@@ -12,13 +12,24 @@
 
 namespace spec\BenGor\UserBundle\Controller;
 
+use BenGor\User\Application\Service\RequestRememberPassword\RequestRememberPasswordRequest;
 use BenGor\UserBundle\Controller\RequestRememberPasswordController;
+use BenGor\UserBundle\Form\Type\RequestRememberPasswordType;
+use Ddd\Application\Service\TransactionalApplicationService;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Spec file of request remember password controller.
+ * Spec file of RequestRememberPasswordController class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -37,5 +48,68 @@ class RequestRememberPasswordControllerSpec extends ObjectBehavior
     function it_extends_controller()
     {
         $this->shouldHaveType(Controller::class);
+    }
+
+    function it_renders_request_remember_password_action(
+        Request $request,
+        ContainerInterface $container,
+        TwigEngine $templating,
+        Response $response,
+        FormView $formView,
+        FormInterface $form,
+        FormFactoryInterface $formFactory
+    ) {
+        $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
+        $formFactory->create(RequestRememberPasswordType::class, null, [])->shouldBeCalled()->willReturn($form);
+
+        $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
+
+        $container->has('templating')->shouldBeCalled()->willReturn(true);
+        $container->get('templating')->shouldBeCalled()->willReturn($templating);
+        $form->createView()->shouldBeCalled()->willReturn($formView);
+        $templating->renderResponse('@BenGorUser/request_remember_password/request_remember_password.html.twig', [
+            'form' => $formView,
+        ], null)->shouldBeCalled()->willReturn($response);
+
+        $this->requestRememberPasswordAction($request, 'user')->shouldReturn($response);
+    }
+
+    function it_request_remember_password_action(
+        Request $request,
+        TransactionalApplicationService $service,
+        RequestRememberPasswordRequest $rememberPasswordRequest,
+        ContainerInterface $container,
+        TwigEngine $templating,
+        Session $session,
+        FlashBagInterface $flashBag,
+        Response $response,
+        FormView $formView,
+        FormInterface $form,
+        FormFactoryInterface $formFactory
+    ) {
+        $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
+        $formFactory->create(RequestRememberPasswordType::class, null, [])->shouldBeCalled()->willReturn($form);
+
+        $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
+        $form->isValid()->shouldBeCalled()->willReturn(true);
+
+        $container->get('bengor_user.request_user_remember_password')->shouldBeCalled()->willReturn($service);
+        $form->getData()->shouldBeCalled()->willReturn($rememberPasswordRequest);
+        $service->execute($rememberPasswordRequest)->shouldBeCalled();
+
+        $container->has('session')->shouldBeCalled()->willReturn(true);
+        $container->get('session')->shouldBeCalled()->willReturn($session);
+        $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
+        $flashBag->add('notice', 'Remember password request is successfully done')->shouldBeCalled();
+
+        $container->has('templating')->shouldBeCalled()->willReturn(true);
+        $container->get('templating')->shouldBeCalled()->willReturn($templating);
+        $form->createView()->shouldBeCalled()->willReturn($formView);
+        $templating->renderResponse('@BenGorUser/request_remember_password/request_remember_password.html.twig', [
+            'form' => $formView,
+        ], null)->shouldBeCalled()->willReturn($response);
+
+        $this->requestRememberPasswordAction($request, 'user')->shouldReturn($response);
     }
 }

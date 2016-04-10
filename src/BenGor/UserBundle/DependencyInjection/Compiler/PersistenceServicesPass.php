@@ -53,7 +53,7 @@ class PersistenceServicesPass implements CompilerPassInterface
             if ('doctrine_orm' === $user['persistence']) {
                 if (!$container->hasDefinition('doctrine.orm.default_entity_manager')) {
                     throw new RuntimeException(
-                        'When the persistence layer is "orm" requires ' .
+                        'When the persistence layer is "doctrine_orm" requires ' .
                         'the installation and set up of the DoctrineBundle'
                     );
                 }
@@ -61,7 +61,7 @@ class PersistenceServicesPass implements CompilerPassInterface
             } elseif ('doctrine_odm_mongodb' === $user['persistence']) {
                 if (!$container->hasDefinition('doctrine_mongodb.odm.document_manager')) {
                     throw new RuntimeException(
-                        'When the persistence layer is "odm_mongodb" requires ' .
+                        'When the persistence layer is "doctrine_odm_mongodb" requires ' .
                         'the installation and set up of the DoctrineMongoDBBundle'
                     );
                 }

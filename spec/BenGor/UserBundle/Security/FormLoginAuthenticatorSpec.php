@@ -20,7 +20,6 @@ use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
 use BenGor\User\Infrastructure\Domain\Model\UserFactory;
 use BenGor\User\Infrastructure\Persistence\InMemory\InMemoryUserRepository;
-use BenGor\User\Infrastructure\Security\Test\DummyUserPasswordEncoder;
 use BenGor\UserBundle\Model\User;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 

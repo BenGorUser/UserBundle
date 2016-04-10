@@ -38,206 +38,110 @@ class RoutesPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container, Definition $definition)
     {
+        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
+            'user_class' => [
+                'user' => [
+                    'class'         => 'AppBundle\Entity\User',
+                    'firewall'      => 'main',
+                    'persistence'   => 'doctrine_orm',
+                    'default_roles' => [
+                        'ROLE_USER',
+                    ],
+                    'use_cases'     => [
+                        'security'        => [
+                            'enabled' => true,
+                        ],
+                        'sign_up'         => [
+                            'enabled' => true,
+                            'type'    => 'default',
+                        ],
+                        'change_password' => [
+                            'enabled' => true,
+                            'type'    => 'default',
+                        ],
+                        'remove'          => [
+                            'enabled' => true,
+                        ],
+                    ],
+                    'routes'        => [
+                        'security'                  => [
+                            'login'                     => [
+                                'name' => 'bengor_user_user_login',
+                                'path' => '/user/login',
+                            ],
+                            'login_check'               => [
+                                'name' => 'bengor_user_user_login_check',
+                                'path' => '/user/login_check',
+                            ],
+                            'logout'                    => [
+                                'name' => 'bengor_user_user_logout',
+                                'path' => '/user/logout',
+                            ],
+                            'success_redirection_route' => 'bengor_user_user_homepage',
+                        ],
+                        'sign_up'                   => [
+                            'name'                      => 'bengor_user_user_sign_up',
+                            'path'                      => '/user/sign-up',
+                            'success_redirection_route' => 'bengor_user_user_homepage',
+                        ],
+                        'invite'                    => [
+                            'name'                      => 'bengor_user_user_invite',
+                            'path'                      => '/user/invite',
+                            'success_redirection_route' => null,
+                        ],
+                        'enable'                    => [
+                            'name'                      => 'bengor_user_user_enable',
+                            'path'                      => '/user/confirmation-token',
+                            'success_redirection_route' => null,
+                        ],
+                        'change_password'           => [
+                            'name'                      => 'bengor_user_user_change_password',
+                            'path'                      => '/user/change-password',
+                            'success_redirection_route' => null,
+                        ],
+                        'request_remember_password' => [
+                            'name'                      => 'bengor_user_user_request_remember_password',
+                            'path'                      => '/user/remember-password',
+                            'success_redirection_route' => null,
+                        ],
+                        'remove'                    => [
+                            'name'                      => 'bengor_user_user_remove',
+                            'path'                      => '/user/remove',
+                            'success_redirection_route' => null,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $container->hasDefinition('bengor.user_bundle.routing.change_password_routes_loader')
+            ->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('bengor.user_bundle.routing.change_password_routes_loader')
+            ->shouldBeCalled()->willReturn($definition);
+        $container->hasDefinition('bengor.user_bundle.routing.enable_routes_loader')
+            ->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('bengor.user_bundle.routing.enable_routes_loader')
+            ->shouldBeCalled()->willReturn($definition);
+        $container->hasDefinition('bengor.user_bundle.routing.invite_routes_loader')
+            ->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('bengor.user_bundle.routing.invite_routes_loader')
+            ->shouldBeCalled()->willReturn($definition);
         $container->hasDefinition('bengor.user_bundle.routing.security_routes_loader')
             ->shouldBeCalled()->willReturn(true);
-        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
-            'user_class' => [
-                'user' => [
-                    'class'     => User::class,
-                    'firewall'  => 'main',
-                    'use_cases' => [
-                        'security'     => [
-                            'enabled' => true,
-                        ],
-                        'registration' => [
-                            'enabled' => true,
-                            'type'    => 'by_invitation',
-                        ],
-                    ],
-                    'routes'    => [
-                        'security'     => [
-                            'login'                     => [
-                                'name' => 'bengor_user_user_security_login',
-                                'path' => '/login',
-                            ],
-                            'login_check'               => [
-                                'name' => 'bengor_user_user_security_login_check',
-                                'path' => '/login_check',
-                            ],
-                            'logout'                    => [
-                                'name' => 'bengor_user_user_security_logout',
-                                'path' => '/logout',
-                            ],
-                            'success_redirection_route' => 'bengor_user_user_homepage',
-                        ],
-                        'registration' => [
-                            'name'                      => 'bengor_user_user_registration',
-                            'path'                      => '/user/register',
-                            'invitation'                => [
-                                'name' => 'bengor_user_user_invitation',
-                                'path' => '/user/invite',
-                            ],
-                            'success_redirection_route' => 'bengor_user_user_homepage',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
         $container->getDefinition('bengor.user_bundle.routing.security_routes_loader')
             ->shouldBeCalled()->willReturn($definition);
-
-        $container->hasDefinition('bengor.user_bundle.routing.registration_routes_loader')
+        $container->hasDefinition('bengor.user_bundle.routing.sign_up_routes_loader')
             ->shouldBeCalled()->willReturn(true);
-        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
-            'user_class' => [
-                'user' => [
-                    'class'     => User::class,
-                    'firewall'  => 'main',
-                    'use_cases' => [
-                        'security'     => [
-                            'enabled' => true,
-                        ],
-                        'registration' => [
-                            'enabled' => true,
-                            'type'    => 'by_invitation',
-                        ],
-                    ],
-                    'routes'    => [
-                        'security'     => [
-                            'login'                     => [
-                                'name' => 'bengor_user_user_security_login',
-                                'path' => '/login',
-                            ],
-                            'login_check'               => [
-                                'name' => 'bengor_user_user_security_login_check',
-                                'path' => '/login_check',
-                            ],
-                            'logout'                    => [
-                                'name' => 'bengor_user_user_security_logout',
-                                'path' => '/logout',
-                            ],
-                            'success_redirection_route' => 'bengor_user_user_homepage',
-                        ],
-                        'registration' => [
-                            'name'                      => 'bengor_user_user_registration',
-                            'path'                      => '/user/register',
-                            'invitation'                => [
-                                'name' => 'bengor_user_user_invitation',
-                                'path' => '/user/invite',
-                            ],
-                            'user_enable'               => [
-                                'name' => 'bengor_user_user_enable',
-                                'path' => '/user/confirmation-token',
-                            ],
-                            'success_redirection_route' => 'bengor_user_user_homepage',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-        $container->setParameter('bengor_user.config', [
-            'user_class' => [
-                'user' => [
-                    'class'     => User::class,
-                    'firewall'  => 'main',
-                    'use_cases' => [
-                        'security'     => [
-                            'enabled' => true,
-                        ],
-                        'registration' => [
-                            'enabled' => true,
-                            'type'    => 'by_invitation',
-                        ],
-                    ],
-                    'routes'    => [
-                        'security'     => [
-                            'login'                     => [
-                                'name' => 'bengor_user_user_security_login',
-                                'path' => '/login',
-                            ],
-                            'login_check'               => [
-                                'name' => 'bengor_user_user_security_login_check',
-                                'path' => '/login_check',
-                            ],
-                            'logout'                    => [
-                                'name' => 'bengor_user_user_security_logout',
-                                'path' => '/logout',
-                            ],
-                            'success_redirection_route' => 'bengor_user_user_homepage',
-                        ],
-                        'registration' => [
-                            'name'                      => 'bengor_user_user_registration',
-                            'path'                      => '/user/register',
-                            'invitation'                => [
-                                'name' => 'bengor_user_user_invitation',
-                                'path' => '/user/invite',
-                            ],
-                            'user_enable'               => [
-                                'name' => 'bengor_user_user_enable',
-                                'path' => '/user/confirmation-token',
-                            ],
-                            'success_redirection_route' => 'bengor_user_user_homepage',
-                        ],
-                    ],
-                ],
-            ],
-        ])->shouldBeCalled()->willReturn($container);
-        $container->getDefinition('bengor.user_bundle.routing.registration_routes_loader')
+        $container->getDefinition('bengor.user_bundle.routing.sign_up_routes_loader')
             ->shouldBeCalled()->willReturn($definition);
-
-        $container->hasDefinition('bengor.user_bundle.routing.enable_user_routes_loader')
+        $container->hasDefinition('bengor.user_bundle.routing.remove_routes_loader')
             ->shouldBeCalled()->willReturn(true);
-        $container->getDefinition('bengor.user_bundle.routing.enable_user_routes_loader')
+        $container->getDefinition('bengor.user_bundle.routing.remove_routes_loader')
             ->shouldBeCalled()->willReturn($definition);
-        $container->hasDefinition('bengor.user_bundle.routing.invitation_routes_loader')
+        $container->hasDefinition('bengor.user_bundle.routing.request_remember_password_routes_loader')
             ->shouldBeCalled()->willReturn(true);
-        $container->getDefinition('bengor.user_bundle.routing.invitation_routes_loader')
+        $container->getDefinition('bengor.user_bundle.routing.request_remember_password_routes_loader')
             ->shouldBeCalled()->willReturn($definition);
-        $definition->replaceArgument(0, [
-            'user' => [
-                'class'     => User::class,
-                'firewall'  => 'main',
-                'use_cases' => [
-                    'security'     => [
-                        'enabled' => true,
-                    ],
-                    'registration' => [
-                        'enabled' => true,
-                        'type'    => 'by_invitation',
-                    ],
-                ],
-                'routes'    => [
-                    'security'     => [
-                        'login'                     => [
-                            'name' => 'bengor_user_user_security_login',
-                            'path' => '/login',
-                        ],
-                        'login_check'               => [
-                            'name' => 'bengor_user_user_security_login_check',
-                            'path' => '/login_check',
-                        ],
-                        'logout'                    => [
-                            'name' => 'bengor_user_user_security_logout',
-                            'path' => '/logout',
-                        ],
-                        'success_redirection_route' => 'bengor_user_user_homepage',
-                    ],
-                    'registration' => [
-                        'name'                      => 'bengor_user_user_registration',
-                        'path'                      => '/user/register',
-                        'invitation'                => [
-                            'name' => 'bengor_user_user_invitation',
-                            'path' => '/user/invite',
-                        ],
-                        'user_enable'               => [
-                            'name' => 'bengor_user_user_enable',
-                            'path' => '/user/confirmation-token',
-                        ],
-                        'success_redirection_route' => 'bengor_user_user_homepage',
-                    ],
-                ],
-            ],
-        ])->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);
     }

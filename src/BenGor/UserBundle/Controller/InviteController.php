@@ -27,12 +27,12 @@ class InviteController extends Controller
     /**
      * Invite action.
      *
-     * @param Request $request   The request
-     * @param string  $userClass Extra parameter that contains the user type
+     * @param Request     $request      The request
+     * @param string|null $successRoute Extra parameter that contains the success route name, by default is null
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function inviteAction(Request $request, $userClass)
+    public function inviteAction(Request $request, $userClass, $successRoute = null)
     {
         $form = $this->createForm(InviteType::class);
         if ($request->isMethod('POST')) {
@@ -43,6 +43,10 @@ class InviteController extends Controller
                 try {
                     $service->execute($form->getData());
                     $this->addFlash('notice', 'Invitation is successfully done');
+
+                    if (null !== $successRoute) {
+                        return $this->redirectToRoute($successRoute);
+                    }
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', 'The email is already in use.');
                 } catch (\Exception $exception) {

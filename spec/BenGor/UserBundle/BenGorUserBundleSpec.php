@@ -13,18 +13,17 @@
 namespace spec\BenGor\UserBundle;
 
 use BenGor\UserBundle\BenGorUserBundle;
-use BenGor\UserBundle\DependencyInjection\Compiler\AliasServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\CommandsServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\RoutesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersCompilerPass;
-use BenGor\UserBundle\DependencyInjection\Compiler\TransactionalApplicationServicesCompilerPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\ApplicationServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\MailingServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\PersistenceServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\RoutesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
+use BenGor\UserBundle\DependencyInjection\Compiler\SubscribersPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -51,61 +50,56 @@ class BenGorUserBundleSpec extends ObjectBehavior
     function it_builds(ContainerBuilder $container)
     {
         $container->addCompilerPass(
-            Argument::type(DefaultRolesCompilerPass::class),
+            Argument::type(ApplicationDataTransformersPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(DomainServicesCompilerPass::class),
+            Argument::type(DefaultRolesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(PersistenceServicesCompilerPass::class),
+            Argument::type(DomainServicesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(SecurityServicesCompilerPass::class),
+            Argument::type(PersistenceServicesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(DoctrineCustomTypesCompilerPass::class),
+            Argument::type(SecurityServicesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(MailingServicesCompilerPass::class),
+            Argument::type(DoctrineCustomTypesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(ApplicationServicesCompilerPass::class),
+            Argument::type(MailingServicesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(TransactionalApplicationServicesCompilerPass::class),
+            Argument::type(ApplicationServicesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(AliasServicesCompilerPass::class),
+            Argument::type(RoutesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(RoutesCompilerPass::class),
-            PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $container->addCompilerPass(
-            Argument::type(SubscribersCompilerPass::class),
+            Argument::type(SubscribersPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
         $container->addCompilerPass(
-            Argument::type(CommandsServicesCompilerPass::class), PassConfig::TYPE_OPTIMIZE
+            Argument::type(CommandsServicesPass::class), PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
         $container->loadFromExtension('doctrine', [

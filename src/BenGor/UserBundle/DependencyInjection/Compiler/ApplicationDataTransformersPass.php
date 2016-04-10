@@ -13,6 +13,7 @@
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Application\DataTransformer\UserDTODataTransformer;
+use BenGor\User\Application\DataTransformer\UserNoTransformationDataTransformer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -36,6 +37,13 @@ class ApplicationDataTransformersPass implements CompilerPassInterface
             'bengor.user.application.data_transformer.user_dto',
             new Definition(
                 UserDTODataTransformer::class
+            )
+        );
+
+        $container->setDefinition(
+            'bengor.user.application.data_transformer.user_no_transformation',
+            new Definition(
+                UserNoTransformationDataTransformer::class
             )
         );
     }

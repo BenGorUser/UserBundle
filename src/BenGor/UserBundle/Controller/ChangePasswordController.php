@@ -25,13 +25,14 @@ class ChangePasswordController extends Controller
     /**
      * Changes user password action.
      *
-     * @param Request $request      The request
-     * @param string  $userClass    Extra parameter that contains the user type
-     * @param string  $successRoute Extra parameter that contains the success route name
+     * @param Request     $request      The request
+     * @param string      $userClass    Extra parameter that contains the user type
+     * @param string|null $successRoute Extra parameter that contains the success route name, by default is null
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function changePasswordAction(Request $request, $userClass, $successRoute)
+    public function changePasswordAction(Request $request, $userClass, $successRoute = null)
     {
+        // @Todo
     }
 }

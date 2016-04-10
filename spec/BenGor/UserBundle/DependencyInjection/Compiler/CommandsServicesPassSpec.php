@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class CommandsServicesCompilerPassSpec extends ObjectBehavior
+class CommandsServicesPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {

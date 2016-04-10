@@ -13,7 +13,11 @@
 namespace BenGor\UserBundle\Model;
 
 use BenGor\User\Domain\Model\User as BenGorUser;
+use BenGor\User\Domain\Model\UserEmail;
+use BenGor\User\Domain\Model\UserId;
+use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
+use BenGor\User\Domain\Model\UserToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -27,6 +31,33 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User extends BenGorUser implements UserInterface
 {
+    /**
+     * Factory method that builds object class from user.
+     *
+     * @param array $data Array which contains the user data
+     *
+     * @return static
+     */
+    public static function build(array $data)
+    {
+        new static(
+            new UserId($data['id']),
+            new UserEmail($data['email']),
+            UserPassword::fromEncoded(
+                $data['password'],
+                $data['salt']
+            ),
+            array_map(function ($role) {
+                return new UserRole($role);
+            }, $data['roles']),
+            $data['created_on'],
+            $data['updated_on'],
+            $data['last_login'],
+            new UserToken($data['confirmation_token']),
+            new UserToken($data['remember_password_token'])
+        );
+    }
+
     /**
      * {@inheritdoc}
      */

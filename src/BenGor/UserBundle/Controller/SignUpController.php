@@ -107,7 +107,7 @@ class SignUpController extends Controller
                     $this
                         ->get('security.authentication.guard_handler')
                         ->authenticateUserAndHandleSuccess(
-                            $response->user(),
+                            $response,
                             $request,
                             $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
                             $firewall

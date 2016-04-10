@@ -44,7 +44,7 @@ ben_gor_user:
                 enable:
                     name: bengor_user_user_enable
                     path: /user/confirmation-token
-                    success_redirection_route: ~
+                    success_redirection_route: bengor_user_user_homepage
                 change_password:
                     name: bengor_user_user_change_password
                     path: /user/change-password
