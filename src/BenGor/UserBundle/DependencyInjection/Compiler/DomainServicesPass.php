@@ -38,11 +38,11 @@ class DomainServicesPass implements CompilerPassInterface
         foreach ($config['user_class'] as $key => $user) {
             $container->setDefinition(
                 'bengor.user.infrastructure.domain.model.' . $key . '_factory',
-                new Definition(
+                (new Definition(
                     UserFactory::class, [
                         $user['class'],
                     ]
-                )
+                ))->setPublic(false)
             );
             $container->setAlias(
                 'bengor_user.' . $key . '_factory',
@@ -52,11 +52,11 @@ class DomainServicesPass implements CompilerPassInterface
             if (class_exists($user['class'] . 'Guest')) {
                 $container->setDefinition(
                     'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory',
-                    new Definition(
+                    (new Definition(
                         UserGuestFactory::class, [
                             $user['class'] . 'Guest',
                         ]
-                    )
+                    ))->setPublic(false)
                 );
                 $container->setAlias(
                     'bengor_user.' . $key . '_guest_factory',

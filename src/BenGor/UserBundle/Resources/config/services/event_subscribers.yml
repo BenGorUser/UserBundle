@@ -7,7 +7,7 @@
 # file that was distributed with this source code.
 
 services:
-    bengor.user_bundle.event_listener.domain_event_publisher:
+    bengor.user.event_listener.domain_event_publisher:
         class: BenGor\UserBundle\EventListener\DomainEventPublisherListener
         arguments:
             - []

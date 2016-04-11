@@ -9,6 +9,7 @@
     * Remember password
     * User management
     * Role management
+* [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)
 * [Commands](commands.md)
 * Custom views, overriding twig files
 * Advanced customization

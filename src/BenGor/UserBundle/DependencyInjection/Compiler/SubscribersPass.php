@@ -29,7 +29,7 @@ class SubscribersPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $definition = $container->findDefinition(
-            'bengor.user_bundle.event_listener.domain_event_publisher'
+            'bengor.user.event_listener.domain_event_publisher'
         );
 
         $taggedServices = $container->findTaggedServiceIds('bengor_user_subscriber');

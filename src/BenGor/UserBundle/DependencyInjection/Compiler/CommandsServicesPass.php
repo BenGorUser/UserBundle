@@ -33,7 +33,7 @@ class CommandsServicesPass implements CompilerPassInterface
         $config = $container->getParameter('bengor_user.config');
 
         foreach ($config['user_class'] as $key => $user) {
-            $container->findDefinition('bengor.user_bundle.command.create_' . $key . '_command')
+            $container->findDefinition('bengor.user.command.create_' . $key . '_command')
                 ->setArguments([
                     $container->getDefinition(
                         'bengor.user.application.service.sign_up_' . $key . '_default_transactional'

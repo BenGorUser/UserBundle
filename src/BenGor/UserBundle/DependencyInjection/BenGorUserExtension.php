@@ -54,7 +54,7 @@ class BenGorUserExtension extends Extension
     {
         foreach ($config['user_class'] as $key => $user) {
             $container->setDefinition(
-                'bengor.user_bundle.command.create_' . $key . '_command',
+                'bengor.user.command.create_' . $key . '_command',
                 (new Definition(CreateUserCommand::class))->addTag('console.command')
             );
         }
