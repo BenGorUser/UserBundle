@@ -80,7 +80,7 @@ abstract class RoutesLoader implements LoaderInterface
                 continue;
             }
             if (true === array_key_exists('type', $config)) {
-                $this->config['type'] = $this->sanitize($config['type']);
+                $config['type'] = $this->sanitize($config['type']);
             }
             $this->register($user, $config);
         }

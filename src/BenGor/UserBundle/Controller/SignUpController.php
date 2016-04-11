@@ -44,11 +44,16 @@ class SignUpController extends Controller
         $form = $this->createForm(SignUpType::class, null, [
             'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
         ]);
-        $this->signUp($form, $request, $userClass, $firewall, $successRoute);
 
-        return $this->render('@BenGorUser/sign_up/default.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->signUp(
+            $form,
+            $request,
+            $userClass,
+            $firewall,
+            $successRoute,
+            '@BenGorUser/sign_up/default.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
     /**
@@ -75,27 +80,40 @@ class SignUpController extends Controller
             'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
             'invitation_token' => $invitationToken,
         ]);
-        $this->signUp($form, $request, $userClass, $firewall, $successRoute);
 
-        return $this->render('@BenGorUser/sign_up/by_invitation.html.twig', [
-            'email' => $userGuest->email()->email(),
-            'form'  => $form->createView(),
-        ]);
+        return $this->signUp(
+            $form,
+            $request,
+            $userClass,
+            $firewall,
+            $successRoute,
+            '@BenGorUser/sign_up/by_invitation.html.twig',
+            ['email' => $userGuest->email()->email(), 'form' => $form->createView()]
+        );
     }
 
     /**
      * Sign up base method that extracts the common part of above actions.
      *
-     * @param FormInterface $form         The form
-     * @param Request       $request      The request
-     * @param string        $userClass    Extra parameter that contains the user type
-     * @param string        $firewall     Extra parameter that contains the firewall name
-     * @param string        $successRoute Extra parameter that contains the success route name
+     * @param FormInterface $form           The form
+     * @param Request       $request        The request
+     * @param string        $userClass      Extra parameter that contains the user type
+     * @param string        $firewall       Extra parameter that contains the firewall name
+     * @param string        $successRoute   Extra parameter that contains the success route name
+     * @param string        $view           The twig view
+     * @param array         $viewParameters Array which contains the view parameters
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function signUp(FormInterface $form, Request $request, $userClass, $firewall, $successRoute)
-    {
+    private function signUp(
+        FormInterface $form,
+        Request $request,
+        $userClass,
+        $firewall,
+        $successRoute,
+        $view,
+        array $viewParameters
+    ) {
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -122,5 +140,7 @@ class SignUpController extends Controller
                 }
             }
         }
+
+        return $this->render($view, $viewParameters);
     }
 }
