@@ -17,6 +17,7 @@ use BenGor\UserBundle\DependencyInjection\Compiler\Application\Service\LogInUser
 use BenGor\UserBundle\DependencyInjection\Compiler\Application\Service\LogOutUserServiceBuilder;
 use BenGor\UserBundle\DependencyInjection\Compiler\Application\Service\RemoveUserServiceBuilder;
 use BenGor\UserBundle\DependencyInjection\Compiler\Application\Service\SignUpUserServiceBuilder;
+use BenGor\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -41,7 +42,11 @@ class ApplicationServicesPass implements CompilerPassInterface
             (new LogInUserServiceBuilder(
                 $container, $user['persistence'], array_merge(
                     $user['use_cases']['security'], [
-                        'routes' => $user['routes']['security'],
+                        'routes' => (new SecurityRoutesLoaderBuilder(
+                            $container, [
+                                $key => $user['routes']['security'],
+                            ]
+                        ))->configuration(),
                     ]
                 )
             ))->build($key);

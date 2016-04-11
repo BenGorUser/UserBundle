@@ -41,17 +41,18 @@ class BenGorUserBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new DefaultRolesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new PersistenceServicesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new SecurityServicesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new DoctrineCustomTypesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new MailingServicesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new SubscribersPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
+        $container
+            ->addCompilerPass(new DefaultRolesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new PersistenceServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new DoctrineCustomTypesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new SecurityServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new MailingServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new SubscribersPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
 
         $container->loadFromExtension('doctrine', [
             'orm' => [

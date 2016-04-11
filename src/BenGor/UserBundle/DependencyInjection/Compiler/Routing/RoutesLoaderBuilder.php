@@ -66,6 +66,16 @@ abstract class RoutesLoaderBuilder
     }
 
     /**
+     * Gets the configuration after sanitize process.
+     *
+     * @return array
+     */
+    public function configuration()
+    {
+        return $this->configuration;
+    }
+
+    /**
      * Sanitizes and validates the given configuration tree.
      *
      * @param array $configuration The configuration tree

@@ -69,9 +69,13 @@ class LogInUserServiceBuilder extends ServiceBuilder
      *
      * This declaration should be in SecurityServicesCompilerPass file
      * but it requires the "bengor.user.application.service.log_in_user".
+     *
+     * @param string $user The user name
      */
     private function registerFormLoginAuthenticator($user)
     {
+        $routes = $this->configuration['routes'][$user];
+
         $this->container->setDefinition(
             'bengor.user_bundle.security.form_login_' . $user . '_authenticator',
             new Definition(
@@ -79,9 +83,9 @@ class LogInUserServiceBuilder extends ServiceBuilder
                     $this->container->getDefinition('router.default'),
                     $this->container->getDefinition('bengor.user.application.service.log_in_' . $user),
                     [
-                        'login'                     => $this->configuration['routes']['login']['name'],
-                        'login_check'               => $this->configuration['routes']['login_check']['name'],
-                        'success_redirection_route' => $this->configuration['routes']['success_redirection_route'],
+                        'login'                     => $routes['login']['name'],
+                        'login_check'               => $routes['login_check']['name'],
+                        'success_redirection_route' => $routes['success_redirection_route'],
                     ],
                 ]
             )
