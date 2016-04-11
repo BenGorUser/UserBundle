@@ -12,4 +12,4 @@ BenGor\User\Domain\Model\UserEmail:
         email:
             column: email
             type: string
-            length: 30
+            length: 60
