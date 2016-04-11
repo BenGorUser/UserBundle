@@ -28,7 +28,7 @@ ben_gor_user:
                         path: /user/login
                     login_check:
                         name: bengor_user_user_security_login_check
-                        path: /user/login_check
+                        path: /user/login-check
                     logout:
                         name: bengor_user_user_security_logout
                         path: /user/logout

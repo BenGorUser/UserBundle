@@ -68,7 +68,7 @@ security:
                 target: /
     access_control:
         - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/sign-up$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user, role: ROLE_USER }
 ```
