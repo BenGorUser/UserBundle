@@ -63,6 +63,10 @@ security:
                 authenticators:
                     - bengor_user.form_login_user_authenticator
             provider: database_users
+            form_login:
+                check_path: bengor_user_user_security_login_check
+                login_path: bengor_user_user_security_login
+                failure_path: bengor_user_user_security_login
             logout:
                 path: bengor_user_user_security_logout
                 target: /
@@ -107,5 +111,7 @@ $ bin/console doctrine:schema:update --force
 
 With this basic configuration you have single user login, logout and registration without confirmation.
 
-- For multiple users check [this guide](multiple_users.md).
-- In case you one to send invitation emails to users to join your app follow [this guide](invitation_system.md).
+- For **multiple users** check [this guide](multiple_users.md).
+- In case you one to **send invitation emails** to users to join your app follow [this guide](invitation_system.md).
+- In order to use **MongoDB's Doctrine ODM** as persistence layer follow [this chapter](doctrine_odm_mongodb.md).
+- Back to the [index](index.md).

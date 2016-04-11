@@ -18,7 +18,7 @@ ben_gor_user:
 And for example if you execute the `bin/console debug:container | grep bengor.user.application.service.log_in`
 you'll see the following:
 ```bash
-bengor.user.application.service.log_in_user              BenGor\User\Application\Service\LogOutUserService
+bengor.user.application.service.log_in_user              BenGor\User\Application\Service\LogIn\LogInUserService
 ```
 Otherwise, if your `user_class` contains multiple choices for example something like this
 ```yml
@@ -33,8 +33,8 @@ ben_gor_user:
 ```
 the above command will print the following:
 ```bash
-bengor.user.application.service.log_in_applicant         BenGor\User\Application\Service\LogOutUserService
-bengor.user.application.service.log_in_employee          BenGor\User\Application\Service\LogOutUserService
+bengor.user.application.service.log_in_applicant         BenGor\User\Application\Service\LogIn\LogInUserService
+bengor.user.application.service.log_in_employee          BenGor\User\Application\Service\LogIn\LogInUserService
 ```
 
 
@@ -57,9 +57,10 @@ security:
             security: false
         applicant:
             anonymous: ~
+            pattern: ^/applicant
             guard:
                 authenticators:
-                    - bengor.user_bundle.security.form_login_applicant_authenticator
+                    - bengor_user.form_login_applicant_authenticator
             provider: database_applicants
             form_login:
                 check_path: bengor_user_applicant_security_login_check
@@ -70,10 +71,10 @@ security:
                 target: /
         employee:
             anonymous: ~
-            pattern: ^/admin
+            pattern: ^/employee
             guard:
                 authenticators:
-                    - bengor.user_bundle.security.form_login_employee_authenticator
+                    - bengor_user.form_login_employee_authenticator
             provider: database_employees
             form_login:
                 check_path: bengor_user_employee_security_login_check
@@ -83,13 +84,13 @@ security:
                 path: bengor_user_employee_security_logout
                 target: /
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/me, role: ROLE_USER }
+        - { path: ^/applicant/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/applicant/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/applicant/sign-up$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/applicant, role: ROLE_USER }
         
-        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, role: ROLE_USER }
+        - { path: ^/employee/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employee/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employee/sign-up$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employee, role: ROLE_USER }    
 ```
