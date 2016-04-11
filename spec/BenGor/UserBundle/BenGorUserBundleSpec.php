@@ -114,6 +114,20 @@ class BenGorUserBundleSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled()->willReturn($container);
 
+        $container->loadFromExtension('doctrine_mongodb', [
+            'document_managers' => [
+                'default' => [
+                    'mappings' => [
+                        'BenGorUserBundle' => [
+                            'type'      => 'yml',
+                            'is_bundle' => true,
+                            'prefix'    => 'BenGor\\User\\Domain\\Model',
+                        ],
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled()->willReturn($container);
+
         $container->loadFromExtension('twig', [
             'paths' => [
                 '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',

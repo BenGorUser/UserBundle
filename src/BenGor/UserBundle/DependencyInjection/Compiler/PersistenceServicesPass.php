@@ -59,7 +59,7 @@ class PersistenceServicesPass implements CompilerPassInterface
                 }
                 $this->loadDoctrineOrm($container, $key, $user, $guestClass);
             } elseif ('doctrine_odm_mongodb' === $user['persistence']) {
-                if (!$container->hasDefinition('doctrine_mongodb.odm.document_manager')) {
+                if (!$container->hasDefinition('doctrine_mongodb.odm.default_document_manager')) {
                     throw new RuntimeException(
                         'When the persistence layer is "doctrine_odm_mongodb" requires ' .
                         'the installation and set up of the DoctrineMongoDBBundle'

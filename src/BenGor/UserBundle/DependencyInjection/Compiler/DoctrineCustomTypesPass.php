@@ -13,6 +13,8 @@
 namespace BenGor\UserBundle\DependencyInjection\Compiler;
 
 use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\Types\UserEmailType;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\Types\UserGuestIdType as ODMMongoDBUserGuestIdType;
+use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\Types\UserIdType as ODMMongoDBUserIdType;
 use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\Types\UserPasswordType;
 use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\Types\UserRolesType as ODMMongoDBUserRolesType;
 use BenGor\User\Infrastructure\Persistence\Doctrine\ODM\MongoDB\Types\UserTokenType;
@@ -38,13 +40,17 @@ class DoctrineCustomTypesPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $this->orm($container);
-        $this->odmMongoDb();
     }
 
     /**
      * Loads the custom types of Doctrine ODM MongoDB.
+     *
+     * These custom types are not registered via service
+     * like Doctrine ORM's custom types so, to keep available,
+     * this static method is invoked from bundle's kernel
+     * class constructor.
      */
-    private function odmMongoDb()
+    public static function odmMongoDb()
     {
         if (class_exists('Doctrine\\ODM\MongoDB\\Types\\Type')) {
             Type::registerType(
@@ -53,11 +59,11 @@ class DoctrineCustomTypesPass implements CompilerPassInterface
             );
             Type::registerType(
                 'user_guest_id',
-                UserGuestIdType::class
+                ODMMongoDBUserGuestIdType::class
             );
             Type::registerType(
                 'user_id',
-                UserIdType::class
+                ODMMongoDBUserIdType::class
             );
             Type::registerType(
                 'user_password',

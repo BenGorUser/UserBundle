@@ -40,6 +40,7 @@ class PersistenceServicesPassSpec extends ObjectBehavior
     {
         $this->shouldImplement(CompilerPassInterface::class);
     }
+
     function it_does_not_process_because_doctrine_bundle_is_not_register_and_the_persistence_layer_is_doctrine_orm(
         ContainerBuilder $container
     ) {
@@ -206,7 +207,7 @@ class PersistenceServicesPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->hasDefinition('doctrine_mongodb.odm.document_manager')->shouldBeCalled()->willReturn(false);
+        $container->hasDefinition('doctrine_mongodb.odm.default_document_manager')->shouldBeCalled()->willReturn(false);
 
         $this->shouldThrow(new RuntimeException(
             'When the persistence layer is "doctrine_odm_mongodb" requires ' .
@@ -394,7 +395,7 @@ class PersistenceServicesPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->hasDefinition('doctrine_mongodb.odm.document_manager')->shouldBeCalled()->willReturn(true);
+        $container->hasDefinition('doctrine_mongodb.odm.default_document_manager')->shouldBeCalled()->willReturn(true);
 
         $container->register(
             'bengor.user.infrastructure.application.service.doctrine_odm_mongodb_session',

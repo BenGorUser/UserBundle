@@ -35,6 +35,14 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class BenGorUserBundle extends Bundle
 {
     /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        DoctrineCustomTypesPass::odmMongoDb();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
@@ -54,22 +62,35 @@ class BenGorUserBundle extends Bundle
             ->addCompilerPass(new SubscribersPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
 
-        $container->loadFromExtension('doctrine', [
-            'orm' => [
-                'mappings' => [
-                    'BenGorUserBundle' => [
-                        'type'      => 'yml',
-                        'is_bundle' => true,
-                        'prefix'    => 'BenGor\\User\\Domain\\Model',
+        $container
+            ->loadFromExtension('doctrine', [
+                'orm' => [
+                    'mappings' => [
+                        'BenGorUserBundle' => [
+                            'type'      => 'yml',
+                            'is_bundle' => true,
+                            'prefix'    => 'BenGor\\User\\Domain\\Model',
+                        ],
                     ],
                 ],
-            ],
-        ]);
-
-        $container->loadFromExtension('twig', [
-            'paths' => [
-                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
-            ],
-        ]);
+            ])
+            ->loadFromExtension('doctrine_mongodb', [
+                'document_managers' => [
+                    'default' => [
+                        'mappings' => [
+                            'BenGorUserBundle' => [
+                                'type'      => 'yml',
+                                'is_bundle' => true,
+                                'prefix'    => 'BenGor\\User\\Domain\\Model',
+                            ],
+                        ],
+                    ],
+                ],
+            ])
+            ->loadFromExtension('twig', [
+                'paths' => [
+                    '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
+                ],
+            ]);
     }
 }
