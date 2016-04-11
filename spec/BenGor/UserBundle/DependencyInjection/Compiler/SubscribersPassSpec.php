@@ -39,7 +39,7 @@ class SubscribersPassSpec extends ObjectBehavior
     function it_processes(ContainerBuilder $container, Definition $definition)
     {
         $container->findDefinition(
-            'bengor.user_bundle.event_listener.domain_event_publisher'
+            'bengor.user.event_listener.domain_event_publisher'
         )->shouldBeCalled()->willReturn($definition);
         $container->findTaggedServiceIds('bengor_user_subscriber')
             ->shouldBeCalled()->willReturn([

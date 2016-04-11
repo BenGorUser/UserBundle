@@ -37,14 +37,8 @@ class CommandsServicesPassSpec extends ObjectBehavior
         $this->shouldImplement(CompilerPassInterface::class);
     }
 
-    function it_processes(
-        ContainerBuilder $container,
-        Definition $definition,
-        Definition $userRepositoryDefinition,
-        Definition $userPasswordEncoderDefinition,
-        Definition $userFactoryDefinition,
-        Definition $doctrineSession
-    ) {
+    function it_processes(ContainerBuilder $container, Definition $definition, Definition $userRepositoryDefinition)
+    {
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
@@ -124,7 +118,7 @@ class CommandsServicesPassSpec extends ObjectBehavior
         $container->getDefinition('bengor.user.application.service.sign_up_user_default_transactional')
             ->shouldBeCalled()->willReturn($userRepositoryDefinition);
 
-        $container->findDefinition('bengor.user_bundle.command.create_user_command')
+        $container->findDefinition('bengor.user.command.create_user_command')
             ->shouldBeCalled()->willReturn($definition);
         $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
 
