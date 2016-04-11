@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                             ->isRequired(true)
                         ->end()
                         ->scalarNode('persistence')
-                            ->defaultValue('orm')
+                            ->defaultValue('doctrine_orm')
                             ->validate()
                             ->ifNotInArray(['doctrine_orm', 'doctrine_odm_mongodb', 'sql'])
                                 ->thenInvalid('Invalid persistence layer "%s"')
