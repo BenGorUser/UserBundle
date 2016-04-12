@@ -35,6 +35,8 @@ bengor.user.infrastructure.mailing.mailable.twig.request_remember_password_user_
 bengor.user.infrastructure.mailing.mailer.mandrill                                                 BenGor\User\Infrastructure\Mailing\Mailer\Mandrill\MandrillUserMailer
 bengor.user.infrastructure.mailing.mailer.swift_mailer                                             BenGor\User\Infrastructure\Mailing\Mailer\SwiftMailer\SwiftMailerUserMailer
 
+bengor.user.infrastructure.routing.symfony_url_generator                                           BenGor\User\Infrastructure\Routing\Symfony\SymfonyUserUrlGenerator
+
 bengor.user.command.create_user_command                                                            BenGor\UserBundle\Command\CreateUserCommand                   
 
 bengor.user.event_listener.domain_event_publisher                                                  BenGor\UserBundle\EventListener\DomainEventPublisherListener
