@@ -63,11 +63,11 @@ security:
                     - bengor_user.form_login_applicant_authenticator
             provider: database_applicants
             form_login:
-                check_path: bengor_user_applicant_security_login_check
-                login_path: bengor_user_applicant_security_login
-                failure_path: bengor_user_applicant_security_login
+                check_path: bengor_user_applicant_login_check
+                login_path: bengor_user_applicant_login
+                failure_path: bengor_user_applicant_login
             logout:
-                path: bengor_user_applicant_security_logout
+                path: bengor_user_applicant_logout
                 target: /
         employee:
             anonymous: ~
@@ -77,20 +77,40 @@ security:
                     - bengor_user.form_login_employee_authenticator
             provider: database_employees
             form_login:
-                check_path: bengor_user_employee_security_login_check
-                login_path: bengor_user_employee_security_login
-                failure_path: bengor_user_employee_security_login
+                check_path: bengor_user_employee_login_check
+                login_path: bengor_user_employee_login
+                failure_path: bengor_user_employee_login
             logout:
-                path: bengor_user_employee_security_logout
+                path: bengor_user_employee_logout
                 target: /
     access_control:
         - { path: ^/applicant/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/applicant/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/applicant/sign-up$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/applicant/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/applicant/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/applicant, role: ROLE_USER }
         
         - { path: ^/employee/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/employee/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/employee/sign-up$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/employee, role: ROLE_USER }    
+        - { path: ^/employee/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employee/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employee, role: ROLE_USER }
+```
+Finally, like in the [Getting started](getting_started.md) chapter you need routes after firewall
+authorization so, something similar can be the minimal code snippet.
+```php
+namespace AppBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+class DefaultController extends Controller
+{
+    /**
+     * @Route("/applicant/", name="bengor_user_employee_homepage")
+     * @Route("/employee/", name="bengor_user_applicant_homepage")
+     */
+    public function adminAction()
+    {
+        // ...
+    }
+}
 ```

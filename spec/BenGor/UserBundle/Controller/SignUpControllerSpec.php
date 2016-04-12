@@ -94,10 +94,9 @@ class SignUpControllerSpec extends ObjectBehavior
         GuardAuthenticatorHandler $handler,
         FormLoginAuthenticator $formLoginAuthenticator,
         Session $session,
-        TwigEngine $templating,
+        Response $response,
         FlashBagInterface $flashBag,
         FormInterface $form,
-        FormView $formView,
         FormFactoryInterface $formFactory,
         User $user
     ) {
@@ -115,6 +114,10 @@ class SignUpControllerSpec extends ObjectBehavior
 
         $service->execute($signUpUserRequest)->shouldBeCalled()->willReturn($user);
 
+        $container->has('session')->shouldBeCalled()->willReturn(true);
+        $container->get('session')->shouldBeCalled()->willReturn($session);
+        $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
+
         $container->get('security.authentication.guard_handler')->shouldBeCalled()->willReturn($handler);
         $container->get('bengor_user.form_login_user_authenticator')
             ->shouldBeCalled()->willReturn($formLoginAuthenticator);
@@ -123,20 +126,12 @@ class SignUpControllerSpec extends ObjectBehavior
             $request,
             $formLoginAuthenticator,
             'main'
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
 
-        $container->has('session')->shouldBeCalled()->willReturn(true);
-        $container->get('session')->shouldBeCalled()->willReturn($session);
-        $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
-
-        $container->has('templating')->shouldBeCalled()->willReturn(true);
-        $container->get('templating')->shouldBeCalled()->willReturn($templating);
-        $form->createView()->shouldBeCalled()->willReturn($formView);
-
-        $this->defaultAction($request, 'user', 'main', 'bengor_user_user_homepage');
+        $this->defaultAction($request, 'user', 'main')->shouldReturn($response);
     }
 
-    function it_does_not_register_default_action(
+    function it_does_not_sign_up_default_action(
         Request $request,
         ContainerInterface $container,
         FormInterface $form,
@@ -240,6 +235,10 @@ class SignUpControllerSpec extends ObjectBehavior
 
         $service->execute($signUpUserRequest)->shouldBeCalled()->willReturn($user);
 
+        $container->has('session')->shouldBeCalled()->willReturn(true);
+        $container->get('session')->shouldBeCalled()->willReturn($session);
+        $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
+
         $container->get('security.authentication.guard_handler')->shouldBeCalled()->willReturn($handler);
         $container->get('bengor_user.form_login_user_authenticator')
             ->shouldBeCalled()->willReturn($formLoginAuthenticator);
@@ -248,27 +247,12 @@ class SignUpControllerSpec extends ObjectBehavior
             $request,
             $formLoginAuthenticator,
             'main'
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
 
-        $container->has('session')->shouldBeCalled()->willReturn(true);
-        $container->get('session')->shouldBeCalled()->willReturn($session);
-        $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
-
-        $container->has('templating')->shouldBeCalled()->willReturn(true);
-        $container->get('templating')->shouldBeCalled()->willReturn($templating);
-        $form->createView()->shouldBeCalled()->willReturn($formView);
-        $userGuest->email()->shouldBeCalled()->willReturn(new UserEmail('user@guest.com'));
-        $templating->renderResponse('@BenGorUser/sign_up/by_invitation.html.twig', [
-            'email' => 'user@guest.com',
-            'form'  => $formView,
-        ], null)->shouldBeCalled()->willReturn($response);
-
-        $this->byInvitationAction(
-            $request, 'invitation-token', 'user', 'main', 'bengor_user_user_homepage'
-        )->shouldReturn($response);
+        $this->byInvitationAction($request, 'invitation-token', 'user', 'main')->shouldReturn($response);
     }
 
-    function it_does_not_register_by_invitation_action(
+    function it_does_not_sign_up_by_invitation_action(
         Request $request,
         ContainerInterface $container,
         FormInterface $form,

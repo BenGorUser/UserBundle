@@ -64,17 +64,17 @@ security:
                     - bengor_user.form_login_user_authenticator
             provider: database_users
             form_login:
-                check_path: bengor_user_user_security_login_check
-                login_path: bengor_user_user_security_login
-                failure_path: bengor_user_user_security_login
+                check_path: bengor_user_user_login_check
+                login_path: bengor_user_user_login
+                failure_path: bengor_user_user_login
             logout:
-                path: bengor_user_user_security_logout
+                path: bengor_user_user_logout
                 target: /
     access_control:
         - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/sign-up$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user, role: ROLE_USER }
+        - { path: ^/user/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/, role: ROLE_USER }
 ```
 
 This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
@@ -95,7 +95,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/user", name="bengor_user_user_homepage")
+     * @Route("/user/", name="bengor_user_user_homepage")
      */
     public function adminAction()
     {

@@ -37,10 +37,9 @@ class SignUpRoutesLoader extends RoutesLoader
         $this->routes->add($config['name'], new Route(
             $config['path'],
             [
-                '_controller'  => 'BenGorUserBundle:SignUp:' . $config['type'],
-                'userClass'    => $user,
-                'firewall'     => $config['firewall'],
-                'successRoute' => $config['success_redirection_route'],
+                '_controller' => 'BenGorUserBundle:SignUp:' . $config['type'],
+                'userClass'   => $user,
+                'firewall'    => $config['firewall'],
             ],
             [],
             [],

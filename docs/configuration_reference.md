@@ -24,26 +24,25 @@ ben_gor_user:
             routes:
                 security:
                     login:
-                        name: bengor_user_user_security_login
+                        name: bengor_user_user_login
                         path: /user/login
                     login_check:
-                        name: bengor_user_user_security_login_check
+                        name: bengor_user_user_login_check
                         path: /user/login-check
                     logout:
-                        name: bengor_user_user_security_logout
+                        name: bengor_user_user_logout
                         path: /user/logout
                     success_redirection_route: bengor_user_user_homepage
                 sign_up:
                     name: bengor_user_user_sign_up
                     path: /user/sign-up
-                    success_redirection_route: bengor_user_user_homepage
                 invite:
                     name: bengor_user_user_invite
                     path: /user/invite
                     success_redirection_route: ~
                 enable:
                     name: bengor_user_user_enable
-                    path: /user/confirmation-token
+                    path: /user/enable?confirmation-token={confirmation-token}
                     success_redirection_route: bengor_user_user_homepage
                 change_password:
                     name: bengor_user_user_change_password
