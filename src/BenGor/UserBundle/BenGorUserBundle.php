@@ -62,19 +62,8 @@ class BenGorUserBundle extends Bundle
             ->addCompilerPass(new SubscribersPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
 
-        $container
-            ->loadFromExtension('doctrine', [
-                'orm' => [
-                    'mappings' => [
-                        'BenGorUserBundle' => [
-                            'type'      => 'yml',
-                            'is_bundle' => true,
-                            'prefix'    => 'BenGor\\User\\Domain\\Model',
-                        ],
-                    ],
-                ],
-            ])
-            ->loadFromExtension('doctrine_mongodb', [
+        if (true === $container->hasExtension('doctrine_mongodb')) {
+            $container->loadFromExtension('doctrine_mongodb', [
                 'document_managers' => [
                     'default' => [
                         'mappings' => [
@@ -86,11 +75,27 @@ class BenGorUserBundle extends Bundle
                         ],
                     ],
                 ],
-            ])
-            ->loadFromExtension('twig', [
+            ]);
+        }
+        if (true === $container->hasExtension('doctrine')) {
+            $container->loadFromExtension('doctrine', [
+                'orm' => [
+                    'mappings' => [
+                        'BenGorUserBundle' => [
+                            'type'      => 'yml',
+                            'is_bundle' => true,
+                            'prefix'    => 'BenGor\\User\\Domain\\Model',
+                        ],
+                    ],
+                ],
+            ]);
+        }
+        if (true === $container->hasExtension('twig')) {
+            $container->loadFromExtension('twig', [
                 'paths' => [
                     '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
                 ],
             ]);
+        }
     }
 }

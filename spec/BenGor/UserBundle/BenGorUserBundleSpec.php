@@ -102,6 +102,7 @@ class BenGorUserBundleSpec extends ObjectBehavior
             Argument::type(CommandsServicesPass::class), PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
+        $container->hasExtension('doctrine')->shouldBeCalled()->willReturn(true);
         $container->loadFromExtension('doctrine', [
             'orm' => [
                 'mappings' => [
@@ -114,6 +115,7 @@ class BenGorUserBundleSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled()->willReturn($container);
 
+        $container->hasExtension('doctrine_mongodb')->shouldBeCalled()->willReturn(true);
         $container->loadFromExtension('doctrine_mongodb', [
             'document_managers' => [
                 'default' => [
@@ -128,6 +130,7 @@ class BenGorUserBundleSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled()->willReturn($container);
 
+        $container->hasExtension('twig')->shouldBeCalled()->willReturn(true);
         $container->loadFromExtension('twig', [
             'paths' => [
                 '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
