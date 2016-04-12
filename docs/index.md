@@ -1,16 +1,14 @@
-#BenGorUserBundle documentation
-
+# BenGorUserBundle documentation
 * [Basic configuration](basic_configuration.md)
 * Implementing features
-    * Register with confirmation email
+    * Sign up with confirmation email
     * [Multiple user entities](multiple_users.md)
     * [Invite users to sign in to your application](invitation_system.md)
-    * Send an email to validate user sign up
     * Remember password
-    * User management
     * Role management
 * [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)
 * [Commands](commands.md)
+* [Register subscribers into DomainEventPublisherListener](subscribers.md)
 * Custom views, overriding twig files
 * Advanced customization
     * Custom urls for controllers

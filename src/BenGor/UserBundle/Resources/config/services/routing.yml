@@ -7,6 +7,13 @@
 # file that was distributed with this source code.
 
 services:
+#### Url generator ####
+    bengor.user.infrastructure.routing.symfony_url_generator:
+        class: BenGor\User\Infrastructure\Routing\Symfony\SymfonyUserUrlGenerator
+        arguments:
+            - '@router'
+
+#### Route loader ####
     bengor.user_bundle.routing.change_password_routes_loader:
         class: BenGor\UserBundle\Routing\ChangePasswordRoutesLoader
         arguments:
