@@ -39,7 +39,7 @@ class ChangePasswordRoutesLoader extends RoutesLoader
             new Route(
                 $config['path'],
                 [
-                    '_controller'  => 'BenGorUserBundle:ChangePassword:changePassword',
+                    '_controller'  => 'BenGorUserBundle:ChangePassword:' . $config['type'],
                     'userClass'    => $user,
                     'successRoute' => $config['success_redirection_route'],
                 ],
@@ -47,8 +47,24 @@ class ChangePasswordRoutesLoader extends RoutesLoader
                 [],
                 '',
                 [],
-                ['GET']
+                ['GET', 'POST']
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function sanitize($specificationName)
+    {
+        if ('by_request_remember_password' === $specificationName
+            || 'byRequestRememberPassword' === $specificationName
+        ) {
+            return 'byRequestRememberPassword';
+        }
+        if ('default' === $specificationName) {
+            return 'default';
+        }
+        throw new \RuntimeException('Given change password type is not supported');
     }
 }

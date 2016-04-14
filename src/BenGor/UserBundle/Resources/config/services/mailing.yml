@@ -27,7 +27,7 @@ services:
         class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
         arguments:
             - '@twig'
-            - '@@bengor_user/Email/reques_remember_password.html.twig'
+            - '@@bengor_user/Email/request_remember_password.html.twig'
             - '%mailer_user%'
         public: false
 

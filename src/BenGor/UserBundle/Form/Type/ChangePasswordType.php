@@ -12,10 +12,12 @@
 
 namespace BenGor\UserBundle\Form\Type;
 
-use BenGor\User\Application\Service\RequestRememberPassword\RequestRememberPasswordRequest;
+use BenGor\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
 use BenGor\UserBundle\Model\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,11 +25,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
- * Request remember password user form type.
+ * Change user password form type.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RequestRememberPasswordType extends AbstractType
+class ChangePasswordType extends AbstractType
 {
     /**
      * The current logged user.
@@ -53,7 +55,17 @@ class RequestRememberPasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', EmailType::class);
+        $builder
+            ->add('oldPlainPassword', PasswordType::class)
+            ->add('newPlainPassword', RepeatedType::class, [
+                'type'            => PasswordType::class,
+                'invalid_message' => 'The password fields must match.',
+                'first_options'   => ['label' => 'Password'],
+                'second_options'  => ['label' => 'Repeat Password'],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Change password',
+            ]);
     }
 
     /**
@@ -62,13 +74,13 @@ class RequestRememberPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RequestRememberPasswordRequest::class,
+            'data_class' => ChangeUserPasswordRequest::class,
             'empty_data' => function (FormInterface $form) {
-                $email = null === $this->currentUser
-                    ? $form->get('email')->getData()
-                    : $this->currentUser->email()->email();
-
-                return new RequestRememberPasswordRequest($email);
+                return ChangeUserPasswordRequest::from(
+                    $this->currentUser->id()->id(),
+                    $form->get('newPlainPassword')->getData(),
+                    $form->get('oldPlainPassword')->getData()
+                );
             },
         ]);
     }

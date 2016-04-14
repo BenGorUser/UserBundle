@@ -29,7 +29,7 @@ app_user.request_remember_password_mailer_subscriber:
     class: BenGor\User\Domain\Event\UserRememberPasswordRequestedMailerSubscriber
     arguments:
         - '@bengor_user.mailer.swift_mailer'
-        - '@bengor_user.mailable_factory.invite'
+        - '@bengor_user.mailable_factory.request_remember_password'
         - '@bengor_user.symfony_url_generator'
         - bengor_user_user_change_password
         - AppBundle\Entity\User

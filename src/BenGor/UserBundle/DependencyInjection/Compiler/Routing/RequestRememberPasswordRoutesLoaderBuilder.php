@@ -32,7 +32,7 @@ class RequestRememberPasswordRoutesLoaderBuilder extends RoutesLoaderBuilder
      */
     protected function defaultRouteName($user)
     {
-        return sprintf('bengor_user_%s_reques_remember_password', $user);
+        return sprintf('bengor_user_%s_request_remember_password', $user);
     }
 
     /**
