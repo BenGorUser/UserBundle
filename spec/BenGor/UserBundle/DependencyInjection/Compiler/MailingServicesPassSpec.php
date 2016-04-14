@@ -49,7 +49,7 @@ class MailingServicesPassSpec extends ObjectBehavior
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
 
         $container->setAlias(
-            'bengor.user.mailer.swift_mailer',
+            'bengor_user.mailer.swift_mailer',
             'bengor.user.infrastructure.mailing.mailer.swift_mailer'
         )->shouldBeCalled();
 

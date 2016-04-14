@@ -12,6 +12,8 @@ services:
         class: BenGor\User\Infrastructure\Routing\Symfony\SymfonyUserUrlGenerator
         arguments:
             - '@router'
+    bengor_user.symfony_url_generator:
+        alias: bengor.user.infrastructure.routing.symfony_url_generator
 
 #### Route loader ####
     bengor.user_bundle.routing.change_password_routes_loader:

@@ -29,14 +29,14 @@ bengor_user.sign_up_user                                                    Ddd\
 bengor_user.sign_up_user_default                                            Ddd\Application\Service\TransactionalApplicationService
 
 #### Other #####
-bengor.user.mailable_factory_invite                                         BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
-bengor.user.mailable_factory_sign_up                                        BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
-bengor.user.mailable_factory_request_remember_password                      BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+bengor_user.mailable_factory_invite                                         BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+bengor_user.mailable_factory_sign_up                                        BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+bengor_user.mailable_factory_request_remember_password                      BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
 
-bengor.user.mailer.mandrill                                                 BenGor\User\Infrastructure\Mailing\Mailer\Mandrill\MandrillUserMailer
-bengor.user.mailer.swift_mailer                                             BenGor\User\Infrastructure\Mailing\Mailer\SwiftMailer\SwiftMailerUserMailer
+bengor_user.mailer.mandrill                                                 BenGor\User\Infrastructure\Mailing\Mailer\Mandrill\MandrillUserMailer
+bengor_user.mailer.swift_mailer                                             BenGor\User\Infrastructure\Mailing\Mailer\SwiftMailer\SwiftMailerUserMailer
 
-bengor.user.infrastructure.routing.symfony_url_generator                    BenGor\User\Infrastructure\Routing\Symfony\SymfonyUserUrlGenerator
+bengor_user.symfony_url_generator                                           BenGor\User\Infrastructure\Routing\Symfony\SymfonyUserUrlGenerator
 
 bengor.user.command.create_user_command                                     BenGor\UserBundle\Command\CreateUserCommand                   
 
