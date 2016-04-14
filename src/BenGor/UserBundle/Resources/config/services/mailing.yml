@@ -13,15 +13,28 @@ services:
             - '@twig'
             - '@@bengor_user/Email/invite.html.twig'
             - '%mailer_user%'
+        public: false
+
     bengor.user.infrastructure.mailing.mailable.twig.sign_up_user_mailable_factory:
         class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
         arguments:
             - '@twig'
             - '@@bengor_user/Email/sign_up.html.twig'
             - '%mailer_user%'
+        public: false
+
     bengor.user.infrastructure.mailing.mailable.twig.request_remember_password_user_mailable_factory:
         class: BenGor\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
         arguments:
             - '@twig'
             - '@@bengor_user/Email/reques_remember_password.html.twig'
             - '%mailer_user%'
+        public: false
+
+
+    bengor.user.mailable_factory.invite:
+        alias: bengor.user.infrastructure.mailing.mailable.twig.invite_user_mailable_factory
+    bengor.user.mailable_factory.sign_up:
+        alias: bengor.user.infrastructure.mailing.mailable.twig.sign_up_user_mailable_factory
+    bengor.user.mailable_factory.request_remember_password:
+        alias: bengor.user.infrastructure.mailing.mailable.twig.request_remember_password_user_mailable_factory

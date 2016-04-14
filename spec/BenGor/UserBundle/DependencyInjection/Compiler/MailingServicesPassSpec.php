@@ -37,7 +37,7 @@ class MailingServicesPassSpec extends ObjectBehavior
         $this->shouldImplement(CompilerPassInterface::class);
     }
 
-    function it_processes(ContainerBuilder $container)
+    function it_processes(ContainerBuilder $container, Definition $definition)
     {
         $container->hasDefinition('swiftmailer.mailer.default')->shouldBeCalled()->willReturn(true);
         $container->getDefinition('swiftmailer.mailer.default')->shouldBeCalled();
@@ -45,6 +45,12 @@ class MailingServicesPassSpec extends ObjectBehavior
         $container->setDefinition(
             'bengor.user.infrastructure.mailing.mailer.swift_mailer',
             Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
+
+        $container->setAlias(
+            'bengor.user.mailer.swift_mailer',
+            'bengor.user.infrastructure.mailing.mailer.swift_mailer'
         )->shouldBeCalled();
 
         $this->process($container);

@@ -58,6 +58,11 @@ class MailingServicesPass implements CompilerPassInterface
                     ),
                 ]
             )
+        )->setPublic(false);
+
+        $container->setAlias(
+            'bengor.user.mailer.swift_mailer',
+            'bengor.user.infrastructure.mailing.mailer.swift_mailer'
         );
     }
 
@@ -92,6 +97,11 @@ class MailingServicesPass implements CompilerPassInterface
                     ),
                 ]
             )
+        )->setPublic(false);
+
+        $container->setAlias(
+            'bengor.user.mailer.mandrill',
+            'bengor.user.infrastructure.mailing.mailer.mandrill'
         );
     }
 }
