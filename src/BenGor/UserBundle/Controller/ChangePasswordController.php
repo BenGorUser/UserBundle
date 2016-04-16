@@ -55,7 +55,6 @@ class ChangePasswordController extends Controller
                 } catch (UserPasswordInvalidException $exception) {
                     $this->addFlash('error', 'The current password is not correct');
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', $exception->getMessage());
                     $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
                 }
             }
@@ -110,7 +109,8 @@ class ChangePasswordController extends Controller
         }
 
         return $this->render('@BenGorUser/change_password/by_request_remember_password.html.twig', [
-            'form' => $form->createView(),
+            'form'  => $form->createView(),
+            'email' => $user->email()->email(),
         ]);
     }
 }

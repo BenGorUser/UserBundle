@@ -12,6 +12,8 @@
 
 namespace BenGor\UserBundle\Controller;
 
+use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
+use BenGor\UserBundle\Form\Type\RemoveType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,12 +29,33 @@ class RemoveController extends Controller
      *
      * @param Request     $request      The request
      * @param string      $userClass    Extra parameter that contains the user type
-     * @param string|null $successRoute Extra parameter that contains the success route name, by default is null
+     * @param string|null $successRoute Extra parameter that contains the success route name
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(Request $request, $userClass, $successRoute = null)
+    public function removeAction(Request $request, $userClass, $successRoute)
     {
-        // @Todo
+        $form = $this->createForm(RemoveType::class);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $service = $this->get('bengor_user.remove_' . $userClass);
+
+                try {
+                    $service->execute($form->getData());
+                    $this->addFlash('notice', 'The account is successfully removed');
+
+                    return $this->redirectToRoute($successRoute);
+                } catch (UserPasswordInvalidException $exception) {
+                    $this->addFlash('error', 'The current password is not correct');
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                }
+            }
+        }
+
+        return $this->render('@BenGorUser/remove/remove.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

@@ -55,5 +55,5 @@ ben_gor_user:
                 remove:
                     name: bengor_user_user_remove
                     path: /user/remove
-                    success_redirection_route: ~
+                    success_redirection_route: bengor_user_user_homepage
 ```

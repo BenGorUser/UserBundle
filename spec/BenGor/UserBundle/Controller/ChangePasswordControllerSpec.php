@@ -14,6 +14,7 @@ namespace spec\BenGor\UserBundle\Controller;
 
 use BenGor\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
 use BenGor\User\Application\Service\ChangePassword\ChangeUserPasswordService;
+use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserRepository;
 use BenGor\User\Domain\Model\UserToken;
 use BenGor\UserBundle\Controller\ChangePasswordController;
@@ -166,6 +167,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $repository->userOfRememberPasswordToken(
             new UserToken('remember-password-token')
         )->shouldBeCalled()->willReturn($user);
+        $user->email()->shouldBeCalled()->willReturn(new UserEmail('bengor@user.com'));
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(
             ChangePasswordByRequestRememberPasswordType::class, null, [
@@ -179,7 +181,8 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
         $templating->renderResponse('@BenGorUser/change_password/by_request_remember_password.html.twig', [
-            'form' => $formView,
+            'form'  => $formView,
+            'email' => 'bengor@user.com',
         ], null)->shouldBeCalled()->willReturn($response);
 
         $this->byRequestRememberPasswordAction($request, 'user', 'bengor_user_user_homepage')->shouldReturn($response);
@@ -254,6 +257,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $repository->userOfRememberPasswordToken(
             new UserToken('remember-password-token')
         )->shouldBeCalled()->willReturn($user);
+        $user->email()->shouldBeCalled()->willReturn(new UserEmail('bengor@user.com'));
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(
             ChangePasswordByRequestRememberPasswordType::class, null, [
@@ -269,7 +273,8 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
         $templating->renderResponse('@BenGorUser/change_password/by_request_remember_password.html.twig', [
-            'form' => $formView,
+            'form'  => $formView,
+            'email' => 'bengor@user.com',
         ], null)->shouldBeCalled()->willReturn($response);
 
         $this->byRequestRememberPasswordAction(

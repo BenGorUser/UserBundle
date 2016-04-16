@@ -24,6 +24,13 @@ services:
         tags:
             - { name: form.type }
 
+    bengor.user.form.type.remove:
+        class: BenGor\UserBundle\Form\Type\RemoveType
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: form.type }
+
     bengor.user.form.type.request_remember_password:
         class: BenGor\UserBundle\Form\Type\RequestRememberPasswordType
         arguments:

@@ -47,7 +47,7 @@ class RemoveRoutesLoader extends RoutesLoader
                 [],
                 '',
                 [],
-                ['GET']
+                ['GET', 'POST']
             )
         );
     }
