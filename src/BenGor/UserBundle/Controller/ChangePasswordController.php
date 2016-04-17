@@ -12,7 +12,6 @@
 
 namespace BenGor\UserBundle\Controller;
 
-use BenGor\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
 use BenGor\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGor\User\Domain\Model\UserToken;

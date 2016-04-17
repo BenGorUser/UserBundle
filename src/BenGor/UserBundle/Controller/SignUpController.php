@@ -146,4 +146,3 @@ class SignUpController extends Controller
         return $userGuest;
     }
 }
-
