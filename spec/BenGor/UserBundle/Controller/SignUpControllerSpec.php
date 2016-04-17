@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Spec file of SignUpController class.
@@ -98,7 +99,8 @@ class SignUpControllerSpec extends ObjectBehavior
         FlashBagInterface $flashBag,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        User $user
+        User $user,
+        Translator $translator
     ) {
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
@@ -114,6 +116,7 @@ class SignUpControllerSpec extends ObjectBehavior
 
         $service->execute($signUpUserRequest)->shouldBeCalled()->willReturn($user);
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
@@ -205,11 +208,10 @@ class SignUpControllerSpec extends ObjectBehavior
         Request $request,
         ContainerInterface $container,
         Session $session,
-        TwigEngine $templating,
+        Translator $translator,
         FlashBagInterface $flashBag,
         GuardAuthenticatorHandler $handler,
         Response $response,
-        FormView $formView,
         FormInterface $form,
         FormFactoryInterface $formFactory,
         User $user,
@@ -235,6 +237,7 @@ class SignUpControllerSpec extends ObjectBehavior
 
         $service->execute($signUpUserRequest)->shouldBeCalled()->willReturn($user);
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);

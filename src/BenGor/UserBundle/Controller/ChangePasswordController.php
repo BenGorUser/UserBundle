@@ -47,15 +47,15 @@ class ChangePasswordController extends Controller
 
                 try {
                     $service->execute($form->getData());
-                    $this->addFlash('notice', 'The password is successfully changed');
+                    $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
 
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash('error', 'The current password is not correct');
+                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_generic'));
                 }
             }
         }
@@ -90,17 +90,17 @@ class ChangePasswordController extends Controller
 
                 try {
                     $service->execute($form->getData());
-                    $this->addFlash('notice', 'The password is successfully changed');
+                    $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
 
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserDoesNotExistException $exception) {
-                    $this->addFlash('error', 'Remember password token does not exist');
+                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_does_not_exist'));
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash('error', 'The current password is not correct');
+                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_generic'));
                 }
             }
         }
@@ -129,7 +129,7 @@ class ChangePasswordController extends Controller
             new UserToken($rememberPasswordToken)
         );
         if (!$user instanceof User) {
-            throw $this->createNotFoundException('Remember password token does not exist');
+            throw $this->createNotFoundException();
         }
 
         return $user;

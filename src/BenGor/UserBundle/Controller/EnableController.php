@@ -46,11 +46,11 @@ class EnableController extends Controller
                     $confirmationToken
                 )
             );
-            $this->addFlash('notice', 'User is successfully enabled');
+            $this->addFlash('notice', $this->get('translator')->trans('enable.success_flash'));
         } catch (UserTokenNotFoundException $exception) {
-            $this->addFlash('error', 'The confirmation token is invalid');
+            $this->addFlash('error', $this->get('translator')->trans('enable.error_flash_user_token_not_found'));
         } catch (\Exception $exception) {
-            $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+            $this->addFlash('error', $this->get('translator')->trans('enable.error_flash_generic'));
         }
 
         return $this->redirectToRoute($successRoute);

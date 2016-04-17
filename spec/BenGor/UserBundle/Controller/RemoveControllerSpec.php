@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Spec file of RemoveController class.
@@ -85,7 +86,8 @@ class RemoveControllerSpec extends ObjectBehavior
         FormFactoryInterface $formFactory,
         TwigEngine $templating,
         Response $response,
-        FormView $formView
+        FormView $formView,
+        Translator $translator
     ) {
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(RemoveType::class, null, [])->shouldBeCalled()->willReturn($form);
@@ -97,6 +99,7 @@ class RemoveControllerSpec extends ObjectBehavior
         $container->get('bengor_user.remove_user')->shouldBeCalled()->willReturn($service);
         $form->getData()->shouldBeCalled()->willReturn($signUpUserRequest);
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);

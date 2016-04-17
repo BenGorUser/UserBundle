@@ -49,7 +49,7 @@ class SignUpController extends Controller
                 $service = $this->get('bengor_user.sign_up_' . $userClass);
                 try {
                     $user = $service->execute($form->getData());
-                    $this->addFlash('notice', 'Your changes were saved!');
+                    $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
                         ->get('security.authentication.guard_handler')
@@ -60,9 +60,9 @@ class SignUpController extends Controller
                             $firewall
                         );
                 } catch (UserAlreadyExistException $exception) {
-                    $this->addFlash('error', 'The email is already in use.');
+                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_user_already_exist'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_generic'));
                 }
             }
         }
@@ -96,7 +96,7 @@ class SignUpController extends Controller
                 $service = $this->get('bengor_user.sign_up_' . $userClass);
                 try {
                     $user = $service->execute($form->getData());
-                    $this->addFlash('notice', 'Your changes were saved!');
+                    $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
                         ->get('security.authentication.guard_handler')
@@ -107,11 +107,11 @@ class SignUpController extends Controller
                             $firewall
                         );
                 } catch (UserAlreadyExistException $exception) {
-                    $this->addFlash('error', 'The email is already in use.');
+                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_user_already_exist'));
                 } catch (UserGuestDoesNotExistException $exception) {
-                    $this->addFlash('error', 'Sorry, you are not invited yet.');
+                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_user_guest_does_not_exist'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_generic'));
                 }
             }
         }
@@ -140,7 +140,7 @@ class SignUpController extends Controller
             new UserToken($invitationToken)
         );
         if (!$userGuest instanceof UserGuest) {
-            throw $this->createNotFoundException('Invitation token does not exist');
+            throw $this->createNotFoundException();
         }
 
         return $userGuest;

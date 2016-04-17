@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="eu" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="sign_up.success_flash">
+                <source>sign_up.success_flash</source>
+                <target>Erregistratze prozesua behar bezala burutu da</target>
+            </trans-unit>
+            <trans-unit id="sign_up.error_flash_user_already_exist">
+                <source>sign_up.error_flash_user_already_exist</source>
+                <target>Posta elektronikoa erabilita dago jada</target>
+            </trans-unit>
+            <trans-unit id="sign_up.error_flash_user_guest_does_not_exist">
+                <source>sign_up.error_flash_user_guest_does_not_exist</source>
+                <target>Bakartu eragozpenak, baina oraindik ez duzu gonbidapenik</target>
+            </trans-unit>
+            <trans-unit id="sign_up.error_flash_generic">
+                <source>sign_up.error_flash_generic</source>
+                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+
+            <trans-unit id="change_password.success_flash">
+                <source>change_password.success_flash</source>
+                <target>Pasahitz aldaketa behar bezala burutu da</target>
+            </trans-unit>
+            <trans-unit id="change_password.error_flash_user_password_invalid">
+                <source>change_password.error_flash_user_password_invalid</source>
+                <target>Egungo pasahitza ez da zuzena</target>
+            </trans-unit>
+            <trans-unit id="change_password.error_flash_user_does_not_exist">
+                <source>change_password.error_flash_user_does_not_exist</source>
+                <target>Pasahitz berreskurapen token-a ez da existitzen</target>
+            </trans-unit>
+            <trans-unit id="change_password.error_flash_generic">
+                <source>change_password.error_flash_generic</source>
+                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+
+            <trans-unit id="enable.success_flash">
+                <source>enable.success_flash</source>
+                <target>Kontua behar bezala aktibatu da</target>
+            </trans-unit>
+            <trans-unit id="enable.error_flash_user_token_not_found">
+                <source>enable.error_flash_user_token_not_found</source>
+                <target>Konfirmazio token-a ez da zuzena</target>
+            </trans-unit>
+            <trans-unit id="enable.error_flash_generic">
+                <source>enable.error_flash_generic</source>
+                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+
+            <trans-unit id="invite.success_flash">
+                <source>invite.success_flash</source>
+                <target>Gonbidapena behar bezala burutu da</target>
+            </trans-unit>
+            <trans-unit id="invite.error_flash_user_already_exist">
+                <source>invite.error_flash_user_already_exist</source>
+                <target>Posta elektronikoa erabilita dago jada</target>
+            </trans-unit>
+            <trans-unit id="invite.error_flash_generic">
+                <source>invite.error_flash_generic</source>
+                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+
+            <trans-unit id="remove.success_flash">
+                <source>remove.success_flash</source>
+                <target>Kontua betiko ezabatu da</target>
+            </trans-unit>
+            <trans-unit id="remove.error_flash_user_password_invalid">
+                <source>remove.error_flash_user_password_invalid</source>
+                <target>Egungo pasahitza ez da zuzena</target>
+            </trans-unit>
+            <trans-unit id="remove.error_flash_generic">
+                <source>remove.error_flash_generic</source>
+                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+
+            <trans-unit id="request_remember_password.success_flash">
+                <source>request_remember_password.success_flash</source>
+                <target>Pasahitza berreskuratzeko eskaera behar bazala burutu da</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.error_flash_user_does_not_exist">
+                <source>request_remember_password.error_flash_user_does_not_exist</source>
+                <target>Posta elektronikoa ez da existitzen</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.error_flash_generic">
+                <source>request_remember_password.error_flash_generic</source>
+                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

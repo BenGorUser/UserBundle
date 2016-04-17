@@ -43,13 +43,13 @@ class RemoveController extends Controller
 
                 try {
                     $service->execute($form->getData());
-                    $this->addFlash('notice', 'The account is successfully removed');
+                    $this->addFlash('notice', $this->get('translator')->trans('remove.success_flash'));
 
                     return $this->redirectToRoute($successRoute);
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash('error', 'The current password is not correct');
+                    $this->addFlash('error', $this->get('translator')->trans('remove.error_flash_user_password_invalid'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('remove.error_flash_generic'));
                 }
             }
         }

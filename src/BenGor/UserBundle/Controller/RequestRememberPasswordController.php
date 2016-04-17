@@ -43,15 +43,15 @@ class RequestRememberPasswordController extends Controller
 
                 try {
                     $service->execute($form->getData());
-                    $this->addFlash('notice', 'Remember password request is successfully done');
+                    $this->addFlash('notice', $this->get('translator')->trans('request_remember_password.success_flash'));
 
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserDoesNotExistException $exception) {
-                    $this->addFlash('error', 'The user does not exist');
+                    $this->addFlash('error', $this->get('translator')->trans('request_remember_password.error_flash_user_does_not_exist'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('request_remember_password.error_flash_generic'));
                 }
             }
         }

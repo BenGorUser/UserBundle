@@ -1,4 +1,15 @@
-#Getting started
+# Prerequisites
+### Translations
+If you wish to use default texts provided in this bundle, you have to make sure you have translator enabled in your config.
+```yml
+# app/config/config.yml
+
+framework:
+    translator: ~
+```
+For more information about translations, check [Symfony documentation][1].
+
+# Getting started
 
 The first step is enable the bundle in the `app/config/AppKernel.php`:
 ```php
@@ -115,3 +126,5 @@ With this basic configuration you have single user login, logout and registratio
 - In case you one to **send invitation emails** to users to join your app follow [this guide](invitation_system.md).
 - In order to use **MongoDB's Doctrine ODM** as persistence layer follow [this chapter](doctrine_odm_mongodb.md).
 - Back to the [index](index.md).
+
+[1]: https://symfony.com/doc/current/book/translation.html

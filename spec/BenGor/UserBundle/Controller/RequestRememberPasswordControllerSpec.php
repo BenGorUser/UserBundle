@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Spec file of RequestRememberPasswordController class.
@@ -85,7 +86,8 @@ class RequestRememberPasswordControllerSpec extends ObjectBehavior
         Response $response,
         FormView $formView,
         FormInterface $form,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        Translator $translator
     ) {
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(RequestRememberPasswordType::class, null, [])->shouldBeCalled()->willReturn($form);
@@ -98,10 +100,10 @@ class RequestRememberPasswordControllerSpec extends ObjectBehavior
         $form->getData()->shouldBeCalled()->willReturn($rememberPasswordRequest);
         $service->execute($rememberPasswordRequest)->shouldBeCalled();
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
-        $flashBag->add('notice', 'Remember password request is successfully done')->shouldBeCalled();
 
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);

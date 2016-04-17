@@ -42,15 +42,15 @@ class InviteController extends Controller
 
                 try {
                     $service->execute($form->getData());
-                    $this->addFlash('notice', 'Invitation is successfully done');
+                    $this->addFlash('notice', $this->get('translator')->trans('invite.success_flash'));
 
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserAlreadyExistException $exception) {
-                    $this->addFlash('error', 'The email is already in use.');
+                    $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_user_already_exist'));
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'An error occurred. Please contact with the administrator.');
+                    $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_generic'));
                 }
             }
         }

@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Spec file of ChangePasswordController class.
@@ -94,7 +95,8 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         FlashBagInterface $flashBag,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        Router $router
+        Router $router,
+        Translator $translator
     ) {
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(ChangePasswordType::class, null, [])->shouldBeCalled()->willReturn($form);
@@ -108,10 +110,10 @@ class ChangePasswordControllerSpec extends ObjectBehavior
 
         $service->execute($changeUserPasswordRequest)->shouldBeCalled();
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
-        $flashBag->add('notice', 'The password is successfully changed')->shouldBeCalled();
 
         $container->get('router')->shouldBeCalled()->willReturn($router);
         $router->generate(
@@ -200,7 +202,8 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         UserRepository $repository,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        User $user
+        User $user,
+        Translator $translator
     ) {
         $request->query = $bag;
         $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
@@ -224,10 +227,10 @@ class ChangePasswordControllerSpec extends ObjectBehavior
 
         $service->execute($changeUserPasswordRequest)->shouldBeCalled();
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
-        $flashBag->add('notice', 'The password is successfully changed')->shouldBeCalled();
 
         $container->get('router')->shouldBeCalled()->willReturn($router);
         $router->generate(

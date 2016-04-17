@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Spec file of EnableController class.
@@ -65,7 +66,8 @@ class EnableControllerSpec extends ObjectBehavior
         TransactionalApplicationService $service,
         Session $session,
         FlashBagInterface $flashBag,
-        Router $router
+        Router $router,
+        Translator $translator
     ) {
         $request->query = $bag;
         $bag->get('confirmation-token')->shouldBeCalled()->willReturn('confirmation-token');
@@ -73,10 +75,10 @@ class EnableControllerSpec extends ObjectBehavior
         $container->get('bengor_user.enable_user')->shouldBeCalled()->willReturn($service);
         $service->execute(Argument::type(EnableUserRequest::class))->shouldBeCalled();
 
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
-        $flashBag->add('notice', 'User is successfully enabled')->shouldBeCalled();
 
         $container->get('router')->shouldBeCalled()->willReturn($router);
         $router->generate('bengor_user_user_homepage', [], 1)->shouldBeCalled()->willReturn('/');
