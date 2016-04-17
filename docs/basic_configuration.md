@@ -5,7 +5,7 @@ If you wish to use default texts provided in this bundle, you have to make sure 
 # app/config/config.yml
 
 framework:
-    translator: ~
+    translator: { fallbacks: ["%locale%"] }
 ```
 For more information about translations, check [Symfony documentation][1].
 

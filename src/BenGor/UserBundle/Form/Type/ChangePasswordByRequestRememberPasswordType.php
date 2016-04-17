@@ -43,12 +43,12 @@ class ChangePasswordByRequestRememberPasswordType extends AbstractType
         $builder
             ->add('newPlainPassword', RepeatedType::class, [
                 'type'            => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'first_options'   => ['label' => 'Password'],
-                'second_options'  => ['label' => 'Repeat Password'],
+                'invalid_message' => 'request_remember_password.form_password_invalid_message',
+                'first_options'   => ['label' => 'request_remember_password.form_password_first_option_label'],
+                'second_options'  => ['label' => 'request_remember_password.form_password_second_option_label'],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Change password',
+                'label' => 'request_remember_password.form_submit_button',
             ]);
 
         $this->token = $options['remember_password_token'];

@@ -10,23 +10,23 @@
     <form action="{{ path(login_check) }}" method="post">
         {% if error %}
             <div class="alert alert-danger">
-                {{ error.messageKey|trans(error.messageData) }}
+                {{ error.messageKey | trans(error.messageData) }}
             </div>
         {% endif %}
 
         <div>
-            <label for="email">Email</label>
+            <label for="email">{{ 'security.view_email_label' | trans }}</label>
             <input type="text" id="email" name="_email" value="{{ last_email }}"/>
         </div>
 
         <div>
-            <label for="password">Password:</label>
+            <label for="password">{{ 'security.view_password_label' | trans }}:</label>
             <input type="password" id="password" name="_password"/>
         </div>
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
 
         <br/>
-        <button type="submit">Login</button>
+        <button type="submit">{{ 'security.view_submit_button' | trans }}</button>
     </form>
 {% endblock %}

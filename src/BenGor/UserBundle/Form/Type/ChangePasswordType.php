@@ -59,12 +59,12 @@ class ChangePasswordType extends AbstractType
             ->add('oldPlainPassword', PasswordType::class)
             ->add('newPlainPassword', RepeatedType::class, [
                 'type'            => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'first_options'   => ['label' => 'Password'],
-                'second_options'  => ['label' => 'Repeat Password'],
+                'invalid_message' => 'change_password.form_password_invalid_message',
+                'first_options'   => ['label' => 'change_password.form_password_first_option_label'],
+                'second_options'  => ['label' => 'change_password.form_password_second_option_label'],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Change password',
+                'label' => 'change_password.form_submit_button',
             ]);
     }
 

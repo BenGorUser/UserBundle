@@ -18,6 +18,18 @@
                 <source>sign_up.error_flash_generic</source>
                 <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
             </trans-unit>
+            <trans-unit id="sign_up.form_submit_button">
+                <source>sign_up.form_submit_button</source>
+                <target>Erregistratu</target>
+            </trans-unit>
+            <trans-unit id="sign_up.form_password_first_option_label">
+                <source>sign_up.form_password_first_option_label</source>
+                <target>Pasahitza</target>
+            </trans-unit>
+            <trans-unit id="sign_up.form_password_second_option_label">
+                <source>sign_up.form_password_second_option_label</source>
+                <target>Errepikatu pasahitza</target>
+            </trans-unit>
 
             <trans-unit id="change_password.success_flash">
                 <source>change_password.success_flash</source>
@@ -34,6 +46,22 @@
             <trans-unit id="change_password.error_flash_generic">
                 <source>change_password.error_flash_generic</source>
                 <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+            <trans-unit id="change_password.form_submit_button">
+                <source>change_password.form_submit_button</source>
+                <target>Pasahitza aldatu</target>
+            </trans-unit>
+            <trans-unit id="change_password.form_password_invalid_message">
+                <source>change_password.form_password_invalid_message</source>
+                <target>Pasahitz eremuak berdinak izan behar dira</target>
+            </trans-unit>
+            <trans-unit id="change_password.form_password_first_option_label">
+                <source>change_password.form_password_first_option_label</source>
+                <target>Pasahitza</target>
+            </trans-unit>
+            <trans-unit id="change_password.form_password_second_option_label">
+                <source>change_password.form_password_second_option_label</source>
+                <target>Errepikatu pasahitza</target>
             </trans-unit>
 
             <trans-unit id="enable.success_flash">
@@ -86,6 +114,39 @@
             <trans-unit id="request_remember_password.error_flash_generic">
                 <source>request_remember_password.error_flash_generic</source>
                 <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.view_content">
+                <source>request_remember_password.view_content</source>
+                <target>Orain, pasahitza era seguruan eguneratu dezakezu</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.form_submit_button">
+                <source>request_remember_password.form_submit_button</source>
+                <target>Pasahitza aldatu</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.form_password_invalid_message">
+                <source>request_remember_password.form_password_invalid_message</source>
+                <target>Pasahitz eremuak berdinak izan behar dira</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.form_password_first_option_label">
+                <source>request_remember_password.form_password_first_option_label</source>
+                <target>Pasahitza</target>
+            </trans-unit>
+            <trans-unit id="request_remember_password.form_password_second_option_label">
+                <source>request_remember_password.form_password_second_option_label</source>
+                <target>Errepikatu pasahitza</target>
+            </trans-unit>
+
+            <trans-unit id="security.view_email_label">
+                <source>security.view_email_label</source>
+                <target>Posta elektronikoa</target>
+            </trans-unit>
+            <trans-unit id="security.view_password_label">
+                <source>security.view_password_label</source>
+                <target>Pasahitza</target>
+            </trans-unit>
+            <trans-unit id="security.view_submit_button">
+                <source>security.view_submit_button</source>
+                <target>Sartu</target>
             </trans-unit>
         </body>
     </file>
