@@ -85,12 +85,7 @@ class SignUpController extends Controller
      */
     public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall)
     {
-        $userGuest = $this->get('bengor_user.' . $userClass . '_guest_repository')
-            ->userGuestOfInvitationToken(new UserToken($invitationToken));
-        if (!$userGuest instanceof UserGuest) {
-            throw $this->createNotFoundException('Invitation token does not exist');
-        }
-
+        $userGuest = $this->getUserGuestByToken($userClass, $invitationToken);
         $form = $this->createForm(SignUpByInvitationType::class, null, [
             'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
             'invitation_token' => $invitationToken,
@@ -126,4 +121,29 @@ class SignUpController extends Controller
             'form'  => $form->createView(),
         ]);
     }
+
+    /**
+     * This extra query is a trade off related with the flow of application service.
+     *
+     * In "GET" requests we need to know if the invitation
+     * token given exists in database, in case that
+     * it isn't, it throws 404.
+     *
+     * @param string $userClass       The user type
+     * @param string $invitationToken The invitation token
+     *
+     * @return UserGuest
+     */
+    private function getUserGuestByToken($userClass, $invitationToken)
+    {
+        $userGuest = $this->get('bengor_user.' . $userClass . '_guest_repository')->userGuestOfInvitationToken(
+            new UserToken($invitationToken)
+        );
+        if (!$userGuest instanceof UserGuest) {
+            throw $this->createNotFoundException('Invitation token does not exist');
+        }
+
+        return $userGuest;
+    }
 }
+

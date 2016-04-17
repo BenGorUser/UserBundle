@@ -12,6 +12,7 @@
 
 namespace BenGor\UserBundle\Controller;
 
+use BenGor\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
 use BenGor\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGor\User\Domain\Model\UserToken;
@@ -78,11 +79,8 @@ class ChangePasswordController extends Controller
     public function byRequestRememberPasswordAction(Request $request, $userClass, $successRoute = null)
     {
         $rememberPasswordToken = $request->query->get('remember-password-token');
-        $user = $this->get('bengor_user.' . $userClass . '_repository')
-            ->userOfRememberPasswordToken(new UserToken($rememberPasswordToken));
-        if (!$user instanceof User) {
-            throw $this->createNotFoundException('Remember password token does not exist');
-        }
+        $user = $this->getUserByToken($userClass, $rememberPasswordToken);
+
         $form = $this->createForm(ChangePasswordByRequestRememberPasswordType::class, null, [
             'remember_password_token' => $rememberPasswordToken,
         ]);
@@ -112,5 +110,29 @@ class ChangePasswordController extends Controller
             'form'  => $form->createView(),
             'email' => $user->email()->email(),
         ]);
+    }
+
+    /**
+     * This extra query is a trade off related with the flow of application service.
+     *
+     * In "GET" requests we need to know if the remember
+     * password token given exists in database, in case that
+     * it isn't, it throws 404.
+     *
+     * @param string $userClass             The user type
+     * @param string $rememberPasswordToken The remember password token
+     *
+     * @return User
+     */
+    private function getUserByToken($userClass, $rememberPasswordToken)
+    {
+        $user = $this->get('bengor_user.' . $userClass . '_repository')->userOfRememberPasswordToken(
+            new UserToken($rememberPasswordToken)
+        );
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException('Remember password token does not exist');
+        }
+
+        return $user;
     }
 }
