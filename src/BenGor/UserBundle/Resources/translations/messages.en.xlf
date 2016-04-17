@@ -119,22 +119,6 @@
                 <source>request_remember_password.view_content</source>
                 <target>Now, you can safely update your lost password</target>
             </trans-unit>
-            <trans-unit id="request_remember_password.form_submit_button">
-                <source>request_remember_password.form_submit_button</source>
-                <target>Change password</target>
-            </trans-unit>
-            <trans-unit id="request_remember_password.form_password_invalid_message">
-                <source>request_remember_password.form_password_invalid_message</source>
-                <target>The password fields must match</target>
-            </trans-unit>
-            <trans-unit id="request_remember_password.form_password_first_option_label">
-                <source>request_remember_password.form_password_first_option_label</source>
-                <target>Password</target>
-            </trans-unit>
-            <trans-unit id="request_remember_password.form_password_second_option_label">
-                <source>request_remember_password.form_password_second_option_label</source>
-                <target>Repeat password</target>
-            </trans-unit>
 
             <trans-unit id="security.view_email_label">
                 <source>security.view_email_label</source>

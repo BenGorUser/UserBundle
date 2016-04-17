@@ -11,7 +11,7 @@
 * [Register subscribers into DomainEventPublisherListener](subscribers.md)
 * Custom views, overriding twig files
 * Advanced customization
-    * Custom urls for controllers
+    * [Customize URLs](customize_urls.md)
 * Reference
     * [Service reference](service_reference.md)
     * [Configuration reference](configuration_reference.md)
