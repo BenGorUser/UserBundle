@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGor\User\Application\Service\LogIn\LogInUserService;
+use BenGor\UserBundle\Application\Service\LogInUserService;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -80,7 +80,7 @@ class LogInUserServiceBuilder extends ServiceBuilder
             'bengor.user_bundle.security.form_login_' . $user . '_authenticator',
             new Definition(
                 FormLoginAuthenticator::class, [
-                    $this->container->getDefinition('router.default'),
+                    $this->container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator'),
                     $this->container->getDefinition('bengor.user.application.service.log_in_' . $user),
                     [
                         'login'                     => $routes['login']['name'],

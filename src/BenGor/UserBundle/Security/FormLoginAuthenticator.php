@@ -13,12 +13,12 @@
 namespace BenGor\UserBundle\Security;
 
 use BenGor\User\Application\Service\LogIn\LogInUserRequest;
-use BenGor\User\Application\Service\LogIn\LogInUserService;
 use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGor\User\Domain\Model\UserEmail;
 use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
+use BenGor\User\Domain\Model\UserUrlGenerator;
 use BenGor\UserBundle\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -38,11 +38,11 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 {
     /**
-     * The Symfony router component.
+     * The login_check route name.
      *
-     * @var Router
+     * @var string
      */
-    private $router;
+    private $loginCheckRoute;
 
     /**
      * The login route name.
@@ -52,11 +52,11 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     private $loginRoute;
 
     /**
-     * The login_check route name.
+     * The The authenticator service.
      *
-     * @var string
+     * @var AuthenticatorService
      */
-    private $loginCheckRoute;
+    private $service;
 
     /**
      * The success redirection route name.
@@ -66,22 +66,22 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     private $successRedirectionRoute;
 
     /**
-     * The log in user service.
+     * The user URL generator.
      *
-     * @var LogInUserService
+     * @var UserUrlGenerator
      */
-    private $service;
+    private $urlGenerator;
 
     /**
      * Constructor.
      *
-     * @param Router           $aRouter  The Symfony router component
-     * @param LogInUserService $aService The log in user service
-     * @param array            $routes   The routes related with security (login, login_check and logout)
+     * @param UserUrlGenerator     $aUserUrlGenerator The user URL generator
+     * @param AuthenticatorService $aService          The authenticator service
+     * @param array                $routes            The routes related with security (login, login_check and logout)
      */
-    public function __construct(Router $aRouter, LogInUserService $aService, array $routes)
+    public function __construct(UserUrlGenerator $aUserUrlGenerator, AuthenticatorService $aService, array $routes)
     {
-        $this->router = $aRouter;
+        $this->urlGenerator = $aUserUrlGenerator;
         $this->service = $aService;
 
         if (false === isset($routes['login'], $routes['login_check'], $routes['success_redirection_route'])) {
@@ -149,7 +149,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getLoginUrl()
     {
-        return $this->router->generate($this->loginRoute);
+        return $this->urlGenerator->generate($this->loginRoute, [], UserUrlGenerator::ABSOLUTE_PATH);
     }
 
     /**
@@ -157,6 +157,6 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getDefaultSuccessRedirectUrl()
     {
-        return $this->router->generate($this->successRedirectionRoute);
+        return $this->urlGenerator->generate($this->successRedirectionRoute, [], UserUrlGenerator::ABSOLUTE_PATH);
     }
 }

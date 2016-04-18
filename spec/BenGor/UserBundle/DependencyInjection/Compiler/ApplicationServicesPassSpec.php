@@ -131,7 +131,7 @@ class ApplicationServicesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->getDefinition(
-            'router.default'
+            'bengor.user.infrastructure.routing.symfony_url_generator'
         )->shouldBeCalled()->willReturn($definition);
         $container->getDefinition(
             'bengor.user.application.service.log_in_user'

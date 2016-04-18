@@ -14,7 +14,9 @@ namespace spec\BenGor\UserBundle\Security;
 
 use BenGor\User\Application\Service\LogIn\LogInUserRequest;
 use BenGor\User\Application\Service\LogIn\LogInUserService;
+use BenGor\User\Domain\Model\UserUrlGenerator;
 use BenGor\UserBundle\Model\User;
+use BenGor\UserBundle\Security\AuthenticatorService;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -32,9 +34,9 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  */
 class FormLoginAuthenticatorSpec extends ObjectBehavior
 {
-    function let(Router $router, LogInUserService $service)
+    function let(UserUrlGenerator $urlGenerator, AuthenticatorService $service)
     {
-        $this->beConstructedWith($router, $service, [
+        $this->beConstructedWith($urlGenerator, $service, [
             'login'                     => 'bengor_user_user_security_login',
             'login_check'               => 'bengor_user_user_security_login_check',
             'success_redirection_route' => 'bengor_user_user_security_homepage',
@@ -52,10 +54,10 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_throws_invalid_argument_exception_when_routes_are_not_provided(
-        Router $router,
+        UserUrlGenerator $urlGenerator,
         LogInUserService $service
     ) {
-        $this->beConstructedWith($router, $service, []);
+        $this->beConstructedWith($urlGenerator, $service, []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
