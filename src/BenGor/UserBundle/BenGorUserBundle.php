@@ -90,6 +90,15 @@ class BenGorUserBundle extends Bundle
                 ],
             ]);
         }
+        if (true === $container->hasExtension('framework')) {
+            $container->loadFromExtension('framework', [
+                'translator' => [
+                    'paths' => [
+                        '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Translations',
+                    ],
+                ],
+            ]);
+        }
         if (true === $container->hasExtension('twig')) {
             $container->loadFromExtension('twig', [
                 'paths' => [
