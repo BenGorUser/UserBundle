@@ -12,7 +12,7 @@
 
 namespace BenGor\UserBundle\Controller;
 
-use BenGor\User\Domain\Model\Exception\UserPasswordInvalidException;
+use BenGor\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGor\UserBundle\Form\Type\RemoveType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,8 +46,8 @@ class RemoveController extends Controller
                     $this->addFlash('notice', $this->get('translator')->trans('remove.success_flash'));
 
                     return $this->redirectToRoute($successRoute);
-                } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash('error', $this->get('translator')->trans('remove.error_flash_user_password_invalid'));
+                } catch (UserDoesNotExistException $exception) {
+                    $this->addFlash('error', $this->get('translator')->trans('remove.error_flash_user_does_not_exist'));
                 } catch (\Exception $exception) {
                     $this->addFlash('error', $this->get('translator')->trans('remove.error_flash_generic'));
                 }

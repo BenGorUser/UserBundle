@@ -94,9 +94,9 @@
                 <source>remove.success_flash</source>
                 <target>La cuenta se ha borrado definitivamente</target>
             </trans-unit>
-            <trans-unit id="remove.error_flash_user_password_invalid">
-                <source>remove.error_flash_user_password_invalid</source>
-                <target>La contraseña actual no es correcta</target>
+            <trans-unit id="remove.error_flash_user_does_not_exist">
+                <source>remove.error_flash_user_does_not_exist</source>
+                <target>El usuario no existe</target>
             </trans-unit>
             <trans-unit id="remove.error_flash_generic">
                 <source>remove.error_flash_generic</source>

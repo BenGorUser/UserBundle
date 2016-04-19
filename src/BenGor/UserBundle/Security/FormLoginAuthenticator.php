@@ -21,7 +21,6 @@ use BenGor\User\Domain\Model\UserRole;
 use BenGor\User\Domain\Model\UserUrlGenerator;
 use BenGor\UserBundle\Model\User;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

@@ -34,9 +34,6 @@ class RemoveUserServiceBuilder extends ServiceBuilder
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
-                    $this->container->getDefinition(
-                        'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
-                    ),
                 ]
             )
         );
