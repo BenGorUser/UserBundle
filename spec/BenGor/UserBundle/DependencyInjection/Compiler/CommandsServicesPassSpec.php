@@ -117,8 +117,13 @@ class CommandsServicesPassSpec extends ObjectBehavior
 
         $container->getDefinition('bengor.user.application.service.sign_up_user_default_transactional')
             ->shouldBeCalled()->willReturn($userRepositoryDefinition);
+        $container->getDefinition('bengor.user.application.service.change_user_password_by_email_transactional')
+            ->shouldBeCalled()->willReturn($userRepositoryDefinition);
 
         $container->findDefinition('bengor.user.command.create_user_command')
+            ->shouldBeCalled()->willReturn($definition);
+        $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
+        $container->findDefinition('bengor.user.command.change_user_password_command')
             ->shouldBeCalled()->willReturn($definition);
         $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
 

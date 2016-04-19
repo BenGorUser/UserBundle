@@ -30,6 +30,10 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
      */
     public function register($user)
     {
+        (new ByEmailWithoutOldPasswordChangeUserPasswordServiceBuilder(
+            $this->container, $this->persistence
+        ))->build($user);
+
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(

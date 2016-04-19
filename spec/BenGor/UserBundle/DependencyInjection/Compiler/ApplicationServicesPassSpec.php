@@ -210,6 +210,28 @@ class ApplicationServicesPassSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $container->setDefinition(
+            'bengor.user.application.service.change_user_password_by_email',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->register(
+            'bengor.user.application.service.change_user_password_by_email_transactional',
+            TransactionalApplicationService::class
+        )->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(
+            Argument::type(Reference::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $definition->addArgument(
+            Argument::type(Reference::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $definition->setPublic(
+            false
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.change_user_password_by_email',
+            'bengor.user.application.service.change_user_password_by_email_transactional'
+        )->shouldBeCalled();
+
+        $container->setDefinition(
             'bengor.user.application.service.sign_up_user',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);

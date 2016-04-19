@@ -12,6 +12,7 @@
 
 namespace BenGor\UserBundle\DependencyInjection;
 
+use BenGor\UserBundle\Command\ChangePasswordCommand;
 use BenGor\UserBundle\Command\CreateUserCommand;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -57,6 +58,11 @@ class BenGorUserExtension extends Extension
             $container->setDefinition(
                 'bengor.user.command.create_' . $key . '_command',
                 (new Definition(CreateUserCommand::class))->addTag('console.command')
+            );
+
+            $container->setDefinition(
+                'bengor.user.command.change_' . $key . '_password_command',
+                (new Definition(ChangePasswordCommand::class))->addTag('console.command')
             );
         }
     }

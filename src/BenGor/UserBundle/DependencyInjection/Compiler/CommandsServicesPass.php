@@ -41,6 +41,15 @@ class CommandsServicesPass implements CompilerPassInterface
                     $key,
                     $user['class'],
                 ]);
+
+            $container->findDefinition('bengor.user.command.change_' . $key . '_password_command')
+                ->setArguments([
+                    $container->getDefinition(
+                        'bengor.user.application.service.change_' . $key . '_password_by_email_transactional'
+                    ),
+                    $key,
+                    $user['class'],
+                ]);
         }
     }
 }
