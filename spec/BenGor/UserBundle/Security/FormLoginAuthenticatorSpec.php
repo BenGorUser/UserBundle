@@ -14,14 +14,19 @@ namespace spec\BenGor\UserBundle\Security;
 
 use BenGor\User\Application\Service\LogIn\LogInUserRequest;
 use BenGor\User\Application\Service\LogIn\LogInUserService;
+use BenGor\User\Domain\Model\UserEmail;
+use BenGor\User\Domain\Model\UserId;
 use BenGor\User\Domain\Model\UserUrlGenerator;
 use BenGor\UserBundle\Model\User;
 use BenGor\UserBundle\Security\AuthenticatorService;
 use BenGor\UserBundle\Security\FormLoginAuthenticator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -79,6 +84,26 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $session->set(Security::LAST_USERNAME, 'test@test.com')->shouldBeCalled();
 
         $this->getCredentials($request)->shouldReturnAnInstanceOf(LogInUserRequest::class);
+    }
+
+    function it_on_authentication_failure_when_is_xml_http_request(Request $request, AuthenticationException $exception)
+    {
+        $request->isXmlHttpRequest()->shouldBeCalled()->willReturn(true);
+
+        $this->onAuthenticationFailure($request, $exception)->shouldReturnAnInstanceOf(JsonResponse::class);
+    }
+
+    function it_on_authentication_success_when_is_xml_http_request(
+        Request $request,
+        TokenInterface $token,
+        User $user
+    ) {
+        $request->isXmlHttpRequest()->shouldBeCalled()->willReturn(true);
+        $token->getUser()->shouldBeCalled()->willReturn($user);
+        $user->id()->shouldBeCalled()->willReturn(new UserId('user-id'));
+        $user->email()->shouldBeCalled()->willReturn(new UserEmail('bengor@user.com'));
+
+        $this->onAuthenticationSuccess($request, $token, 'main')->shouldReturnAnInstanceOf(JsonResponse::class);
     }
 
     function it_gets_user(

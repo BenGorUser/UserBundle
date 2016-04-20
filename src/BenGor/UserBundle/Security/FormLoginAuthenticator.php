@@ -20,7 +20,10 @@ use BenGor\User\Domain\Model\UserPassword;
 use BenGor\User\Domain\Model\UserRole;
 use BenGor\User\Domain\Model\UserUrlGenerator;
 use BenGor\UserBundle\Model\User;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -141,6 +144,33 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         return '0' !== $user->getPassword();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    {
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(['message' => $exception->getMessageKey()], 403);
+        }
+
+        return parent::onAuthenticationFailure($request, $exception);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    {
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'user_id'    => $token->getUser()->id()->id(),
+                'user_email' => $token->getUser()->email()->email(),
+            ]);
+        }
+
+        return parent::onAuthenticationSuccess($request, $token, $providerKey);
     }
 
     /**
