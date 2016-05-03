@@ -15,8 +15,6 @@ namespace BenGor\UserBundle\Form\Type;
 use BenGor\User\Application\Service\Remove\RemoveUserRequest;
 use BenGor\UserBundle\Model\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -51,22 +49,13 @@ class RemoveType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('password', PasswordType::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => RemoveUserRequest::class,
             'empty_data' => function (FormInterface $form) {
                 return new RemoveUserRequest(
-                    $this->currentUser->id()->id(),
-                    $form->get('password')->getData()
+                    $this->currentUser->id()->id()
                 );
             },
         ]);
