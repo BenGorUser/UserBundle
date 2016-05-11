@@ -1,0 +1,43 @@
+# This file is part of the BenGorUserBundle bundle.
+#
+# (c) Beñat Espiña <benatespina@gmail.com>
+# (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+BenGorUser\User\Domain\Model\User:
+    type: mappedSuperclass
+    repositoryClass: BenGorUser\User\Infrastructure\Persistence\Doctrine\ORM\DoctrineORMUserRepository
+    table: user
+    id:
+        id:
+            column: id
+            type: user_id
+    embedded:
+        confirmationToken:
+            class: BenGorUser\User\Domain\Model\UserToken
+            columnPrefix: confirmation_
+        email:
+            class: BenGorUser\User\Domain\Model\UserEmail
+            columnPrefix: false
+        password:
+            class: BenGorUser\User\Domain\Model\UserPassword
+            columnPrefix: false
+        rememberPasswordToken:
+            class: BenGorUser\User\Domain\Model\UserToken
+            columnPrefix: remember_password_
+    fields:
+        createdOn:
+            column: created_on
+            type: datetime
+        lastLogin:
+            column: last_login
+            type: datetime
+            nullable: true
+        roles:
+            column: roles
+            type: user_roles
+        updatedOn:
+            column: updated_on
+            type: datetime

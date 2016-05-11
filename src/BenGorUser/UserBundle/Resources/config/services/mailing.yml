@@ -1,0 +1,40 @@
+# This file is part of the BenGorUserBundle bundle.
+#
+# (c) Beñat Espiña <benatespina@gmail.com>
+# (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+services:
+    bengor.user.infrastructure.mailing.mailable.twig.invite_user_mailable_factory:
+        class: BenGorUser\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+        arguments:
+            - '@twig'
+            - '@@bengor_user/Email/invite.html.twig'
+            - '%mailer_user%'
+        public: false
+
+    bengor.user.infrastructure.mailing.mailable.twig.sign_up_user_mailable_factory:
+        class: BenGorUser\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+        arguments:
+            - '@twig'
+            - '@@bengor_user/Email/sign_up.html.twig'
+            - '%mailer_user%'
+        public: false
+
+    bengor.user.infrastructure.mailing.mailable.twig.request_remember_password_user_mailable_factory:
+        class: BenGorUser\User\Infrastructure\Mailing\Mailable\Twig\TwigUserMailableFactory
+        arguments:
+            - '@twig'
+            - '@@bengor_user/Email/request_remember_password.html.twig'
+            - '%mailer_user%'
+        public: false
+
+
+    bengor_user.mailable_factory.invite:
+        alias: bengor.user.infrastructure.mailing.mailable.twig.invite_user_mailable_factory
+    bengor_user.mailable_factory.sign_up:
+        alias: bengor.user.infrastructure.mailing.mailable.twig.sign_up_user_mailable_factory
+    bengor_user.mailable_factory.request_remember_password:
+        alias: bengor.user.infrastructure.mailing.mailable.twig.request_remember_password_user_mailable_factory
