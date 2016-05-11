@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\Enable\EnableUserService;
+use BenGorUser\User\Application\Service\Enable\EnableUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -30,7 +30,7 @@ class EnableUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                EnableUserService::class, [
+                EnableUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),

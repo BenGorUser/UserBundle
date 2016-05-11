@@ -12,8 +12,9 @@
 
 namespace BenGorUser\UserBundle\Command;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserRequest;
-use Ddd\Application\Service\TransactionalApplicationService;
+use AppBundle\Entity\User;
+use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
+use SimpleBus\Message\Bus\MessageBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,39 +28,20 @@ use Symfony\Component\Console\Question\Question;
  */
 class CreateUserCommand extends Command
 {
+    private $commandBus;
     /**
-     * Fully qualified class name.
-     *
-     * @var string
-     */
-    private $fqcn;
-
-    /**
-     * The service.
-     *
-     * @var TransactionalApplicationService
-     */
-    private $service;
-
-    /**
-     * The type of user class.
-     *
-     * @var string
+     * @var
      */
     private $userClass;
 
     /**
      * Constructor.
-     *
-     * @param TransactionalApplicationService $service   The service
-     * @param string                          $userClass The user class
-     * @param string                          $fqcn      The fully qualified class name
      */
-    public function __construct(TransactionalApplicationService $service, $userClass, $fqcn)
+    public function __construct(MessageBus $commandBus, $userClass)
     {
-        $this->fqcn = $fqcn;
-        $this->service = $service;
+        $this->commandBus = $commandBus;
         $this->userClass = $userClass;
+        $this->fqcn = User::class;
 
         parent::__construct();
     }
@@ -109,8 +91,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $response = $this->service->execute(
-            SignUpUserRequest::fromEmail(
+        dump($this->commandBus);die;
+        $response = $this->commandBus->handle(
+            SignUpUserCommand::fromEmail(
                 $input->getArgument('email'),
                 $input->getArgument('password'),
                 $input->getArgument('roles')

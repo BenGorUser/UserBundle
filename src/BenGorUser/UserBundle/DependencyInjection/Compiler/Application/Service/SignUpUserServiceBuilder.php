@@ -15,7 +15,7 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service
 use BenGorUser\User\Application\Service\SignUp\ByInvitationSignUpUserSpecification;
 use BenGorUser\User\Application\Service\SignUp\ByInvitationWithConfirmationSignUpUserSpecification;
 use BenGorUser\User\Application\Service\SignUp\DefaultSignUpUserSpecification;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserService;
+use BenGorUser\User\Application\Service\SignUp\SignUpUserHandler;
 use BenGorUser\User\Application\Service\SignUp\WithConfirmationSignUpUserSpecification;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
@@ -37,7 +37,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                SignUpUserService::class, [
+                SignUpUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),

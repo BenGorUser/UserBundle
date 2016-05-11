@@ -13,7 +13,8 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
 use BenGorUser\User\Application\Service\ChangePassword\ByEmailWithoutOldPasswordChangeUserPasswordSpecification;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordService;
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -33,8 +34,8 @@ class ByEmailWithoutOldPasswordChangeUserPasswordServiceBuilder extends ServiceB
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
-                ChangeUserPasswordService::class, [
+            (new Definition(
+                ChangeUserPasswordHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
@@ -43,7 +44,7 @@ class ByEmailWithoutOldPasswordChangeUserPasswordServiceBuilder extends ServiceB
                     ),
                     $this->byEmailWithoutOldPasswordSpecification($user),
                 ]
-            )
+            ))
         );
     }
 

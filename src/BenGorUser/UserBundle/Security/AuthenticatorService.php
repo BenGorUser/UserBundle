@@ -21,12 +21,4 @@ namespace BenGorUser\UserBundle\Security;
  */
 interface AuthenticatorService
 {
-    /**
-     * Executes method.
-     *
-     * @param mixed $request The request
-     *
-     * @return mixed
-     */
-    public function execute($request = null);
 }

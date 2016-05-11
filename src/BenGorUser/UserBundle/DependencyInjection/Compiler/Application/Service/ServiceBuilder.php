@@ -87,7 +87,6 @@ abstract class ServiceBuilder
             return;
         }
         $this->register($user);
-        $this->registerTransactional($user);
 
         return $this->container;
     }
@@ -102,28 +101,6 @@ abstract class ServiceBuilder
     protected function sanitize($specificationName)
     {
         return $specificationName . 'Specification';
-    }
-
-    /**
-     * Registers the transactional service into container.
-     *
-     * @param string $user The user name
-     */
-    protected function registerTransactional($user)
-    {
-        $this->container->register(
-            $this->definitionName($user) . '_transactional',
-            TransactionalApplicationService::class
-        )->addArgument(
-            new Reference($this->definitionName($user))
-        )->addArgument(
-            new Reference('bengor.user.infrastructure.application.service.' . $this->persistence . '_session')
-        )->setPublic(false);
-
-        $this->container->setAlias(
-            $this->aliasDefinitionName($user),
-            $this->definitionName($user) . '_transactional'
-        );
     }
 
     /**

@@ -13,7 +13,7 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
 use BenGorUser\User\Application\Service\ChangePassword\ByRequestRememberPasswordChangeUserPasswordSpecification;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordService;
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordHandler;
 use BenGorUser\User\Application\Service\ChangePassword\DefaultChangeUserPasswordSpecification;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
@@ -37,7 +37,7 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                ChangeUserPasswordService::class, [
+                ChangeUserPasswordHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),

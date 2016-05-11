@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\UserBundle\Application\Service\LogInUserService;
+use BenGorUser\User\Application\Service\LogIn\LogInUserHandler;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -31,7 +31,7 @@ class LogInUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                LogInUserService::class, [
+                LogInUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),

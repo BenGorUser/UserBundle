@@ -14,6 +14,8 @@ namespace BenGorUser\UserBundle\DependencyInjection;
 
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -55,6 +57,21 @@ class BenGorUserExtension extends Extension
     private function loadCommands(ContainerBuilder $container, $config)
     {
         foreach ($config['user_class'] as $key => $user) {
+            $container->addCompilerPass(
+                new ConfigureMiddlewares(
+                    'bengor.user.command_bus.' . $key,
+                    'bengor.user.command_bus.middleware.'. $key
+                )
+            );
+
+            $container->addCompilerPass(
+                new RegisterHandlers(
+                    'simple_bus.command_bus.command_handler_map',
+                    'bengor.user.command_bus.handler.'. $key,
+                    'handles'
+                )
+            );
+
             $container->setDefinition(
                 'bengor.user.command.create_' . $key . '_command',
                 (new Definition(CreateUserCommand::class))->addTag('console.command')

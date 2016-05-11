@@ -43,7 +43,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BenGor\\UserBundle\\": "src/BenGor/UserBundle/"
+            "BenGorUser\\UserBundle\\": "src/BenGorUser/UserBundle/"
         },
         "exclude-from-classmap": ["/spec/"]
     },

@@ -12,14 +12,14 @@
 
 namespace BenGorUser\UserBundle\Application\Service;
 
-use BenGorUser\User\Application\Service\LogIn\LogInUserService as BaseLogInUserService;
+use BenGorUser\User\Application\Service\LogIn\LogInUserHandler as BaseLogInUserHandler;
 use BenGorUser\UserBundle\Security\AuthenticatorService;
 
 /**
- * Decorated BenGorUser's library LogInUserService class.
+ * Decorated BenGorUser's library LogInUserHandler class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LogInUserService extends BaseLogInUserService implements AuthenticatorService
+class LogInUserHandler extends BaseLogInUserHandler implements AuthenticatorService
 {
 }

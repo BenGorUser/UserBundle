@@ -12,7 +12,8 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserService;
+use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
+use BenGorUser\User\Application\Service\SignUp\SignUpUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -32,8 +33,8 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
-                SignUpUserService::class, [
+            (new Definition(
+                SignUpUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
@@ -48,7 +49,9 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
                     ),
                     $this->defaultSpecification($user),
                 ]
-            )
+            ))->addTag('bengor.user.command_bus.handler.'. $user, [
+                'handles' => SignUpUserCommand::class
+            ])
         );
     }
 

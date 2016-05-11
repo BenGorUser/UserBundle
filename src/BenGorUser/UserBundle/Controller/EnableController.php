@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\Enable\EnableUserRequest;
+use BenGorUser\User\Application\Service\Enable\EnableUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserTokenNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,8 +41,8 @@ class EnableController extends Controller
         }
 
         try {
-            $this->get('bengor_user.enable_' . $userClass)->execute(
-                new EnableUserRequest(
+            $this->get('bengor.user.command_bus.'.$userClass)->handle(
+                new EnableUserCommand(
                     $confirmationToken
                 )
             );

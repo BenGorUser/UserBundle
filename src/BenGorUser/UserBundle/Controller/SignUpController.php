@@ -46,9 +46,8 @@ class SignUpController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $service = $this->get('bengor_user.sign_up_' . $userClass);
                 try {
-                    $user = $service->execute($form->getData());
+                    $user = $this->get('bengor_user_command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
@@ -93,9 +92,8 @@ class SignUpController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $service = $this->get('bengor_user.sign_up_' . $userClass);
                 try {
-                    $user = $service->execute($form->getData());
+                    $user = $this->get('bengor.user.command_bus.'.$userClass)->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
@@ -103,7 +101,7 @@ class SignUpController extends Controller
                         ->authenticateUserAndHandleSuccess(
                             $user,
                             $request,
-                            $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
+                            $this->get('bengor_user.form_login_authenticator'),
                             $firewall
                         );
                 } catch (UserAlreadyExistException $exception) {

@@ -36,19 +36,17 @@ class CommandsServicesPass implements CompilerPassInterface
             $container->findDefinition('bengor.user.command.create_' . $key . '_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor.user.application.service.sign_up_' . $key . '_default_transactional'
+                        'bengor.user.command_bus.' . $key
                     ),
-                    $key,
-                    $user['class'],
+                    $key
                 ]);
 
             $container->findDefinition('bengor.user.command.change_' . $key . '_password_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor.user.application.service.change_' . $key . '_password_by_email_transactional'
+                        'bengor.user.command_bus.' . $key
                     ),
                     $key,
-                    $user['class'],
                 ]);
         }
     }

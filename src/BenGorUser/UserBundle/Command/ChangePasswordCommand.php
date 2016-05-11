@@ -12,8 +12,10 @@
 
 namespace BenGorUser\UserBundle\Command;
 
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
 use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
 use Ddd\Application\Service\TransactionalApplicationService;
+use SimpleBus\Message\Bus\MessageBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,38 +29,16 @@ use Symfony\Component\Console\Question\Question;
  */
 class ChangePasswordCommand extends Command
 {
-    /**
-     * Fully qualified class name.
-     *
-     * @var string
-     */
-    private $fqcn;
+    private $commandBus;
 
-    /**
-     * The service.
-     *
-     * @var TransactionalApplicationService
-     */
-    private $service;
-
-    /**
-     * The type of user class.
-     *
-     * @var string
-     */
     private $userClass;
 
     /**
      * Constructor.
-     *
-     * @param TransactionalApplicationService $service   The service
-     * @param string                          $userClass The user class
-     * @param string                          $fqcn      The fully qualified class name
      */
-    public function __construct(TransactionalApplicationService $service, $userClass, $fqcn)
+    public function __construct(MessageBus $commandBus, $userClass)
     {
-        $this->fqcn = $fqcn;
-        $this->service = $service;
+        $this->commandBus = $commandBus;
         $this->userClass = $userClass;
 
         parent::__construct();
@@ -104,8 +84,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->service->execute(
-            ChangeUserPasswordRequest::fromEmail(
+        $this->commandBus->handle(
+            ChangeUserPasswordCommand::fromEmail(
                 $input->getArgument('email'),
                 $input->getArgument('password')
             )

@@ -38,10 +38,8 @@ class InviteController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $service = $this->get('bengor_user.invite_' . $userClass);
-
                 try {
-                    $service->execute($form->getData());
+                    $this->get('bengor.user.command_bus.'.$userClass)->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('invite.success_flash'));
 
                     if (null !== $successRoute) {

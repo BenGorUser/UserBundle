@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\LogOut\LogOutUserService;
+use BenGorUser\User\Application\Service\LogOut\LogOutUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -30,7 +30,7 @@ class LogOutUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                LogOutUserService::class, [
+                LogOutUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),

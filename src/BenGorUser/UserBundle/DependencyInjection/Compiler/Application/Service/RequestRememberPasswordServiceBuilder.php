@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordService;
+use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordCommand;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -30,7 +30,7 @@ class RequestRememberPasswordServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                RequestRememberPasswordService::class, [
+                RequestRememberPasswordCommand::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),

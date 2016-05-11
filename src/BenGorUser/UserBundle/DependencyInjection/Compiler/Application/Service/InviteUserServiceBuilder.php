@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\Invite\InviteUserService;
+use BenGorUser\User\Application\Service\Invite\InviteUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -30,7 +30,7 @@ class InviteUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             new Definition(
-                InviteUserService::class, [
+                InviteUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
