@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserRequest;
+use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -71,9 +71,9 @@ class SignUpByInvitationType extends AbstractType
     {
         $resolver->setRequired(['roles', 'invitation_token']);
         $resolver->setDefaults([
-            'data_class' => SignUpUserRequest::class,
+            'data_class' => SignUpUserCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return SignUpUserRequest::fromInvitationToken(
+                return SignUpUserCommand::fromInvitationToken(
                     $this->token,
                     $form->get('password')->getData(),
                     $this->roles

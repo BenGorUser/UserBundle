@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\Invite\InviteUserRequest;
+use BenGorUser\User\Application\Service\Invite\InviteUserCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,9 +40,9 @@ class InviteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => InviteUserRequest::class,
+            'data_class' => InviteUserCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return new InviteUserRequest(
+                return new InviteUserCommand(
                     $form->get('email')->getData()
                 );
             },

@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
 use BenGorUser\UserBundle\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -74,9 +74,9 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ChangeUserPasswordRequest::class,
+            'data_class' => ChangeUserPasswordCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return ChangeUserPasswordRequest::from(
+                return ChangeUserPasswordCommand::from(
                     $this->currentUser->id()->id(),
                     $form->get('newPlainPassword')->getData(),
                     $form->get('oldPlainPassword')->getData()

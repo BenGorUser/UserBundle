@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -61,9 +61,9 @@ class ChangePasswordByRequestRememberPasswordType extends AbstractType
     {
         $resolver->setRequired('remember_password_token');
         $resolver->setDefaults([
-            'data_class' => ChangeUserPasswordRequest::class,
+            'data_class' => ChangeUserPasswordCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return ChangeUserPasswordRequest::fromRememberPasswordToken(
+                return ChangeUserPasswordCommand::fromRememberPasswordToken(
                     $form->get('newPlainPassword')->getData(),
                     $this->token
                 );

@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordRequest;
+use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordCommand;
 use BenGorUser\UserBundle\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -62,13 +62,13 @@ class RequestRememberPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RequestRememberPasswordRequest::class,
+            'data_class' => RequestRememberPasswordCommand::class,
             'empty_data' => function (FormInterface $form) {
                 $email = null === $this->currentUser
                     ? $form->get('email')->getData()
                     : $this->currentUser->email()->email();
 
-                return new RequestRememberPasswordRequest($email);
+                return new RequestRememberPasswordCommand($email);
             },
         ]);
     }

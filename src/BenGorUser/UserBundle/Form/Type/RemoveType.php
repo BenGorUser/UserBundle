@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\Remove\RemoveUserRequest;
+use BenGorUser\User\Application\Service\Remove\RemoveUserCommand;
 use BenGorUser\UserBundle\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -52,9 +52,9 @@ class RemoveType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RemoveUserRequest::class,
+            'data_class' => RemoveUserCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return new RemoveUserRequest(
+                return new RemoveUserCommand(
                     $this->currentUser->id()->id()
                 );
             },
