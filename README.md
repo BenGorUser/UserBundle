@@ -61,5 +61,5 @@ This bundle is created by:
 [3]: http://symfony.com/doc/current/contributing/code/patches.html#check-list
 [4]: http://symfony.com/doc/current/contributing/code/patches.html#make-a-pull-request
 [5]: http://cs.sensiolabs.org/
-[6]: https://github.com/BenGor/User
+[6]: https://github.com/BenGorUser/User
 [7]: http://getcomposer.org
