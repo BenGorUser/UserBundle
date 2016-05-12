@@ -49,7 +49,7 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
                     ),
                     $this->defaultSpecification($user),
                 ]
-            ))->addTag('bengor.user.command_bus.handler.' . $user, [
+            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
                 'handles' => SignUpUserCommand::class,
             ])
         );

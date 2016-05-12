@@ -59,15 +59,15 @@ class BenGorUserExtension extends Extension
         foreach ($config['user_class'] as $key => $user) {
             $container->addCompilerPass(
                 new ConfigureMiddlewares(
-                    'bengor.user.command_bus.' . $key,
-                    'bengor.user.command_bus.middleware.' . $key
+                    'bengor.user.' . $key . '_command_bus',
+                    'bengor_user_' . $key . '_command_bus_middleware'
                 )
             );
 
             $container->addCompilerPass(
                 new RegisterHandlers(
                     'simple_bus.command_bus.command_handler_map',
-                    'bengor.user.command_bus.handler.' . $key,
+                    'bengor_user_' . $key . '_command_bus_handler',
                     'handles'
                 )
             );

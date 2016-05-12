@@ -33,12 +33,12 @@ class CommandBusPass implements CompilerPassInterface
 
         foreach ($config['user_class'] as $key => $user) {
             $container->setDefinition(
-                'bengor.user.command_bus.' . $key,
+                'bengor.user.' . $key . '_command_bus',
                 (new Definition(
                     MessageBusSupportingMiddleware::class
                 ))->addTag('message_bus', [
                     'type'           => 'command',
-                    'middleware_tag' => 'bengor.user.command_bus.middleware.' . $key,
+                    'middleware_tag' => 'bengor_user_' . $key . '_command_bus_middleware',
                 ])->setPublic(false)
             );
         }
