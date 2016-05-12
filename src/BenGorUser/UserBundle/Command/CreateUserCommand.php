@@ -12,9 +12,8 @@
 
 namespace BenGorUser\UserBundle\Command;
 
-use AppBundle\Entity\User;
 use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
-use SimpleBus\Message\Bus\MessageBus;
+use BenGorUser\UserBundle\Application\Service\UserCommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,20 +27,39 @@ use Symfony\Component\Console\Question\Question;
  */
 class CreateUserCommand extends Command
 {
-    private $commandBus;
     /**
-     * @var
+     * Fully qualified class name.
+     *
+     * @var string
+     */
+    private $fqcn;
+
+    /**
+     * The command bus.
+     *
+     * @var UserCommandBus
+     */
+    private $commandBus;
+
+    /**
+     * The type of user class.
+     *
+     * @var string
      */
     private $userClass;
 
     /**
      * Constructor.
+     *
+     * @param UserCommandBus $commandBus The command bus
+     * @param string         $userClass  The user class
+     * @param string         $fqcn       The fully qualified class name
      */
-    public function __construct(MessageBus $commandBus, $userClass)
+    public function __construct(UserCommandBus $commandBus, $userClass, $fqcn)
     {
+        $this->fqcn = $fqcn;
         $this->commandBus = $commandBus;
         $this->userClass = $userClass;
-        $this->fqcn = User::class;
 
         parent::__construct();
     }
@@ -91,8 +109,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        dump($this->commandBus);
-        die;
         $response = $this->commandBus->handle(
             SignUpUserCommand::fromEmail(
                 $input->getArgument('email'),

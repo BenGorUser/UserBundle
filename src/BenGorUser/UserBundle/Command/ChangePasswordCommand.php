@@ -13,7 +13,7 @@
 namespace BenGorUser\UserBundle\Command;
 
 use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
-use SimpleBus\Message\Bus\MessageBus;
+use BenGorUser\UserBundle\Application\Service\UserCommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,14 +27,27 @@ use Symfony\Component\Console\Question\Question;
  */
 class ChangePasswordCommand extends Command
 {
+    /**
+     * The command bus.
+     *
+     * @var UserCommandBus
+     */
     private $commandBus;
 
+    /**
+     * The type of user class.
+     *
+     * @var string
+     */
     private $userClass;
 
     /**
      * Constructor.
+     *
+     * @param UserCommandBus $commandBus The command bus
+     * @param string         $userClass  The user class
      */
-    public function __construct(MessageBus $commandBus, $userClass)
+    public function __construct(UserCommandBus $commandBus, $userClass)
     {
         $this->commandBus = $commandBus;
         $this->userClass = $userClass;

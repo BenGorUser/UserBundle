@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Security;
 
-use BenGorUser\User\Application\Service\LogIn\LogInUserRequest;
+use BenGorUser\User\Application\Service\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserEmail;
 use BenGorUser\User\Domain\Model\UserId;
@@ -108,7 +108,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         $request->getSession()->set(Security::LAST_USERNAME, $email);
         $password = $request->request->get('_password');
 
-        return new LogInUserRequest($email, $password);
+        return new LogInUserCommand($email, $password);
     }
 
     /**
