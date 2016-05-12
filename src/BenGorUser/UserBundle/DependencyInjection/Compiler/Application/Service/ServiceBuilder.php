@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -12,9 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use Ddd\Application\Service\TransactionalApplicationService;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Base service builder.

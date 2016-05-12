@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -91,7 +91,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        dump($this->commandBus);die;
+        dump($this->commandBus);
+        die;
         $response = $this->commandBus->handle(
             SignUpUserCommand::fromEmail(
                 $input->getArgument('email'),

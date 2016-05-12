@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -49,8 +49,8 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
                     ),
                     $this->defaultSpecification($user),
                 ]
-            ))->addTag('bengor.user.command_bus.handler.'. $user, [
-                'handles' => SignUpUserCommand::class
+            ))->addTag('bengor.user.command_bus.handler.' . $user, [
+                'handles' => SignUpUserCommand::class,
             ])
         );
     }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -60,14 +60,14 @@ class BenGorUserExtension extends Extension
             $container->addCompilerPass(
                 new ConfigureMiddlewares(
                     'bengor.user.command_bus.' . $key,
-                    'bengor.user.command_bus.middleware.'. $key
+                    'bengor.user.command_bus.middleware.' . $key
                 )
             );
 
             $container->addCompilerPass(
                 new RegisterHandlers(
                     'simple_bus.command_bus.command_handler_map',
-                    'bengor.user.command_bus.handler.'. $key,
+                    'bengor.user.command_bus.handler.' . $key,
                     'handles'
                 )
             );

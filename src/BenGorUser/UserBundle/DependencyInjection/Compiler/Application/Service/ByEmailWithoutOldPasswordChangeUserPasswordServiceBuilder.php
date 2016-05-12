@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -13,7 +13,6 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
 use BenGorUser\User\Application\Service\ChangePassword\ByEmailWithoutOldPasswordChangeUserPasswordSpecification;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
 use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordHandler;
 use Symfony\Component\DependencyInjection\Definition;
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -38,7 +38,7 @@ class CommandsServicesPass implements CompilerPassInterface
                     $container->getDefinition(
                         'bengor.user.command_bus.' . $key
                     ),
-                    $key
+                    $key,
                 ]);
 
             $container->findDefinition('bengor.user.command.change_' . $key . '_password_command')

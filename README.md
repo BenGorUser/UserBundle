@@ -2,11 +2,11 @@
 > Fully featured and test covered user Symfony bundle built on top of [BenGorUser][6] library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6/mini.png)](https://insight.sensiolabs.com/projects/5a2ac745-59f8-47b9-806a-6d1f4f9c96a6)
-[![Build Status](https://travis-ci.org/BenGor/UserBundle.svg?branch=master)](https://travis-ci.org/BenGor/UserBundle)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/BenGor/UserBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/BenGor/UserBundle/?branch=master)
-[![Total Downloads](https://poser.pugx.org/bengor/user-bundle/downloads)](https://packagist.org/packages/bengor/user-bundle)
-[![Latest Stable Version](https://poser.pugx.org/bengor/user-bundle/v/stable.svg)](https://packagist.org/packages/bengor/user-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/bengor/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor/user-bundle)
+[![Build Status](https://travis-ci.org/BenGorUser/UserBundle.svg?branch=master)](https://travis-ci.org/BenGorUser/UserBundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/BenGorUser/UserBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/BenGorUser/UserBundle/?branch=master)
+[![Total Downloads](https://poser.pugx.org/bengor-user/user-bundle/downloads)](https://packagist.org/packages/bengor-user/user-bundle)
+[![Latest Stable Version](https://poser.pugx.org/bengor-user/user-bundle/v/stable.svg)](https://packagist.org/packages/bengor-user/user-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/bengor-user/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor-user/user-bundle)
 
 ##Requirements
 PHP >= 5.5</br>
@@ -15,7 +15,7 @@ Symfony >= 2.8
 ##Installation
 The easiest way to install this component is using **[Composer][7]**
 ```bash
-$ composer require bengor/user-bundle
+$ composer require bengor-user/user-bundle
 ```
 ##Documentation
 
@@ -54,7 +54,7 @@ This bundle is created by:
 **@gorkalaucirica** - [gorka.lauzirika@gmail.com](mailto:gorka.lauzirika@gmail.com)
 
 ##Licensing Options
-[![License](https://poser.pugx.org/bengor/user-bundle/license.svg)](https://github.com/BenGor/UserBundle/blob/master/LICENSE)
+[![License](https://poser.pugx.org/bengor-user/user-bundle/license.svg)](https://github.com/BenGorUser/UserBundle/blob/master/LICENSE)
 
 [1]: http://www.phpspec.net/
 [2]: http://symfony.com/doc/current/contributing/code/index.html

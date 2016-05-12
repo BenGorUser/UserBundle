@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -93,7 +93,7 @@ class SignUpController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $user = $this->get('bengor.user.command_bus.'.$userClass)->handle($form->getData());
+                    $user = $this->get('bengor.user.command_bus.' . $userClass)->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this

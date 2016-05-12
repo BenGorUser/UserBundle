@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -41,7 +41,7 @@ class EnableController extends Controller
         }
 
         try {
-            $this->get('bengor.user.command_bus.'.$userClass)->handle(
+            $this->get('bengor.user.command_bus.' . $userClass)->handle(
                 new EnableUserCommand(
                     $confirmationToken
                 )

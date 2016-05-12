@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -13,8 +13,6 @@
 namespace BenGorUser\UserBundle\Command;
 
 use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
-use Ddd\Application\Service\TransactionalApplicationService;
 use SimpleBus\Message\Bus\MessageBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

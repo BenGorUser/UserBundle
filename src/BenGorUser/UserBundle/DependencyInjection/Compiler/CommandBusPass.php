@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the BenGorUserBundle bundle.
+ * This file is part of the BenGorUser package.
  *
  * (c) Beñat Espiña <benatespina@gmail.com>
  * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
@@ -13,8 +13,6 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
-use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
-use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -39,8 +37,8 @@ class CommandBusPass implements CompilerPassInterface
                 (new Definition(
                     MessageBusSupportingMiddleware::class
                 ))->addTag('message_bus', [
-                    'type' => 'command',
-                    'middleware_tag' => 'bengor.user.command_bus.middleware.'. $key
+                    'type'           => 'command',
+                    'middleware_tag' => 'bengor.user.command_bus.middleware.' . $key,
                 ])->setPublic(false)
             );
         }
