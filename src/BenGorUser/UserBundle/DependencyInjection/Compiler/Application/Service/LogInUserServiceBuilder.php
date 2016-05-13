@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\LogIn\LogInUserHandler;
+use BenGorUser\UserBundle\Application\Service\LogInUserHandler;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use Symfony\Component\DependencyInjection\Definition;
 

@@ -8,7 +8,7 @@
 
 BenGorUser\User\Domain\Model\User:
     type: mappedSuperclass
-    repositoryClass: BenGorUser\User\Infrastructure\Persistence\Doctrine\ORM\DoctrineORMUserRepository
+    repositoryClass: BenGorUser\DoctrineORMBridge\Infrastructure\Persistence\DoctrineORMUserRepository
     table: user
     id:
         id:

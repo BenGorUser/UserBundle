@@ -42,6 +42,7 @@ class BenGorUserExtension extends Extension
         $loader->load('forms.yml');
         $loader->load('mailing.yml');
         $loader->load('routing.yml');
+        $loader->load('handlers.yml');
 
         $container->setParameter('bengor_user.config', $config);
 
@@ -57,21 +58,6 @@ class BenGorUserExtension extends Extension
     private function loadCommands(ContainerBuilder $container, $config)
     {
         foreach ($config['user_class'] as $key => $user) {
-            $container->addCompilerPass(
-                new ConfigureMiddlewares(
-                    'bengor.user.' . $key . '_command_bus',
-                    'bengor_user_' . $key . '_command_bus_middleware'
-                )
-            );
-
-            $container->addCompilerPass(
-                new RegisterHandlers(
-                    'simple_bus.command_bus.command_handler_map',
-                    'bengor_user_' . $key . '_command_bus_handler',
-                    'handles'
-                )
-            );
-
             $container->setDefinition(
                 'bengor.user.command.create_' . $key . '_command',
                 (new Definition(CreateUserCommand::class))->addTag('console.command')

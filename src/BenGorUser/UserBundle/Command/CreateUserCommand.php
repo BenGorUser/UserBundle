@@ -55,7 +55,7 @@ class CreateUserCommand extends Command
      * @param string         $userClass  The user class
      * @param string         $fqcn       The fully qualified class name
      */
-    public function __construct(UserCommandBus $commandBus, $userClass, $fqcn)
+    public function __construct($commandBus, $userClass, $fqcn)
     {
         $this->fqcn = $fqcn;
         $this->commandBus = $commandBus;
@@ -110,7 +110,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $response = $this->commandBus->handle(
-            SignUpUserCommand::fromEmail(
+            new SignUpUserCommand(
                 $input->getArgument('email'),
                 $input->getArgument('password'),
                 $input->getArgument('roles')

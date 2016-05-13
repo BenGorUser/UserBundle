@@ -8,7 +8,7 @@
 
 BenGorUser\User\Domain\Model\UserGuest:
     type: mappedSuperclass
-    repositoryClass: BenGorUser\User\Infrastructure\Persistence\Doctrine\ORM\DoctrineORMUserGuestRepository
+    repositoryClass: BenGorUser\DoctrineORMBridge\Infrastructure\Persistence\DoctrineORMUserGuestRepository
     table: user_guest
     id:
         id:
@@ -16,10 +16,10 @@ BenGorUser\User\Domain\Model\UserGuest:
             type: user_guest_id
     embedded:
         email:
-            class: BenGorUser\User\Domain\Model\UserEmail
+            class: BenGor\User\Domain\Model\UserEmail
             columnPrefix: false
         invitationToken:
-            class: BenGorUser\User\Domain\Model\UserToken
+            class: BenGor\User\Domain\Model\UserToken
             columnPrefix: invitation_
     fields:
         createdOn:

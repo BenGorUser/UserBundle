@@ -47,7 +47,7 @@ class ChangePasswordCommand extends Command
      * @param UserCommandBus $commandBus The command bus
      * @param string         $userClass  The user class
      */
-    public function __construct(UserCommandBus $commandBus, $userClass)
+    public function __construct($commandBus, $userClass)
     {
         $this->commandBus = $commandBus;
         $this->userClass = $userClass;
