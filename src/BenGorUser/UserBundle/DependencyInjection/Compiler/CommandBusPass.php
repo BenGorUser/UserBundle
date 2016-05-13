@@ -13,8 +13,10 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\CompilerPassUtil;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterMessageRecorders;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -51,6 +53,12 @@ class CommandBusPass implements CompilerPassInterface
                 'simple_bus.command_bus.command_handler_map',
                 'bengor_user_' . $key . '_command_bus_handler',
                 'handles'
+            ))->process($container);
+
+
+            (new RegisterMessageRecorders(
+                    'simple_bus.event_bus.aggregates_recorded_messages',
+                    'event_recorder'
             ))->process($container);
         }
     }

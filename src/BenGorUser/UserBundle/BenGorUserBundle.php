@@ -19,6 +19,8 @@ use BenGorUser\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\RoutesPass;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\AddMiddlewareTags;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\CompilerPassUtil;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -47,6 +49,15 @@ class BenGorUserBundle extends Bundle
 
 
         $container->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
+
+//        CompilerPassUtil::prependBeforeOptimizationPass(
+//            $container,
+//            new AddMiddlewareTags(
+//                'simple_bus.event_bus.handles_recorded_messages_middleware',
+//                ['command'],
+//                200
+//            )
+//        );
 
         $container->loadFromExtension('doctrine', [
             'orm' => [
