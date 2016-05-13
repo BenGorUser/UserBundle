@@ -40,26 +40,11 @@ class BenGorUserBundle extends Bundle
         $container
             ->addCompilerPass(new DefaultRolesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new CommandBusPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE);
+            ->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new CommandBusPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE);
 
-
-        $container->addCompilerPass(
-            new ConfigureMiddlewares(
-                'bengor.user.' . 'user' . '_command_bus',
-                'bengor_user_' . 'user' . '_command_bus_middleware'
-            ), PassConfig::TYPE_OPTIMIZE
-        );
-
-        $container->addCompilerPass(
-            new RegisterHandlers(
-                'simple_bus.command_bus.command_handler_map',
-                'bengor_user_' . 'user' . '_command_bus_handler',
-                'handles'
-            ), PassConfig::TYPE_OPTIMIZE
-        );
 
         $container->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
 

@@ -13,6 +13,8 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
+use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -32,15 +34,45 @@ class CommandBusPass implements CompilerPassInterface
         $config = $container->getParameter('bengor_user.config');
 
         foreach ($config['user_class'] as $key => $user) {
+            $busId = 'bengor.user.' . $key . '_command_bus';
+            $middlewareTag = 'bengor_user_' . $key . '_command_bus_middleware';
+
             $container->setDefinition(
-                'bengor.user.' . $key . '_command_bus',
+                $busId,
                 (new Definition(
                     MessageBusSupportingMiddleware::class
                 ))->addTag('message_bus', [
                     'type'           => 'command',
-                    'middleware_tag' => 'bengor_user_' . $key . '_command_bus_middleware',
+                    'middleware_tag' => $middlewareTag,
                 ])->setPublic(false)
             );
+            (new ConfigureMiddlewares($busId, $middlewareTag))->process($container);
+            (new RegisterHandlers(
+                'simple_bus.command_bus.command_handler_map',
+                'bengor_user_' . $key . '_command_bus_handler',
+                'handles'
+            ))->process($container);
         }
     }
 }
+
+/*
+ * $config = $container->getParameter('bengor_user.config');
+
+        foreach ($config['user_class'] as $key => $user) {
+            $container->addCompilerPass(
+                new ConfigureMiddlewares(
+                    'bengor.user.' . $key . '_command_bus',
+                    'bengor_user_' . $key . '_command_bus_middleware'
+                ), PassConfig::TYPE_OPTIMIZE
+            );
+
+            $container->addCompilerPass(
+                new RegisterHandlers(
+                    'simple_bus.command_bus.command_handler_map',
+                    'bengor_user_' . $key . '_command_bus_handler',
+                    'handles'
+                ), PassConfig::TYPE_OPTIMIZE
+            );
+        }
+ */
