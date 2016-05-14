@@ -59,13 +59,13 @@ class ApplicationServicesPass implements CompilerPassInterface
                 $container, $user['persistence'], $user['use_cases']['sign_up']
             ))->build($key);
 
-//            (new ChangeUserPasswordServiceBuilder(
-//                $container, $user['persistence'], $user['use_cases']['change_password']
-//            ))->build($key);
-//
-//            (new RemoveUserServiceBuilder(
-//                $container, $user['persistence'], $user['use_cases']['remove']
-//            ))->build($key);
+            (new ChangeUserPasswordServiceBuilder(
+                $container, $user['persistence'], $user['use_cases']['change_password']
+            ))->build($key);
+
+            (new RemoveUserServiceBuilder(
+                $container, $user['persistence'], $user['use_cases']['remove']
+            ))->build($key);
         }
     }
 }

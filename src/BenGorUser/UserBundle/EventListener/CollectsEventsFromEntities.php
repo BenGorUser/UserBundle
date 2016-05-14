@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the BenGorUser package.
+ *
+ * (c) Beñat Espiña <benatespina@gmail.com>
+ * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BenGorUser\UserBundle\EventListener;
 
 use BenGorUser\User\Domain\Model\UserAggregateRoot;
@@ -10,15 +20,15 @@ use SimpleBus\Message\Recorder\ContainsRecordedMessages;
 
 class CollectsEventsFromEntities implements EventSubscriber, ContainsRecordedMessages
 {
-    private $collectedEvents = array();
+    private $collectedEvents = [];
 
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             Events::postPersist,
             Events::postUpdate,
             Events::postRemove,
-        );
+        ];
     }
 
     public function postPersist(LifecycleEventArgs $event)
@@ -43,7 +53,7 @@ class CollectsEventsFromEntities implements EventSubscriber, ContainsRecordedMes
 
     public function eraseMessages()
     {
-        $this->collectedEvents = array();
+        $this->collectedEvents = [];
     }
 
     private function collectEventsFromEntity(LifecycleEventArgs $event)

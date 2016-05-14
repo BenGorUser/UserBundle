@@ -21,8 +21,6 @@ use BenGorUser\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\RoutesPass;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\AddMiddlewareTags;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\CompilerPassUtil;
-use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
-use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -47,7 +45,6 @@ class BenGorUserBundle extends Bundle
             ->addCompilerPass(new CommandBusPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE);
 
-
         $container->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
 
 //        CompilerPassUtil::prependBeforeOptimizationPass(
@@ -70,6 +67,5 @@ class BenGorUserBundle extends Bundle
                 ],
             ],
         ]);
-
     }
 }

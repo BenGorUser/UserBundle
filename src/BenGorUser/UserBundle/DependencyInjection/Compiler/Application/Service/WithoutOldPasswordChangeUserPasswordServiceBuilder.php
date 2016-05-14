@@ -12,19 +12,19 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserHandler;
+use BenGorUser\User\Application\Service\ChangePassword\WithoutOldPasswordChangeUserPasswordCommand;
+use BenGorUser\User\Application\Service\ChangePassword\WithoutOldPasswordChangeUserPasswordHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Default sign up user service builder.
+ * Without old password change user password service builder.
  *
- * Needed to solve the requirement about default
- * sign up specification as a Symfony command.
+ * Needed to solve the requirement about by email
+ * change password specification as a Symfony command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
+class WithoutOldPasswordChangeUserPasswordServiceBuilder extends ChangeUserPasswordServiceBuilder
 {
     /**
      * {@inheritdoc}
@@ -34,9 +34,10 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             (new Definition(
-                SignUpUserHandler::class, $this->handlerArguments($user)
+                WithoutOldPasswordChangeUserPasswordHandler::class,
+                $this->handlerArguments($user)
             ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => SignUpUserCommand::class,
+                'handles' => WithoutOldPasswordChangeUserPasswordCommand::class,
             ])
         );
     }
@@ -46,7 +47,7 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
      */
     protected function sanitize($specificationName)
     {
-        return 'defaultSpecification';
+        return 'withoutOldPasswordSpecification';
     }
 
     /**
@@ -54,7 +55,7 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.sign_up_' . $user . '_default';
+        return 'bengor.user.application.service.change_' . $user . '_password_without_old_password';
     }
 
     /**
@@ -62,6 +63,6 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.sign_up_' . $user . '_default';
+        return 'bengor_user.change_' . $user . '_password_without_old_password';
     }
 }

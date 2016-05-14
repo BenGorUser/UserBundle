@@ -12,9 +12,10 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
-use BenGorUser\User\Application\Service\ChangePassword\ByRequestRememberPasswordChangeUserPasswordSpecification;
+use BenGorUser\User\Application\Service\ChangePassword\ByRequestRememberPasswordChangeUserPasswordCommand;
+use BenGorUser\User\Application\Service\ChangePassword\ByRequestRememberPasswordChangeUserPasswordHandler;
+use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
 use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordHandler;
-use BenGorUser\User\Application\Service\ChangePassword\DefaultChangeUserPasswordSpecification;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
@@ -30,24 +31,21 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
      */
     public function register($user)
     {
-        (new ByEmailWithoutOldPasswordChangeUserPasswordServiceBuilder(
-            $this->container, $this->persistence
-        ))->build($user);
+        $command = $this->{$this->specification}($user)['command'];
+        $handler = $this->{$this->specification}($user)['handler'];
 
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
-                ChangeUserPasswordHandler::class, [
-                    $this->container->getDefinition(
-                        'bengor.user.infrastructure.persistence.' . $user . '_repository'
-                    ),
-                    $this->container->getDefinition(
-                        'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
-                    ),
-                    $this->{$this->specification}($user),
+            (new Definition($command, $this->handlerArguments($user)))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => $handler,
                 ]
             )
         );
+
+        (new WithoutOldPasswordChangeUserPasswordServiceBuilder(
+            $this->container, $this->persistence
+        ))->build($user);
     }
 
     /**
@@ -84,6 +82,25 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
     }
 
     /**
+     * Gets the handler arguments to inject in the constructor.
+     *
+     * @param string $user The user name
+     *
+     * @return array
+     */
+    protected function handlerArguments($user)
+    {
+        return [
+            $this->container->getDefinition(
+                'bengor.user.infrastructure.persistence.' . $user . '_repository'
+            ),
+            $this->container->getDefinition(
+                'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
+            ),
+        ];
+    }
+
+    /**
      * Gets the "default" specification.
      *
      * @param string $user The user name
@@ -92,16 +109,10 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
      */
     private function defaultSpecification($user)
     {
-        return new Definition(
-            DefaultChangeUserPasswordSpecification::class, [
-                $this->container->getDefinition(
-                    'bengor.user.infrastructure.persistence.' . $user . '_repository'
-                ),
-                $this->container->getDefinition(
-                    'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
-                ),
-            ]
-        );
+        return [
+            'command' => ChangeUserPasswordCommand::class,
+            'handler' => ChangeUserPasswordHandler::class,
+        ];
     }
 
     /**
@@ -115,12 +126,9 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
     {
         (new RequestRememberPasswordServiceBuilder($this->container, $this->persistence))->build($user);
 
-        return new Definition(
-            ByRequestRememberPasswordChangeUserPasswordSpecification::class, [
-                $this->container->getDefinition(
-                    'bengor.user.infrastructure.persistence.' . $user . '_repository'
-                ),
-            ]
-        );
+        return [
+            'command' => ByRequestRememberPasswordChangeUserPasswordCommand::class,
+            'handler' => ByRequestRememberPasswordChangeUserPasswordHandler::class,
+        ];
     }
 }
