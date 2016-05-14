@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\Application\Service;
+namespace BenGorUser\UserBundle\Application;
 
 /**
  * User command bus class.

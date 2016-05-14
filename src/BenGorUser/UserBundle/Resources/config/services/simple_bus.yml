@@ -1,0 +1,39 @@
+# This file is part of the BenGorUser package.
+#
+# (c) Beñat Espiña <benatespina@gmail.com>
+# (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+services:
+#### Middlewares ####
+    bengor_user.simple_bus.delegates_to_message_handler_middleware:
+        class: SimpleBus\Message\Handler\DelegatesToMessageHandlerMiddleware
+        public: false
+        arguments:
+            - '@simple_bus.command_bus.command_handler_resolver'
+
+    bengor_user.simple_bus.finishes_command_before_handling_next_middleware:
+        class: SimpleBus\Message\Bus\Middleware\FinishesHandlingMessageBeforeHandlingNext
+        public: false
+
+    bengor_user.simple_bus.doctrine_transactional_middleware:
+        class: SimpleBus\DoctrineORMBridge\MessageBus\WrapsMessageHandlingInTransaction
+        arguments:
+            - '@doctrine'
+            - 'default'
+
+    bengor_user.simple_bus.handles_recorded_messages_middleware:
+        class: SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware
+        arguments:
+            - '@bengor_user.simple_bus.doctrine_orm_bridge.collects_events_from_entities'
+            - '@event_bus'
+
+#### Subscribers ####
+    bengor_user.simple_bus.doctrine_orm_bridge.collects_events_from_entities:
+        class: BenGorUser\UserBundle\EventListener\CollectsEventsFromEntities
+        public: false
+        tags:
+            - { name: event_recorder }
+            - { name: doctrine.event_subscriber } # doctrine.event_subscriber tag will be added by DoctrineOrmBridgeExtension

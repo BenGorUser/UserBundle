@@ -13,7 +13,7 @@
 namespace BenGorUser\UserBundle\Command;
 
 use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
-use BenGorUser\UserBundle\Application\Service\UserCommandBus;
+use BenGorUser\UserBundle\Application\UserCommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,7 +55,7 @@ class CreateUserCommand extends Command
      * @param string         $userClass  The user class
      * @param string         $fqcn       The fully qualified class name
      */
-    public function __construct($commandBus, $userClass, $fqcn)
+    public function __construct(UserCommandBus $commandBus, $userClass, $fqcn)
     {
         $this->fqcn = $fqcn;
         $this->commandBus = $commandBus;
