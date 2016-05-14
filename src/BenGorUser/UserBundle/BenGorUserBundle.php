@@ -19,8 +19,6 @@ use BenGorUser\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\RoutesPass;
-use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\AddMiddlewareTags;
-use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\CompilerPassUtil;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -43,29 +41,7 @@ class BenGorUserBundle extends Bundle
             ->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new CommandBusPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE);
-
-        $container->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
-
-//        CompilerPassUtil::prependBeforeOptimizationPass(
-//            $container,
-//            new AddMiddlewareTags(
-//                'simple_bus.event_bus.handles_recorded_messages_middleware',
-//                ['command'],
-//                200
-//            )
-//        );
-
-        $container->loadFromExtension('doctrine', [
-            'orm' => [
-                'mappings' => [
-                    'BenGorUserBundle' => [
-                        'type'      => 'yml',
-                        'is_bundle' => true,
-                        'prefix'    => 'BenGorUser\\User\\Domain\\Model',
-                    ],
-                ],
-            ],
-        ]);
+            ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
     }
 }
