@@ -12,6 +12,10 @@
 
 namespace BenGorUser\UserBundle\Routing;
 
+use BenGorUser\User\Application\Service\SignUp\ByInvitationSignUpUserCommand;
+use BenGorUser\User\Application\Service\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
+use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
+use BenGorUser\User\Application\Service\SignUp\WithConfirmationSignUpUserCommand;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -21,6 +25,13 @@ use Symfony\Component\Routing\Route;
  */
 class SignUpRoutesLoader extends RoutesLoader
 {
+    /**
+     * The fully qualified class name of command.
+     *
+     * @var string
+     */
+    private $command;
+
     /**
      * {@inheritdoc}
      */
@@ -40,6 +51,7 @@ class SignUpRoutesLoader extends RoutesLoader
                 '_controller' => 'BenGorUserBundle:SignUp:' . $config['type'],
                 'userClass'   => $user,
                 'firewall'    => $config['firewall'],
+                'command'     => $this->command,
             ],
             [],
             [],
@@ -56,15 +68,28 @@ class SignUpRoutesLoader extends RoutesLoader
     {
         if ('by_invitation' === $specificationName
             || 'byInvitation' === $specificationName
-            || 'by_invitation_with_confirmation' === $specificationName
-            || 'byInvitationWithConfirmation' === $specificationName
         ) {
+            $this->command = ByInvitationSignUpUserCommand::class;
+
             return 'byInvitation';
         }
-        if ('default' === $specificationName
-            || 'with_confirmation' === $specificationName
+        if ('by_invitation_with_confirmation' === $specificationName
+            || 'byInvitationWithConfirmation' === $specificationName
+        ) {
+            $this->command = ByInvitationWithConfirmationSignUpUserCommand::class;
+
+            return 'byInvitation';
+        }
+        if ('default' === $specificationName) {
+            $this->command = SignUpUserCommand::class;
+
+            return 'default';
+        }
+        if ('with_confirmation' === $specificationName
             || 'withConfirmation' === $specificationName
         ) {
+            $this->command = WithConfirmationSignUpUserCommand::class;
+
             return 'default';
         }
         throw new \RuntimeException('Given sign up type is not supported');

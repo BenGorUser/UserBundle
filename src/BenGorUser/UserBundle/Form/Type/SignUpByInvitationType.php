@@ -12,7 +12,6 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -31,18 +30,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SignUpByInvitationType extends AbstractType
 {
     /**
+     * The fully qualified class name of command.
+     *
+     * @var string
+     */
+    private $command;
+
+    /**
      * Array which contains the default role|roles.
      *
      * @var array
      */
-    protected $roles;
+    private $roles;
 
     /**
      * The invitation token.
      *
      * @var string
      */
-    protected $token;
+    private $token;
 
     /**
      * {@inheritdoc}
@@ -60,6 +66,7 @@ class SignUpByInvitationType extends AbstractType
                 'label' => 'sign_up.form_submit_button',
             ]);
 
+        $this->command = $options['command'];
         $this->roles = $options['roles'];
         $this->token = $options['invitation_token'];
     }
@@ -69,11 +76,11 @@ class SignUpByInvitationType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['roles', 'invitation_token']);
+        $resolver->setRequired(['command', 'roles', 'invitation_token']);
         $resolver->setDefaults([
-            'data_class' => SignUpUserCommand::class,
+            'data_class' => $this->command,
             'empty_data' => function (FormInterface $form) {
-                return SignUpUserCommand::fromInvitationToken(
+                return new $this->command(
                     $this->token,
                     $form->get('password')->getData(),
                     $this->roles

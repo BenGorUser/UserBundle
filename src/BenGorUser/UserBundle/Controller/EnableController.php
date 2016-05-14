@@ -41,7 +41,7 @@ class EnableController extends Controller
         }
 
         try {
-            $this->get('bengor.user.command_bus.' . $userClass)->handle(
+            $this->get('bengor_user.' . $userClass . '_command_bus')->handle(
                 new EnableUserCommand(
                     $confirmationToken
                 )

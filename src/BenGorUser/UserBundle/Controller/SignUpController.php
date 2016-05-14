@@ -35,19 +35,21 @@ class SignUpController extends Controller
      * @param Request $request   The request
      * @param string  $userClass Extra parameter that contains the user type
      * @param string  $firewall  Extra parameter that contains the firewall name
+     * @param string  $command   Extra parameter that contains the fully qualified class name of command
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function defaultAction(Request $request, $userClass, $firewall)
+    public function defaultAction(Request $request, $userClass, $firewall, $command)
     {
         $form = $this->createForm(SignUpType::class, null, [
-            'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
+            'roles'   => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
+            'command' => $command,
         ]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $user = $this->get('bengor_user_command_bus')->handle($form->getData());
+                    $user = $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
@@ -79,21 +81,23 @@ class SignUpController extends Controller
      * @param string  $invitationToken The invitation token
      * @param string  $userClass       Extra parameter that contains the user type
      * @param string  $firewall        Extra parameter that contains the firewall name
+     * @param string  $command         Extra parameter that contains the fully qualified class name of command
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall)
+    public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $command)
     {
         $userGuest = $this->getUserGuestByToken($userClass, $invitationToken);
         $form = $this->createForm(SignUpByInvitationType::class, null, [
             'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
             'invitation_token' => $invitationToken,
+            'command'          => $command,
         ]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $user = $this->get('bengor.user.command_bus.' . $userClass)->handle($form->getData());
+                    $user = $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this

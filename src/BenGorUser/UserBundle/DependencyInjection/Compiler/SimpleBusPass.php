@@ -61,7 +61,7 @@ class SimpleBusPass implements CompilerPassInterface
             ))->process($container);
 
             $container->setDefinition(
-                'bengor.user.' . $key . '_command_bus',
+                'bengor_user.' . $key . '_command_bus',
                 new Definition(
                     SimpleBusUserCommandBus::class, [
                         $container->getDefinition($busId),

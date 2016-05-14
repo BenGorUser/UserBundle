@@ -76,7 +76,7 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults([
             'data_class' => ChangeUserPasswordCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return ChangeUserPasswordCommand::from(
+                return new ChangeUserPasswordCommand(
                     $this->currentUser->id()->id(),
                     $form->get('newPlainPassword')->getData(),
                     $form->get('oldPlainPassword')->getData()

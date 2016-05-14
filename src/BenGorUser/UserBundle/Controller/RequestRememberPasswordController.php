@@ -40,7 +40,7 @@ class RequestRememberPasswordController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $this->get('bengor.user.command_bus.' . $userClass)->handle($form->getData());
+                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('request_remember_password.success_flash'));
 
                     if (null !== $successRoute) {
