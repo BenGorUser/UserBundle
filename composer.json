@@ -21,8 +21,10 @@
 
         "bengor-user/user": "0.6.x-dev",
         "bengor-user/doctrine-orm-bridge-bundle": "dev-master",
+        "bengor-user/swift-mailer-bridge-bundle": "dev-master",
         "bengor-user/symfony-routing-bridge-bundle": "dev-master",
         "bengor-user/symfony-security-bridge-bundle": "dev-master",
+        "bengor-user/twig-bridge-bundle": "dev-master",
 
         "symfony/form": "^2.8 || ^3.0",
         "symfony/framework-bundle": "^2.8 || ^3.0",
