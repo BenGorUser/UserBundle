@@ -109,7 +109,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $response = $this->commandBus->handle(
+        $this->commandBus->handle(
             new SignUpUserCommand(
                 $input->getArgument('email'),
                 $input->getArgument('password'),
@@ -118,7 +118,7 @@ EOT
         );
 
         $output->writeln(sprintf(
-            'Created %s: <comment>%s</comment>', $this->userClass, $response['email']
+            'Created %s: <comment>%s</comment>', $this->userClass, $input->getArgument('email')
         ));
     }
 

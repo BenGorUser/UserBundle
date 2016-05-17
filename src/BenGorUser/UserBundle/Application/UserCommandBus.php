@@ -21,11 +21,9 @@ namespace BenGorUser\UserBundle\Application;
 interface UserCommandBus
 {
     /**
-     * Executes the given command and optionally returns a value.
+     * Executes the given command.
      *
      * @param mixed $aCommand The command given
-     *
-     * @return mixed
      */
     public function handle($aCommand);
 }

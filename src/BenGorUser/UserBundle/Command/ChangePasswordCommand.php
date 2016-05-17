@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Command;
 
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
+use BenGorUser\User\Application\Service\ChangePassword\WithoutOldPasswordChangeUserPasswordCommand;
 use BenGorUser\UserBundle\Application\UserCommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -96,7 +96,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->commandBus->handle(
-            ChangeUserPasswordCommand::fromEmail(
+            new WithoutOldPasswordChangeUserPasswordCommand(
                 $input->getArgument('email'),
                 $input->getArgument('password')
             )
