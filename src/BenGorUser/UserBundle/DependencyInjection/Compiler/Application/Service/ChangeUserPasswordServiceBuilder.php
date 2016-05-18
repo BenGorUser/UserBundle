@@ -36,9 +36,9 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
 
         $this->container->setDefinition(
             $this->definitionName($user),
-            (new Definition($command, $this->handlerArguments($user)))->addTag(
+            (new Definition($handler, $this->handlerArguments($user)))->addTag(
                 'bengor_user_' . $user . '_command_bus_handler', [
-                    'handles' => $handler,
+                    'handles' => $command,
                 ]
             )
         );

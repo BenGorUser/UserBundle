@@ -41,8 +41,8 @@ class SignUpUserServiceBuilder extends ServiceBuilder
 
         $this->container->setDefinition(
             $this->definitionName($user),
-            (new Definition($command, $handlerArguments))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => $handler,
+            (new Definition($handler, $handlerArguments))->addTag('bengor_user_' . $user . '_command_bus_handler', [
+                'handles' => $command,
             ])
         );
 
