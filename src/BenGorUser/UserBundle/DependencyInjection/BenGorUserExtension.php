@@ -96,5 +96,10 @@ class BenGorUserExtension extends Extension
         )->addTag(
             'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-100']
         );
+        $container->getDefinition(
+            'bengor_user.simple_bus.event_bus.handles_recorded_messages_middleware'
+        )->addTag(
+            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
+        );
     }
 }

@@ -30,6 +30,13 @@ services:
             - '@bengor_user.simple_bus.doctrine_orm_bridge.collects_events_from_entities'
             - '@event_bus'
 
+    bengor_user.simple_bus.event_bus.handles_recorded_messages_middleware:
+        class: SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware
+        public: false
+        arguments:
+            - '@simple_bus.event_bus.aggregates_recorded_messages'
+            - '@simple_bus.event_bus'
+
 #### Event recorders ####
     bengor_user.simple_bus.doctrine_orm_bridge.collects_events_from_entities:
         class: BenGorUser\UserBundle\EventListener\CollectsEventsFromEntities
@@ -37,11 +44,3 @@ services:
         tags:
             - { name: event_recorder }
             - { name: doctrine.event_subscriber } # tag will be added by DoctrineOrmBridgeExtension
-
-#### Recorded messages handler ####
-    bengor_user.simple_bus.event_bus.handles_recorded_mesages_middleware:
-        class: SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware
-        public: false
-        arguments:
-            - '@simple_bus.event_bus.aggregates_recorded_messages'
-            - '@simple_bus.event_bus'
