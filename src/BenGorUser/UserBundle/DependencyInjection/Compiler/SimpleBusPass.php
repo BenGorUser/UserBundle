@@ -36,6 +36,9 @@ class SimpleBusPass implements CompilerPassInterface
     {
         $config = $container->getParameter('bengor_user.config');
 
+        $recordedMessagesHandler = $container->findDefinition(
+            'bengor_user.simple_bus.event_bus.handles_recorded_mesages_middleware'
+        );
         foreach ($config['user_class'] as $key => $user) {
             $busId = 'bengor.user.simple_bus_' . $key . '_command_bus';
             $middlewareTag = 'bengor_user_' . $key . '_command_bus_middleware';
@@ -49,16 +52,24 @@ class SimpleBusPass implements CompilerPassInterface
                     'middleware_tag' => $middlewareTag,
                 ])->setPublic(false)
             );
+
             (new ConfigureMiddlewares($busId, $middlewareTag))->process($container);
+
             (new RegisterHandlers(
                 'simple_bus.command_bus.command_handler_map',
                 'bengor_user_' . $key . '_command_bus_handler',
                 'handles'
             ))->process($container);
+
             (new RegisterMessageRecorders(
                 'simple_bus.event_bus.aggregates_recorded_messages',
                 'event_recorder'
             ))->process($container);
+
+            $recordedMessagesHandler->addTag(
+                'bengor_user_' . $key . '_command_bus_middleware',
+                ['priority' => 200]
+            );
 
             $container->setDefinition(
                 'bengor_user.' . $key . '_command_bus',

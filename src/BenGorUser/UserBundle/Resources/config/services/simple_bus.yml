@@ -37,3 +37,11 @@ services:
         tags:
             - { name: event_recorder }
             - { name: doctrine.event_subscriber } # tag will be added by DoctrineOrmBridgeExtension
+
+#### Recorded messages handler ####
+    bengor_user.simple_bus.event_bus.handles_recorded_mesages_middleware:
+        class: SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware
+        public: false
+        arguments:
+            - '@simple_bus.event_bus.aggregates_recorded_messages'
+            - '@simple_bus.event_bus'
