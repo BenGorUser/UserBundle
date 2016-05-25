@@ -38,9 +38,6 @@ class LogInUserServiceBuilder extends ServiceBuilder
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
                     ),
-                    $this->container->getDefinition(
-                        'bengor.user.application.data_transformer.user_no_transformation'
-                    ),
                 ]
             )
         );

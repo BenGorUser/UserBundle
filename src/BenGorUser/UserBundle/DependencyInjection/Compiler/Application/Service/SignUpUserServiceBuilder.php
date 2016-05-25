@@ -117,9 +117,6 @@ class SignUpUserServiceBuilder extends ServiceBuilder
             $this->container->getDefinition(
                 'bengor.user.infrastructure.domain.model.' . $user . '_factory'
             ),
-            $this->container->getDefinition(
-                'bengor.user.application.data_transformer.user_no_transformation'
-            ),
         ];
     }
 

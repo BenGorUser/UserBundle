@@ -38,7 +38,6 @@ class BenGorUserBundle extends Bundle
         $container
             ->addCompilerPass(new DefaultRolesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new SimpleBusPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE)
