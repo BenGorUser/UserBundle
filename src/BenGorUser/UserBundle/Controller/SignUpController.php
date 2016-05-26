@@ -14,12 +14,18 @@ namespace BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Domain\Model\Exception\UserAlreadyExistException;
 use BenGorUser\User\Domain\Model\Exception\UserGuestDoesNotExistException;
+use BenGorUser\User\Domain\Model\UserEmail;
 use BenGorUser\User\Domain\Model\UserGuest;
+use BenGorUser\User\Domain\Model\UserId;
+use BenGorUser\User\Domain\Model\UserPassword;
+use BenGorUser\User\Domain\Model\UserRole;
 use BenGorUser\User\Domain\Model\UserToken;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;
+use BenGorUser\UserBundle\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Sign up user controller.
@@ -41,21 +47,24 @@ class SignUpController extends Controller
      */
     public function defaultAction(Request $request, $userClass, $firewall, $command)
     {
-        $form = $this->createForm(SignUpType::class, null, [
-            'roles'   => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
-            'command' => $command,
-        ]);
+        $roles = $this->getParameter('bengor_user.' . $userClass . '_default_roles');
+        $form = $this->createForm(SignUpType::class, null, ['roles' => $roles, 'command' => $command]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+
                 try {
-                    $user = $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
                         ->get('security.authentication.guard_handler')
                         ->authenticateUserAndHandleSuccess(
-                            $user,
+                            new User(
+                                $form->get('email')->getData(),
+                                $form->get('password')->getData(),
+                                $roles
+                            ),
                             $request,
                             $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
                             $firewall
@@ -63,6 +72,7 @@ class SignUpController extends Controller
                 } catch (UserAlreadyExistException $exception) {
                     $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_user_already_exist'));
                 } catch (\Exception $exception) {
+                    $this->addFlash('error', $exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_generic'));
                 }
             }
@@ -146,5 +156,13 @@ class SignUpController extends Controller
         }
 
         return $userGuest;
+    }
+
+    private function authenticateUser(User $user)
+    {
+        $providerKey = 'main'; // your firewall name
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+
+        $this->container->get('security.token_storage')->setToken($token);
     }
 }

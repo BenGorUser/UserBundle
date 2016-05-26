@@ -42,7 +42,7 @@ class LogInUserServiceBuilder extends ServiceBuilder
             )
         );
 
-        $this->registerFormLoginAuthenticator($user);
+//        $this->registerFormLoginAuthenticator($user);
     }
 
     /**
@@ -78,7 +78,7 @@ class LogInUserServiceBuilder extends ServiceBuilder
             new Definition(
                 FormLoginAuthenticator::class, [
                     $this->container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator'),
-                    $this->container->getDefinition('bengor.user.application.service.log_in_' . $user),
+                    $this->container->getDefinition('bengor_user.' . $user . '_command_bus'),
                     [
                         'login'                     => $routes['login']['name'],
                         'login_check'               => $routes['login_check']['name'],

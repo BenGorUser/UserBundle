@@ -19,6 +19,7 @@ use BenGorUser\User\Domain\Model\UserId;
 use BenGorUser\User\Domain\Model\UserPassword;
 use BenGorUser\User\Domain\Model\UserRole;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
+use BenGorUser\UserBundle\Application\UserCommandBus;
 use BenGorUser\UserBundle\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,13 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 {
     /**
+     * The command bus.
+     *
+     * @var UserCommandBus
+     */
+    private $commandBus;
+
+    /**
      * The login_check route name.
      *
      * @var string
@@ -52,13 +60,6 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      * @var string
      */
     private $loginRoute;
-
-    /**
-     * The The authenticator service.
-     *
-     * @var AuthenticatorService
-     */
-    private $service;
 
     /**
      * The success redirection route name.
@@ -77,14 +78,14 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Constructor.
      *
-     * @param UserUrlGenerator     $aUserUrlGenerator The user URL generator
-     * @param AuthenticatorService $aService          The authenticator service
-     * @param array                $routes            The routes related with security (login, login_check and logout)
+     * @param UserUrlGenerator $aUserUrlGenerator The user URL generator
+     * @param UserCommandBus   $aCommandBus       The command bus
+     * @param array            $routes            The routes related with security (login, login_check and logout)
      */
-    public function __construct(UserUrlGenerator $aUserUrlGenerator, AuthenticatorService $aService, array $routes)
+    public function __construct(UserUrlGenerator $aUserUrlGenerator, UserCommandBus $aCommandBus, array $routes)
     {
         $this->urlGenerator = $aUserUrlGenerator;
-        $this->service = $aService;
+        $this->commandBus = $aCommandBus;
 
         if (false === isset($routes['login'], $routes['login_check'], $routes['success_redirection_route'])) {
             throw new \InvalidArgumentException(
@@ -114,28 +115,34 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * {@inheritdoc}
      *
-     * User instantiation inside catch is needed to continue the
-     * correct Guard flow. Then, the process will break in
-     * "checkCredentials" method throwing the correct error message.
+     * User instantiation is needed to continue the correct
+     * Guard flow. Then, the process will break in "checkCredentials"
+     * method throwing the correct error message.
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         try {
-            $response = $this->service->execute($credentials);
-        } catch (\Exception $exception) {
-            if ($exception instanceof UserPasswordInvalidException) {
-                return new User(
-                    new UserId(),
-                    new UserEmail('bengor@user.com'),
-                    UserPassword::fromEncoded('0', 'the-salt'),
-                    [new UserRole('ROLE_USER')]
-                );
-            }
+            $this->commandBus->handle($credentials);
 
+            $email = $credentials->email();
+            $password = $credentials->password();
+        } catch (UserPasswordInvalidException $exception) {
+            dump($exception->getMessage());
+            $email = 'bengor@user.com';
+            $password = '0';
+        } catch (\Exception $exception) {
+            dump($exception->getMessage());
             return;
         }
 
-        return $response;
+        dump('dddd');
+
+        return new User(
+            new UserId(),
+            new UserEmail($email),
+            UserPassword::fromEncoded($password, 'the-salt'),
+            [new UserRole('ROLE_USER')]
+        );
     }
 
     /**
@@ -165,7 +172,6 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
-                'user_id'    => $token->getUser()->id()->id(),
                 'user_email' => $token->getUser()->email()->email(),
             ]);
         }

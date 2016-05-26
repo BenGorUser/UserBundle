@@ -13,6 +13,8 @@
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use BenGorUser\UserBundle\CommandBus\SimpleBusUserCommandBus;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
+use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
@@ -71,6 +73,46 @@ class SimpleBusPass implements CompilerPassInterface
                     ]
                 )
             );
+
+            $this->registerFormLoginAuthenticator(
+                $container,
+                (new SecurityRoutesLoaderBuilder(
+                    $container,
+                    [$key => $config['user_class'][$key]['routes']['security']]
+                ))->configuration(),
+                $key
+            );
         }
+    }
+
+    /**
+     * Registers the form login authenticator.
+     *
+     * This declaration should be in SecurityServicesCompilerPass file
+     * but it requires the "bengor.user.application.service.log_in_user".
+     *
+     * @param string $user The user name
+     */
+    private function registerFormLoginAuthenticator(ContainerBuilder $container, $routes, $user)
+    {
+        $container->setDefinition(
+            'bengor.user_bundle.security.form_login_' . $user . '_authenticator',
+            new Definition(
+                FormLoginAuthenticator::class, [
+                    $container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator'),
+                    $container->getDefinition('bengor_user.' . $user . '_command_bus'),
+                    [
+                        'login'                     => $routes[$user]['login']['name'],
+                        'login_check'               => $routes[$user]['login_check']['name'],
+                        'success_redirection_route' => $routes[$user]['success_redirection_route'],
+                    ],
+                ]
+            )
+        )->setPublic(false);
+
+        $container->setAlias(
+            'bengor_user.form_login_' . $user . '_authenticator',
+            'bengor.user_bundle.security.form_login_' . $user . '_authenticator'
+        );
     }
 }

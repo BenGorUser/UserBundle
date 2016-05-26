@@ -12,7 +12,6 @@
 
 namespace BenGorUser\UserBundle\Model;
 
-use BenGorUser\User\Domain\Model\User as BenGorUser;
 use BenGorUser\User\Domain\Model\UserRole;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -25,46 +24,81 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class User extends BenGorUser implements UserInterface
+class User implements UserInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    private $username;
+    private $password;
+    private $roles;
+
+    public function __construct($username, $password, array $roles)
+    {
+        $this->username = $username;
+        $this->password = $password;
+        $this->roles = $roles;
+    }
+
     public function getRoles()
     {
-        return array_map(function (UserRole $role) {
-            return $role->role();
-        }, $this->roles());
+        return $this->roles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPassword()
     {
-        return $this->password()->encodedPassword();
+        return $this->password;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt()
     {
-        return $this->password()->salt();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsername()
     {
-        return $this->email()->email();
+        return $this->username;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function eraseCredentials()
     {
     }
+
+
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function getRoles()
+//    {
+//        return array_map(function (UserRole $role) {
+//            return $role->role();
+//        }, $this->roles());
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function getPassword()
+//    {
+//        return $this->password()->encodedPassword();
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function getSalt()
+//    {
+//        return $this->password()->salt();
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function getUsername()
+//    {
+//        return $this->email()->email();
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function eraseCredentials()
+//    {
+//    }
 }
