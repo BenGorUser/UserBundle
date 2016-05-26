@@ -1,5 +1,5 @@
 {
-    "name": "bengor/user-bundle",
+    "name": "bengor-user/user-bundle",
     "description": "Symfony bundle on top of BenGor's user library",
     "keywords": ["user", "bundle", "ddd"],
     "license": "MIT",
