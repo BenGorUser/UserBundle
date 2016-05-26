@@ -134,7 +134,7 @@ class BenGorUserBundleSpec extends ObjectBehavior
         $container->loadFromExtension('framework', [
             'translator' => [
                 'paths' => [
-                    '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Translations',
+                    '%kernel.root_dir%/../vendor/bengor-user/user/src/BenGor/User/Infrastructure/Ui/Translations',
                 ],
             ],
         ])->shouldBeCalled()->willReturn($container);
@@ -142,7 +142,7 @@ class BenGorUserBundleSpec extends ObjectBehavior
         $container->hasExtension('twig')->shouldBeCalled()->willReturn(true);
         $container->loadFromExtension('twig', [
             'paths' => [
-                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
+                '%kernel.root_dir%/../vendor/bengor-user/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
             ],
         ])->shouldBeCalled()->willReturn($container);
 
