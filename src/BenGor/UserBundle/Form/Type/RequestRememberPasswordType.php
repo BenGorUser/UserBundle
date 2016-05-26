@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Request remember password user form type.
@@ -43,8 +44,11 @@ class RequestRememberPasswordType extends AbstractType
      */
     public function __construct(TokenStorageInterface $aTokenStorage)
     {
-        if ($aTokenStorage->getToken() instanceof TokenInterface) {
-            $this->currentUser = $aTokenStorage->getToken()->getUser();
+        $token = $aTokenStorage->getToken();
+        if ($token instanceof TokenInterface) {
+            $this->currentUser = $token->getUser() instanceof UserInterface
+                ? $token->getUser()
+                : null;
         }
     }
 
