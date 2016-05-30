@@ -10,15 +10,20 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\Security;
+namespace BenGorUser\UserBundle\CommandBus;
 
 /**
- * Authenticator service that it is used
- * as a bridge between BenGorUser library's use cases
- * and this bundle's authenticator strategies.
+ * User command bus class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
+ * @author Gorka Laucirica <gorka.lauzirika@gmail.com>
  */
-interface AuthenticatorService
+interface UserCommandBus
 {
+    /**
+     * Executes the given command.
+     *
+     * @param mixed $aCommand The command given
+     */
+    public function handle($aCommand);
 }

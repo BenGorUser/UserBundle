@@ -14,13 +14,8 @@ namespace BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Application\Service\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
-use BenGorUser\User\Domain\Model\UserEmail;
-use BenGorUser\User\Domain\Model\UserId;
-use BenGorUser\User\Domain\Model\UserPassword;
-use BenGorUser\User\Domain\Model\UserRole;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
-use BenGorUser\UserBundle\Application\UserCommandBus;
-use BenGorUser\UserBundle\Model\User;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -115,7 +110,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * {@inheritdoc}
      *
-     * User instantiation is needed to continue the correct
+     * User DTO instantiation is needed to continue the correct
      * Guard flow. Then, the process will break in "checkCredentials"
      * method throwing the correct error message.
      */
@@ -124,9 +119,9 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         try {
             $this->commandBus->handle($credentials);
         } catch (UserPasswordInvalidException $exception) {
-            return null;
+            return new User('bengor@user.com', '0', ['ROLE_USER']);
         } catch (\Exception $exception) {
-            return null;
+            return;
         }
 
         return $userProvider->loadUserByUsername($credentials->email());
@@ -137,7 +132,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return null !== $user;
+        return '0' !== $user->getPassword();
     }
 
     /**
@@ -159,7 +154,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
-                'user_email' => $token->getUser()->email()->email(),
+                'user_email' => $token->getUser()->getUsername(),
             ]);
         }
 

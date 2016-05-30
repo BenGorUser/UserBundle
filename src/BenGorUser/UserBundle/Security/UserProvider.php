@@ -1,56 +1,84 @@
 <?php
 
+/*
+ * This file is part of the BenGorUser package.
+ *
+ * (c) Beñat Espiña <benatespina@gmail.com>
+ * (c) Gorka Laucirica <gorka.lauzirika@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
-use BenGorUser\User\Domain\Model\UserEmail;
-use BenGorUser\User\Domain\Model\UserRepository;
-use BenGorUser\UserBundle\Application\UserCommandBus;
-use BenGorUser\UserBundle\Model\User;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
+/**
+ * Custom user provider to obtain the domain user DTO
+ * and converts to in a user DTO that implements UserInterface.
+ *
+ * @author Beñat Espiña <benatespina@gmail.com>
+ * @author Gorka Laucirica <gorka.lauzirika@gmail.com>
+ */
 class UserProvider implements UserProviderInterface
 {
-    protected $repository;
+    /**
+     * Transforms given DTO to one
+     * that implements UserInterface.
+     *
+     * @var UserInterfaceDataTransformer
+     */
+    private $dataTransformer;
 
-    public function __construct(UserRepository $repository)
-    {
-        $this->repository = $repository;
+    /**
+     * The user of email query handler.
+     *
+     * @var UserOfEmailQueryHandler
+     */
+    private $userOfEmailQueryHandler;
+
+    public function __construct(
+        UserOfEmailQueryHandler $aUserOfEmailQueryHandler,
+        UserInterfaceDataTransformer $aDataTransformer
+    ) {
+        $this->dataTransformer = $aDataTransformer;
+        $this->userOfEmailQueryHandler = $aUserOfEmailQueryHandler;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function loadUserByUsername($username)
     {
         try {
-            $user = $this->repository->userOfEmail(
-                new UserEmail($username)
+            $user = $this->userOfEmailQueryHandler->match(
+                new UserOfEmailQueryCommand($username)
             );
-            // Transform user to a DTO to disallow changing user outside domain
-            // $user = UserToDTOTransformer->transform($user)
 
-            return $user;
-        } catch(UserEmailInvalidException $e) {
+            $this->dataTransformer->write($user);
+
+            return $this->dataTransformer->read();
+        } catch (UserEmailInvalidException $e) {
             return null;
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(
-                sprintf('Instances of "%s" are not supported.', get_class($user))
-            );
-        }
-
         return $this->loadUserByUsername($user->getUsername());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsClass($class)
     {
-        return $class === User::class;
+        return true;
     }
 }
