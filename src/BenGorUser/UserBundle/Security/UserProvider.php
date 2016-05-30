@@ -2,6 +2,9 @@
 
 namespace BenGorUser\UserBundle\Security;
 
+use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
+use BenGorUser\User\Domain\Model\UserEmail;
+use BenGorUser\User\Domain\Model\UserRepository;
 use BenGorUser\UserBundle\Application\UserCommandBus;
 use BenGorUser\UserBundle\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,54 +16,26 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class UserProvider implements UserProviderInterface
 {
-    /**
-     * The user command bus.
-     *
-     * @var UserCommandBus
-     */
-    private $userCommandBus;
-    /**
-     * @var RequestStack
-     */
-    private $request;
+    protected $repository;
 
-//    /**
-//     * Constructor.
-//     *
-//     * @param UserCommandBus $aUserCommandBus The user command bus
-//     */
-//    public function __construct(UserCommandBus $aUserCommandBus)
-//    {
-//        $this->userCommandBus = $aUserCommandBus;
-//    }
-
-    public function __construct(RequestStack $request)
+    public function __construct(UserRepository $repository)
     {
-        $this->request = $request;
+        $this->repository = $repository;
     }
 
     public function loadUserByUsername($username)
     {
-        dump($this->request->getCurrentRequest());
-        dump($this->request->getMasterRequest());
-        dump($this->request->getParentRequest());
-//        // make a call to your webservice here
-//        $userData = ...
-//        // pretend it returns an array on success, false if there is no user
-//
-//        if ($userData) {
-//            $password = '...';
-//
-//            // ...
-//
-//            return new User($username, $password, $salt, $roles);
-//        }
-//
-//        throw new UsernameNotFoundException(
-//            sprintf('Username "%s" does not exist.', $username)
-//        );
+        try {
+            $user = $this->repository->userOfEmail(
+                new UserEmail($username)
+            );
+            // Transform user to a DTO to disallow changing user outside domain
+            // $user = UserToDTOTransformer->transform($user)
 
-        return new User($username, '12', ['ROLE_USER']);
+            return $user;
+        } catch(UserEmailInvalidException $e) {
+            return null;
+        }
     }
 
     public function refreshUser(UserInterface $user)

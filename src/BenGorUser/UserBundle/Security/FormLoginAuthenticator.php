@@ -123,26 +123,13 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         try {
             $this->commandBus->handle($credentials);
-
-            $email = $credentials->email();
-            $password = $credentials->password();
         } catch (UserPasswordInvalidException $exception) {
-            dump($exception->getMessage());
-            $email = 'bengor@user.com';
-            $password = '0';
+            return null;
         } catch (\Exception $exception) {
-            dump($exception->getMessage());
-            return;
+            return null;
         }
 
-        dump('dddd');
-
-        return new User(
-            new UserId(),
-            new UserEmail($email),
-            UserPassword::fromEncoded($password, 'the-salt'),
-            [new UserRole('ROLE_USER')]
-        );
+        return $userProvider->loadUserByUsername($credentials->email());
     }
 
     /**
@@ -150,7 +137,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return '0' !== $user->getPassword();
+        return null !== $user;
     }
 
     /**
