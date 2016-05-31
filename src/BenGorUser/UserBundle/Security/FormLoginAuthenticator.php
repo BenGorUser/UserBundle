@@ -121,6 +121,9 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         } catch (UserPasswordInvalidException $exception) {
             return new User('bengor@user.com', '0', ['ROLE_USER']);
         } catch (\Exception $exception) {
+            dump($exception->getMessage());
+            die;
+
             return;
         }
 

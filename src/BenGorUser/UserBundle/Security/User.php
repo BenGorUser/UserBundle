@@ -112,10 +112,21 @@ class User implements UserInterface
     }
 
     /**
+     * Magic methods to added properties dynamically inside class.
+     *
+     * @param string $aName  The property name
+     * @param string $aValue The property value
+     */
+    public function __set($aName, $aValue)
+    {
+        $this->{$aName} = $aValue;
+    }
+
+    /**
      * Magic method that represents this DTO in string format.
      */
     public function __toString()
     {
-        return (string)$this->getUsername();
+        return (string) $this->getUsername();
     }
 }

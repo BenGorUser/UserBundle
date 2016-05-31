@@ -12,9 +12,12 @@
 
 namespace BenGorUser\UserBundle\Security;
 
-use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use BenGorUser\User\Application\DataTransformer\UserDataTransformer;
+use BenGorUser\User\Application\Query\UserOfEmailHandler;
+use BenGorUser\User\Application\Query\UserOfEmailQuery;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Custom user provider to obtain the domain user DTO
@@ -29,40 +32,49 @@ class UserProvider implements UserProviderInterface
      * Transforms given DTO to one
      * that implements UserInterface.
      *
-     * @var UserInterfaceDataTransformer
+     * @var UserDataTransformer
      */
     private $dataTransformer;
 
     /**
      * The user of email query handler.
      *
-     * @var UserOfEmailQueryHandler
+     * @var UserOfEmailHandler
      */
-    private $userOfEmailQueryHandler;
+    private $userOfEmailHandler;
 
-    public function __construct(
-        UserOfEmailQueryHandler $aUserOfEmailQueryHandler,
-        UserInterfaceDataTransformer $aDataTransformer
-    ) {
+    /**
+     * Constructor.
+     *
+     * @param UserOfEmailHandler  $aUserOfEmailHandler The user of email query handler
+     * @param UserDataTransformer $aDataTransformer    The user data transformer
+     */
+    public function __construct(UserOfEmailHandler $aUserOfEmailHandler, UserDataTransformer $aDataTransformer)
+    {
         $this->dataTransformer = $aDataTransformer;
-        $this->userOfEmailQueryHandler = $aUserOfEmailQueryHandler;
+        $this->userOfEmailHandler = $aUserOfEmailHandler;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Catches any kind of exception that comes
+     * from domain or a service layer, and it throws
+     * for Symfony's UserInterface, a suitable
+     * exception like "UsernameNotFoundException".
      */
     public function loadUserByUsername($username)
     {
         try {
-            $user = $this->userOfEmailQueryHandler->match(
-                new UserOfEmailQueryCommand($username)
+            $user = $this->userOfEmailHandler->__invoke(
+                new UserOfEmailQuery($username)
             );
 
             $this->dataTransformer->write($user);
 
             return $this->dataTransformer->read();
-        } catch (UserEmailInvalidException $e) {
-            return null;
+        } catch (\Exception $exception) {
+            throw new UsernameNotFoundException();
         }
     }
 
