@@ -15,6 +15,7 @@ namespace BenGorUser\UserBundle\Security;
 use BenGorUser\User\Application\DataTransformer\UserDataTransformer;
 use BenGorUser\User\Application\Query\UserOfEmailHandler;
 use BenGorUser\User\Application\Query\UserOfEmailQuery;
+use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -57,11 +58,6 @@ class UserProvider implements UserProviderInterface
 
     /**
      * {@inheritdoc}
-     *
-     * Catches any kind of exception that comes
-     * from domain or a service layer, and it throws
-     * for Symfony's UserInterface, a suitable
-     * exception like "UsernameNotFoundException".
      */
     public function loadUserByUsername($username)
     {
@@ -73,7 +69,10 @@ class UserProvider implements UserProviderInterface
             $this->dataTransformer->write($user);
 
             return $this->dataTransformer->read();
-        } catch (\Exception $exception) {
+
+            // Catches any kind of exception that comes from domain or a service layer, and it throws
+            // for Symfony's UserInterface, a suitable exception like "UsernameNotFoundException".
+        } catch (UserDoesNotExistException $exception) {
             throw new UsernameNotFoundException();
         }
     }

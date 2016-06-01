@@ -12,6 +12,7 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
 
+use BenGorUser\User\Application\Service\Remove\RemoveUserCommand;
 use BenGorUser\User\Application\Service\Remove\RemoveUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -29,13 +30,15 @@ class RemoveUserServiceBuilder extends ServiceBuilder
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
+            (new Definition(
                 RemoveUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
                 ]
-            )
+            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
+                'handles' => RemoveUserCommand::class,
+            ])
         );
     }
 

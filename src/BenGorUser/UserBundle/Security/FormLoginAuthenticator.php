@@ -109,21 +109,16 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     /**
      * {@inheritdoc}
-     *
-     * User DTO instantiation is needed to continue the correct
-     * Guard flow. Then, the process will break in "checkCredentials"
-     * method throwing the correct error message.
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         try {
             $this->commandBus->handle($credentials);
         } catch (UserPasswordInvalidException $exception) {
+            // User DTO instantiation is needed to continue the correct Guard flow. Then, the process
+            // will break in "checkCredentials" method throwing the correct error message.
             return new User('bengor@user.com', '0', ['ROLE_USER']);
         } catch (\Exception $exception) {
-            dump($exception->getMessage());
-            die;
-
             return;
         }
 
