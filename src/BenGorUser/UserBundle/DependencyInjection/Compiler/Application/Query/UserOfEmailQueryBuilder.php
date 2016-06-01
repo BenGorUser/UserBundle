@@ -10,18 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Query;
 
-use BenGorUser\User\Application\Service\Remove\RemoveUserCommand;
-use BenGorUser\User\Application\Service\Remove\RemoveUserHandler;
+use BenGorUser\User\Application\Query\UserOfEmailHandler;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service\ServiceBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Remove user service builder.
+ * User of email query builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RemoveUserServiceBuilder extends ServiceBuilder
+class UserOfEmailQueryBuilder extends ServiceBuilder
 {
     /**
      * {@inheritdoc}
@@ -30,15 +30,16 @@ class RemoveUserServiceBuilder extends ServiceBuilder
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            (new Definition(
-                RemoveUserHandler::class, [
+            new Definition(
+                UserOfEmailHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
+                    $this->container->getDefinition(
+                        'bengor.user.application.data_transformer.user_dto'
+                    ),
                 ]
-            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => RemoveUserCommand::class,
-            ])
+            )
         );
     }
 
@@ -47,7 +48,7 @@ class RemoveUserServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.remove_' . $user;
+        return 'bengor.user.application.query.' . $user . '_of_email';
     }
 
     /**
@@ -55,6 +56,6 @@ class RemoveUserServiceBuilder extends ServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.remove_' . $user;
+        return 'bengor_user.' . $user . '_of_email_query';
     }
 }

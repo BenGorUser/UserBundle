@@ -12,7 +12,6 @@
 
 namespace BenGorUser\UserBundle\CommandBus;
 
-use BenGorUser\UserBundle\Application\UserCommandBus;
 use SimpleBus\Message\Bus\MessageBus;
 
 /**

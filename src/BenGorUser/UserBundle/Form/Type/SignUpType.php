@@ -12,6 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
+use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -72,9 +73,9 @@ class SignUpType extends AbstractType
     {
         $resolver->setRequired(['command', 'roles']);
         $resolver->setDefaults([
-            'data_class' => $this->command,
+            'data_class' => SignUpUserCommand::class,
             'empty_data' => function (FormInterface $form) {
-                return new $this->command(
+                return new SignUpUserCommand(
                     $form->get('email')->getData(),
                     $form->get('password')->getData(),
                     $this->roles
