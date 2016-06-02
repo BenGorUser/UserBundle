@@ -10,18 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\Remove\RemoveUserCommand;
-use BenGorUser\User\Application\Service\Remove\RemoveUserHandler;
+use BenGorUser\User\Application\Command\Invite\InviteUserCommand;
+use BenGorUser\User\Application\Command\Invite\InviteUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Remove user service builder.
+ * Invite user command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RemoveUserServiceBuilder extends ServiceBuilder
+class InviteUserCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -31,14 +31,22 @@ class RemoveUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             (new Definition(
-                RemoveUserHandler::class, [
+                InviteUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
+                    $this->container->getDefinition(
+                        'bengor.user.infrastructure.persistence.' . $user . '_guest_repository'
+                    ),
+                    $this->container->getDefinition(
+                        'bengor.user.infrastructure.domain.model.' . $user . '_guest_factory'
+                    ),
                 ]
-            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => RemoveUserCommand::class,
-            ])
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => InviteUserCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -47,7 +55,7 @@ class RemoveUserServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.remove_' . $user;
+        return 'bengor.user.application.command.invite_' . $user;
     }
 
     /**
@@ -55,6 +63,6 @@ class RemoveUserServiceBuilder extends ServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.remove_' . $user;
+        return 'bengor_user.invite_' . $user;
     }
 }

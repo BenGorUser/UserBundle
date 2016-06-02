@@ -15,6 +15,7 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use BenGorUser\UserBundle\Security\UserProvider;
+use BenGorUser\UserBundle\Security\UserSymfonyDataTransformer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -43,7 +44,7 @@ class SecurityServicesPass implements CompilerPassInterface
                 ))->configuration(),
                 $key
             );
-
+            $this->userSymfonyDataTransformer($container, $key);
             $this->userProvider($container, $key);
         }
     }
@@ -79,6 +80,27 @@ class SecurityServicesPass implements CompilerPassInterface
     }
 
     /**
+     * Registers service of the user Symfony data transformer and its alias.
+     *
+     * @param ContainerBuilder $container The container builder
+     * @param string           $user      The user name
+     */
+    private function userSymfonyDataTransformer(ContainerBuilder $container, $user)
+    {
+        $container->setDefinition(
+            'bengor.user_bundle.security.' . $user . '_symfony_data_transformer',
+            new Definition(
+                UserSymfonyDataTransformer::class
+            )
+        )->setPublic(false);
+
+        $container->setAlias(
+            'bengor_user.' . $user . '_symfony_data_transformer',
+            'bengor.user_bundle.security.' . $user . '_symfony_data_transformer'
+        );
+    }
+
+    /**
      * Registers service of the user provider and its alias.
      *
      * @param ContainerBuilder $container The container builder
@@ -94,7 +116,7 @@ class SecurityServicesPass implements CompilerPassInterface
                         'bengor.user.application.query.' . $user . '_of_email'
                     ),
                     $container->getDefinition(
-                        'bengor.user_bundle.security.user_symfony_data_transformer'
+                        'bengor.user_bundle.security.' . $user . '_symfony_data_transformer'
                     ),
                 ]
             )

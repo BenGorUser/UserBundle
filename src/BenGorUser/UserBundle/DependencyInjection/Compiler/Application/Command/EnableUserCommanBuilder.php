@@ -10,18 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\LogOut\LogOutUserCommand;
-use BenGorUser\User\Application\Service\LogOut\LogOutUserHandler;
+use BenGorUser\User\Application\Command\Enable\EnableUserCommand;
+use BenGorUser\User\Application\Command\Enable\EnableUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Log out user service builder.
+ * Enable user command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class LogOutUserServiceBuilder extends ServiceBuilder
+class EnableUserCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -31,14 +31,16 @@ class LogOutUserServiceBuilder extends ServiceBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             (new Definition(
-                LogOutUserHandler::class, [
+                EnableUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
                 ]
-            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => LogOutUserCommand::class,
-            ])
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => EnableUserCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -47,7 +49,7 @@ class LogOutUserServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.log_out_' . $user;
+        return 'bengor.user.application.command.enable_' . $user;
     }
 
     /**
@@ -55,6 +57,6 @@ class LogOutUserServiceBuilder extends ServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.log_out_' . $user;
+        return 'bengor_user.enable_' . $user;
     }
 }

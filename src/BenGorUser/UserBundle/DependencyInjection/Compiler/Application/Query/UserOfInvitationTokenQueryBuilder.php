@@ -10,17 +10,17 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Query;
 
-use BenGorUser\User\Application\Service\Enable\EnableUserHandler;
+use BenGorUser\User\Application\Query\UserOfInvitationTokenHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Enable user service builder.
+ * User of invitation token query builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class EnableUserServiceBuilder extends ServiceBuilder
+class UserOfInvitationTokenQueryBuilder extends QueryBuilder
 {
     /**
      * {@inheritdoc}
@@ -29,13 +29,16 @@ class EnableUserServiceBuilder extends ServiceBuilder
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
-                EnableUserHandler::class, [
+            (new Definition(
+                UserOfInvitationTokenHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
+                    $this->container->getDefinition(
+                        'bengor.user.application.data_transformer.' . $user . '_dto'
+                    ),
                 ]
-            )
+            ))->setPublic(false)
         );
     }
 
@@ -44,7 +47,7 @@ class EnableUserServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.enable_' . $user;
+        return 'bengor.user.application.query.' . $user . '_of_invitation_token';
     }
 
     /**
@@ -52,6 +55,6 @@ class EnableUserServiceBuilder extends ServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.enable_' . $user;
+        return 'bengor_user.' . $user . '_of_invitation_token_query';
     }
 }

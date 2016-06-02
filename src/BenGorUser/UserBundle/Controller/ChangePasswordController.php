@@ -17,7 +17,6 @@ use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserToken;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordType;
-use BenGorUser\UserBundle\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 

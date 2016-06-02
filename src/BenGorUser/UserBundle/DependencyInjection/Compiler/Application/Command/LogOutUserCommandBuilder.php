@@ -10,17 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Query;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Query\UserOfEmailHandler;
+use BenGorUser\User\Application\Command\LogOut\LogOutUserCommand;
+use BenGorUser\User\Application\Command\LogOut\LogOutUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * User of email query builder.
+ * Log out user command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class UserOfEmailQueryBuilder extends QueryBuilder
+class LogOutUserCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -30,15 +31,16 @@ class UserOfEmailQueryBuilder extends QueryBuilder
         $this->container->setDefinition(
             $this->definitionName($user),
             (new Definition(
-                UserOfEmailHandler::class, [
+                LogOutUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
-                    $this->container->getDefinition(
-                        'bengor.user.application.data_transformer.' . $user . '_dto'
-                    ),
                 ]
-            ))->setPublic(false)
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => LogOutUserCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -47,7 +49,7 @@ class UserOfEmailQueryBuilder extends QueryBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.query.' . $user . '_of_email';
+        return 'bengor.user.application.command.log_out_' . $user;
     }
 
     /**
@@ -55,6 +57,6 @@ class UserOfEmailQueryBuilder extends QueryBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.' . $user . '_of_email_query';
+        return 'bengor_user.log_out_' . $user;
     }
 }

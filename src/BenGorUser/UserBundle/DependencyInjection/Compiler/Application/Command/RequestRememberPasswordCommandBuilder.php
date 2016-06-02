@@ -10,17 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\Invite\InviteUserHandler;
+use BenGorUser\User\Application\Command\RequestRememberPassword\RequestRememberPasswordCommand;
+use BenGorUser\User\Application\Command\RequestRememberPassword\RequestRememberPasswordHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Invite user service builder.
+ * Request remember password command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InviteUserServiceBuilder extends ServiceBuilder
+class RequestRememberPasswordCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -29,19 +30,17 @@ class InviteUserServiceBuilder extends ServiceBuilder
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
-                InviteUserHandler::class, [
+            (new Definition(
+                RequestRememberPasswordHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
-                    $this->container->getDefinition(
-                        'bengor.user.infrastructure.persistence.' . $user . '_guest_repository'
-                    ),
-                    $this->container->getDefinition(
-                        'bengor.user.infrastructure.domain.model.' . $user . '_guest_factory'
-                    ),
                 ]
-            )
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => RequestRememberPasswordCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -50,7 +49,7 @@ class InviteUserServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.invite_' . $user;
+        return 'bengor.user.application.command.request_' . $user . '_remember_password';
     }
 
     /**
@@ -58,6 +57,6 @@ class InviteUserServiceBuilder extends ServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.invite_' . $user;
+        return 'bengor_user.request_' . $user . '_remember_password';
     }
 }

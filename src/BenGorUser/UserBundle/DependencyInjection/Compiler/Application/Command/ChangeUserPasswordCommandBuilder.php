@@ -10,21 +10,21 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\ChangePassword\ByRequestRememberPasswordChangeUserPasswordCommand;
-use BenGorUser\User\Application\Service\ChangePassword\ByRequestRememberPasswordChangeUserPasswordHandler;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordCommand;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordHandler;
+use BenGorUser\User\Application\Command\ChangePassword\ByRequestRememberPasswordChangeUserPasswordCommand;
+use BenGorUser\User\Application\Command\ChangePassword\ByRequestRememberPasswordChangeUserPasswordHandler;
+use BenGorUser\User\Application\Command\ChangePassword\ChangeUserPasswordCommand;
+use BenGorUser\User\Application\Command\ChangePassword\ChangeUserPasswordHandler;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
- * Change user password service builder.
+ * Change user password command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ChangeUserPasswordServiceBuilder extends ServiceBuilder
+class ChangeUserPasswordCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -36,14 +36,16 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
 
         $this->container->setDefinition(
             $this->definitionName($user),
-            (new Definition($handler, $this->handlerArguments($user)))->addTag(
+            (new Definition(
+                $handler, $this->handlerArguments($user)
+            ))->addTag(
                 'bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => $command,
                 ]
-            )
+            )->setPublic(false)
         );
 
-        (new WithoutOldPasswordChangeUserPasswordServiceBuilder(
+        (new WithoutOldPasswordChangeUserPasswordCommandBuilder(
             $this->container, $this->persistence
         ))->build($user);
     }
@@ -70,7 +72,7 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.change_' . $user . '_password';
+        return 'bengor.user.application.command.change_' . $user . '_password';
     }
 
     /**
@@ -124,7 +126,7 @@ class ChangeUserPasswordServiceBuilder extends ServiceBuilder
      */
     private function byRequestRememberPasswordSpecification($user)
     {
-        (new RequestRememberPasswordServiceBuilder($this->container, $this->persistence))->build($user);
+        (new RequestRememberPasswordCommandBuilder($this->container, $this->persistence))->build($user);
 
         return [
             'command' => ByRequestRememberPasswordChangeUserPasswordCommand::class,

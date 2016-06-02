@@ -10,16 +10,17 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\ApplicationBuilder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Base service builder.
+ * Base command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-abstract class ServiceBuilder
+abstract class CommandBuilder implements ApplicationBuilder
 {
     /**
      * Configuration array.
@@ -68,23 +69,21 @@ abstract class ServiceBuilder
     }
 
     /**
-     * Entry point of service builder to create
-     * the application service inside Symfony DIC.
-     *
-     * @param string $user The user name
-     *
-     * @return ContainerBuilder
+     * {@inheritdoc}
      */
     public function build($user)
     {
-        $enabled = array_key_exists('enabled', $this->configuration)
-            ? $this->configuration['enabled']
-            : true;
-
+        $enabled = array_key_exists('enabled', $this->configuration) ? $this->configuration['enabled'] : true;
         if (false === $enabled) {
             return;
         }
+
         $this->register($user);
+
+        $this->container->setAlias(
+            $this->aliasDefinitionName($user),
+            $this->definitionName($user)
+        );
 
         return $this->container;
     }
@@ -102,7 +101,7 @@ abstract class ServiceBuilder
     }
 
     /**
-     * Gets the service definition name.
+     * Gets the command definition name.
      *
      * @param string $user The user name
      *
@@ -111,7 +110,7 @@ abstract class ServiceBuilder
     abstract protected function definitionName($user);
 
     /**
-     * Gets the service definition name alias.
+     * Gets the command definition name alias.
      *
      * @param string $user The user name
      *
@@ -120,7 +119,7 @@ abstract class ServiceBuilder
     abstract protected function aliasDefinitionName($user);
 
     /**
-     * Registers the service into container.
+     * Registers the command into container.
      *
      * @param string $user The user name
      */

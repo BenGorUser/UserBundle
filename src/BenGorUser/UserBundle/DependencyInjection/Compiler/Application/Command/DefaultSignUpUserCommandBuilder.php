@@ -10,21 +10,21 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserHandler;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Default sign up user service builder.
+ * Default sign up user command builder.
  *
  * Needed to solve the requirement about default
  * sign up specification as a Symfony command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
+class DefaultSignUpUserCommandBuilder extends SignUpUserCommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -35,9 +35,11 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
             $this->definitionName($user),
             (new Definition(
                 SignUpUserHandler::class, $this->handlerArguments($user)
-            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => SignUpUserCommand::class,
-            ])
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => SignUpUserCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -54,7 +56,7 @@ class DefaultSignUpUserServiceBuilder extends SignUpUserServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.sign_up_' . $user . '_default';
+        return 'bengor.user.application.command.sign_up_' . $user . '_default';
     }
 
     /**

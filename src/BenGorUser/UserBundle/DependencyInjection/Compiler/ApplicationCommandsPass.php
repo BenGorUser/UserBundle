@@ -12,24 +12,24 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
-use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service\ChangeUserPasswordServiceBuilder;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service\LogInUserServiceBuilder;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service\LogOutUserServiceBuilder;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service\RemoveUserServiceBuilder;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service\SignUpUserServiceBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\ChangeUserPasswordCommandBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\LogInUserCommandBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\LogOutUserCommandBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\RemoveUserCommandBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\SignUpUserCommandBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Register application services compiler pass.
+ * Register application commands compiler pass.
  *
- * Service declaration via PHP allows more
+ * Command declaration via PHP allows more
  * flexibility with customization extend users.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ApplicationServicesPass implements CompilerPassInterface
+class ApplicationCommandsPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
@@ -39,7 +39,7 @@ class ApplicationServicesPass implements CompilerPassInterface
         $config = $container->getParameter('bengor_user.config');
 
         foreach ($config['user_class'] as $key => $user) {
-            (new LogInUserServiceBuilder(
+            (new LogInUserCommandBuilder(
                 $container, $user['persistence'], array_merge(
                     $user['use_cases']['security'], [
                         'routes' => (new SecurityRoutesLoaderBuilder(
@@ -51,19 +51,19 @@ class ApplicationServicesPass implements CompilerPassInterface
                 )
             ))->build($key);
 
-            (new LogOutUserServiceBuilder(
+            (new LogOutUserCommandBuilder(
                 $container, $user['persistence'], $user['use_cases']['security']
             ))->build($key);
 
-            (new SignUpUserServiceBuilder(
+            (new SignUpUserCommandBuilder(
                 $container, $user['persistence'], $user['use_cases']['sign_up']
             ))->build($key);
 
-            (new ChangeUserPasswordServiceBuilder(
+            (new ChangeUserPasswordCommandBuilder(
                 $container, $user['persistence'], $user['use_cases']['change_password']
             ))->build($key);
 
-            (new RemoveUserServiceBuilder(
+            (new RemoveUserCommandBuilder(
                 $container, $user['persistence'], $user['use_cases']['remove']
             ))->build($key);
         }

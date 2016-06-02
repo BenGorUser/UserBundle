@@ -12,15 +12,14 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
-use BenGorUser\User\Application\DataTransformer\UserDTODataTransformer;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\DataTransformer\UserDTODataTransformerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Register application data transformers compiler pass.
  *
- * Service declaration via PHP allows more
+ * Data transformer declaration via PHP allows more
  * flexibility with customization extend users.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
@@ -32,11 +31,12 @@ class ApplicationDataTransformersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $container->setDefinition(
-            'bengor.user.application.data_transformer.user_dto',
-            new Definition(
-                UserDTODataTransformer::class
-            )
-        );
+        $config = $container->getParameter('bengor_user.config');
+
+        foreach ($config['user_class'] as $key => $user) {
+            (new UserDTODataTransformerBuilder(
+                $container
+            ))->build($key);
+        }
     }
 }

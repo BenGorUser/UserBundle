@@ -12,9 +12,9 @@
 
 namespace BenGorUser\UserBundle;
 
+use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationCommandsPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationQueriesPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
@@ -40,7 +40,7 @@ class BenGorUserBundle extends Bundle
         $container
             ->addCompilerPass(new DefaultRolesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new ApplicationServicesPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new ApplicationCommandsPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationQueriesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new SimpleBusPass(), PassConfig::TYPE_OPTIMIZE)

@@ -39,7 +39,6 @@ class BenGorUserExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('forms.yml');
         $loader->load('routing.yml');
-        $loader->load('security.yml');
         $loader->load('simple_bus.yml');
 
         $container->setParameter('bengor_user.config', $config);

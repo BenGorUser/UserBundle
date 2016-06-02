@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\Enable\EnableUserCommand;
+use BenGorUser\User\Application\Command\Enable\EnableUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserTokenNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,9 +42,7 @@ class EnableController extends Controller
 
         try {
             $this->get('bengor_user.' . $userClass . '_command_bus')->handle(
-                new EnableUserCommand(
-                    $confirmationToken
-                )
+                new EnableUserCommand($confirmationToken)
             );
             $this->addFlash('notice', $this->get('translator')->trans('enable.success_flash'));
         } catch (UserTokenNotFoundException $exception) {

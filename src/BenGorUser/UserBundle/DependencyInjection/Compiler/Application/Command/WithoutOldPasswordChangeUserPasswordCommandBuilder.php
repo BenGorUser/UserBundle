@@ -10,21 +10,21 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\ChangePassword\WithoutOldPasswordChangeUserPasswordCommand;
-use BenGorUser\User\Application\Service\ChangePassword\WithoutOldPasswordChangeUserPasswordHandler;
+use BenGorUser\User\Application\Command\ChangePassword\WithoutOldPasswordChangeUserPasswordCommand;
+use BenGorUser\User\Application\Command\ChangePassword\WithoutOldPasswordChangeUserPasswordHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Without old password change user password service builder.
+ * Without old password change user password command builder.
  *
  * Needed to solve the requirement about by email
  * change password specification as a Symfony command.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class WithoutOldPasswordChangeUserPasswordServiceBuilder extends ChangeUserPasswordServiceBuilder
+class WithoutOldPasswordChangeUserPasswordCommandBuilder extends ChangeUserPasswordCommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -36,9 +36,11 @@ class WithoutOldPasswordChangeUserPasswordServiceBuilder extends ChangeUserPassw
             (new Definition(
                 WithoutOldPasswordChangeUserPasswordHandler::class,
                 $this->handlerArguments($user)
-            ))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => WithoutOldPasswordChangeUserPasswordCommand::class,
-            ])
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => WithoutOldPasswordChangeUserPasswordCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -55,7 +57,7 @@ class WithoutOldPasswordChangeUserPasswordServiceBuilder extends ChangeUserPassw
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.change_' . $user . '_password_without_old_password';
+        return 'bengor.user.application.command.change_' . $user . '_password_without_old_password';
     }
 
     /**

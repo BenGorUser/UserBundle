@@ -10,25 +10,25 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\SignUp\ByInvitationSignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\ByInvitationSignUpUserHandler;
-use BenGorUser\User\Application\Service\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\ByInvitationWithConfirmationSignUpUserHandler;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserHandler;
-use BenGorUser\User\Application\Service\SignUp\WithConfirmationSignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\WithConfirmationSignUpUserHandler;
+use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserHandler;
+use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignUpUserHandler;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserHandler;
+use BenGorUser\User\Application\Command\SignUp\WithConfirmationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\WithConfirmationSignUpUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
- * Sign up user service builder.
+ * Sign up user command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SignUpUserServiceBuilder extends ServiceBuilder
+class SignUpUserCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -41,13 +41,16 @@ class SignUpUserServiceBuilder extends ServiceBuilder
 
         $this->container->setDefinition(
             $this->definitionName($user),
-            (new Definition($handler, $handlerArguments))->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                'handles' => $command,
-            ])
+            (new Definition(
+                $handler, $handlerArguments)
+            )->addTag('bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => $command,
+                ]
+            )->setPublic(false)
         );
 
         if ($this->specification !== 'defaultSpecification') {
-            (new DefaultSignUpUserServiceBuilder($this->container, $this->persistence))->build($user);
+            (new DefaultSignUpUserCommandBuilder($this->container, $this->persistence))->build($user);
         }
     }
 
@@ -87,7 +90,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.sign_up_' . $user;
+        return 'bengor.user.application.command.sign_up_' . $user;
     }
 
     /**
@@ -161,7 +164,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
      */
     private function withConfirmationSpecification($user)
     {
-        (new EnableUserServiceBuilder($this->container, $this->persistence))->build($user);
+        (new EnableUserCommandBuilder($this->container, $this->persistence))->build($user);
 
         return [
             'command'          => WithConfirmationSignUpUserCommand::class,
@@ -179,7 +182,7 @@ class SignUpUserServiceBuilder extends ServiceBuilder
      */
     private function byInvitationSpecification($user)
     {
-        (new InviteUserServiceBuilder($this->container, $this->persistence))->build($user);
+        (new InviteUserCommandBuilder($this->container, $this->persistence))->build($user);
 
         return [
             'command'          => ByInvitationSignUpUserCommand::class,
@@ -197,8 +200,8 @@ class SignUpUserServiceBuilder extends ServiceBuilder
      */
     private function byInvitationWithConfirmationSpecification($user)
     {
-        (new EnableUserServiceBuilder($this->container, $this->persistence))->build($user);
-        (new InviteUserServiceBuilder($this->container, $this->persistence))->build($user);
+        (new EnableUserCommandBuilder($this->container, $this->persistence))->build($user);
+        (new InviteUserCommandBuilder($this->container, $this->persistence))->build($user);
 
         return [
             'command'          => ByInvitationWithConfirmationSignUpUserCommand::class,

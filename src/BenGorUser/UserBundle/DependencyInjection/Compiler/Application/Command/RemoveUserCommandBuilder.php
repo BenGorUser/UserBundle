@@ -10,17 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Service;
+namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command;
 
-use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordCommand;
+use BenGorUser\User\Application\Command\Remove\RemoveUserCommand;
+use BenGorUser\User\Application\Command\Remove\RemoveUserHandler;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Request remember password service builder.
+ * Remove user command builder.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RequestRememberPasswordServiceBuilder extends ServiceBuilder
+class RemoveUserCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -29,13 +30,17 @@ class RequestRememberPasswordServiceBuilder extends ServiceBuilder
     {
         $this->container->setDefinition(
             $this->definitionName($user),
-            new Definition(
-                RequestRememberPasswordCommand::class, [
+            (new Definition(
+                RemoveUserHandler::class, [
                     $this->container->getDefinition(
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
                 ]
-            )
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => RemoveUserCommand::class,
+                ]
+            )->setPublic(false)
         );
     }
 
@@ -44,7 +49,7 @@ class RequestRememberPasswordServiceBuilder extends ServiceBuilder
      */
     protected function definitionName($user)
     {
-        return 'bengor.user.application.service.request_' . $user . '_remember_password';
+        return 'bengor.user.application.command.remove_' . $user;
     }
 
     /**
@@ -52,6 +57,6 @@ class RequestRememberPasswordServiceBuilder extends ServiceBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.request_' . $user . '_remember_password';
+        return 'bengor_user.remove_' . $user;
     }
 }
