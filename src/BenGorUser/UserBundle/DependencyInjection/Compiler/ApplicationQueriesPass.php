@@ -14,6 +14,7 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Query\UserOfEmailQueryBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Query\UserOfInvitationTokenQueryBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Query\UserOfRememberPasswordTokenQueryBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -37,6 +38,7 @@ class ApplicationQueriesPass implements CompilerPassInterface
         foreach ($config['user_class'] as $key => $user) {
             (new UserOfEmailQueryBuilder($container))->build($key);
             (new UserOfInvitationTokenQueryBuilder($container))->build($key);
+            (new UserOfRememberPasswordTokenQueryBuilder($container))->build($key);
         }
     }
 }

@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Command;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
 use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
