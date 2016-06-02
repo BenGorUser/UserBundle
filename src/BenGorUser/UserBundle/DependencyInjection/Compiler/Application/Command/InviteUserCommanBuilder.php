@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InviteUserCommandBuilder extends CommandBuilder
+class InviteUserCommanBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
@@ -36,10 +36,7 @@ class InviteUserCommandBuilder extends CommandBuilder
                         'bengor.user.infrastructure.persistence.' . $user . '_repository'
                     ),
                     $this->container->getDefinition(
-                        'bengor.user.infrastructure.persistence.' . $user . '_guest_repository'
-                    ),
-                    $this->container->getDefinition(
-                        'bengor.user.infrastructure.domain.model.' . $user . '_guest_factory'
+                        'bengor.user.infrastructure.domain.model.' . $user . '_factory_invite'
                     ),
                 ]
             ))->addTag(

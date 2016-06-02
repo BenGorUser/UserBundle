@@ -12,8 +12,7 @@
 
 namespace BenGorUser\UserBundle\Form\Type;
 
-use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordCommand;
-use BenGorUser\UserBundle\Model\User;
+use BenGorUser\User\Application\Command\RequestRememberPassword\RequestRememberPasswordCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +20,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Request remember password user form type.
@@ -32,7 +32,7 @@ class RequestRememberPasswordType extends AbstractType
     /**
      * The current logged user.
      *
-     * @var User|null
+     * @var UserInterface|null
      */
     private $currentUser;
 
@@ -43,8 +43,11 @@ class RequestRememberPasswordType extends AbstractType
      */
     public function __construct(TokenStorageInterface $aTokenStorage)
     {
-        if ($aTokenStorage->getToken() instanceof TokenInterface) {
-            $this->currentUser = $aTokenStorage->getToken()->getUser();
+        $token = $aTokenStorage->getToken();
+        if ($token instanceof TokenInterface) {
+            $this->currentUser = $token->getUser() instanceof UserInterface
+                ? $token->getUser()
+                : null;
         }
     }
 
@@ -66,7 +69,7 @@ class RequestRememberPasswordType extends AbstractType
             'empty_data' => function (FormInterface $form) {
                 $email = null === $this->currentUser
                     ? $form->get('email')->getData()
-                    : $this->currentUser->email()->email();
+                    : $this->currentUser->getUsername();
 
                 return new RequestRememberPasswordCommand($email);
             },

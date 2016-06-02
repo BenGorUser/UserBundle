@@ -12,9 +12,9 @@
 
 namespace BenGorUser\UserBundle\Controller;
 
+use BenGorUser\User\Application\Query\UserOfRememberPasswordTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
-use BenGorUser\User\Domain\Model\UserToken;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,8 +50,10 @@ class ChangePasswordController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
                 } catch (\Exception $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_generic'));
                 }
             }
@@ -75,7 +77,18 @@ class ChangePasswordController extends Controller
     public function byRequestRememberPasswordAction(Request $request, $userClass, $successRoute = null)
     {
         $rememberPasswordToken = $request->query->get('remember-password-token');
-        $user = $this->getUserByToken($userClass, $rememberPasswordToken);
+        try {
+            // we need to know if the remember password token given exists in
+            // database, in case that it isn't, it throws 404.
+            $user = $this->get('bengor_user.' . $userClass . '_invitation_token_query')->__invoke(
+                new UserOfRememberPasswordTokenQuery($rememberPasswordToken)
+            );
+            $dataTransformer = $this->get('bengor_user.user_symfony_data_transformer');
+            $dataTransformer->write($user);
+            $user = $dataTransformer->read();
+        } catch (UserDoesNotExistException $exception) {
+            throw $this->createNotFoundException();
+        }
 
         $form = $this->createForm(ChangePasswordByRequestRememberPasswordType::class, null, [
             'remember_password_token' => $rememberPasswordToken,
@@ -91,10 +104,13 @@ class ChangePasswordController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserDoesNotExistException $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_does_not_exist'));
                 } catch (UserPasswordInvalidException $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
                 } catch (\Exception $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_generic'));
                 }
             }
@@ -104,29 +120,5 @@ class ChangePasswordController extends Controller
             'form'  => $form->createView(),
             'email' => $user->email()->email(),
         ]);
-    }
-
-    /**
-     * This extra query is a trade off related with the flow of application service.
-     *
-     * In "GET" requests we need to know if the remember
-     * password token given exists in database, in case that
-     * it isn't, it throws 404.
-     *
-     * @param string $userClass             The user type
-     * @param string $rememberPasswordToken The remember password token
-     *
-     * @return User
-     */
-    private function getUserByToken($userClass, $rememberPasswordToken)
-    {
-        $user = $this->get('bengor_user.' . $userClass . '_repository')->userOfRememberPasswordToken(
-            new UserToken($rememberPasswordToken)
-        );
-        if (!$user instanceof User) {
-            throw $this->createNotFoundException();
-        }
-
-        return $user;
     }
 }

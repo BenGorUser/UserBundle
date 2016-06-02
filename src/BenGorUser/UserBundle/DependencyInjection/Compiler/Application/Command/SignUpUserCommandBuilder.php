@@ -118,7 +118,7 @@ class SignUpUserCommandBuilder extends CommandBuilder
                 'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
             ),
             $this->container->getDefinition(
-                'bengor.user.infrastructure.domain.model.' . $user . '_factory'
+                'bengor.user.infrastructure.domain.model.' . $user . '_factory_sign_up'
             ),
         ];
     }
@@ -132,11 +132,17 @@ class SignUpUserCommandBuilder extends CommandBuilder
      */
     private function invitationHandlerArguments($user)
     {
-        return array_merge($this->handlerArguments($user), [
+        return [
             $this->container->getDefinition(
-                'bengor.user.infrastructure.persistence.' . $user . '_guest_repository'
+                'bengor.user.infrastructure.persistence.' . $user . '_repository'
             ),
-        ]);
+            $this->container->getDefinition(
+                'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
+            ),
+            $this->container->getDefinition(
+                'bengor.user.infrastructure.domain.model.' . $user . '_factory_invite'
+            ),
+        ];
     }
 
     /**

@@ -12,14 +12,14 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
-use BenGorUser\User\Infrastructure\Domain\Model\UserFactory;
-use BenGorUser\User\Infrastructure\Domain\Model\UserGuestFactory;
+use BenGorUser\User\Infrastructure\Domain\Model\UserFactoryInvite;
+use BenGorUser\User\Infrastructure\Domain\Model\UserFactorySignUp;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Register domain model services compiler pass.
+ * Registers domain model services compiler pass.
  *
  * Service declaration via PHP allows more
  * flexibility with customization extend users.
@@ -37,32 +37,30 @@ class DomainServicesPass implements CompilerPassInterface
 
         foreach ($config['user_class'] as $key => $user) {
             $container->setDefinition(
-                'bengor.user.infrastructure.domain.model.' . $key . '_factory',
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory_sign_up',
                 (new Definition(
-                    UserFactory::class, [
+                    UserFactorySignUp::class, [
                         $user['class'],
                     ]
                 ))->setPublic(false)
             );
             $container->setAlias(
-                'bengor_user.' . $key . '_factory',
-                'bengor.user.infrastructure.domain.model.' . $key . '_factory'
+                'bengor_user.' . $key . '_factory_sign_up',
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory_sign_up'
             );
 
-            if (class_exists($user['class'] . 'Guest')) {
-                $container->setDefinition(
-                    'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory',
-                    (new Definition(
-                        UserGuestFactory::class, [
-                            $user['class'] . 'Guest',
-                        ]
-                    ))->setPublic(false)
-                );
-                $container->setAlias(
-                    'bengor_user.' . $key . '_guest_factory',
-                    'bengor.user.infrastructure.domain.model.' . $key . '_guest_factory'
-                );
-            }
+            $container->setDefinition(
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory_invite',
+                (new Definition(
+                    UserFactoryInvite::class, [
+                        $user['class'],
+                    ]
+                ))->setPublic(false)
+            );
+            $container->setAlias(
+                'bengor_user.' . $key . '_factory_invite',
+                'bengor.user.infrastructure.domain.model.' . $key . '_factory_invite'
+            );
         }
     }
 }

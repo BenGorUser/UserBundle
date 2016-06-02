@@ -28,6 +28,7 @@ class InviteController extends Controller
      * Invite action.
      *
      * @param Request     $request      The request
+     * @param string      $userClass    Extra parameter that contains the user type
      * @param string|null $successRoute Extra parameter that contains the success route name, by default is null
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -46,8 +47,10 @@ class InviteController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserAlreadyExistException $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_user_already_exist'));
                 } catch (\Exception $exception) {
+                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_generic'));
                 }
             }

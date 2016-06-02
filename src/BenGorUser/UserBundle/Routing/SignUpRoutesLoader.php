@@ -12,10 +12,10 @@
 
 namespace BenGorUser\UserBundle\Routing;
 
-use BenGorUser\User\Application\Service\SignUp\ByInvitationSignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserCommand;
-use BenGorUser\User\Application\Service\SignUp\WithConfirmationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\WithConfirmationSignUpUserCommand;
 use Symfony\Component\Routing\Route;
 
 /**

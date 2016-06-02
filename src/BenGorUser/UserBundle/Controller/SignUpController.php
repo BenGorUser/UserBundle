@@ -86,7 +86,7 @@ class SignUpController extends Controller
     {
         try {
             // we need to know if the invitation token given exists in
-            //database, in case that it isn't, it throws 404.
+            // database, in case that it isn't, it throws 404.
             $user = $this->get('bengor_user.' . $userClass . '_invitation_token_query')->__invoke(
                 new UserOfInvitationTokenQuery($invitationToken)
             );
