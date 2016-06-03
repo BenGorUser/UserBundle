@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class InviteUserCommanBuilder extends CommandBuilder
+class InviteUserCommandBuilder extends CommandBuilder
 {
     /**
      * {@inheritdoc}
