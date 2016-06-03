@@ -46,7 +46,7 @@ class SignUpUserCommandBuilder extends CommandBuilder
             )->addTag('bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => $command,
                 ]
-            )->setPublic(false)
+            )
         );
 
         if ($this->specification !== 'defaultSpecification') {

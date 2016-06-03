@@ -40,7 +40,7 @@ class EnableUserCommandBuilder extends CommandBuilder
                 'bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => EnableUserCommand::class,
                 ]
-            )->setPublic(false)
+            )
         );
     }
 

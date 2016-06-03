@@ -40,7 +40,7 @@ class RemoveUserCommandBuilder extends CommandBuilder
                 'bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => RemoveUserCommand::class,
                 ]
-            )->setPublic(false)
+            )
         );
     }
 

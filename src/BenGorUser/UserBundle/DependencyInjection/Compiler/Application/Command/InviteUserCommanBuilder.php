@@ -43,7 +43,7 @@ class InviteUserCommandBuilder extends CommandBuilder
                 'bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => InviteUserCommand::class,
                 ]
-            )->setPublic(false)
+            )
         );
     }
 

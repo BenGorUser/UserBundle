@@ -43,7 +43,7 @@ class LogInUserCommandBuilder extends CommandBuilder
                 'bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => LogInUserCommand::class,
                 ]
-            )->setPublic(false)
+            )
         );
     }
 

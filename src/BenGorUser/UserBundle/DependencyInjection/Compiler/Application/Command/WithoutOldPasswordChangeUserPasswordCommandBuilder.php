@@ -40,7 +40,7 @@ class WithoutOldPasswordChangeUserPasswordCommandBuilder extends ChangeUserPassw
                 'bengor_user_' . $user . '_command_bus_handler', [
                     'handles' => WithoutOldPasswordChangeUserPasswordCommand::class,
                 ]
-            )->setPublic(false)
+            )
         );
     }
 
