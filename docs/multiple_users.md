@@ -18,7 +18,7 @@ ben_gor_user:
 And for example if you execute the `bin/console debug:container | grep bengor.user.application.service.log_in`
 you'll see the following:
 ```bash
-bengor.user.application.service.log_in_user              BenGor\User\Application\Service\LogIn\LogInUserService
+bengor.user.application.service.log_in_user              BenGorUser\User\Application\Service\LogIn\LogInUserService
 ```
 Otherwise, if your `user_class` contains multiple choices for example something like this
 ```yml
@@ -33,8 +33,8 @@ ben_gor_user:
 ```
 the above command will print the following:
 ```bash
-bengor.user.application.service.log_in_applicant         BenGor\User\Application\Service\LogIn\LogInUserService
-bengor.user.application.service.log_in_employee          BenGor\User\Application\Service\LogIn\LogInUserService
+bengor.user.application.service.log_in_applicant         BenGorUser\User\Application\Service\LogIn\LogInUserService
+bengor.user.application.service.log_in_employee          BenGorUser\User\Application\Service\LogIn\LogInUserService
 ```
 
 

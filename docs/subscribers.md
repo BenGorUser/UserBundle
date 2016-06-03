@@ -4,7 +4,7 @@ TODO: Need explanation
 
 ```yml
 app_user.invited_mailer_subscriber:
-    class: BenGor\User\Domain\Event\UserInvitedMailerSubscriber
+    class: BenGorUser\User\Domain\Event\UserInvitedMailerSubscriber
     arguments:
         - '@bengor_user.mailer.swift_mailer'
         - '@bengor_user.mailable_factory.invite'
@@ -15,7 +15,7 @@ app_user.invited_mailer_subscriber:
         - { name: bengor_user_subscriber }
 
 app_user.registered_mailer_subscriber:
-    class: BenGor\User\Domain\Event\UserRegisteredMailerSubscriber
+    class: BenGorUser\User\Domain\Event\UserRegisteredMailerSubscriber
     arguments:
         - '@bengor_user.mailer.swift_mailer'
         - '@bengor_user.mailable_factory.sign_up'
@@ -26,7 +26,7 @@ app_user.registered_mailer_subscriber:
         - { name: bengor_user_subscriber }
 
 app_user.request_remember_password_mailer_subscriber:
-    class: BenGor\User\Domain\Event\UserRememberPasswordRequestedMailerSubscriber
+    class: BenGorUser\User\Domain\Event\UserRememberPasswordRequestedMailerSubscriber
     arguments:
         - '@bengor_user.mailer.swift_mailer'
         - '@bengor_user.mailable_factory.request_remember_password'
