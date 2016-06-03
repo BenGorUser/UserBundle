@@ -19,8 +19,19 @@ public function registerBundles()
 {
     $bundles = [
         // ...
+        // Dependencies required by the bundle, keep the order. First bridges, then the bus, and finally the UserBundle
+        // Bridges
+        new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
+        new BenGorUser\TwigBridgeBundle\TwigBridgeBundle(),
+        new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
+        new BenGorUser\SymfonyRoutingBridgeBundle\SymfonyRoutingBridgeBundle(),
+        new BenGorUser\SymfonySecurityBridgeBundle\SymfonySecurityBridgeBundle(),
+        
+        // The Buses
         new SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle(),
         new SimpleBus\SymfonyBridge\SimpleBusEventBusBundle(),
+        
+        // User bundle
         new BenGorUser\UserBundle\BenGorUserBundle(),
         // ...
     ];
@@ -34,7 +45,7 @@ The following snippet is the minimum code that bundle needs to work.
 
 namespace AppBundle\Entity;
 
-use BenGorUser\UserBundle\Model\User as BaseUser;
+use BenGorUser\User\Domain\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -63,8 +74,8 @@ security:
     encoders:
         AppBundle\Entity\User: bcrypt
     providers:
-        database_users:
-            entity: { class: AppBundle:User, property: email }
+        bengor_user:
+            id: bengor_user.user_provider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -75,7 +86,7 @@ security:
             guard:
                 authenticators:
                     - bengor_user.form_login_user_authenticator
-            provider: database_users
+            provider: bengor_user
             form_login:
                 check_path: bengor_user_user_login_check
                 login_path: bengor_user_user_login
