@@ -77,7 +77,7 @@ class BenGorUserExtension extends Extension
     private function addMiddlewareTags(ContainerBuilder $container, $user)
     {
         $container->getDefinition(
-            'bengor_user.simple_bus.delegates_to_message_handler_middleware'
+            'bengor_user.simple_bus_' . $user . '_delegates_to_message_handler_middleware'
         )->addTag(
             'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-1000']
         );
@@ -90,11 +90,6 @@ class BenGorUserExtension extends Extension
             'bengor_user.simple_bus.doctrine_transactional_middleware'
         )->addTag(
             'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '0']
-        );
-        $container->getDefinition(
-            'bengor_user.simple_bus.handles_recorded_messages_middleware'
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-100']
         );
         $container->getDefinition(
             'bengor_user.simple_bus.event_bus.handles_recorded_messages_middleware'
