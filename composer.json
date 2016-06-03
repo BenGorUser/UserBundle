@@ -28,7 +28,11 @@
 
         "symfony/form": "^2.8 || ^3.0",
         "symfony/framework-bundle": "^2.8 || ^3.0",
-        "symfony/twig-bundle": "^2.8 || ^3.0"
+        "symfony/twig-bundle": "^2.8 || ^3.0",
+
+        "simple-bus/symfony-bridge": "^4.0",
+        "simple-bus/doctrine-orm-bridge": "^4.0"
+
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.11",

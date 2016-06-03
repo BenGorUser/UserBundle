@@ -19,20 +19,22 @@ public function registerBundles()
 {
     $bundles = [
         // ...
-        new BenGor\UserBundle\BenGorUserBundle(),
+        new SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle(),
+        new SimpleBus\SymfonyBridge\SimpleBusEventBusBundle(),
+        new BenGorUser\UserBundle\BenGorUserBundle(),
         // ...
     ];
 }
 ```
 
-After that, you need to extend our `BenGor\UserBundle\Model\User` class in order to build the Doctrine mapping properly.
+After that, you need to extend our `BenGorUser\UserBundle\Model\User` class in order to build the Doctrine mapping properly.
 The following snippet is the minimum code that bundle needs to work.
 ```php
 <?php
 
 namespace AppBundle\Entity;
 
-use BenGor\UserBundle\Model\User as BaseUser;
+use BenGorUser\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

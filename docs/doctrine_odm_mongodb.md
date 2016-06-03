@@ -27,7 +27,7 @@ public function registerBundles()
     $bundles = [
         // ...
         new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
-        new BenGor\UserBundle\BenGorUserBundle(),
+        new BenGorUser\UserBundle\BenGorUserBundle(),
         // ...
     ];
 }
@@ -52,7 +52,7 @@ ODM needs the models be inside `src/AppBundle/Document` folder.
 
 namespace AppBundle\Document;
 
-use BenGor\UserBundle\Model\User as BaseUser;
+use BenGorUser\UserBundle\Model\User as BaseUser;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
