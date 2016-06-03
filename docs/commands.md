@@ -129,7 +129,7 @@ Now you can use the use case you have just created, for example, in a controller
 
 ```php
 /**
- * @Route("/user/subscribe", name="homepage")
+ * @Route("/user/subscribe/", name="app_user_subscribe")
  */
 public function subscribeToNewsletter(Request $request)
 {
