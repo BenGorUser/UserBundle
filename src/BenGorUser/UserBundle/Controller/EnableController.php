@@ -46,11 +46,7 @@ class EnableController extends Controller
             );
             $this->addFlash('notice', $this->get('translator')->trans('enable.success_flash'));
         } catch (UserTokenNotFoundException $exception) {
-            $this->get('logger')->addError($exception->getMessage());
             $this->addFlash('error', $this->get('translator')->trans('enable.error_flash_user_token_not_found'));
-        } catch (\Exception $exception) {
-            $this->get('logger')->addError($exception->getMessage());
-            $this->addFlash('error', $this->get('translator')->trans('enable.error_flash_generic'));
         }
 
         return $this->redirectToRoute($successRoute);

@@ -50,11 +50,7 @@ class ChangePasswordController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
-                } catch (\Exception $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_generic'));
                 }
             }
         }
@@ -83,6 +79,8 @@ class ChangePasswordController extends Controller
             $user = $this->get('bengor_user.' . $userClass . '_invitation_token_query')->__invoke(
                 new UserOfRememberPasswordTokenQuery($rememberPasswordToken)
             );
+
+            // Convert to an object implementing Symfony's UserInterface
             $dataTransformer = $this->get('bengor_user.user_symfony_data_transformer');
             $dataTransformer->write($user);
             $user = $dataTransformer->read();
@@ -103,15 +101,8 @@ class ChangePasswordController extends Controller
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
-                } catch (UserDoesNotExistException $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_does_not_exist'));
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
                     $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
-                } catch (\Exception $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_generic'));
                 }
             }
         }

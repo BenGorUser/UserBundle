@@ -85,6 +85,10 @@
                 <source>invite.error_flash_user_already_exist</source>
                 <target>Posta elektronikoa erabilita dago jada</target>
             </trans-unit>
+            <trans-unit id="invite.error_flash_user_invitation_already_accepted">
+                <source>invite.error_flash_user_invitation_already_accepted</source>
+                <target>Gonbidapena onartuta dago jada</target>
+            </trans-unit>
             <trans-unit id="invite.error_flash_generic">
                 <source>invite.error_flash_generic</source>
                 <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>

@@ -13,6 +13,7 @@
 namespace BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
+use BenGorUser\User\Domain\Model\Exception\UserAlreadyExistException;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;
@@ -58,9 +59,8 @@ class SignUpController extends Controller
                             $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
                             $firewall
                         );
-                } catch (\Exception $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_generic'));
+                } catch (UserAlreadyExistException $exception) {
+                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_user_already_exist'));
                 }
             }
         }
@@ -90,6 +90,8 @@ class SignUpController extends Controller
             $user = $this->get('bengor_user.' . $userClass . '_invitation_token_query')->__invoke(
                 new UserOfInvitationTokenQuery($invitationToken)
             );
+
+            // Convert to an object implementing Symfony's UserInterface
             $dataTransformer = $this->get('bengor_user.user_symfony_data_transformer');
             $dataTransformer->write($user);
             $user = $dataTransformer->read();
@@ -105,22 +107,17 @@ class SignUpController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                try {
-                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
+                $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
-                    return $this
-                        ->get('security.authentication.guard_handler')
-                        ->authenticateUserAndHandleSuccess(
-                            $user,
-                            $request,
-                            $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
-                            $firewall
-                        );
-                } catch (\Exception $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_generic'));
-                }
+                return $this
+                    ->get('security.authentication.guard_handler')
+                    ->authenticateUserAndHandleSuccess(
+                        $user,
+                        $request,
+                        $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
+                        $firewall
+                    );
             }
         }
 

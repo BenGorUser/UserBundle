@@ -85,6 +85,10 @@
                 <source>invite.error_flash_user_already_exist</source>
                 <target>El email ya está en uso</target>
             </trans-unit>
+            <trans-unit id="invite.error_flash_user_invitation_already_accepted">
+                <source>invite.error_flash_user_invitation_already_accepted</source>
+                <target>La invitación ya ha sido aceptada</target>
+            </trans-unit>
             <trans-unit id="invite.error_flash_generic">
                 <source>invite.error_flash_generic</source>
                 <target>Ha ocurrido un error inesperado. Por favor, póngase en contacto con el administrador</target>

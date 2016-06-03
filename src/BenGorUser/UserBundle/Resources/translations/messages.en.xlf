@@ -85,6 +85,10 @@
                 <source>invite.error_flash_user_already_exist</source>
                 <target>The email is already in use</target>
             </trans-unit>
+            <trans-unit id="invite.error_flash_user_invitation_already_accepted">
+                <source>invite.error_flash_user_invitation_already_accepted</source>
+                <target>The user invitation is already accepted</target>
+            </trans-unit>
             <trans-unit id="invite.error_flash_generic">
                 <source>invite.error_flash_generic</source>
                 <target>An error occurred. Please contact with the administrator</target>

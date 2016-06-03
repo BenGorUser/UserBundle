@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Domain\Model\Exception\UserAlreadyExistException;
+use BenGorUser\User\Domain\Model\Exception\UserInvitationAlreadyAcceptedException;
 use BenGorUser\UserBundle\Form\Type\InviteType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,12 +46,8 @@ class InviteController extends Controller
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
-                } catch (UserAlreadyExistException $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_user_already_exist'));
-                } catch (\Exception $exception) {
-                    $this->get('logger')->addError($exception->getMessage());
-                    $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_generic'));
+                } catch (UserInvitationAlreadyAcceptedException $exception) {
+                    $this->addFlash('error', $this->get('translator')->trans('invite.error_flash_user_invitation_already_accepted'));
                 }
             }
         }

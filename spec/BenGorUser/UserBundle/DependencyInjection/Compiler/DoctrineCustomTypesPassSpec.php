@@ -12,7 +12,6 @@
 
 namespace spec\BenGorUser\UserBundle\DependencyInjection\Compiler;
 
-use BenGorUser\User\Infrastructure\Persistence\Doctrine\ORM\Types\UserGuestIdType;
 use BenGorUser\User\Infrastructure\Persistence\Doctrine\ORM\Types\UserIdType;
 use BenGorUser\User\Infrastructure\Persistence\Doctrine\ORM\Types\UserRolesType;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesPass;
@@ -46,10 +45,6 @@ class DoctrineCustomTypesPassSpec extends ObjectBehavior
         $container->setParameter('doctrine.dbal.connection_factory.types', [
             'user_id'       => [
                 'class'     => UserIdType::class,
-                'commented' => true,
-            ],
-            'user_guest_id' => [
-                'class'     => UserGuestIdType::class,
                 'commented' => true,
             ],
             'user_roles'    => [
