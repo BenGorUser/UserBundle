@@ -19,7 +19,10 @@ public function registerBundles()
 {
     $bundles = [
         // ...
-        // Dependencies required by the bundle, keep the order. First bridges, then the bus, and finally the UserBundle
+
+        // Dependencies required by the bundle, keep the order.
+        // First bridges, then the bus, and finally the UserBundle
+        
         // Bridges
         new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
         new BenGorUser\TwigBridgeBundle\TwigBridgeBundle(),
@@ -38,7 +41,7 @@ public function registerBundles()
 }
 ```
 
-After that, you need to extend our `BenGorUser\UserBundle\Model\User` class in order to build the Doctrine mapping properly.
+After that, you need to extend our `BenGorUser\User\Domain\Model\User` class in order to build the Doctrine mapping properly.
 The following snippet is the minimum code that bundle needs to work.
 ```php
 <?php

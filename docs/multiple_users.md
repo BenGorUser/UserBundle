@@ -15,10 +15,10 @@ ben_gor_user:
             class: AppBundle\Entity\User
             firewall: main
 ```
-And for example if you execute the `bin/console debug:container | grep bengor.user.application.service.log_in`
+And for example if you execute the `bin/console debug:container | grep bengor_user.log_in_user`
 you'll see the following:
 ```bash
-bengor.user.application.service.log_in_user              BenGorUser\User\Application\Service\LogIn\LogInUserService
+bengor_user.log_in_user              BenGorUser\User\Application\Command\LogIn\LogInUserCommand
 ```
 Otherwise, if your `user_class` contains multiple choices for example something like this
 ```yml
@@ -33,8 +33,8 @@ ben_gor_user:
 ```
 the above command will print the following:
 ```bash
-bengor.user.application.service.log_in_applicant         BenGorUser\User\Application\Service\LogIn\LogInUserService
-bengor.user.application.service.log_in_employee          BenGorUser\User\Application\Service\LogIn\LogInUserService
+bengor_user.log_in_applicant         BenGorUser\User\Application\Command\LogIn\LogInUserCommand
+bengor_user.log_in_employee          BenGorUser\User\Application\Command\LogIn\LogInUserCommand
 ```
 
 
@@ -44,13 +44,13 @@ for each user.
 ```yml
 security:
     encoders:
-        AppBundle\Entity\Employee: bcrypt
         AppBundle\Entity\Applicant: bcrypt
+        AppBundle\Entity\Employee: bcrypt
     providers:
-        database_employees:
-            entity: { class: AppBundle:Employee, property: email }
-        database_applicants:
-            entity: { class: AppBundle:Applicant, property: email }
+        bengor_applicant:
+            id: bengor_user.applicant_provider
+        bengor_employee:
+            id: bengor_user.employee_provider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -61,7 +61,7 @@ security:
             guard:
                 authenticators:
                     - bengor_user.form_login_applicant_authenticator
-            provider: database_applicants
+            provider: bengor_applicant
             form_login:
                 check_path: bengor_user_applicant_login_check
                 login_path: bengor_user_applicant_login
@@ -75,7 +75,7 @@ security:
             guard:
                 authenticators:
                     - bengor_user.form_login_employee_authenticator
-            provider: database_employees
+            provider: bengor_employee
             form_login:
                 check_path: bengor_user_employee_login_check
                 login_path: bengor_user_employee_login
@@ -87,12 +87,12 @@ security:
         - { path: ^/applicant/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/applicant/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/applicant/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/applicant, role: ROLE_USER }
+        - { path: ^/applicant/, role: ROLE_USER }
         
         - { path: ^/employee/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/employee/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/employee/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/employee, role: ROLE_USER }
+        - { path: ^/employee/, role: ROLE_USER }
 ```
 Finally, like in the [Getting started](getting_started.md) chapter you need routes after firewall
 authorization so, something similar can be the minimal code snippet.

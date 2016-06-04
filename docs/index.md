@@ -3,7 +3,7 @@
 * Implementing features
     * Sign up with confirmation email
     * [Multiple user entities](multiple_users.md)
-    * [Invite users to sign in to your application](invitation_system.md)
+    * Invite users to sign in to your application
     * Remember password
     * Role management
 * [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)

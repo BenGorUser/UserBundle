@@ -73,7 +73,7 @@ class SignUpType extends AbstractType
     {
         $resolver->setRequired(['command', 'roles']);
         $resolver->setDefaults([
-            'data_class' => SignUpUserCommand::class,
+            'data_class' => $this->command,
             'empty_data' => function (FormInterface $form) {
                 return new $this->command(
                     $form->get('email')->getData(),
