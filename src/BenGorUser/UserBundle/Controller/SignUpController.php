@@ -15,8 +15,6 @@ namespace BenGorUser\UserBundle\Controller;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserAlreadyExistException;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
-use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
-use BenGorUser\UserBundle\Form\Type\SignUpType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -34,14 +32,14 @@ class SignUpController extends Controller
      * @param Request $request   The request
      * @param string  $userClass Extra parameter that contains the user type
      * @param string  $firewall  Extra parameter that contains the firewall name
-     * @param string  $command   Extra parameter that contains the fully qualified class name of command
+     * @param string  $formType  Extra parameter that contains the form type FQCN
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function defaultAction(Request $request, $userClass, $firewall, $command)
+    public function defaultAction(Request $request, $userClass, $firewall, $formType)
     {
         $roles = $this->getParameter('bengor_user.' . $userClass . '_default_roles');
-        $form = $this->createForm(SignUpType::class, null, ['roles' => $roles, 'command' => $command]);
+        $form = $this->createForm($formType, null, ['roles' => $roles]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -78,11 +76,11 @@ class SignUpController extends Controller
      * @param string  $invitationToken The invitation token
      * @param string  $userClass       Extra parameter that contains the user type
      * @param string  $firewall        Extra parameter that contains the firewall name
-     * @param string  $command         Extra parameter that contains the fully qualified class name of command
+     * @param string  $formType        Extra parameter that contains the form type FQCN
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $command)
+    public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $formType)
     {
         try {
             // we need to know if the invitation token given exists in
@@ -99,10 +97,9 @@ class SignUpController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(SignUpByInvitationType::class, null, [
+        $form = $this->createForm($formType, null, [
             'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
             'invitation_token' => $invitationToken,
-            'command'          => $command,
         ]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);

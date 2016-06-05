@@ -12,10 +12,10 @@
 
 namespace BenGorUser\UserBundle\Routing;
 
-use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserCommand;
-use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
-use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
-use BenGorUser\User\Application\Command\SignUp\WithConfirmationSignUpUserCommand;
+use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
+use BenGorUser\UserBundle\Form\Type\SignUpByInvitationWithConfirmationType;
+use BenGorUser\UserBundle\Form\Type\SignUpType;
+use BenGorUser\UserBundle\Form\Type\SignUpWithConfirmationType;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -26,11 +26,11 @@ use Symfony\Component\Routing\Route;
 class SignUpRoutesLoader extends RoutesLoader
 {
     /**
-     * The fully qualified class name of command.
+     * The fully qualified class name of formType.
      *
      * @var string
      */
-    private $command;
+    private $formType;
 
     /**
      * {@inheritdoc}
@@ -51,7 +51,7 @@ class SignUpRoutesLoader extends RoutesLoader
                 '_controller' => 'BenGorUserBundle:SignUp:' . $config['type'],
                 'userClass'   => $user,
                 'firewall'    => $config['firewall'],
-                'command'     => $this->command,
+                'formType'    => $this->formType,
             ],
             [],
             [],
@@ -69,26 +69,26 @@ class SignUpRoutesLoader extends RoutesLoader
         if ('by_invitation' === $specificationName
             || 'byInvitation' === $specificationName
         ) {
-            $this->command = ByInvitationSignUpUserCommand::class;
+            $this->formType = SignUpByInvitationType::class;
 
             return 'byInvitation';
         }
         if ('by_invitation_with_confirmation' === $specificationName
             || 'byInvitationWithConfirmation' === $specificationName
         ) {
-            $this->command = ByInvitationWithConfirmationSignUpUserCommand::class;
+            $this->formType = SignUpByInvitationWithConfirmationType::class;
 
             return 'byInvitation';
         }
         if ('default' === $specificationName) {
-            $this->command = SignUpUserCommand::class;
+            $this->formType = SignUpType::class;
 
             return 'default';
         }
         if ('with_confirmation' === $specificationName
             || 'withConfirmation' === $specificationName
         ) {
-            $this->command = WithConfirmationSignUpUserCommand::class;
+            $this->formType = SignUpWithConfirmationType::class;
 
             return 'default';
         }

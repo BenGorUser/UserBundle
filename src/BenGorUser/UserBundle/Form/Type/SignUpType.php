@@ -25,8 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Sign up user form type.
  *
- * It is valid for "default" or "with_confirmation" specifications.
- *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
 class SignUpType extends AbstractType
@@ -36,7 +34,7 @@ class SignUpType extends AbstractType
      *
      * @var string
      */
-    private $command;
+    protected $command;
 
     /**
      * Array which contains the default role|roles.
@@ -44,6 +42,14 @@ class SignUpType extends AbstractType
      * @var array
      */
     private $roles;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->command = SignUpUserCommand::class;
+    }
 
     /**
      * {@inheritdoc}
@@ -62,7 +68,6 @@ class SignUpType extends AbstractType
                 'label' => 'sign_up.form_submit_button',
             ]);
 
-        $this->command = $options['command'];
         $this->roles = $options['roles'];
     }
 
@@ -71,9 +76,9 @@ class SignUpType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['command', 'roles']);
+        $resolver->setRequired(['roles']);
         $resolver->setDefaults([
-            'data_class' => SignUpUserCommand::class, // Todo: it is hardcoded, create a compilerpass to pass options as constructor
+            'data_class' => $this->command,
             'empty_data' => function (FormInterface $form) {
                 return new $this->command(
                     $form->get('email')->getData(),
