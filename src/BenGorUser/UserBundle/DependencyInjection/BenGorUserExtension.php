@@ -41,13 +41,11 @@ class BenGorUserExtension extends Extension
 
         $loader->load('forms.yml');
         $loader->load('routing.yml');
-        $loader->load('simple_bus.yml');
 
         $container->setParameter('bengor_user.config', $config);
 
         foreach ($config['user_class'] as $key => $user) {
             $this->loadCommands($container, $key);
-            $this->addMiddlewareTags($container, $key);
         }
     }
 
@@ -67,51 +65,6 @@ class BenGorUserExtension extends Extension
         $container->setDefinition(
             'bengor.user.command.change_' . $user . '_password_command',
             (new Definition(ChangePasswordCommand::class))->addTag('console.command')
-        );
-    }
-
-    /**
-     * Adds tags to Simple bus middlewares.
-     *
-     * @param ContainerBuilder $container The container
-     * @param string           $user      The user name
-     */
-    private function addMiddlewareTags(ContainerBuilder $container, $user)
-    {
-        // Related with Command Bus
-        $container->setDefinition(
-            'bengor_user.simple_bus.' . $user . '_command_bus.delegates_to_message_handler_middleware',
-            (new Definition(DelegatesToMessageHandlerMiddleware::class))->addTag(
-                'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-1000']
-            )
-        );
-        $container->getDefinition(
-            'bengor_user.simple_bus.finishes_command_before_handling_next_middleware'
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '1000']
-        );
-        $container->getDefinition(
-            'bengor_user.simple_bus.doctrine_transactional_middleware'
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '0']
-        );
-
-        // Related with Event Bus
-        $container->setDefinition(
-            'bengor_user.simple_bus.' . $user . '_event_bus.delegates_to_message_handler_middleware',
-            (new Definition(NotifiesMessageSubscribersMiddleware::class))->addTag(
-                'bengor_user_' . $user . '_event_bus_middleware', ['priority' => '-1000']
-            )
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
-        );
-        $container->setDefinition(
-            'bengor_user.simple_bus.' . $user . '_event_bus.handles_recorded_messages_middleware',
-            (new Definition(HandlesRecordedMessagesMiddleware::class))->addTag(
-                'bengor_user_' . $user . '_event_bus_middleware', ['priority' => '-1000']
-            )
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
         );
     }
 }

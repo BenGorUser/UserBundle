@@ -20,7 +20,6 @@ use BenGorUser\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\RoutesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\SimpleBusPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -42,10 +41,29 @@ class BenGorUserBundle extends Bundle
             ->addCompilerPass(new DomainServicesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationCommandsPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new ApplicationDataTransformersPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new ApplicationQueriesPass(), PassConfig::TYPE_OPTIMIZE)
-            ->addCompilerPass(new SimpleBusPass(), PassConfig::TYPE_OPTIMIZE)
+            ->addCompilerPass(new ApplicationQueriesPass(), PassConfig::TYPE_OPTIMIZE);
+
+        $this->buildLoadableBundles($container);
+
+        $container
             ->addCompilerPass(new RoutesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new SecurityServicesPass(), PassConfig::TYPE_OPTIMIZE)
             ->addCompilerPass(new CommandsServicesPass(), PassConfig::TYPE_OPTIMIZE);
+    }
+
+    /**
+     * Executes the load method of LoadableBundle instances.
+     *
+     * @param ContainerBuilder $container The container builder
+     */
+    protected function buildLoadableBundles(ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        foreach ($bundles as $bundle) {
+            $reflectionClass = new \ReflectionClass($bundle);
+            if ($reflectionClass->implementsInterface(LoadableBundle::class)) {
+                (new $bundle())->load($container);
+            }
+        }
     }
 }

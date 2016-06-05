@@ -29,6 +29,7 @@ public function registerBundles()
         new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
         new BenGorUser\SymfonyRoutingBridgeBundle\SymfonyRoutingBridgeBundle(),
         new BenGorUser\SymfonySecurityBridgeBundle\SymfonySecurityBridgeBundle(),
+        new BenGorUser\SimpleBusBridgeBundle\SimpleBusBridgeBundle(),
         
         // User bundle
         new BenGorUser\UserBundle\BenGorUserBundle(),
