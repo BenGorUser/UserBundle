@@ -15,6 +15,8 @@ namespace BenGorUser\UserBundle\DependencyInjection;
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
 use SimpleBus\Message\Handler\DelegatesToMessageHandlerMiddleware;
+use SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware;
+use SimpleBus\Message\Subscriber\NotifiesMessageSubscribersMiddleware;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -77,8 +79,9 @@ class BenGorUserExtension extends Extension
      */
     private function addMiddlewareTags(ContainerBuilder $container, $user)
     {
+        // Related with Command Bus
         $container->setDefinition(
-            'bengor_user.simple_bus.' . $user . '_delegates_to_message_handler_middleware',
+            'bengor_user.simple_bus.' . $user . '_command_bus.delegates_to_message_handler_middleware',
             (new Definition(DelegatesToMessageHandlerMiddleware::class))->addTag(
                 'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-1000']
             )
@@ -93,10 +96,23 @@ class BenGorUserExtension extends Extension
         )->addTag(
             'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '0']
         );
-//        $container->getDefinition(
-//            'bengor_user.simple_bus.event_bus.handles_recorded_messages_middleware'
-//        )->addTag(
-//            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
-//        );
+
+        // Related with Event Bus
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_event_bus.delegates_to_message_handler_middleware',
+            (new Definition(NotifiesMessageSubscribersMiddleware::class))->addTag(
+                'bengor_user_' . $user . '_event_bus_middleware', ['priority' => '-1000']
+            )
+        )->addTag(
+            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
+        );
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_event_bus.handles_recorded_messages_middleware',
+            (new Definition(HandlesRecordedMessagesMiddleware::class))->addTag(
+                'bengor_user_' . $user . '_event_bus_middleware', ['priority' => '-1000']
+            )
+        )->addTag(
+            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
+        );
     }
 }

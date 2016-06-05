@@ -21,7 +21,7 @@ public function registerBundles()
         // ...
 
         // Dependencies required by the bundle, keep the order.
-        // First bridges, then the bus, and finally the UserBundle
+        // First bridges and then the UserBundle
         
         // Bridges
         new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
@@ -29,10 +29,6 @@ public function registerBundles()
         new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
         new BenGorUser\SymfonyRoutingBridgeBundle\SymfonyRoutingBridgeBundle(),
         new BenGorUser\SymfonySecurityBridgeBundle\SymfonySecurityBridgeBundle(),
-        
-        // The Buses
-        new SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle(),
-        new SimpleBus\SymfonyBridge\SimpleBusEventBusBundle(),
         
         // User bundle
         new BenGorUser\UserBundle\BenGorUserBundle(),

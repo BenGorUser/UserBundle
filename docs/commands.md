@@ -1,6 +1,6 @@
 # Commands
 
-This bundle allows the use of all commands available in the BenGorUser component. You can find a list [here](https://github.com/BenGorUser/User/blob/master/docs/command.md)
+This bundle allows the use of all commands available in the BenGorUser component. You can find a list [here][1]
 
 To run one of these commands you need to use the command bus responsible of assigning the correct handler. To do it so,
 you need to get the correct bus for the user type you want to modify as each one as its own bus. For example, to execute 
@@ -109,7 +109,7 @@ class SubscribeToNewsletterHandler
 }
 ```
 
-Once the command and the subscribers are implemented you need to create a service and tag it to let the command bus know 
+Once the command and the handler are implemented you need to create a service and tag it to let the command bus know 
 you want to add a new handlers. To do it add the following to your `services.yml`
 
 ```php
@@ -142,5 +142,5 @@ public function subscribeToNewsletter(Request $request)
 
 > Make sure you use the command bus related to the user type you want to change
 
-
+[1]: https://github.com/BenGorUser/User/blob/master/docs/command.md
 

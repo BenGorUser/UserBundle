@@ -6,9 +6,9 @@
     * Invite users to sign in to your application
     * Remember password
     * Role management
-* [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)
 * [Commands](commands.md)
-* [Register subscribers into DomainEventPublisherListener](subscribers.md)
+* [Domain events and subscribers](events_subscribers.md)
+* [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)
 * Custom views, overriding twig files
 * Advanced customization
     * [Customize URLs](customize_urls.md)
