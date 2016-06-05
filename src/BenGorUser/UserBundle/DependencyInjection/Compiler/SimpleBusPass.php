@@ -14,6 +14,10 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use BenGorUser\UserBundle\CommandBus\SimpleBusUserCommandBus;
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
+use SimpleBus\Message\CallableResolver\CallableMap;
+use SimpleBus\Message\CallableResolver\ServiceLocatorAwareCallableResolver;
+use SimpleBus\Message\Handler\Resolver\NameBasedMessageHandlerResolver;
+use SimpleBus\Message\Name\ClassBasedNameResolver;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\ConfigureMiddlewares;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterHandlers;
 use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterMessageRecorders;
@@ -21,6 +25,7 @@ use SimpleBus\SymfonyBridge\DependencyInjection\Compiler\RegisterSubscribers;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Simple bus pass.
@@ -56,7 +61,8 @@ class SimpleBusPass implements CompilerPassInterface
         $handlerTag = 'bengor_user_' . $user . '_command_bus_handler';
 
         // Define the command bus for the given user type
-        // The middleware tag string will be later used to add required middleware to this specific command bus
+        // The middleware tag string will be later used to add
+        // required middleware to this specific command bus
         $container->setDefinition(
             $busId,
             (new Definition(
@@ -67,23 +73,73 @@ class SimpleBusPass implements CompilerPassInterface
             ])->setPublic(false)
         );
 
-        // Find services tagged with $middlewareTag string and add them to the current user type's command bus
+        // Find services tagged with $middlewareTag string and add
+        // them to the current user type's command bus
         (new ConfigureMiddlewares($busId, $middlewareTag))->process($container);
 
-        // Declares the handler map for the current user type's command bus, will contain the association between
-        // commands an handlers
-        
-        
-        // Declares the handler resolver with the NameResolver strategy and HandlerMap key values for Command => Handler
-        
-        // Declares the Handler 
-        // Declares the tag that will be used to associate the handlers to the current user type's command bus
+        // Declares callable resolver for the current user type's command bus
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_command_bus.callable_resolver',
+            (new Definition(
+                ServiceLocatorAwareCallableResolver::class, [
+                    [
+                        new Reference('service_container'), 'get',
+                    ],
+                ]
+            ))->setPublic(false)
+        );
+
+        // Declares class based command name resolver for the current user type's command bus
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_command_bus.class_based_command_name_resolver',
+            (new Definition(
+                ClassBasedNameResolver::class
+            ))->setPublic(false)
+        );
+
+        // Declares the handler map for the current user type's command bus,
+        // will contain the association between commands an handlers
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_command_bus.command_handler_map',
+            (new Definition(
+                CallableMap::class, [
+                    [],
+                    $container->getDefinition('bengor_user.simple_bus.' . $user . '_command_bus.callable_resolver'),
+                ]
+            ))->setPublic(false)
+        );
+
+        // Declares the handler resolver with the NameResolver
+        // strategy and HandlerMap key values for Command => Handler
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_command_bus.command_handler_resolver',
+            (new Definition(
+                NameBasedMessageHandlerResolver::class, [
+                    $container->getDefinition(
+                        'bengor_user.simple_bus.' . $user . '_command_bus.class_based_command_name_resolver'
+                    ),
+                    $container->getDefinition(
+                        'bengor_user.simple_bus.' . $user . '_command_bus.command_handler_map'
+                    ),
+                ]
+            ))->setPublic(false)
+        );
+
+        // Declares the Handler
+        $container
+            ->findDefinition('bengor_user.simple_bus.' . $user . '_delegates_to_message_handler_middleware')
+            ->addArgument(
+                $container->getDefinition('bengor_user.simple_bus.' . $user . '_command_bus.command_handler_resolver')
+            )->setPublic(false);
+
+        // Declares the tag that will be used to associate the
+        // handlers to the current user type's command bus
         (new RegisterHandlers(
-            'simple_bus.command_bus.' . $user . '_command_handler_map',
+            'bengor_user.simple_bus.' . $user . '_command_bus.command_handler_map',
             $handlerTag,
             'handles'
         ))->process($container);
-        
+
         // Decorate SimpleBus' command bus with BenGorUser's command bus
         $container->setDefinition(
             'bengor_user.' . $user . '_command_bus',
@@ -105,6 +161,7 @@ class SimpleBusPass implements CompilerPassInterface
     {
         $busId = 'bengor.user.simple_bus_' . $user . '_event_bus';
         $middlewareTag = 'bengor_user_' . $user . '_event_bus_middleware';
+        $subscriberTag = 'bengor_user_' . $user . '_event_subscriber';
 
         $container->setDefinition(
             $busId,
@@ -120,7 +177,7 @@ class SimpleBusPass implements CompilerPassInterface
 
         (new RegisterSubscribers(
             'simple_bus.event_bus.event_subscribers_collection',
-            'bengor_user_' . $user . '_event_subscriber',
+            $subscriberTag,
             'subscribes_to'
         ))->process($container);
 

@@ -14,6 +14,7 @@ namespace BenGorUser\UserBundle\DependencyInjection;
 
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
+use SimpleBus\Message\Handler\DelegatesToMessageHandlerMiddleware;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -76,10 +77,11 @@ class BenGorUserExtension extends Extension
      */
     private function addMiddlewareTags(ContainerBuilder $container, $user)
     {
-        $container->getDefinition(
-            'bengor_user.simple_bus_' . $user . '_delegates_to_message_handler_middleware'
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-1000']
+        $container->setDefinition(
+            'bengor_user.simple_bus.' . $user . '_delegates_to_message_handler_middleware',
+            (new Definition(DelegatesToMessageHandlerMiddleware::class))->addTag(
+                'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-1000']
+            )
         );
         $container->getDefinition(
             'bengor_user.simple_bus.finishes_command_before_handling_next_middleware'
@@ -91,10 +93,10 @@ class BenGorUserExtension extends Extension
         )->addTag(
             'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '0']
         );
-        $container->getDefinition(
-            'bengor_user.simple_bus.event_bus.handles_recorded_messages_middleware'
-        )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
-        );
+//        $container->getDefinition(
+//            'bengor_user.simple_bus.event_bus.handles_recorded_messages_middleware'
+//        )->addTag(
+//            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
+//        );
     }
 }
