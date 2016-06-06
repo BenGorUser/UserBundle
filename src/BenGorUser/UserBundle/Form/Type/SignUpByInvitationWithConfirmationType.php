@@ -19,7 +19,7 @@ use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignU
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SignUpByInvitationWithConfirmationType extends SignUpType
+class SignUpByInvitationWithConfirmationType extends SignUpByInvitationType
 {
     /**
      * Constructor.

@@ -12,18 +12,16 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserRequest;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserService;
+use BenGorUser\User\Application\Query\UserOfInvitationTokenHandler;
+use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
+use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGorUser\User\Domain\Model\UserEmail;
-use BenGorUser\User\Domain\Model\UserGuest;
-use BenGorUser\User\Domain\Model\UserGuestRepository;
 use BenGorUser\User\Domain\Model\UserToken;
 use BenGorUser\UserBundle\Controller\SignUpController;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;
-use BenGorUser\UserBundle\Model\User;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
-use Ddd\Application\Service\TransactionalApplicationService;
+use BenGorUser\UserBundle\Security\UserSymfonyDataTransformer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -36,6 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Translation\Translator;
 
@@ -263,12 +262,21 @@ class SignUpControllerSpec extends ObjectBehavior
         FormView $formView,
         TwigEngine $templating,
         Response $response,
-        UserGuestRepository $userGuestRepository,
-        UserGuest $userGuest
+        UserInterface $user,
+        UserOfInvitationTokenHandler $handler,
+        UserSymfonyDataTransformer $dataTransformer
     ) {
-        $container->get('bengor_user.user_guest_repository')->shouldBeCalled()->willReturn($userGuestRepository);
-        $userGuestRepository->userGuestOfInvitationToken(new UserToken('invitation-token'))
-            ->shouldBeCalled()->willReturn($userGuest);
+        $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
+        $userDto = [
+            'email'    => 'bengor@user.com',
+            'password' => '123456',
+            'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
+        ];
+        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($handler);
+        $handler->__invoke($invitationTokenQuery)->shouldBeCalled()->willReturn($userDto);
+        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $dataTransformer->write($userDto)->shouldBeCalled();
+        $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
@@ -284,30 +292,28 @@ class SignUpControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
-        $userGuest->email()->shouldBeCalled()->willReturn(new UserEmail('user@guest.com'));
+        $user->getUsername()->shouldBeCalled()->willReturn('bengor@user.com');
         $templating->renderResponse('@BenGorUser/sign_up/by_invitation.html.twig', [
-            'email' => 'user@guest.com',
+            'email' => 'bengor@user.com',
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
         $this->byInvitationAction(
-            $request, 'invitation-token', 'user', 'main', 'bengor_user_user_homepage'
+            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
         )->shouldReturn($response);
     }
 
     function it_does_not_render_because_invitation_token_does_not_exist(
         Request $request,
         ContainerInterface $container,
-        UserGuestRepository $userGuestRepository
+        UserOfInvitationTokenHandler $handler
     ) {
-        $invitationToken = new UserToken('invitation-token');
-        $container->get('bengor_user.user_guest_repository')
-            ->shouldBeCalled()->willReturn($userGuestRepository);
-        $userGuestRepository->userGuestOfInvitationToken($invitationToken)
-            ->shouldBeCalled()->willReturn(null);
+        $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
+        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($handler);
+        $handler->__invoke($invitationTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
         $this->shouldThrow(NotFoundHttpException::class)->duringByInvitationAction(
-            $request, $invitationToken, 'user', 'main', 'bengor_user_user_homepage'
+            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
         );
     }
 }

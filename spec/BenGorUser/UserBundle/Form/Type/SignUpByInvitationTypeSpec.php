@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Spec file of sign up by invitation type class.
+ * Spec file of SignUpByInvitationType class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */

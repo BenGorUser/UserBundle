@@ -14,9 +14,6 @@ namespace BenGorUser\UserBundle\DependencyInjection;
 
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
-use SimpleBus\Message\Handler\DelegatesToMessageHandlerMiddleware;
-use SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware;
-use SimpleBus\Message\Subscriber\NotifiesMessageSubscribersMiddleware;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
