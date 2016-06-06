@@ -14,16 +14,13 @@ namespace spec\BenGorUser\UserBundle;
 
 use BenGorUser\UserBundle\BenGorUserBundle;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationServicesPass;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationCommandsPass;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationQueriesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\DoctrineCustomTypesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DomainServicesPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\MailingServicesPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\PersistenceServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\RoutesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\SubscribersPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -31,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Spec file of bengor user bundle class.
+ * Spec file of BenGorUserBundle class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -50,11 +47,6 @@ class BenGorUserBundleSpec extends ObjectBehavior
     function it_builds(ContainerBuilder $container)
     {
         $container->addCompilerPass(
-            Argument::type(ApplicationDataTransformersPass::class),
-            PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $container->addCompilerPass(
             Argument::type(DefaultRolesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
@@ -65,7 +57,26 @@ class BenGorUserBundleSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(PersistenceServicesPass::class),
+            Argument::type(ApplicationCommandsPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->addCompilerPass(
+            Argument::type(ApplicationDataTransformersPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->addCompilerPass(
+            Argument::type(ApplicationQueriesPass::class),
+            PassConfig::TYPE_OPTIMIZE
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->getParameter('kernel.bundles')->shouldBeCalled()->willReturn([
+            'FrameworkBundle' => 'Symfony\Bundle\FrameworkBundle\FrameworkBundle',
+        ]);
+
+        $container->addCompilerPass(
+            Argument::type(RoutesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
 
@@ -75,76 +86,9 @@ class BenGorUserBundleSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn($container);
 
         $container->addCompilerPass(
-            Argument::type(DoctrineCustomTypesPass::class),
+            Argument::type(CommandsServicesPass::class),
             PassConfig::TYPE_OPTIMIZE
         )->shouldBeCalled()->willReturn($container);
-
-        $container->addCompilerPass(
-            Argument::type(MailingServicesPass::class),
-            PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $container->addCompilerPass(
-            Argument::type(ApplicationServicesPass::class),
-            PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $container->addCompilerPass(
-            Argument::type(RoutesPass::class),
-            PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $container->addCompilerPass(
-            Argument::type(SubscribersPass::class),
-            PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-        $container->addCompilerPass(
-            Argument::type(CommandsServicesPass::class), PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $container->hasExtension('doctrine')->shouldBeCalled()->willReturn(true);
-        $container->loadFromExtension('doctrine', [
-            'orm' => [
-                'mappings' => [
-                    'BenGorUserBundle' => [
-                        'type'      => 'yml',
-                        'is_bundle' => true,
-                        'prefix'    => 'BenGor\\User\\Domain\\Model',
-                    ],
-                ],
-            ],
-        ])->shouldBeCalled()->willReturn($container);
-
-        $container->hasExtension('doctrine_mongodb')->shouldBeCalled()->willReturn(true);
-        $container->loadFromExtension('doctrine_mongodb', [
-            'document_managers' => [
-                'default' => [
-                    'mappings' => [
-                        'BenGorUserBundle' => [
-                            'type'      => 'yml',
-                            'is_bundle' => true,
-                            'prefix'    => 'BenGor\\User\\Domain\\Model',
-                        ],
-                    ],
-                ],
-            ],
-        ])->shouldBeCalled()->willReturn($container);
-
-        $container->hasExtension('framework')->shouldBeCalled()->willReturn(true);
-        $container->loadFromExtension('framework', [
-            'translator' => [
-                'paths' => [
-                    '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Translations',
-                ],
-            ],
-        ])->shouldBeCalled()->willReturn($container);
-
-        $container->hasExtension('twig')->shouldBeCalled()->willReturn(true);
-        $container->loadFromExtension('twig', [
-            'paths' => [
-                '%kernel.root_dir%/../vendor/bengor/user/src/BenGor/User/Infrastructure/Ui/Twig/views' => 'bengor_user',
-            ],
-        ])->shouldBeCalled()->willReturn($container);
 
         $this->build($container);
     }

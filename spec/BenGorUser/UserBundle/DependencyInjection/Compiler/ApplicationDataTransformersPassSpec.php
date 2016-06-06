@@ -39,14 +39,89 @@ class ApplicationDataTransformersPassSpec extends ObjectBehavior
 
     function it_processes(ContainerBuilder $container, Definition $definition)
     {
+        $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
+            'user_class' => [
+                'user' => [
+                    'class'         => 'AppBundle\Entity\User',
+                    'firewall'      => 'main',
+                    'persistence'   => 'doctrine_orm',
+                    'default_roles' => [
+                        'ROLE_USER',
+                    ],
+                    'use_cases'     => [
+                        'security'        => [
+                            'enabled' => true,
+                        ],
+                        'sign_up'         => [
+                            'enabled' => true,
+                            'type'    => 'default',
+                        ],
+                        'change_password' => [
+                            'enabled' => true,
+                            'type'    => 'default',
+                        ],
+                        'remove'          => [
+                            'enabled' => true,
+                        ],
+                    ],
+                    'routes'        => [
+                        'security'                  => [
+                            'login'                     => [
+                                'name' => 'bengor_user_user_login',
+                                'path' => '/user/login',
+                            ],
+                            'login_check'               => [
+                                'name' => 'bengor_user_user_login_check',
+                                'path' => '/user/login_check',
+                            ],
+                            'logout'                    => [
+                                'name' => 'bengor_user_user_logout',
+                                'path' => '/user/logout',
+                            ],
+                            'success_redirection_route' => 'bengor_user_user_homepage',
+                        ],
+                        'sign_up'                   => [
+                            'name'                      => 'bengor_user_user_sign_up',
+                            'path'                      => '/user/sign-up',
+                            'success_redirection_route' => 'bengor_user_user_homepage',
+                        ],
+                        'invite'                    => [
+                            'name'                      => 'bengor_user_user_invite',
+                            'path'                      => '/user/invite',
+                            'success_redirection_route' => null,
+                        ],
+                        'enable'                    => [
+                            'name'                      => 'bengor_user_user_enable',
+                            'path'                      => '/user/confirmation-token',
+                            'success_redirection_route' => null,
+                        ],
+                        'change_password'           => [
+                            'name'                      => 'bengor_user_user_change_password',
+                            'path'                      => '/user/change-password',
+                            'success_redirection_route' => null,
+                        ],
+                        'request_remember_password' => [
+                            'name'                      => 'bengor_user_user_request_remember_password',
+                            'path'                      => '/user/remember-password',
+                            'success_redirection_route' => null,
+                        ],
+                        'remove'                    => [
+                            'name'                      => 'bengor_user_user_remove',
+                            'path'                      => '/user/remove',
+                            'success_redirection_route' => null,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
         $container->setDefinition(
             'bengor.user.application.data_transformer.user_dto',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
-        $container->setDefinition(
-            'bengor.user.application.data_transformer.user_no_transformation',
-            Argument::type(Definition::class)
-        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.user_dto_data_transformer', 'bengor.user.application.data_transformer.user_dto'
+        )->shouldBeCalled()->willReturn($container);
 
         $this->process($container);
     }

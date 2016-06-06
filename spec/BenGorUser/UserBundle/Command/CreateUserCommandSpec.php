@@ -12,10 +12,10 @@
 
 namespace spec\BenGorUser\UserBundle\Command;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserRequest;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
+use BenGorUser\User\Domain\Model\User;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
-use BenGorUser\UserBundle\Model\User;
-use Ddd\Application\Service\TransactionalApplicationService;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
@@ -23,15 +23,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Spec file of create user command.
+ * Spec file of CreateUserCommand class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
 class CreateUserCommandSpec extends ObjectBehavior
 {
-    function let(TransactionalApplicationService $service)
+    function let(UserCommandBus $commandBus)
     {
-        $this->beConstructedWith($service, 'user', User::class);
+        $this->beConstructedWith($commandBus, 'user', User::class);
     }
 
     function it_is_initializable()
@@ -47,7 +47,7 @@ class CreateUserCommandSpec extends ObjectBehavior
     function it_executes(
         InputInterface $input,
         OutputInterface $output,
-        TransactionalApplicationService $service
+        UserCommandBus $commandBus
     ) {
         $input->getArgument('email')->shouldBeCalled()->willReturn('user@user.com');
         $input->getArgument('password')->shouldBeCalled()->willReturn(123456);
@@ -59,8 +59,7 @@ class CreateUserCommandSpec extends ObjectBehavior
         $input->isInteractive()->shouldBeCalled()->willReturn(true);
         $input->validate()->shouldBeCalled();
 
-        $service->execute(Argument::type(SignUpUserRequest::class))
-            ->shouldBeCalled()->willReturn(['email' => 'user@user.com']);
+        $commandBus->handle(Argument::type(SignUpUserCommand::class))->shouldBeCalled();
 
         $output->writeln(sprintf(
             'Created %s: <comment>%s</comment>', 'user', 'user@user.com'

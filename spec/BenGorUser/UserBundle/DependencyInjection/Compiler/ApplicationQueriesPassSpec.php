@@ -13,7 +13,7 @@
 namespace spec\BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use BenGorUser\User\Domain\Model\User;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationQueriesPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,15 +21,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Spec file of security services compiler pass.
+ * Spec file of ApplicationQueriesPass pass.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityServicesPassSpec extends ObjectBehavior
+class ApplicationQueriesPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(SecurityServicesPass::class);
+        $this->shouldHaveType(ApplicationQueriesPass::class);
     }
 
     function it_implmements_compiler_pass_interface()
@@ -115,45 +115,37 @@ class SecurityServicesPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator')
+        $container->getDefinition('bengor.user.infrastructure.persistence.user_repository')
             ->shouldBeCalled()->willReturn($definition);
-        $container->getDefinition('bengor_user.user_command_bus')
+        $container->getDefinition('bengor.user.application.data_transformer.user_dto')
             ->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
-        $container->setDefinition(
-            'bengor.user_bundle.security.authenticator.form_login_user_authenticator',
-            Argument::type(Definition::class)
-        )->shouldBeCalled()->willReturn($definition);
-        $container->setAlias(
-            'bengor_user.form_login_user_authenticator',
-            'bengor.user_bundle.security.authenticator.form_login_user_authenticator'
-        )->shouldBeCalled();
 
-        $container->getDefinition('bengor.user_bundle.security.user_symfony_data_transformer')
-            ->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
         $container->setDefinition(
-            'bengor.user_bundle.security.user_symfony_data_transformer',
+            'bengor.user.application.query.user_of_email',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_symfony_data_transformer',
-            'bengor.user_bundle.security.user_symfony_data_transformer'
-        )->shouldBeCalled();
+            'bengor_user.user_of_email_query',
+            'bengor.user.application.query.user_of_email'
+        )->shouldBeCalled()->willReturn($container);
 
-        $container->getDefinition('bengor.user_bundle.security.user_symfony_data_transformer')
-            ->shouldBeCalled()->willReturn($definition);
-        $container->getDefinition('bengor.user.application.query.user_of_email')
-            ->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
         $container->setDefinition(
-            'bengor.user_bundle.security.user_provider',
+            'bengor.user.application.query.user_of_invitation_token',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_provider',
-            'bengor.user_bundle.security.user_provider'
-        )->shouldBeCalled();
+            'bengor_user.user_of_invitation_token_query',
+            'bengor.user.application.query.user_of_invitation_token'
+        )->shouldBeCalled()->willReturn($container);
+
+        $container->setDefinition(
+            'bengor.user.application.query.user_of_remember_password_token',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.user_of_remember_password_token_query',
+            'bengor.user.application.query.user_of_remember_password_token'
+        )->shouldBeCalled()->willReturn($container);
 
         $this->process($container);
     }

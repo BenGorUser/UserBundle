@@ -13,26 +13,27 @@
 namespace spec\BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use BenGorUser\User\Domain\Model\User;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationCommandsPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Spec file of security services compiler pass.
+ * Spec file of ApplicationCommandsPass class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SecurityServicesPassSpec extends ObjectBehavior
+class ApplicationCommandsPassSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(SecurityServicesPass::class);
+        $this->shouldHaveType(ApplicationCommandsPass::class);
     }
 
-    function it_implmements_compiler_pass_interface()
+    function it_implements_compiler_pass_interface()
     {
         $this->shouldImplement(CompilerPassInterface::class);
     }
@@ -115,45 +116,67 @@ class SecurityServicesPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator')
+        $container->getDefinition('bengor.user.infrastructure.persistence.user_repository')
             ->shouldBeCalled()->willReturn($definition);
-        $container->getDefinition('bengor_user.user_command_bus')
+        $container->getDefinition('bengor.user.infrastructure.security.symfony.user_password_encoder')
             ->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
+        $container->getDefinition('bengor.user.infrastructure.domain.model.user_factory_sign_up')
+            ->shouldBeCalled()->willReturn($definition);
+
         $container->setDefinition(
-            'bengor.user_bundle.security.authenticator.form_login_user_authenticator',
+            'bengor.user.application.command.log_in_user',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.form_login_user_authenticator',
-            'bengor.user_bundle.security.authenticator.form_login_user_authenticator'
+            'bengor_user.log_in_user',
+            'bengor.user.application.command.log_in_user'
         )->shouldBeCalled();
 
-        $container->getDefinition('bengor.user_bundle.security.user_symfony_data_transformer')
-            ->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
         $container->setDefinition(
-            'bengor.user_bundle.security.user_symfony_data_transformer',
+            'bengor.user.application.command.log_out_user',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_symfony_data_transformer',
-            'bengor.user_bundle.security.user_symfony_data_transformer'
+            'bengor_user.log_out_user',
+            'bengor.user.application.command.log_out_user'
         )->shouldBeCalled();
 
-        $container->getDefinition('bengor.user_bundle.security.user_symfony_data_transformer')
-            ->shouldBeCalled()->willReturn($definition);
-        $container->getDefinition('bengor.user.application.query.user_of_email')
-            ->shouldBeCalled()->willReturn($definition);
-        $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
         $container->setDefinition(
-            'bengor.user_bundle.security.user_provider',
+            'bengor.user.application.command.sign_up_user',
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_provider',
-            'bengor.user_bundle.security.user_provider'
+            'bengor_user.sign_up_user',
+            'bengor.user.application.command.sign_up_user'
         )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.application.command.change_user_password',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.change_user_password',
+            'bengor.user.application.command.change_user_password'
+        )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.application.command.change_user_password_without_old_password',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.change_user_password_without_old_password',
+            'bengor.user.application.command.change_user_password_without_old_password'
+        )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.application.command.remove_user',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.remove_user',
+            'bengor.user.application.command.remove_user'
+        )->shouldBeCalled();
+
 
         $this->process($container);
     }

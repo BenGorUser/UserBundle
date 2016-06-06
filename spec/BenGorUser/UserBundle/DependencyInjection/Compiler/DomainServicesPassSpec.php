@@ -116,13 +116,23 @@ class DomainServicesPassSpec extends ObjectBehavior
         ]);
 
         $container->setDefinition(
-            'bengor.user.infrastructure.domain.model.user_factory',
+            'bengor.user.infrastructure.domain.model.user_factory_sign_up',
             Argument::type(Definition::class)
         )->shouldBeCalled();
 
         $container->setAlias(
-            'bengor_user.user_factory',
-            'bengor.user.infrastructure.domain.model.user_factory'
+            'bengor_user.user_factory_sign_up',
+            'bengor.user.infrastructure.domain.model.user_factory_sign_up'
+        )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.infrastructure.domain.model.user_factory_invite',
+            Argument::type(Definition::class)
+        )->shouldBeCalled();
+
+        $container->setAlias(
+            'bengor_user.user_factory_invite',
+            'bengor.user.infrastructure.domain.model.user_factory_invite'
         )->shouldBeCalled();
 
         $this->process($container);

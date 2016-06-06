@@ -10,18 +10,18 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\BenGorUser\UserBundle\Model;
+namespace spec\BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Domain\Model\UserEmail;
 use BenGorUser\User\Domain\Model\UserId;
 use BenGorUser\User\Domain\Model\UserPassword;
 use BenGorUser\User\Domain\Model\UserRole;
-use BenGorUser\UserBundle\Model\User;
+use BenGorUser\UserBundle\Security\User;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Spec file of bengor user class.
+ * Spec file of User class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -29,23 +29,10 @@ class UserSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(
-            new UserId(),
-            new UserEmail('test@test.com'),
-            UserPassword::fromEncoded('123456', 'dummy-salt'),
-            [
-                new UserRole('ROLE_USER'),
-                new UserRole('ROLE_ADMIN'),
-            ]
-        );
+        $this->beConstructedWith('test@test.com', '123456', ['ROLE_USER', 'ROLE_ADMIN'], 'dummy-salt');
     }
 
     function it_is_initializable()
-    {
-        $this->shouldHaveType(User::class);
-    }
-
-    function it_extends_user()
     {
         $this->shouldHaveType(User::class);
     }
@@ -73,5 +60,6 @@ class UserSpec extends ObjectBehavior
     function it_gets_username()
     {
         $this->getUsername()->shouldReturn('test@test.com');
+        $this->__toString()->shouldReturn('test@test.com');
     }
 }

@@ -12,10 +12,10 @@
 
 namespace spec\BenGorUser\UserBundle\Command;
 
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
+use BenGorUser\User\Application\Command\ChangePassword\ChangeUserPasswordCommand;
+use BenGorUser\User\Application\Command\ChangePassword\WithoutOldPasswordChangeUserPasswordCommand;
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
-use BenGorUser\UserBundle\Model\User;
-use Ddd\Application\Service\TransactionalApplicationService;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
@@ -29,9 +29,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ChangePasswordCommandSpec extends ObjectBehavior
 {
-    function let(TransactionalApplicationService $service)
+    function let(UserCommandBus $commandBus)
     {
-        $this->beConstructedWith($service, 'user', User::class);
+        $this->beConstructedWith($commandBus, 'user');
     }
 
     function it_is_initializable()
@@ -47,7 +47,7 @@ class ChangePasswordCommandSpec extends ObjectBehavior
     function it_executes(
         InputInterface $input,
         OutputInterface $output,
-        TransactionalApplicationService $service
+        UserCommandBus $commandBus
     ) {
         $input->getArgument('email')->shouldBeCalled()->willReturn('user@user.com');
         $input->getArgument('password')->shouldBeCalled()->willReturn(123456);
@@ -58,8 +58,8 @@ class ChangePasswordCommandSpec extends ObjectBehavior
         $input->isInteractive()->shouldBeCalled()->willReturn(true);
         $input->validate()->shouldBeCalled();
 
-        $service->execute(Argument::type(ChangeUserPasswordRequest::class))
-            ->shouldBeCalled()->willReturn(['email' => 'user@user.com']);
+        $commandBus->handle(Argument::type(WithoutOldPasswordChangeUserPasswordCommand::class))
+            ->shouldBeCalled()->willReturn(['email' => 'user@user.com', 'password' => 123456]);
 
         $output->writeln(sprintf(
             'Changed password of <comment>%s</comment> %s', 'user@user.com', 'user'

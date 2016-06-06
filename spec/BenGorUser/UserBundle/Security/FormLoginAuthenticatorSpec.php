@@ -12,13 +12,13 @@
 
 namespace spec\BenGorUser\UserBundle\Security;
 
-use BenGorUser\User\Application\Service\LogIn\LogInUserRequest;
-use BenGorUser\User\Application\Service\LogIn\LogInUserService;
+use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
+use BenGorUser\User\Application\Command\LogIn\LogInUserHandler;
 use BenGorUser\User\Domain\Model\UserEmail;
 use BenGorUser\User\Domain\Model\UserId;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
-use BenGorUser\UserBundle\Model\User;
-use BenGorUser\UserBundle\Security\AuthenticatorService;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\UserBundle\Security\User;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -38,9 +38,9 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  */
 class FormLoginAuthenticatorSpec extends ObjectBehavior
 {
-    function let(UserUrlGenerator $urlGenerator, AuthenticatorService $service)
+    function let(UserUrlGenerator $urlGenerator, UserCommandBus $commandBus)
     {
-        $this->beConstructedWith($urlGenerator, $service, [
+        $this->beConstructedWith($urlGenerator, $commandBus, [
             'login'                     => 'bengor_user_user_security_login',
             'login_check'               => 'bengor_user_user_security_login_check',
             'success_redirection_route' => 'bengor_user_user_security_homepage',
@@ -59,9 +59,9 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
 
     function it_throws_invalid_argument_exception_when_routes_are_not_provided(
         UserUrlGenerator $urlGenerator,
-        LogInUserService $service
+        UserCommandBus $commandBus
     ) {
-        $this->beConstructedWith($urlGenerator, $service, []);
+        $this->beConstructedWith($urlGenerator, $commandBus, []);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -83,7 +83,7 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $request->getSession()->shouldBeCalled()->willReturn($session);
         $session->set(Security::LAST_USERNAME, 'test@test.com')->shouldBeCalled();
 
-        $this->getCredentials($request)->shouldReturnAnInstanceOf(LogInUserRequest::class);
+        $this->getCredentials($request)->shouldReturnAnInstanceOf(LogInUserCommand::class);
     }
 
     function it_on_authentication_failure_when_is_xml_http_request(Request $request, AuthenticationException $exception)
@@ -100,24 +100,25 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
     ) {
         $request->isXmlHttpRequest()->shouldBeCalled()->willReturn(true);
         $token->getUser()->shouldBeCalled()->willReturn($user);
-        $user->id()->shouldBeCalled()->willReturn(new UserId('user-id'));
-        $user->email()->shouldBeCalled()->willReturn(new UserEmail('bengor@user.com'));
+        $user->getUsername()->shouldBeCalled()->willReturn('bengor@user.com');
 
         $this->onAuthenticationSuccess($request, $token, 'main')->shouldReturnAnInstanceOf(JsonResponse::class);
     }
 
     function it_gets_user(
         UserProviderInterface $userProvider,
-        LogInUserService $service,
-        LogInUserRequest $credentials,
+        UserCommandBus $commandBus,
+        LogInUserCommand $credentials,
         User $user
     ) {
-        $service->execute($credentials)->shouldBeCalled()->willReturn($user);
+        $commandBus->handle($credentials)->shouldBeCalled();
+        $credentials->email()->shouldBeCalled()->willReturn('bengor@user.com');
+        $userProvider->loadUserByUsername('bengor@user.com')->shouldBeCalled()->willReturn($user);
 
         $this->getUser($credentials, $userProvider)->shouldReturn($user);
     }
 
-    function it_checks_credentials(LogInUserRequest $credentials, User $user)
+    function it_checks_credentials(LogInUserCommand $credentials, User $user)
     {
         $this->checkCredentials($credentials, $user)->shouldReturn(true);
     }

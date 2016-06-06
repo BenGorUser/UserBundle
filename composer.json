@@ -29,6 +29,7 @@
 
         "symfony/form": "^2.8 || ^3.0",
         "symfony/framework-bundle": "^2.8 || ^3.0",
+        "symfony/security-guard": "^2.8 || ^3.0",
         "symfony/twig-bundle": "^2.8 || ^3.0"
     },
     "require-dev": {
@@ -52,5 +53,7 @@
         "branch-alias": {
             "dev-master": "0.6.x-dev"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
