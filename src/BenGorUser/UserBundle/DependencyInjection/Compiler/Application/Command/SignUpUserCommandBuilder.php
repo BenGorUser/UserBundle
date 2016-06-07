@@ -139,9 +139,6 @@ class SignUpUserCommandBuilder extends CommandBuilder
             $this->container->getDefinition(
                 'bengor.user.infrastructure.security.symfony.' . $user . '_password_encoder'
             ),
-            $this->container->getDefinition(
-                'bengor.user.infrastructure.domain.model.' . $user . '_factory_invite'
-            ),
         ];
     }
 
