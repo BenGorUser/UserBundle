@@ -10,14 +10,6 @@
                 <source>sign_up.error_flash_user_already_exist</source>
                 <target>The email is already in use</target>
             </trans-unit>
-            <trans-unit id="sign_up.error_flash_user_guest_does_not_exist">
-                <source>sign_up.error_flash_user_guest_does_not_exist</source>
-                <target>Sorry, you are not invited yet</target>
-            </trans-unit>
-            <trans-unit id="sign_up.error_flash_generic">
-                <source>sign_up.error_flash_generic</source>
-                <target>An error occurred. Please contact with the administrator</target>
-            </trans-unit>
             <trans-unit id="sign_up.form_submit_button">
                 <source>sign_up.form_submit_button</source>
                 <target>Register</target>
@@ -38,14 +30,6 @@
             <trans-unit id="change_password.error_flash_user_password_invalid">
                 <source>change_password.error_flash_user_password_invalid</source>
                 <target>The current password is not correct</target>
-            </trans-unit>
-            <trans-unit id="change_password.error_flash_user_does_not_exist">
-                <source>change_password.error_flash_user_does_not_exist</source>
-                <target>Remember password token does not exist</target>
-            </trans-unit>
-            <trans-unit id="change_password.error_flash_generic">
-                <source>change_password.error_flash_generic</source>
-                <target>An error occurred. Please contact with the administrator</target>
             </trans-unit>
             <trans-unit id="change_password.form_submit_button">
                 <source>change_password.form_submit_button</source>
@@ -72,26 +56,14 @@
                 <source>enable.error_flash_user_token_not_found</source>
                 <target>The confirmation token is invalid</target>
             </trans-unit>
-            <trans-unit id="enable.error_flash_generic">
-                <source>enable.error_flash_generic</source>
-                <target>An error occurred. Please contact with the administrator</target>
-            </trans-unit>
 
             <trans-unit id="invite.success_flash">
                 <source>invite.success_flash</source>
                 <target>The invitation is successfully sent</target>
             </trans-unit>
-            <trans-unit id="invite.error_flash_user_already_exist">
-                <source>invite.error_flash_user_already_exist</source>
-                <target>The email is already in use</target>
-            </trans-unit>
             <trans-unit id="invite.error_flash_user_invitation_already_accepted">
                 <source>invite.error_flash_user_invitation_already_accepted</source>
                 <target>The user invitation is already accepted</target>
-            </trans-unit>
-            <trans-unit id="invite.error_flash_generic">
-                <source>invite.error_flash_generic</source>
-                <target>An error occurred. Please contact with the administrator</target>
             </trans-unit>
 
             <trans-unit id="remove.success_flash">
@@ -102,10 +74,6 @@
                 <source>remove.error_flash_user_does_not_exist</source>
                 <target>The user does not exist</target>
             </trans-unit>
-            <trans-unit id="remove.error_flash_generic">
-                <source>remove.error_flash_generic</source>
-                <target>An error occurred. Please contact with the administrator</target>
-            </trans-unit>
 
             <trans-unit id="request_remember_password.success_flash">
                 <source>request_remember_password.success_flash</source>
@@ -114,10 +82,6 @@
             <trans-unit id="request_remember_password.error_flash_user_does_not_exist">
                 <source>request_remember_password.error_flash_user_does_not_exist</source>
                 <target>The email does not exist</target>
-            </trans-unit>
-            <trans-unit id="request_remember_password.error_flash_generic">
-                <source>request_remember_password.error_flash_generic</source>
-                <target>An error occurred. Please contact with the administrator</target>
             </trans-unit>
             <trans-unit id="request_remember_password.view_content">
                 <source>request_remember_password.view_content</source>

@@ -10,14 +10,6 @@
                 <source>sign_up.error_flash_user_already_exist</source>
                 <target>Posta elektronikoa erabilita dago jada</target>
             </trans-unit>
-            <trans-unit id="sign_up.error_flash_user_guest_does_not_exist">
-                <source>sign_up.error_flash_user_guest_does_not_exist</source>
-                <target>Bakartu eragozpenak, baina oraindik ez duzu gonbidapenik</target>
-            </trans-unit>
-            <trans-unit id="sign_up.error_flash_generic">
-                <source>sign_up.error_flash_generic</source>
-                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
-            </trans-unit>
             <trans-unit id="sign_up.form_submit_button">
                 <source>sign_up.form_submit_button</source>
                 <target>Erregistratu</target>
@@ -38,14 +30,6 @@
             <trans-unit id="change_password.error_flash_user_password_invalid">
                 <source>change_password.error_flash_user_password_invalid</source>
                 <target>Egungo pasahitza ez da zuzena</target>
-            </trans-unit>
-            <trans-unit id="change_password.error_flash_user_does_not_exist">
-                <source>change_password.error_flash_user_does_not_exist</source>
-                <target>Pasahitz berreskurapen token-a ez da existitzen</target>
-            </trans-unit>
-            <trans-unit id="change_password.error_flash_generic">
-                <source>change_password.error_flash_generic</source>
-                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
             </trans-unit>
             <trans-unit id="change_password.form_submit_button">
                 <source>change_password.form_submit_button</source>
@@ -72,26 +56,14 @@
                 <source>enable.error_flash_user_token_not_found</source>
                 <target>Konfirmazio token-a ez da zuzena</target>
             </trans-unit>
-            <trans-unit id="enable.error_flash_generic">
-                <source>enable.error_flash_generic</source>
-                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
-            </trans-unit>
 
             <trans-unit id="invite.success_flash">
                 <source>invite.success_flash</source>
                 <target>Gonbidapena behar bezala burutu da</target>
             </trans-unit>
-            <trans-unit id="invite.error_flash_user_already_exist">
-                <source>invite.error_flash_user_already_exist</source>
-                <target>Posta elektronikoa erabilita dago jada</target>
-            </trans-unit>
             <trans-unit id="invite.error_flash_user_invitation_already_accepted">
                 <source>invite.error_flash_user_invitation_already_accepted</source>
                 <target>Gonbidapena onartuta dago jada</target>
-            </trans-unit>
-            <trans-unit id="invite.error_flash_generic">
-                <source>invite.error_flash_generic</source>
-                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
             </trans-unit>
 
             <trans-unit id="remove.success_flash">
@@ -102,10 +74,6 @@
                 <source>remove.error_flash_user_does_not_exist</source>
                 <target>Kontua ez da existitzen</target>
             </trans-unit>
-            <trans-unit id="remove.error_flash_generic">
-                <source>remove.error_flash_generic</source>
-                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
-            </trans-unit>
 
             <trans-unit id="request_remember_password.success_flash">
                 <source>request_remember_password.success_flash</source>
@@ -114,10 +82,6 @@
             <trans-unit id="request_remember_password.error_flash_user_does_not_exist">
                 <source>request_remember_password.error_flash_user_does_not_exist</source>
                 <target>Posta elektronikoa ez da existitzen</target>
-            </trans-unit>
-            <trans-unit id="request_remember_password.error_flash_generic">
-                <source>request_remember_password.error_flash_generic</source>
-                <target>Ezusteko arazoa gertatu da. Mesedez, administratzailearekin kontaktuan jarri</target>
             </trans-unit>
             <trans-unit id="request_remember_password.view_content">
                 <source>request_remember_password.view_content</source>
