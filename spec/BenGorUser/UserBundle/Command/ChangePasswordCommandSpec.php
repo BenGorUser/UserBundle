@@ -12,7 +12,6 @@
 
 namespace spec\BenGorUser\UserBundle\Command;
 
-use BenGorUser\User\Application\Command\ChangePassword\ChangeUserPasswordCommand;
 use BenGorUser\User\Application\Command\ChangePassword\WithoutOldPasswordChangeUserPasswordCommand;
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
 use BenGorUser\UserBundle\CommandBus\UserCommandBus;

@@ -12,10 +12,10 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\RequestRememberPassword\RequestRememberPasswordRequest;
+use BenGorUser\User\Application\Command\RequestRememberPassword\RequestRememberPasswordCommand;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\RequestRememberPasswordController;
 use BenGorUser\UserBundle\Form\Type\RequestRememberPasswordType;
-use Ddd\Application\Service\TransactionalApplicationService;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -77,8 +77,8 @@ class RequestRememberPasswordControllerSpec extends ObjectBehavior
 
     function it_request_remember_password_action(
         Request $request,
-        TransactionalApplicationService $service,
-        RequestRememberPasswordRequest $rememberPasswordRequest,
+        UserCommandBus $commandBus,
+        RequestRememberPasswordCommand $command,
         ContainerInterface $container,
         TwigEngine $templating,
         Session $session,
@@ -96,9 +96,9 @@ class RequestRememberPasswordControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.request_user_remember_password')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($rememberPasswordRequest);
-        $service->execute($rememberPasswordRequest)->shouldBeCalled();
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);

@@ -12,9 +12,9 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\Enable\EnableUserRequest;
+use BenGorUser\User\Application\Command\Enable\EnableUserCommand;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\EnableController;
-use Ddd\Application\Service\TransactionalApplicationService;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\Translator;
 
@@ -63,7 +64,7 @@ class EnableControllerSpec extends ObjectBehavior
         ContainerInterface $container,
         Request $request,
         ParameterBagInterface $bag,
-        TransactionalApplicationService $service,
+        UserCommandBus $commandBus,
         Session $session,
         FlashBagInterface $flashBag,
         Router $router,
@@ -72,8 +73,8 @@ class EnableControllerSpec extends ObjectBehavior
         $request->query = $bag;
         $bag->get('confirmation-token')->shouldBeCalled()->willReturn('confirmation-token');
 
-        $container->get('bengor_user.enable_user')->shouldBeCalled()->willReturn($service);
-        $service->execute(Argument::type(EnableUserRequest::class))->shouldBeCalled();
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $commandBus->handle(Argument::type(EnableUserCommand::class))->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
@@ -81,7 +82,9 @@ class EnableControllerSpec extends ObjectBehavior
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
 
         $container->get('router')->shouldBeCalled()->willReturn($router);
-        $router->generate('bengor_user_user_homepage', [], 1)->shouldBeCalled()->willReturn('/');
+        $router->generate(
+            'bengor_user_user_homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH
+        )->shouldBeCalled()->willReturn('/');
 
         $this->enableAction($request, 'user', 'bengor_user_user_homepage');
     }

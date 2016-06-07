@@ -47,7 +47,10 @@ class RequestRememberPasswordController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserDoesNotExistException $exception) {
-                    $this->addFlash('error', $this->get('translator')->trans('request_remember_password.error_flash_user_does_not_exist'));
+                    $this->addFlash(
+                        'error',
+                        $this->get('translator')->trans('request_remember_password.error_flash_user_does_not_exist')
+                    );
                 }
             }
         }

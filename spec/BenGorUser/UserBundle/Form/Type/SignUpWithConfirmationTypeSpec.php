@@ -16,7 +16,6 @@ use BenGorUser\UserBundle\Form\Type\SignUpType;
 use BenGorUser\UserBundle\Form\Type\SignUpWithConfirmationType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;

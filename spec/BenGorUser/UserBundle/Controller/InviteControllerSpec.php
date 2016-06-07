@@ -12,8 +12,8 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\SignUp\SignUpUserRequest;
-use BenGorUser\User\Application\Service\SignUp\SignUpUserService;
+use BenGorUser\User\Application\Command\Invite\InviteUserCommand;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\InviteController;
 use BenGorUser\UserBundle\Form\Type\InviteType;
 use PhpSpec\ObjectBehavior;
@@ -76,8 +76,8 @@ class InviteControllerSpec extends ObjectBehavior
     }
 
     function it_invites_action(
-        SignUpUserService $service,
-        SignUpUserRequest $signUpUserRequest,
+        UserCommandBus $commandBus,
+        InviteUserCommand $command,
         Request $request,
         ContainerInterface $container,
         Session $session,
@@ -96,8 +96,9 @@ class InviteControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.invite_user')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($signUpUserRequest);
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);

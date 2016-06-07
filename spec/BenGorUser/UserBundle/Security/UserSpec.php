@@ -12,10 +12,6 @@
 
 namespace spec\BenGorUser\UserBundle\Security;
 
-use BenGorUser\User\Domain\Model\UserEmail;
-use BenGorUser\User\Domain\Model\UserId;
-use BenGorUser\User\Domain\Model\UserPassword;
-use BenGorUser\User\Domain\Model\UserRole;
 use BenGorUser\UserBundle\Security\User;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\User\UserInterface;

@@ -12,8 +12,8 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\Remove\RemoveUserRequest;
-use BenGorUser\User\Application\Service\Remove\RemoveUserService;
+use BenGorUser\User\Application\Command\Remove\RemoveUserCommand;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\RemoveController;
 use BenGorUser\UserBundle\Form\Type\RemoveType;
 use PhpSpec\ObjectBehavior;
@@ -23,10 +23,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\Translator;
 
 /**
@@ -76,17 +79,15 @@ class RemoveControllerSpec extends ObjectBehavior
     }
 
     function it_removes_action(
-        RemoveUserService $service,
-        RemoveUserRequest $signUpUserRequest,
+        UserCommandBus $commandBus,
+        RemoveUserCommand $command,
         Request $request,
         ContainerInterface $container,
         Session $session,
         FlashBagInterface $flashBag,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        TwigEngine $templating,
-        Response $response,
-        FormView $formView,
+        RouterInterface $router,
         Translator $translator
     ) {
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
@@ -96,22 +97,22 @@ class RemoveControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.remove_user')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($signUpUserRequest);
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
         $container->get('session')->shouldBeCalled()->willReturn($session);
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
 
-        $container->has('templating')->shouldBeCalled()->willReturn(true);
-        $container->get('templating')->shouldBeCalled()->willReturn($templating);
-        $form->createView()->shouldBeCalled()->willReturn($formView);
-        $templating->renderResponse('@BenGorUser/remove/remove.html.twig', [
-            'form' => $formView,
-        ], null)->shouldBeCalled()->willReturn($response);
+        $container->get('router')->shouldBeCalled()->willReturn($router);
+        $router->generate(
+            'bengor_user_user_homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH
+        )->shouldBeCalled()->willReturn('/');
 
-        $this->removeAction($request, 'user', 'bengor_user_user_homepage')->shouldReturn($response);
+        $this->removeAction($request, 'user', 'bengor_user_user_homepage')
+            ->shouldReturnAnInstanceOf(RedirectResponse::class);
     }
 
     function it_does_not_remove_action(

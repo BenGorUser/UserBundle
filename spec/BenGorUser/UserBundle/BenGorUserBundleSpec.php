@@ -13,8 +13,8 @@
 namespace spec\BenGorUser\UserBundle;
 
 use BenGorUser\UserBundle\BenGorUserBundle;
-use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationCommandsPass;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationDataTransformersPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\ApplicationQueriesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\CommandsServicesPass;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\DefaultRolesPass;

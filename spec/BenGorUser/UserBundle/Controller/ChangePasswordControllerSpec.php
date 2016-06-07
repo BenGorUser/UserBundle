@@ -12,16 +12,15 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordRequest;
-use BenGorUser\User\Application\Service\ChangePassword\ChangeUserPasswordService;
-use BenGorUser\User\Domain\Model\UserEmail;
-use BenGorUser\User\Domain\Model\UserRepository;
-use BenGorUser\User\Domain\Model\UserToken;
+use BenGorUser\User\Application\Query\UserOfRememberPasswordTokenHandler;
+use BenGorUser\User\Application\Query\UserOfRememberPasswordTokenQuery;
+use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\UserBundle\Command\ChangePasswordCommand;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\ChangePasswordController;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordType;
-use BenGorUser\UserBundle\Model\User;
-use Ddd\Application\Service\TransactionalApplicationService;
+use BenGorUser\UserBundle\Security\UserSymfonyDataTransformer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -38,6 +37,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\Translator;
 
 /**
@@ -87,8 +87,8 @@ class ChangePasswordControllerSpec extends ObjectBehavior
     }
 
     function it_default_action(
-        TransactionalApplicationService $service,
-        ChangeUserPasswordRequest $changeUserPasswordRequest,
+        UserCommandBus $commandBus,
+        ChangePasswordCommand $command,
         Request $request,
         ContainerInterface $container,
         Session $session,
@@ -105,10 +105,9 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.change_user_password')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($changeUserPasswordRequest);
-
-        $service->execute($changeUserPasswordRequest)->shouldBeCalled();
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
@@ -154,10 +153,11 @@ class ChangePasswordControllerSpec extends ObjectBehavior
     function it_renders_by_request_remember_password_action(
         ParameterBagInterface $bag,
         Request $request,
+        UserOfRememberPasswordTokenHandler $handler,
+        UserSymfonyDataTransformer $dataTransformer,
+        UserInterface $user,
         ContainerInterface $container,
-        UserRepository $repository,
         TwigEngine $templating,
-        User $user,
         Response $response,
         FormView $formView,
         FormInterface $form,
@@ -165,11 +165,18 @@ class ChangePasswordControllerSpec extends ObjectBehavior
     ) {
         $request->query = $bag;
         $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
-        $container->get('bengor_user.user_repository')->shouldBeCalled()->willReturn($repository);
-        $repository->userOfRememberPasswordToken(
-            new UserToken('remember-password-token')
-        )->shouldBeCalled()->willReturn($user);
-        $user->email()->shouldBeCalled()->willReturn(new UserEmail('bengor@user.com'));
+        $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
+        $userDto = [
+            'email'    => 'bengor@user.com',
+            'password' => '123456',
+            'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
+        ];
+        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willReturn($userDto);
+        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $dataTransformer->write($userDto)->shouldBeCalled();
+        $dataTransformer->read()->shouldBeCalled()->willReturn($user);
+
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(
             ChangePasswordByRequestRememberPasswordType::class, null, [
@@ -182,6 +189,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
+        $user->getUsername()->shouldBeCalled()->willReturn('bengor@user.com');
         $templating->renderResponse('@BenGorUser/change_password/by_request_remember_password.html.twig', [
             'form'  => $formView,
             'email' => 'bengor@user.com',
@@ -191,26 +199,35 @@ class ChangePasswordControllerSpec extends ObjectBehavior
     }
 
     function it_by_request_remember_password_action(
-        ChangeUserPasswordService $service,
-        ChangeUserPasswordRequest $changeUserPasswordRequest,
+        UserCommandBus $commandBus,
+        ChangePasswordCommand $command,
+        UserOfRememberPasswordTokenHandler $handler,
+        UserSymfonyDataTransformer $dataTransformer,
         Request $request,
         ParameterBagInterface $bag,
         ContainerInterface $container,
         Session $session,
         Router $router,
         FlashBagInterface $flashBag,
-        UserRepository $repository,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        User $user,
+        UserInterface $user,
         Translator $translator
     ) {
         $request->query = $bag;
         $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
-        $container->get('bengor_user.user_repository')->shouldBeCalled()->willReturn($repository);
-        $repository->userOfRememberPasswordToken(
-            new UserToken('remember-password-token')
-        )->shouldBeCalled()->willReturn($user);
+        $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
+        $userDto = [
+            'email'    => 'bengor@user.com',
+            'password' => '123456',
+            'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
+        ];
+        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willReturn($userDto);
+        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $dataTransformer->write($userDto)->shouldBeCalled();
+        $dataTransformer->read()->shouldBeCalled()->willReturn($user);
+
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(
             ChangePasswordByRequestRememberPasswordType::class, null, [
@@ -222,10 +239,10 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.change_user_password')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($changeUserPasswordRequest);
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
 
-        $service->execute($changeUserPasswordRequest)->shouldBeCalled();
+        $commandBus->handle($command)->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
@@ -244,23 +261,31 @@ class ChangePasswordControllerSpec extends ObjectBehavior
 
     function it_does_not_change_password_by_request_remember_password_action(
         TwigEngine $templating,
+        UserOfRememberPasswordTokenHandler $handler,
+        UserSymfonyDataTransformer $dataTransformer,
         Request $request,
         ParameterBagInterface $bag,
         ContainerInterface $container,
         FormView $formView,
         Response $response,
-        UserRepository $repository,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        User $user
+        UserInterface $user
     ) {
         $request->query = $bag;
         $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
-        $container->get('bengor_user.user_repository')->shouldBeCalled()->willReturn($repository);
-        $repository->userOfRememberPasswordToken(
-            new UserToken('remember-password-token')
-        )->shouldBeCalled()->willReturn($user);
-        $user->email()->shouldBeCalled()->willReturn(new UserEmail('bengor@user.com'));
+        $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
+        $userDto = [
+            'email'    => 'bengor@user.com',
+            'password' => '123456',
+            'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
+        ];
+        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willReturn($userDto);
+        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $dataTransformer->write($userDto)->shouldBeCalled();
+        $dataTransformer->read()->shouldBeCalled()->willReturn($user);
+
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
         $formFactory->create(
             ChangePasswordByRequestRememberPasswordType::class, null, [
@@ -275,6 +300,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
+        $user->getUsername()->shouldBeCalled()->willReturn('bengor@user.com');
         $templating->renderResponse('@BenGorUser/change_password/by_request_remember_password.html.twig', [
             'form'  => $formView,
             'email' => 'bengor@user.com',
@@ -289,14 +315,13 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         ParameterBagInterface $bag,
         Request $request,
         ContainerInterface $container,
-        UserRepository $repository
+        UserOfRememberPasswordTokenHandler $handler
     ) {
         $request->query = $bag;
         $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
-        $container->get('bengor_user.user_repository')->shouldBeCalled()->willReturn($repository);
-        $repository->userOfRememberPasswordToken(
-            new UserToken('remember-password-token')
-        )->shouldBeCalled()->willReturn(null);
+        $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
+        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
         $this->shouldThrow(NotFoundHttpException::class)->duringByRequestRememberPasswordAction(
             $request, 'user', 'bengor_user_user_homepage'

@@ -16,7 +16,6 @@ use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationWithConfirmationType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

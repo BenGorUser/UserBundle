@@ -50,7 +50,10 @@ class ChangePasswordController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
+                    $this->addFlash(
+                        'error',
+                        $this->get('translator')->trans('change_password.error_flash_user_password_invalid')
+                    );
                 }
             }
         }
@@ -76,7 +79,7 @@ class ChangePasswordController extends Controller
         try {
             // we need to know if the remember password token given exists in
             // database, in case that it isn't, it throws 404.
-            $user = $this->get('bengor_user.' . $userClass . '_invitation_token_query')->__invoke(
+            $user = $this->get('bengor_user.' . $userClass . '_of_remember_password_token_query')->__invoke(
                 new UserOfRememberPasswordTokenQuery($rememberPasswordToken)
             );
 
@@ -102,14 +105,17 @@ class ChangePasswordController extends Controller
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash('error', $this->get('translator')->trans('change_password.error_flash_user_password_invalid'));
+                    $this->addFlash(
+                        'error',
+                        $this->get('translator')->trans('change_password.error_flash_user_password_invalid')
+                    );
                 }
             }
         }
 
         return $this->render('@BenGorUser/change_password/by_request_remember_password.html.twig', [
             'form'  => $form->createView(),
-            'email' => $user->email()->email(),
+            'email' => $user->getUsername(),
         ]);
     }
 }

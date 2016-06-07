@@ -12,11 +12,12 @@
 
 namespace spec\BenGorUser\UserBundle\Controller;
 
+use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserCommand;
+use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenHandler;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
-use BenGorUser\User\Domain\Model\UserEmail;
-use BenGorUser\User\Domain\Model\UserToken;
+use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\SignUpController;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;
@@ -35,6 +36,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Translation\Translator;
 
@@ -83,12 +85,13 @@ class SignUpControllerSpec extends ObjectBehavior
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->defaultAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
+        $this->defaultAction($request, 'user', 'main', SignUpType::class)->shouldReturn($response);
     }
 
     function it_default_action(
-        TransactionalApplicationService $service,
-        SignUpUserRequest $signUpUserRequest,
+        UserCommandBus $commandBus,
+        SignUpUserCommand $command,
+        UserProviderInterface $userProvider,
         Request $request,
         ContainerInterface $container,
         GuardAuthenticatorHandler $handler,
@@ -97,8 +100,9 @@ class SignUpControllerSpec extends ObjectBehavior
         Response $response,
         FlashBagInterface $flashBag,
         FormInterface $form,
+        FormInterface $formChild,
         FormFactoryInterface $formFactory,
-        User $user,
+        UserInterface $user,
         Translator $translator
     ) {
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
@@ -109,11 +113,15 @@ class SignUpControllerSpec extends ObjectBehavior
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
+        $form->get('email')->shouldBeCalled()->willReturn($formChild);
+        $formChild->getData()->shouldBeCalled()->willReturn('bengor@user.com');
 
-        $container->get('bengor_user.sign_up_user')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($signUpUserRequest);
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled();
 
-        $service->execute($signUpUserRequest)->shouldBeCalled()->willReturn($user);
+        $container->get('bengor_user.user_provider')->shouldBeCalled()->willReturn($userProvider);
+        $userProvider->loadUserByUsername('bengor@user.com')->shouldBeCalled()->willReturn($user);
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
@@ -130,7 +138,7 @@ class SignUpControllerSpec extends ObjectBehavior
             'main'
         )->shouldBeCalled()->willReturn($response);
 
-        $this->defaultAction($request, 'user', 'main')->shouldReturn($response);
+        $this->defaultAction($request, 'user', 'main', SignUpType::class)->shouldReturn($response);
     }
 
     function it_does_not_sign_up_default_action(
@@ -158,12 +166,13 @@ class SignUpControllerSpec extends ObjectBehavior
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->defaultAction($request, 'user', 'main', 'bengor_user_user_homepage')->shouldReturn($response);
+        $this->defaultAction($request, 'user', 'main', SignUpType::class)->shouldReturn($response);
     }
 
     function it_renders_by_invitation_action(
-        UserGuestRepository $userGuestRepository,
-        UserGuest $userGuest,
+        UserInterface $user,
+        UserOfInvitationTokenHandler $queryHandler,
+        UserSymfonyDataTransformer $dataTransformer,
         Request $request,
         ContainerInterface $container,
         TwigEngine $templating,
@@ -172,9 +181,17 @@ class SignUpControllerSpec extends ObjectBehavior
         FormInterface $form,
         FormFactoryInterface $formFactory
     ) {
-        $container->get('bengor_user.user_guest_repository')->shouldBeCalled()->willReturn($userGuestRepository);
-        $userGuestRepository->userGuestOfInvitationToken(new UserToken('invitation-token'))
-            ->shouldBeCalled()->willReturn($userGuest);
+        $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
+        $userDto = [
+            'email'    => 'bengor@user.com',
+            'password' => '123456',
+            'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
+        ];
+        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($queryHandler);
+        $queryHandler->__invoke($invitationTokenQuery)->shouldBeCalled()->willReturn($userDto);
+        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $dataTransformer->write($userDto)->shouldBeCalled();
+        $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
@@ -188,22 +205,23 @@ class SignUpControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
-        $userGuest->email()->shouldBeCalled()->willReturn(new UserEmail('user@guest.com'));
+        $user->getUsername()->shouldBeCalled()->willReturn('bengor@user.com');
         $templating->renderResponse('@BenGorUser/sign_up/by_invitation.html.twig', [
-            'email' => 'user@guest.com',
+            'email' => 'bengor@user.com',
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
         $this->byInvitationAction(
-            $request, 'invitation-token', 'user', 'main', 'bengor_user_user_homepage'
+            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
         )->shouldReturn($response);
     }
 
     function it_by_invitation_action(
-        SignUpUserService $service,
-        SignUpUserRequest $signUpUserRequest,
-        UserGuestRepository $userGuestRepository,
-        UserGuest $userGuest,
+        UserInterface $user,
+        ByInvitationSignUpUserCommand $command,
+        UserCommandBus $commandBus,
+        UserOfInvitationTokenHandler $queryHandler,
+        UserSymfonyDataTransformer $dataTransformer,
         Request $request,
         ContainerInterface $container,
         Session $session,
@@ -213,12 +231,19 @@ class SignUpControllerSpec extends ObjectBehavior
         Response $response,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        User $user,
         FormLoginAuthenticator $formLoginAuthenticator
     ) {
-        $container->get('bengor_user.user_guest_repository')->shouldBeCalled()->willReturn($userGuestRepository);
-        $userGuestRepository->userGuestOfInvitationToken(new UserToken('invitation-token'))
-            ->shouldBeCalled()->willReturn($userGuest);
+        $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
+        $userDto = [
+            'email'    => 'bengor@user.com',
+            'password' => '123456',
+            'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
+        ];
+        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($queryHandler);
+        $queryHandler->__invoke($invitationTokenQuery)->shouldBeCalled()->willReturn($userDto);
+        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $dataTransformer->write($userDto)->shouldBeCalled();
+        $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
@@ -231,10 +256,9 @@ class SignUpControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.sign_up_user')->shouldBeCalled()->willReturn($service);
-        $form->getData()->shouldBeCalled()->willReturn($signUpUserRequest);
-
-        $service->execute($signUpUserRequest)->shouldBeCalled()->willReturn($user);
+        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled()->willReturn($user);
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
         $container->has('session')->shouldBeCalled()->willReturn(true);
@@ -251,7 +275,9 @@ class SignUpControllerSpec extends ObjectBehavior
             'main'
         )->shouldBeCalled()->willReturn($response);
 
-        $this->byInvitationAction($request, 'invitation-token', 'user', 'main')->shouldReturn($response);
+        $this->byInvitationAction(
+            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
+        )->shouldReturn($response);
     }
 
     function it_does_not_sign_up_by_invitation_action(

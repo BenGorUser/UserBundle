@@ -19,7 +19,6 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Spec file of ApplicationCommandsPass class.
@@ -176,7 +175,6 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             'bengor_user.remove_user',
             'bengor.user.application.command.remove_user'
         )->shouldBeCalled();
-
 
         $this->process($container);
     }
