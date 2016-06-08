@@ -60,6 +60,6 @@ class InviteUserCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.invite_' . $user;
+        return 'bengor_user.' . $user . '.invite';
     }
 }

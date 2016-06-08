@@ -74,7 +74,7 @@ class SecurityServicesPass implements CompilerPassInterface
         )->setPublic(false);
 
         $container->setAlias(
-            'bengor_user.form_login_' . $user . '_authenticator',
+            'bengor_user.' . $user . '.form_login_authenticator',
             'bengor.user_bundle.security.authenticator.form_login_' . $user . '_authenticator'
         );
     }
@@ -95,7 +95,7 @@ class SecurityServicesPass implements CompilerPassInterface
         )->setPublic(false);
 
         $container->setAlias(
-            'bengor_user.' . $user . '_symfony_data_transformer',
+            'bengor_user.' . $user . '.symfony_data_transformer',
             'bengor.user_bundle.security.' . $user . '_symfony_data_transformer'
         );
     }
@@ -109,7 +109,7 @@ class SecurityServicesPass implements CompilerPassInterface
     private function userProvider(ContainerBuilder $container, $user)
     {
         $container->setDefinition(
-            'bengor.user_bundle.security.' . $user . '_provider',
+            'bengor.user_bundle.security.' . $user . '.provider',
             new Definition(
                 UserProvider::class, [
                     $container->getDefinition(

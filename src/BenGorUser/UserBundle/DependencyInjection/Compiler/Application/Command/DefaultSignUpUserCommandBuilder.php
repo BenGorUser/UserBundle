@@ -64,6 +64,6 @@ class DefaultSignUpUserCommandBuilder extends SignUpUserCommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.sign_up_' . $user . '_default';
+        return 'bengor_user.' . $user . '.sign_up_default';
     }
 }

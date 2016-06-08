@@ -57,6 +57,6 @@ class RemoveUserCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.remove_' . $user;
+        return 'bengor_user.' . $user . '.remove';
     }
 }

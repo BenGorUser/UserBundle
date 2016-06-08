@@ -57,6 +57,6 @@ class RequestRememberPasswordCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.request_' . $user . '_remember_password';
+        return 'bengor_user.' . $user . '.request_remember_password';
     }
 }
