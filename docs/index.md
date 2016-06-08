@@ -3,7 +3,6 @@
 * Implementing features
     * Sign up with confirmation email
     * [Multiple user entities](multiple_users.md)
-    * Invite users to sign in to your application
     * Remember password
     * Role management
 * [Commands](commands.md)
@@ -12,6 +11,7 @@
 * Custom views, overriding twig files
 * Advanced customization
     * [Customize URLs](customize_urls.md)
+* [Frequently Asked Questions](faq.md)
 * Reference
     * [Service reference](service_reference.md)
     * [Configuration reference](configuration_reference.md)
