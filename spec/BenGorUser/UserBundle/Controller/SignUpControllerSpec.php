@@ -17,7 +17,7 @@ use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenHandler;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\SignUpController;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;

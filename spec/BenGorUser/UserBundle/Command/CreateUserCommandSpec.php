@@ -14,8 +14,8 @@ namespace spec\BenGorUser\UserBundle\Command;
 
 use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
 use BenGorUser\User\Domain\Model\User;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;

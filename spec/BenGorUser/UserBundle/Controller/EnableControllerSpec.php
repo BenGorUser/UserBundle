@@ -13,7 +13,7 @@
 namespace spec\BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Command\Enable\EnableUserCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\EnableController;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

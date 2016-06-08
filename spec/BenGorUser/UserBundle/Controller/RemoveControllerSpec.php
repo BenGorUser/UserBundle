@@ -13,7 +13,7 @@
 namespace spec\BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Command\Remove\RemoveUserCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\RemoveController;
 use BenGorUser\UserBundle\Form\Type\RemoveType;
 use PhpSpec\ObjectBehavior;

@@ -13,7 +13,7 @@
 namespace spec\BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Command\RequestRememberPassword\RequestRememberPasswordCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\RequestRememberPasswordController;
 use BenGorUser\UserBundle\Form\Type\RequestRememberPasswordType;
 use PhpSpec\ObjectBehavior;
