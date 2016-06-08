@@ -1,17 +1,21 @@
 # BenGorUserBundle documentation
 * [Basic configuration](basic_configuration.md)
-* Implementing features
-    * Sign up with confirmation email
+* Usage
+    * Using an existing command
+    * [Using an existing event subscriber](events_subscribers.md)
+    * Using routes by default
+    * Using console commands
     * [Multiple user entities](multiple_users.md)
-    * Remember password
-    * Role management
-* [Commands](commands.md)
-* [Domain events and subscribers](events_subscribers.md)
-* [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)
-* Custom views, overriding twig files
-* Advanced customization
+    * [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)
+* Extending
+    * [Create custom command](commands.md)
+    * Create custom subscriber
     * [Customize URLs](customize_urls.md)
-* [Frequently Asked Questions](faq.md)
+    * Custom views
 * Reference
     * [Service reference](service_reference.md)
     * [Configuration reference](configuration_reference.md)
+    * Command reference
+* [Frequently Asked Questions](faq.md)
+    
+    
