@@ -120,7 +120,8 @@ class ApplicationDataTransformersPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_dto_data_transformer', 'bengor.user.application.data_transformer.user_dto'
+            'bengor_user.user.dto_data_transformer',
+            'bengor.user.application.data_transformer.user_dto'
         )->shouldBeCalled()->willReturn($container);
 
         $this->process($container);

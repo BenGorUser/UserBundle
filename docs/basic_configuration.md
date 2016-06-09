@@ -75,7 +75,7 @@ security:
         AppBundle\Entity\User: bcrypt
     providers:
         bengor_user:
-            id: bengor_user.user_provider
+            id: bengor_user.user.provider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -85,7 +85,7 @@ security:
             pattern: ^/user
             guard:
                 authenticators:
-                    - bengor_user.form_login_user_authenticator
+                    - bengor_user.user.form_login_authenticator
             provider: bengor_user
             form_login:
                 check_path: bengor_user_user_login_check

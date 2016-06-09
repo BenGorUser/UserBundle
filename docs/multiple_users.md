@@ -48,9 +48,9 @@ security:
         AppBundle\Entity\Employee: bcrypt
     providers:
         bengor_applicant:
-            id: bengor_user.applicant_provider
+            id: bengor_user.applicant.provider
         bengor_employee:
-            id: bengor_user.employee_provider
+            id: bengor_user.employee.provider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -60,7 +60,7 @@ security:
             pattern: ^/applicant
             guard:
                 authenticators:
-                    - bengor_user.form_login_applicant_authenticator
+                    - bengor_user.applicant.form_login_authenticator
             provider: bengor_applicant
             form_login:
                 check_path: bengor_user_applicant_login_check
@@ -74,7 +74,7 @@ security:
             pattern: ^/employee
             guard:
                 authenticators:
-                    - bengor_user.form_login_employee_authenticator
+                    - bengor_user.employee.form_login_authenticator
             provider: bengor_employee
             form_login:
                 check_path: bengor_user_employee_login_check

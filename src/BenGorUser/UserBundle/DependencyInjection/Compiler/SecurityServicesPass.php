@@ -63,7 +63,7 @@ class SecurityServicesPass implements CompilerPassInterface
             new Definition(
                 FormLoginAuthenticator::class, [
                     $container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator'),
-                    $container->getDefinition('bengor_user.' . $user . '_command_bus'),
+                    $container->getDefinition('bengor_user.' . $user . '.command_bus'),
                     [
                         'login'                     => $routes[$user]['login']['name'],
                         'login_check'               => $routes[$user]['login_check']['name'],
@@ -109,7 +109,7 @@ class SecurityServicesPass implements CompilerPassInterface
     private function userProvider(ContainerBuilder $container, $user)
     {
         $container->setDefinition(
-            'bengor.user_bundle.security.' . $user . '.provider',
+            'bengor.user_bundle.security.' . $user . '_provider',
             new Definition(
                 UserProvider::class, [
                     $container->getDefinition(
@@ -123,7 +123,7 @@ class SecurityServicesPass implements CompilerPassInterface
         )->setPublic(false);
 
         $container->setAlias(
-            'bengor_user.' . $user . '_provider',
+            'bengor_user.' . $user . '.provider',
             'bengor.user_bundle.security.' . $user . '_provider'
         );
     }

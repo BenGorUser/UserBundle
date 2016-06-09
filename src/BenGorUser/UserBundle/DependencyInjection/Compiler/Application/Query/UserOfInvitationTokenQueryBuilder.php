@@ -55,6 +55,6 @@ class UserOfInvitationTokenQueryBuilder extends QueryBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.' . $user . '_of_invitation_token_query';
+        return 'bengor_user.' . $user . '.by_invitation_token_query';
     }
 }

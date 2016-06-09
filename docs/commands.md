@@ -8,7 +8,7 @@ the log in command you will need to do the folowing, replacing `your_user_type_n
 
 ```php
     $command = new \BenGorUser\User\Application\Command\LogIn\LogInUserCommand($email, $password);
-    $this->get('bengor_user.your_user_type_name_command_bus')->handle($command);
+    $this->get('bengor_user.your_user_type_name.command_bus')->handle($command);
 ```
 
 ## Creating a custom command
@@ -117,7 +117,7 @@ you want to add a new handlers. To do it add the following to your `services.yml
 app.user.command.subscribe_to_newsletter_handler:
     class: AppBundle\User\Command\SubscribeToNewsletterHandler
     arguments:
-        - '@bengor_user.user_repository'
+        - '@bengor_user.user.repository'
     tags:
         - { name: bengor_user_your_user_type_command_bus_handler, handles: AppBundle\User\Command\SubscribeToNewsletterCommand }
 ```

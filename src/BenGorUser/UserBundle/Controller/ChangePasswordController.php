@@ -43,7 +43,7 @@ class ChangePasswordController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                    $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
 
                     if (null !== $successRoute) {
@@ -79,12 +79,12 @@ class ChangePasswordController extends Controller
         try {
             // we need to know if the remember password token given exists in
             // database, in case that it isn't, it throws 404.
-            $user = $this->get('bengor_user.' . $userClass . '_of_remember_password_token_query')->__invoke(
+            $user = $this->get('bengor_user.' . $userClass . '.by_remember_password_token_query')->__invoke(
                 new UserOfRememberPasswordTokenQuery($rememberPasswordToken)
             );
 
             // Convert to an object implementing Symfony's UserInterface
-            $dataTransformer = $this->get('bengor_user.user_symfony_data_transformer');
+            $dataTransformer = $this->get('bengor_user.' . $userClass . '.symfony_data_transformer');
             $dataTransformer->write($user);
             $user = $dataTransformer->read();
         } catch (UserDoesNotExistException $exception) {
@@ -98,7 +98,7 @@ class ChangePasswordController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                    $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
 
                     if (null !== $successRoute) {

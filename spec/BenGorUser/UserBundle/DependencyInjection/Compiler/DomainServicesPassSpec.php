@@ -121,7 +121,7 @@ class DomainServicesPassSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $container->setAlias(
-            'bengor_user.user_factory_sign_up',
+            'bengor_user.user.factory_sign_up',
             'bengor.user.infrastructure.domain.model.user_factory_sign_up'
         )->shouldBeCalled();
 
@@ -131,7 +131,7 @@ class DomainServicesPassSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $container->setAlias(
-            'bengor_user.user_factory_invite',
+            'bengor_user.user.factory_invite',
             'bengor.user.infrastructure.domain.model.user_factory_invite'
         )->shouldBeCalled();
 

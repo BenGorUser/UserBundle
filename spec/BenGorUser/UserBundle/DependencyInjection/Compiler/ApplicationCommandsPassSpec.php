@@ -127,7 +127,7 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.log_in_user',
+            'bengor_user.user.log_in',
             'bengor.user.application.command.log_in_user'
         )->shouldBeCalled();
 
@@ -136,7 +136,7 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.log_out_user',
+            'bengor_user.user.log_out',
             'bengor.user.application.command.log_out_user'
         )->shouldBeCalled();
 
@@ -145,7 +145,7 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.sign_up_user',
+            'bengor_user.user.sign_up',
             'bengor.user.application.command.sign_up_user'
         )->shouldBeCalled();
 
@@ -154,7 +154,7 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.change_user_password',
+            'bengor_user.user.change_password',
             'bengor.user.application.command.change_user_password'
         )->shouldBeCalled();
 
@@ -163,7 +163,7 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.change_user_password_without_old_password',
+            'bengor_user.user.change_password_without_old_password',
             'bengor.user.application.command.change_user_password_without_old_password'
         )->shouldBeCalled();
 
@@ -172,7 +172,7 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.remove_user',
+            'bengor_user.user.remove',
             'bengor.user.application.command.remove_user'
         )->shouldBeCalled();
 

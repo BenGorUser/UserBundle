@@ -41,7 +41,7 @@ class EnableController extends Controller
         }
 
         try {
-            $this->get('bengor_user.' . $userClass . '_command_bus')->handle(
+            $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
                 new EnableUserCommand($confirmationToken)
             );
             $this->addFlash('notice', $this->get('translator')->trans('enable.success_flash'));
