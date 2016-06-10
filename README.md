@@ -12,11 +12,6 @@
 PHP >= 5.5</br>
 Symfony >= 2.8 
 
-##Installation
-The easiest way to install this component is using **[Composer][7]**
-```bash
-$ composer require bengor-user/user-bundle
-```
 ##Documentation
 
 All the documentation is stored in the `docs` folder.

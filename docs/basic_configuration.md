@@ -12,7 +12,29 @@ framework:
 
 # Getting started
 
-The first step is enable the bundle in the AppKernel:
+By default we recommend the following installation that will add the following adapters to the user bundle.
+
+* Persistence: [DoctrineORM](https://github.com/BenGorUser/DoctrineORMBridgeBundle)
+* Mailer: [SwiftMailer](https://github.com/BenGorUser/SwiftMailerBridgeBundle)
+* Bus: [SimpleBus](https://github.com/BenGorUser/SimpleBusBridgeBundle)
+
+```
+{
+    "require": {
+        "bengor-user/user-bundle": "^0.6",
+        
+        "bengor-user/doctrine-orm-bridge-bundle": "~1.0",
+        "bengor-user/swift-mailer-bridge-bundle": "~1.0",
+        "bengor-user/simple-bus-bridge-bundle": "~1.0"
+    }
+} 
+```
+
+> Some other adapters for [persistence](adapters_persistence.md), [mailers](adapters_mailers.md) and 
+[buses](adapters_buses.md) are available.
+
+Once the bundle has been installed enable it in the AppKernel:
+
 ```php
 // app/config/AppKernel.php
 
