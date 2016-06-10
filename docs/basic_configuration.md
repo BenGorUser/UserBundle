@@ -7,13 +7,14 @@ If you wish to use default texts provided in this bundle, you have to make sure 
 framework:
     translator: { fallbacks: ["%locale%"] }
 ```
-For more information about translations, check [Symfony documentation][1].
+
+> For more information about translations, check [Symfony documentation][1].
 
 # Getting started
 
-The first step is enable the bundle in the `app/config/AppKernel.php`:
+The first step is enable the bundle in the AppKernel:
 ```php
-<?php
+// app/config/AppKernel.php
 
 public function registerBundles()
 {
@@ -41,7 +42,7 @@ public function registerBundles()
 After that, you need to extend our `BenGorUser\User\Domain\Model\User` class in order to build the Doctrine mapping properly.
 The following snippet is the minimum code that bundle needs to work.
 ```php
-<?php
+// src/AppBundle/Entity/User.php
 
 namespace AppBundle\Entity;
 
@@ -58,9 +59,10 @@ class User extends BaseUser
 ```
 
 
-Next, you have to configure the bundle to work with the specific needs of your application inside
-`app/config/config.yml`:
+Next, you have to configure the bundle to work with the specific needs of your application in the `config.yml`:
 ```yml
+# app/config/config.yml
+
 ben_gor_user:
     user_class:
         user:
@@ -68,8 +70,10 @@ ben_gor_user:
             firewall: main
 ```
 
-If you plan to implement a login system, you need to configure the `app/config/security.yml`:
+If you plan to implement a login system, you need to configure the `security.yml`:
 ```yml
+# app/config/security.yml
+
 security:
     encoders:
         AppBundle\Entity\User: bcrypt
@@ -85,7 +89,7 @@ security:
             pattern: ^/user
             guard:
                 authenticators:
-                    - bengor_user.form_login_user_authenticator
+                    - bengor_user.user.form_login_user_authenticator
             provider: bengor_user
             form_login:
                 check_path: bengor_user_user_login_check
@@ -102,8 +106,10 @@ security:
 ```
 
 This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
-to your `app/config/routing.yml`:
+to your `routing.yml`:
 ```yml
+// app/config/routing.yml
+
 ben_gor_user:
     resource: '@BenGorUserBundle/Resources/config/routing/all.yml'
 ```
@@ -132,6 +138,7 @@ class DefaultController extends Controller
 > You can change base route names following 
 
 That's all! Now that the bundle is configured, the last thing you need to do is update your database:
+
 ```bash
 $ bin/console doctrine:schema:update --force
 ```
