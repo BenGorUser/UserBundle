@@ -57,3 +57,5 @@ ben_gor_user:
                     path: /user/remove
                     success_redirection_route: bengor_user_user_homepage
 ```
+
+- Back to the [index](index.md).

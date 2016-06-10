@@ -126,3 +126,5 @@ class DefaultController extends Controller
 ```
 
 > You can customize the routes naming following [Customize URLs chapter](extending_customize_urls.md)
+
+- Back to the [index](index.md).

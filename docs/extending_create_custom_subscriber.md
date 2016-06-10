@@ -8,9 +8,11 @@ your user type in tag name and `subscribes_to` with a fully qualified name of th
 ```yml
 # app/config/services.yml
 
-app.user.event.my_event:
-    class: AppBundle\User\Event\MyEvent
+app.user.event.my_event_subscriber:
+    class: AppBundle\Event\MyEventSubscriber
     arguments: ~ 
     tags:
-        - { name: bengor_user_your_user_type_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserInvited }
+        - { name: bengor_user_your_user_type_subscriber, subscribes_to: AppBundle\Event\MyEvent }
 ```
+
+- Back to the [index](index.md).

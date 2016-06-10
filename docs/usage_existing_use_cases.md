@@ -13,8 +13,8 @@ In case you are triggering the command from a *Symfony controller* do the follow
 
 ```php 
 $this->get('bengor_user.' . $userType . '.command_bus')->handle(
-                new EnableUserCommand($confirmationToken)
-            );
+    new EnableUserCommand($confirmationToken)
+);
 ```
 
 In case you want to trigger the command from a *Symfony service* you need to 
@@ -50,3 +50,5 @@ class YourService
        );
     }
 }
+
+- Back to the [index](index.md).

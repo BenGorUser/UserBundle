@@ -34,3 +34,5 @@ app.request_remember_password_mailer_subscriber:
     tags:
         - { name: bengor_user_your_user_type_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserRememberPasswordRequested }
 ```
+
+- Back to the [index](index.md).

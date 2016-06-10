@@ -134,5 +134,7 @@ public function subscribeToNewsletter(Request $request)
 
 > Make sure you use the command bus related to the user type you want to change
 
+- Back to the [index](index.md).
+
 [1]: https://github.com/BenGorUser/User/blob/master/docs/command.md
 

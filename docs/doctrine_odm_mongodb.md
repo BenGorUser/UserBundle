@@ -97,4 +97,6 @@ security:
 Finally, **register the routes** and create the `success_redirection_route` in the same way that
 explains the [basic configuration](basic_configuration.md) chapter.
 
+- Back to the [index](index.md).
+
 [1]: http://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/index.html

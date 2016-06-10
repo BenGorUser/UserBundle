@@ -15,3 +15,4 @@ ben_gor_user:
     resource: '@BenGorUserBundle/Resources/config/routing/all.yml'
 ```
 
+- Back to the [index](index.md).

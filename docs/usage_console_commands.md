@@ -24,3 +24,5 @@ For further info run the command with the `--help` flag:
 ```
 bin/console bengor:user:your_user_type:create --help
 ```
+
+- Back to the [index](index.md).
