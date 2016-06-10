@@ -118,6 +118,8 @@ It requires a route with its related controller action for `success_redirection_
 be a plain and simple example for that.
 
 ```php
+// src/AppBundle/Controller/DefaultController.php
+
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
