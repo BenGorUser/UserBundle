@@ -1,7 +1,7 @@
 # BenGorUserBundle documentation
 * [Basic configuration](basic_configuration.md)
 * Usage
-    * [Using an existing use cases](usage_existing_use_cases.md)
+    * [Using an existing use case](usage_existing_use_cases.md)
     * [Using an existing event subscriber](usage_events_subscribers.md)
     * [Using routes by default](usage_routes_by_default)
     * [Using console commands](usage_console_commands.md)

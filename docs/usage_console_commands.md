@@ -19,5 +19,8 @@ In Symfony 2:
 app/console bengor:user:your_user_type:create
 ```
 
+For further info run the command with the `--help` flag:
 
-
+```
+bin/console bengor:user:your_user_type:create --help
+```
