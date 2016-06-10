@@ -1,16 +1,8 @@
 # Commands
 
-This bundle allows the use of all commands available in the BenGorUser component. You can find a list [here][1]
+This bundle allows the use of all use cases available in the BenGorUser component. You can find a list [here][1]
 
-To run one of these commands you need to use the command bus responsible of assigning the correct handler. To do it so,
-you need to get the correct bus for the user type you want to modify as each one as its own bus. For example, to execute 
-the log in command you will need to do the folowing, replacing `your_user_type_name` by you user type name:
-
-```php
-    $command = new \BenGorUser\User\Application\Command\LogIn\LogInUserCommand($email, $password);
-    $this->get('bengor_user.your_user_type_name_command_bus')->handle($command);
 ```
-
 ## Creating a custom command
 
 We strongly recommended to implement your own command in case you need to implement a custom use case for your domain.

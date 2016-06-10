@@ -110,6 +110,7 @@ ben_gor_user:
 
 It requires a route with its related controller action for `success_redirection_route`, so, the following code it can
 be a plain and simple example for that.
+
 ```php
 namespace AppBundle\Controller;
 
@@ -128,6 +129,8 @@ class DefaultController extends Controller
 }
 ```
 
+> You can change base route names following 
+
 That's all! Now that the bundle is configured, the last thing you need to do is update your database:
 ```bash
 $ bin/console doctrine:schema:update --force
@@ -135,8 +138,7 @@ $ bin/console doctrine:schema:update --force
 
 With this basic configuration you have single user login, logout and registration without confirmation.
 
-- For **multiple users** check [this guide](multiple_users.md).
-- In case you one to **send invitation emails** to users to join your app follow [this guide](invitation_system.md).
+- For **multiple users** check [this guide](usage_multiple_users.md).
 - In order to use **MongoDB's Doctrine ODM** as persistence layer follow [this chapter](doctrine_odm_mongodb.md).
 - Back to the [index](index.md).
 

@@ -1,6 +1,7 @@
 # Domain events and subscribers
 
-TODO: Need explanation
+The [BenGorUser's User library](https://github.com/BenGorUser/User) has some built-in subscribers that need to be added
+ to make them work, the bundle does not register them by default.
 
 ```yml
 app.invited_mailer_subscriber:
