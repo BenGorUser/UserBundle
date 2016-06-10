@@ -14,7 +14,7 @@ namespace spec\BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use BenGorUser\UserBundle\Security\User;
 use PhpSpec\ObjectBehavior;

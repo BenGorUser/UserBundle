@@ -40,7 +40,7 @@ class RemoveController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                    $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('remove.success_flash'));
 
                     return $this->redirectToRoute($successRoute);

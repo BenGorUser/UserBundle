@@ -45,7 +45,7 @@ class DomainServicesPass implements CompilerPassInterface
                 ))->setPublic(false)
             );
             $container->setAlias(
-                'bengor_user.' . $key . '_factory_sign_up',
+                'bengor_user.' . $key . '.factory_sign_up',
                 'bengor.user.infrastructure.domain.model.' . $key . '_factory_sign_up'
             );
 
@@ -58,7 +58,7 @@ class DomainServicesPass implements CompilerPassInterface
                 ))->setPublic(false)
             );
             $container->setAlias(
-                'bengor_user.' . $key . '_factory_invite',
+                'bengor_user.' . $key . '.factory_invite',
                 'bengor.user.infrastructure.domain.model.' . $key . '_factory_invite'
             );
         }

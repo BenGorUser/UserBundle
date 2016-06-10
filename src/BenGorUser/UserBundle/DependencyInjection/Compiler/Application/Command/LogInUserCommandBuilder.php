@@ -60,6 +60,6 @@ class LogInUserCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.log_in_' . $user;
+        return 'bengor_user.' . $user . '.log_in';
     }
 }

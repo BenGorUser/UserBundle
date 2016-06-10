@@ -125,7 +125,7 @@ class ApplicationQueriesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_of_email_query',
+            'bengor_user.user.by_email_query',
             'bengor.user.application.query.user_of_email'
         )->shouldBeCalled()->willReturn($container);
 
@@ -134,7 +134,7 @@ class ApplicationQueriesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_of_invitation_token_query',
+            'bengor_user.user.by_invitation_token_query',
             'bengor.user.application.query.user_of_invitation_token'
         )->shouldBeCalled()->willReturn($container);
 
@@ -143,7 +143,7 @@ class ApplicationQueriesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_of_remember_password_token_query',
+            'bengor_user.user.by_remember_password_token_query',
             'bengor.user.application.query.user_of_remember_password_token'
         )->shouldBeCalled()->willReturn($container);
 

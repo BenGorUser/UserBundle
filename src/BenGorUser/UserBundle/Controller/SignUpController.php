@@ -44,17 +44,17 @@ class SignUpController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 try {
-                    $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                    $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                     return $this
                         ->get('security.authentication.guard_handler')
                         ->authenticateUserAndHandleSuccess(
-                            $this->get('bengor_user.' . $userClass . '_provider')->loadUserByUsername(
+                            $this->get('bengor_user.' . $userClass . '.provider')->loadUserByUsername(
                                 $form->get('email')->getData()
                             ),
                             $request,
-                            $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
+                            $this->get('bengor_user.' . $userClass . '.form_login_authenticator'),
                             $firewall
                         );
                 } catch (UserAlreadyExistException $exception) {
@@ -85,12 +85,12 @@ class SignUpController extends Controller
         try {
             // we need to know if the invitation token given exists in
             // database, in case that it isn't, it throws 404.
-            $user = $this->get('bengor_user.' . $userClass . '_invitation_token_query')->__invoke(
+            $user = $this->get('bengor_user.' . $userClass . '.by_invitation_token_query')->__invoke(
                 new UserOfInvitationTokenQuery($invitationToken)
             );
 
             // Convert to an object implementing Symfony's UserInterface
-            $dataTransformer = $this->get('bengor_user.user_symfony_data_transformer');
+            $dataTransformer = $this->get('bengor_user.' . $userClass . '.symfony_data_transformer');
             $dataTransformer->write($user);
             $user = $dataTransformer->read();
         } catch (UserDoesNotExistException $exception) {
@@ -104,7 +104,7 @@ class SignUpController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->get('bengor_user.' . $userClass . '_command_bus')->handle($form->getData());
+                $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                 $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
 
                 return $this
@@ -112,7 +112,7 @@ class SignUpController extends Controller
                     ->authenticateUserAndHandleSuccess(
                         $user,
                         $request,
-                        $this->get('bengor_user.form_login_' . $userClass . '_authenticator'),
+                        $this->get('bengor_user.' . $userClass . '.form_login_authenticator'),
                         $firewall
                     );
             }

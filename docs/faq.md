@@ -6,7 +6,8 @@ This is the expected behavior, the user in the session is read only. This is mad
 unexpected changes. In case you want to made a change to the user use a built in [command](commands.md).
 
 
-**I get the following error: Unable to generate a URL for the named route "bengor_user_your_user_type_login" as such route does not exist.**
+**I get the following error: Unable to generate a URL for the named route "bengor_user.your_user_type.login"
+as such route does not exist.**
 
 Make sure you have added the following code to your `routing.yml` file
 

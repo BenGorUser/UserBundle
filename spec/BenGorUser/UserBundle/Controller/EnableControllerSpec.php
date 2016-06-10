@@ -13,7 +13,7 @@
 namespace spec\BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Command\Enable\EnableUserCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\EnableController;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -73,7 +73,7 @@ class EnableControllerSpec extends ObjectBehavior
         $request->query = $bag;
         $bag->get('confirmation-token')->shouldBeCalled()->willReturn('confirmation-token');
 
-        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $commandBus->handle(Argument::type(EnableUserCommand::class))->shouldBeCalled();
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);

@@ -17,7 +17,7 @@ use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenHandler;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\SignUpController;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;
@@ -116,11 +116,11 @@ class SignUpControllerSpec extends ObjectBehavior
         $form->get('email')->shouldBeCalled()->willReturn($formChild);
         $formChild->getData()->shouldBeCalled()->willReturn('bengor@user.com');
 
-        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
         $commandBus->handle($command)->shouldBeCalled();
 
-        $container->get('bengor_user.user_provider')->shouldBeCalled()->willReturn($userProvider);
+        $container->get('bengor_user.user.provider')->shouldBeCalled()->willReturn($userProvider);
         $userProvider->loadUserByUsername('bengor@user.com')->shouldBeCalled()->willReturn($user);
 
         $container->get('translator')->shouldBeCalled()->willReturn($translator);
@@ -129,7 +129,7 @@ class SignUpControllerSpec extends ObjectBehavior
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
 
         $container->get('security.authentication.guard_handler')->shouldBeCalled()->willReturn($handler);
-        $container->get('bengor_user.form_login_user_authenticator')
+        $container->get('bengor_user.user.form_login_authenticator')
             ->shouldBeCalled()->willReturn($formLoginAuthenticator);
         $handler->authenticateUserAndHandleSuccess(
             $user,
@@ -187,9 +187,9 @@ class SignUpControllerSpec extends ObjectBehavior
             'password' => '123456',
             'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
-        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($queryHandler);
+        $container->get('bengor_user.user.by_invitation_token_query')->shouldBeCalled()->willReturn($queryHandler);
         $queryHandler->__invoke($invitationTokenQuery)->shouldBeCalled()->willReturn($userDto);
-        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $container->get('bengor_user.user.symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
         $dataTransformer->write($userDto)->shouldBeCalled();
         $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
@@ -239,9 +239,9 @@ class SignUpControllerSpec extends ObjectBehavior
             'password' => '123456',
             'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
-        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($queryHandler);
+        $container->get('bengor_user.user.by_invitation_token_query')->shouldBeCalled()->willReturn($queryHandler);
         $queryHandler->__invoke($invitationTokenQuery)->shouldBeCalled()->willReturn($userDto);
-        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $container->get('bengor_user.user.symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
         $dataTransformer->write($userDto)->shouldBeCalled();
         $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
@@ -256,7 +256,7 @@ class SignUpControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
         $commandBus->handle($command)->shouldBeCalled()->willReturn($user);
 
@@ -266,7 +266,7 @@ class SignUpControllerSpec extends ObjectBehavior
         $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
 
         $container->get('security.authentication.guard_handler')->shouldBeCalled()->willReturn($handler);
-        $container->get('bengor_user.form_login_user_authenticator')
+        $container->get('bengor_user.user.form_login_authenticator')
             ->shouldBeCalled()->willReturn($formLoginAuthenticator);
         $handler->authenticateUserAndHandleSuccess(
             $user,
@@ -298,9 +298,9 @@ class SignUpControllerSpec extends ObjectBehavior
             'password' => '123456',
             'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
-        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($handler);
+        $container->get('bengor_user.user.by_invitation_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($invitationTokenQuery)->shouldBeCalled()->willReturn($userDto);
-        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $container->get('bengor_user.user.symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
         $dataTransformer->write($userDto)->shouldBeCalled();
         $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
@@ -335,7 +335,7 @@ class SignUpControllerSpec extends ObjectBehavior
         UserOfInvitationTokenHandler $handler
     ) {
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
-        $container->get('bengor_user.user_invitation_token_query')->shouldBeCalled()->willReturn($handler);
+        $container->get('bengor_user.user.by_invitation_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($invitationTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
         $this->shouldThrow(NotFoundHttpException::class)->duringByInvitationAction(

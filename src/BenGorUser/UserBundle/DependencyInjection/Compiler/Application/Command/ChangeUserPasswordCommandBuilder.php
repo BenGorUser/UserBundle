@@ -80,7 +80,7 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.change_' . $user . '_password';
+        return 'bengor_user.' . $user . '.change_password';
     }
 
     /**

@@ -15,8 +15,8 @@ namespace spec\BenGorUser\UserBundle\Controller;
 use BenGorUser\User\Application\Query\UserOfRememberPasswordTokenHandler;
 use BenGorUser\User\Application\Query\UserOfRememberPasswordTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\ChangePasswordController;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordType;
@@ -105,7 +105,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
         $commandBus->handle($command)->shouldBeCalled();
 
@@ -171,9 +171,9 @@ class ChangePasswordControllerSpec extends ObjectBehavior
             'password' => '123456',
             'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
-        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $container->get('bengor_user.user.by_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willReturn($userDto);
-        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $container->get('bengor_user.user.symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
         $dataTransformer->write($userDto)->shouldBeCalled();
         $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
@@ -222,9 +222,9 @@ class ChangePasswordControllerSpec extends ObjectBehavior
             'password' => '123456',
             'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
-        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $container->get('bengor_user.user.by_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willReturn($userDto);
-        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $container->get('bengor_user.user.symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
         $dataTransformer->write($userDto)->shouldBeCalled();
         $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
@@ -239,7 +239,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
 
         $commandBus->handle($command)->shouldBeCalled();
@@ -280,9 +280,9 @@ class ChangePasswordControllerSpec extends ObjectBehavior
             'password' => '123456',
             'roles'    => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
-        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $container->get('bengor_user.user.by_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willReturn($userDto);
-        $container->get('bengor_user.user_symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
+        $container->get('bengor_user.user.symfony_data_transformer')->shouldBeCalled()->willReturn($dataTransformer);
         $dataTransformer->write($userDto)->shouldBeCalled();
         $dataTransformer->read()->shouldBeCalled()->willReturn($user);
 
@@ -320,7 +320,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $request->query = $bag;
         $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
         $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
-        $container->get('bengor_user.user_of_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
+        $container->get('bengor_user.user.by_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
         $this->shouldThrow(NotFoundHttpException::class)->duringByRequestRememberPasswordAction(

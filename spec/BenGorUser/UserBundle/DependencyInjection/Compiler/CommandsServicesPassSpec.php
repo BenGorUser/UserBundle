@@ -115,7 +115,7 @@ class CommandsServicesPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->getDefinition('bengor_user.user_command_bus')
+        $container->getDefinition('bengor_user.user.command_bus')
             ->shouldBeCalled()->willReturn($userRepositoryDefinition);
 
         $container->findDefinition('bengor.user.command.create_user_command')

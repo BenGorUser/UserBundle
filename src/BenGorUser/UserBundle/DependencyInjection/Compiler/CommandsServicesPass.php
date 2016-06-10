@@ -36,7 +36,7 @@ class CommandsServicesPass implements CompilerPassInterface
             $container->findDefinition('bengor.user.command.create_' . $key . '_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor_user.' . $key . '_command_bus'
+                        'bengor_user.' . $key . '.command_bus'
                     ),
                     $key,
                     $user['class'],
@@ -45,7 +45,7 @@ class CommandsServicesPass implements CompilerPassInterface
             $container->findDefinition('bengor.user.command.change_' . $key . '_password_command')
                 ->setArguments([
                     $container->getDefinition(
-                        'bengor_user.' . $key . '_command_bus'
+                        'bengor_user.' . $key . '.command_bus'
                     ),
                     $key,
                 ]);

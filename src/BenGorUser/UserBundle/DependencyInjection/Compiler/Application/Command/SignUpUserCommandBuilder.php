@@ -98,7 +98,7 @@ class SignUpUserCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.sign_up_' . $user;
+        return 'bengor_user.' . $user . '.sign_up';
     }
 
     /**

@@ -63,7 +63,7 @@ class UserDTODataTransformerBuilder implements ApplicationBuilder
         )->setPublic(false);
 
         $this->container->setAlias(
-            'bengor_user.' . $user . '_dto_data_transformer',
+            'bengor_user.' . $user . '.dto_data_transformer',
             'bengor.user.application.data_transformer.' . $user . '_dto'
         );
 

@@ -117,7 +117,7 @@ class SecurityServicesPassSpec extends ObjectBehavior
 
         $container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator')
             ->shouldBeCalled()->willReturn($definition);
-        $container->getDefinition('bengor_user.user_command_bus')
+        $container->getDefinition('bengor_user.user.command_bus')
             ->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
         $container->setDefinition(
@@ -125,7 +125,7 @@ class SecurityServicesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.form_login_user_authenticator',
+            'bengor_user.user.form_login_authenticator',
             'bengor.user_bundle.security.authenticator.form_login_user_authenticator'
         )->shouldBeCalled();
 
@@ -137,7 +137,7 @@ class SecurityServicesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_symfony_data_transformer',
+            'bengor_user.user.symfony_data_transformer',
             'bengor.user_bundle.security.user_symfony_data_transformer'
         )->shouldBeCalled();
 
@@ -151,7 +151,7 @@ class SecurityServicesPassSpec extends ObjectBehavior
             Argument::type(Definition::class)
         )->shouldBeCalled()->willReturn($definition);
         $container->setAlias(
-            'bengor_user.user_provider',
+            'bengor_user.user.provider',
             'bengor.user_bundle.security.user_provider'
         )->shouldBeCalled();
 

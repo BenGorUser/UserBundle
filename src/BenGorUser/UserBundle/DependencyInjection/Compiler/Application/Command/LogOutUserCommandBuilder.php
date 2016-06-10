@@ -57,6 +57,6 @@ class LogOutUserCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.log_out_' . $user;
+        return 'bengor_user.' . $user . '.log_out';
     }
 }

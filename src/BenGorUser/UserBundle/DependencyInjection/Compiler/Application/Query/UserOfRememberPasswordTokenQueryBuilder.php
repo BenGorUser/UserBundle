@@ -55,6 +55,6 @@ class UserOfRememberPasswordTokenQueryBuilder extends QueryBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.' . $user . '_of_remember_password_token_query';
+        return 'bengor_user.' . $user . '.by_remember_password_token_query';
     }
 }

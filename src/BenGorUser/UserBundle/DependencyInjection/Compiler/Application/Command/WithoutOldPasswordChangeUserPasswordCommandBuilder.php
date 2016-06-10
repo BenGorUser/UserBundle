@@ -65,6 +65,6 @@ class WithoutOldPasswordChangeUserPasswordCommandBuilder extends ChangeUserPassw
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.change_' . $user . '_password_without_old_password';
+        return 'bengor_user.' . $user . '.change_password_without_old_password';
     }
 }

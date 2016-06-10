@@ -13,7 +13,7 @@
 namespace spec\BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Command\RequestRememberPassword\RequestRememberPasswordCommand;
-use BenGorUser\UserBundle\CommandBus\UserCommandBus;
+use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\RequestRememberPasswordController;
 use BenGorUser\UserBundle\Form\Type\RequestRememberPasswordType;
 use PhpSpec\ObjectBehavior;
@@ -96,7 +96,7 @@ class RequestRememberPasswordControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.user_command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
         $commandBus->handle($command)->shouldBeCalled();
 

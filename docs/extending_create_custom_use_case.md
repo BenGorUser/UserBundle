@@ -2,6 +2,16 @@
 
 This bundle allows the use of all use cases available in the BenGorUser component. You can find a list [here][1]
 
+<<<<<<< HEAD:docs/extending_create_custom_use_case.md
+=======
+To run one of these commands you need to use the command bus responsible of assigning the correct handler. To do it so,
+you need to get the correct bus for the user type you want to modify as each one as its own bus. For example, to execute 
+the log in command you will need to do the folowing, replacing `your_user_type_name` by you user type name:
+
+```php
+    $command = new \BenGorUser\User\Application\Command\LogIn\LogInUserCommand($email, $password);
+    $this->get('bengor_user.your_user_type_name.command_bus')->handle($command);
+>>>>>>> 479c8b9a5fc8939b21ff2a307bbc2db40fef6307:docs/commands.md
 ```
 ## Creating a custom command
 
@@ -109,7 +119,7 @@ you want to add a new handlers. To do it add the following to your `services.yml
 app.user.command.subscribe_to_newsletter_handler:
     class: AppBundle\User\Command\SubscribeToNewsletterHandler
     arguments:
-        - '@bengor_user.user_repository'
+        - '@bengor_user.user.repository'
     tags:
         - { name: bengor_user_your_user_type_command_bus_handler, handles: AppBundle\User\Command\SubscribeToNewsletterCommand }
 ```

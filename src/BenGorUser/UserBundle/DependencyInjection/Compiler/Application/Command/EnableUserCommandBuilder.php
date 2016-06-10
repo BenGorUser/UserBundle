@@ -57,6 +57,6 @@ class EnableUserCommandBuilder extends CommandBuilder
      */
     protected function aliasDefinitionName($user)
     {
-        return 'bengor_user.enable_' . $user;
+        return 'bengor_user.' . $user . '.enable';
     }
 }
