@@ -43,11 +43,6 @@ services:
         tags:
             - { name: form.type }
 
-    bengor.user.form.type.sign_up_by_invitation_with_confirmation:
-        class: BenGorUser\UserBundle\Form\Type\SignUpByInvitationWithConfirmationType
-        tags:
-            - { name: form.type }
-
     bengor.user.form.type.sign_up:
         class: BenGorUser\UserBundle\Form\Type\SignUpType
         tags:

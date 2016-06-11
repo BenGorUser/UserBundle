@@ -13,7 +13,6 @@
 namespace BenGorUser\UserBundle\Routing;
 
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
-use BenGorUser\UserBundle\Form\Type\SignUpByInvitationWithConfirmationType;
 use BenGorUser\UserBundle\Form\Type\SignUpType;
 use BenGorUser\UserBundle\Form\Type\SignUpWithConfirmationType;
 use Symfony\Component\Routing\Route;
@@ -70,13 +69,6 @@ class SignUpRoutesLoader extends RoutesLoader
             || 'byInvitation' === $specificationName
         ) {
             $this->formType = SignUpByInvitationType::class;
-
-            return 'byInvitation';
-        }
-        if ('by_invitation_with_confirmation' === $specificationName
-            || 'byInvitationWithConfirmation' === $specificationName
-        ) {
-            $this->formType = SignUpByInvitationWithConfirmationType::class;
 
             return 'byInvitation';
         }

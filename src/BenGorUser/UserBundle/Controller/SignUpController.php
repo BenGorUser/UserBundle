@@ -15,6 +15,7 @@ namespace BenGorUser\UserBundle\Controller;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserAlreadyExistException;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -69,17 +70,15 @@ class SignUpController extends Controller
     }
 
     /**
-     * By invitation action, that it can executes the "by_invitation"
-     * or "by_invitation_with_confirmation" specifications.
+     * By invitation action, that it can executes the "by_invitation" specification.
      *
      * @param Request $request   The request
      * @param string  $userClass Extra parameter that contains the user type
      * @param string  $firewall  Extra parameter that contains the firewall name
-     * @param string  $formType  Extra parameter that contains the form type FQCN
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function byInvitationAction(Request $request, $userClass, $firewall, $formType)
+    public function byInvitationAction(Request $request, $userClass, $firewall)
     {
         $invitationToken = $request->query->get('invitation-token');
         try {
@@ -97,7 +96,7 @@ class SignUpController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm($formType, null, [
+        $form = $this->createForm(SignUpByInvitationType::class, null, [
             'roles'            => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
             'invitation_token' => $invitationToken,
         ]);

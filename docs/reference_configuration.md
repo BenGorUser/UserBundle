@@ -15,7 +15,7 @@ ben_gor_user:
                     enabled: true
                 sign_up:
                     enabled: true
-                    type: default              # Also, it can be "with_confirmation", "by_invitation" or "by_invitation_with_confirmation"
+                    type: default              # Also, it can be "with_confirmation" or "by_invitation"
                 change_password:
                     enabled: true
                     type: default              # Also, it can be "by_request_remember_password"

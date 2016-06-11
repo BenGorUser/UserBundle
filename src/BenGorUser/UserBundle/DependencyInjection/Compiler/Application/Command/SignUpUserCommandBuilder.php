@@ -14,8 +14,6 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command
 
 use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserCommand;
 use BenGorUser\User\Application\Command\SignUp\ByInvitationSignUpUserHandler;
-use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignUpUserCommand;
-use BenGorUser\User\Application\Command\SignUp\ByInvitationWithConfirmationSignUpUserHandler;
 use BenGorUser\User\Application\Command\SignUp\SignUpUserCommand;
 use BenGorUser\User\Application\Command\SignUp\SignUpUserHandler;
 use BenGorUser\User\Application\Command\SignUp\WithConfirmationSignUpUserCommand;
@@ -68,17 +66,12 @@ class SignUpUserCommandBuilder extends CommandBuilder
         if ('by_invitation' === $specificationName) {
             return 'byInvitationSpecification';
         }
-        if ('by_invitation_with_confirmation' === $specificationName) {
-            return 'byInvitationWithConfirmationSpecification';
-        }
         if ('default' !== $specificationName
             && 'withConfirmation' !== $specificationName
             && 'byInvitation' !== $specificationName
-            && 'byInvitationWithConfirmation' !== $specificationName
         ) {
             throw new RuntimeException(
-                'The sign up user types must be "default" or "with_confirmation"' .
-                'or "by_invitation" or "by_invitation_with_confirmation"'
+                'The sign up user types must be "default" or "with_confirmation" or "by_invitation"'
             );
         }
 
@@ -190,25 +183,6 @@ class SignUpUserCommandBuilder extends CommandBuilder
         return [
             'command'          => ByInvitationSignUpUserCommand::class,
             'handler'          => ByInvitationSignUpUserHandler::class,
-            'handlerArguments' => $this->invitationHandlerArguments($user),
-        ];
-    }
-
-    /**
-     * Gets the "by invitation with confirmation" specification.
-     *
-     * @param string $user The user name
-     *
-     * @return array
-     */
-    private function byInvitationWithConfirmationSpecification($user)
-    {
-        (new EnableUserCommandBuilder($this->container, $this->persistence))->build($user);
-        (new InviteUserCommandBuilder($this->container, $this->persistence))->build($user);
-
-        return [
-            'command'          => ByInvitationWithConfirmationSignUpUserCommand::class,
-            'handler'          => ByInvitationWithConfirmationSignUpUserHandler::class,
             'handlerArguments' => $this->invitationHandlerArguments($user),
         ];
     }

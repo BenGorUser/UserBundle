@@ -66,7 +66,7 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('type')
                                             ->defaultValue('default')
                                             ->validate()
-                                                ->ifNotInArray(['default', 'with_confirmation', 'by_invitation', 'by_invitation_with_confirmation'])
+                                                ->ifNotInArray(['default', 'with_confirmation', 'by_invitation'])
                                                 ->thenInvalid('Invalid sign up type "%s"')
                                             ->end()
                                         ->end()
