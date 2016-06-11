@@ -12,7 +12,7 @@ app.user.event.my_event_subscriber:
     class: AppBundle\Event\MyEventSubscriber
     arguments: ~ 
     tags:
-        - { name: bengor_user_your_user_type_subscriber, subscribes_to: AppBundle\Event\MyEvent }
+        - { name: bengor_user_your_user_type_event_subscriber, subscribes_to: AppBundle\Event\MyEvent }
 ```
 
 - Back to the [index](index.md).
