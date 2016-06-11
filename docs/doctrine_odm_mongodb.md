@@ -27,6 +27,9 @@ public function registerBundles()
     $bundles = [
         // ...
         new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+        
+        // BenGor stuff...
+            
         new BenGorUser\UserBundle\BenGorUserBundle(),
         // ...
     ];
@@ -52,7 +55,7 @@ ODM needs the models be inside `src/AppBundle/Document` folder.
 
 namespace AppBundle\Document;
 
-use BenGorUser\UserBundle\Model\User as BaseUser;
+use BenGorUser\User\Domain\Model\User as BaseUser;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
@@ -62,40 +65,8 @@ class User extends BaseUser
 {
 }
 ```
-The `app/config/security.yml` has some minor changes, all of them related with persistence layer, of course:
-```yml
-security:
-    encoders:
-        AppBundle\Document\User: bcrypt
-    providers:
-        mongodb_provider:
-            mongodb: { class: AppBundle\Document\User, property: email }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            anonymous: ~
-            pattern: ^/user
-            guard:
-                authenticators:
-                    - bengor_user.form_login_user_authenticator
-            provider: mongodb_provider
-            form_login:
-                check_path: bengor_user_user_login_check
-                login_path: bengor_user_user_login
-                failure_path: bengor_user_user_login
-            logout:
-                path: bengor_user_user_logout
-                target: /
-    access_control:
-        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/, role: ROLE_USER }
-```
-Finally, **register the routes** and create the `success_redirection_route` in the same way that
-explains the [basic configuration](basic_configuration.md) chapter.
+All about **security** and **routes** work in the same way that explains in the [basic configuration](basic_configuration.md)
+chapter.
 
 - Back to the [index](index.md).
 
