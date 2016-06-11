@@ -16,4 +16,8 @@
     * [Service reference](reference_services.md)
     * [Configuration reference](reference_configuration.md)
     * [Command reference](https://github.com/BenGorUser/User/blob/master/docs/command.md)
+* Adapters
+    * [Bus adapters](adapters_buses.md)
+    * [Mailer adapters](adapters_mailers.md)
+    * [Persistence adapters](adapters_persistence.md)
 * [Frequently Asked Questions](faq.md)
