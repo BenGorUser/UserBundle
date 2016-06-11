@@ -129,6 +129,7 @@ security:
 
 This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
 to your `routing.yml`:
+
 ```yml
 # app/config/routing.yml
 
@@ -159,7 +160,8 @@ class DefaultController extends Controller
 }
 ```
 
-> You can change base route names following 
+> The list of available routes is available in the [routes by default doc](usage_routes_by_default.md). To customize
+the routes check [extending routes doc](extending_customize_urls.md)
 
 That's all! Now that the bundle is configured, the last thing you need to do is update your database:
 
