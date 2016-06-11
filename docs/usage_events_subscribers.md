@@ -3,7 +3,7 @@
 The [BenGorUser's User library](https://github.com/BenGorUser/User) has some built-in subscribers that need to be added
  to make them work, the bundle does not register them by default.
  
-The declaration mainly relies in the tag name `bengor_user_your_user_type_subscriber` and the subscribe to parameter.
+The declaration mainly relies in the tag name `bengor_user_your_user_type_event_subscriber` and the subscribe to parameter.
 In the tag name you will need to change `your_user_type` by your user type and in the subscribes to you will need to 
 add a fully qualified name you want to listen to.
 
