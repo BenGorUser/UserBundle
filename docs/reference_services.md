@@ -1,6 +1,15 @@
 #Service Reference
 
 All available services are listed below with their associated class.
+
+The list shows services created dynamically for user_type named `user`. All services follow a simple 
+**naming structure**, having **three blocks separated by dots**:
+
+* **bengor_user**: First block is always the same and serves as namespace to avoid conflicts with other bundles.
+* **user_type**: In this case `user`. Check [multiple user doc](usage_multiple_users.md) to learn more about declaration 
+of usage of different user types
+* **service_name**: The name given to the service
+
 ```bash
 bengor_user.user.dto_data_transformer                    BenGorUser\User\Application\DataTransformer\UserDTODataTransformer
 bengor_user.user.symfony_data_transformer                BenGorUser\UserBundle\Security\UserSymfonyDataTransformer

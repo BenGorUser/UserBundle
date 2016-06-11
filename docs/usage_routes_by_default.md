@@ -17,7 +17,8 @@ bengor_user_user_request_remember_password   GET|POST    /user/remember-password
 ```
 
 Remember that you will need to add to your user types home page action with the following name:
-`bengor_user_your_user_type_homepage`
+`bengor_user_your_user_type_homepage`. This name is generated automatically for `success_redirection_route` in case
+you want to change the name check [extending custom urls docs](extending_customize_urls.md)
 
 All these routes can be changed in bundle's configuration.
 

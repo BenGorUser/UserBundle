@@ -37,6 +37,10 @@ ben_gor_user:
             firewall: employee
 ```
 
+> **IMPORTANT!** `your_user_type` mentioned across all the docs refers to the name you asign to each user model. The 
+array key bellow user_class will be used for that. In this case `user` and `employee` strings will be used to replace 
+`your_user_type` in the examples you will find.
+ 
 After that, the basic security configuration needs to be changed. You will need to add a custom encoder, provider, 
 firewall and access control for your newly created user type. You will end up with something similar to this:
 
