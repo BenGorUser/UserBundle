@@ -130,7 +130,7 @@ security:
 This bundle has some basic actions such as login, logout and registration already implemented. Just add the following
 to your `routing.yml`:
 ```yml
-// app/config/routing.yml
+# app/config/routing.yml
 
 ben_gor_user:
     resource: '@BenGorUserBundle/Resources/config/routing/all.yml'
