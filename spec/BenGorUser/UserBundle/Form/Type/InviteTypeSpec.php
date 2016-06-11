@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Spec file of invite type class.
+ * Spec file of InviteType class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
@@ -41,11 +41,12 @@ class InviteTypeSpec extends ObjectBehavior
     {
         $builder->add('email', EmailType::class)->shouldBeCalled()->willReturn($builder);
 
-        $this->buildForm($builder, []);
+        $this->buildForm($builder, ['roles' => ['ROLE_USER']]);
     }
 
     function it_configures_options(OptionsResolver $resolver)
     {
+        $resolver->setRequired(['roles'])->shouldBeCalled()->willReturn($resolver);
         $resolver->setDefaults(Argument::type('array'))->shouldBeCalled()->willReturn($resolver);
 
         $this->configureOptions($resolver);

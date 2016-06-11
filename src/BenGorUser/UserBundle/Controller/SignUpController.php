@@ -72,16 +72,16 @@ class SignUpController extends Controller
      * By invitation action, that it can executes the "by_invitation"
      * or "by_invitation_with_confirmation" specifications.
      *
-     * @param Request $request         The request
-     * @param string  $invitationToken The invitation token
-     * @param string  $userClass       Extra parameter that contains the user type
-     * @param string  $firewall        Extra parameter that contains the firewall name
-     * @param string  $formType        Extra parameter that contains the form type FQCN
+     * @param Request $request   The request
+     * @param string  $userClass Extra parameter that contains the user type
+     * @param string  $firewall  Extra parameter that contains the firewall name
+     * @param string  $formType  Extra parameter that contains the form type FQCN
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function byInvitationAction(Request $request, $invitationToken, $userClass, $firewall, $formType)
+    public function byInvitationAction(Request $request, $userClass, $firewall, $formType)
     {
+        $invitationToken = $request->query->get('invitation-token');
         try {
             // we need to know if the invitation token given exists in
             // database, in case that it isn't, it throws 404.

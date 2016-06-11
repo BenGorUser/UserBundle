@@ -12,7 +12,7 @@ app.invited_mailer_subscriber:
         - '@bengor_user.symfony_url_generator'
         - bengor_user_your_user_type_sign_up
     tags:
-        - { name: bengor_user_your_user_type_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserInvited }
+        - { name: bengor_user_your_user_type_event_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserInvited }
 
 app.registered_mailer_subscriber:
     class: BenGorUser\User\Domain\Event\UserRegisteredMailerSubscriber
@@ -22,7 +22,7 @@ app.registered_mailer_subscriber:
         - '@bengor_user.symfony_url_generator'
         - bengor_user_your_user_type_enable
     tags:
-        - { name: bengor_user_your_user_type_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserRegistered }
+        - { name: bengor_user_your_user_type_event_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserRegistered }
 
 app.request_remember_password_mailer_subscriber:
     class: BenGorUser\User\Domain\Event\UserRememberPasswordRequestedMailerSubscriber
@@ -32,7 +32,7 @@ app.request_remember_password_mailer_subscriber:
         - '@bengor_user.symfony_url_generator'
         - bengor_user_your_user_type_change_password
     tags:
-        - { name: bengor_user_your_user_type_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserRememberPasswordRequested }
+        - { name: bengor_user_your_user_type_event_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserRememberPasswordRequested }
 ```
 
 - Back to the [index](index.md).

@@ -35,7 +35,9 @@ class InviteController extends Controller
      */
     public function inviteAction(Request $request, $userClass, $successRoute = null)
     {
-        $form = $this->createForm(InviteType::class);
+        $form = $this->createForm(InviteType::class, null, [
+            'roles' => $this->getParameter('bengor_user.' . $userClass . '_default_roles'),
+        ]);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {

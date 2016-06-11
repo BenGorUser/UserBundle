@@ -27,11 +27,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class InviteType extends AbstractType
 {
     /**
+     * Array which contains the default role|roles.
+     *
+     * @var array
+     */
+    private $roles;
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', EmailType::class);
+
+        $this->roles = $options['roles'];
     }
 
     /**
@@ -39,11 +48,13 @@ class InviteType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired(['roles']);
         $resolver->setDefaults([
             'data_class' => InviteUserCommand::class,
             'empty_data' => function (FormInterface $form) {
                 return new InviteUserCommand(
-                    $form->get('email')->getData()
+                    $form->get('email')->getData(),
+                    $this->roles
                 );
             },
         ]);

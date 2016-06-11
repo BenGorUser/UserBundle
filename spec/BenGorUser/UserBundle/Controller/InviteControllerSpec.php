@@ -60,8 +60,9 @@ class InviteControllerSpec extends ObjectBehavior
         FormInterface $form,
         FormFactoryInterface $formFactory
     ) {
+        $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
-        $formFactory->create(InviteType::class, null, [])->shouldBeCalled()->willReturn($form);
+        $formFactory->create(InviteType::class, null, ['roles' => ['ROLE_USER']])->shouldBeCalled()->willReturn($form);
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
 
@@ -89,8 +90,9 @@ class InviteControllerSpec extends ObjectBehavior
         FormView $formView,
         Translator $translator
     ) {
+        $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
-        $formFactory->create(InviteType::class, null, [])->shouldBeCalled()->willReturn($form);
+        $formFactory->create(InviteType::class, null, ['roles' => ['ROLE_USER']])->shouldBeCalled()->willReturn($form);
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
@@ -124,8 +126,9 @@ class InviteControllerSpec extends ObjectBehavior
         FormInterface $form,
         FormFactoryInterface $formFactory
     ) {
+        $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
         $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
-        $formFactory->create(InviteType::class, null, [])->shouldBeCalled()->willReturn($form);
+        $formFactory->create(InviteType::class, null, ['roles' => ['ROLE_USER']])->shouldBeCalled()->willReturn($form);
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);

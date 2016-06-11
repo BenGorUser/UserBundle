@@ -118,8 +118,6 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
             // User DTO instantiation is needed to continue the correct Guard flow. Then, the process
             // will break in "checkCredentials" method throwing the correct error message.
             return new User('bengor@user.com', '0', ['ROLE_USER']);
-        } catch (\Exception $exception) {
-            return;
         }
 
         return $userProvider->loadUserByUsername($credentials->email());

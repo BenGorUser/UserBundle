@@ -27,6 +27,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -170,6 +171,7 @@ class SignUpControllerSpec extends ObjectBehavior
     }
 
     function it_renders_by_invitation_action(
+        ParameterBagInterface $bag,
         UserInterface $user,
         UserOfInvitationTokenHandler $queryHandler,
         UserSymfonyDataTransformer $dataTransformer,
@@ -181,6 +183,9 @@ class SignUpControllerSpec extends ObjectBehavior
         FormInterface $form,
         FormFactoryInterface $formFactory
     ) {
+        $bag->get('invitation-token')->willReturn('invitation-token');
+        $request->query = $bag;
+
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
         $userDto = [
             'email'    => 'bengor@user.com',
@@ -211,12 +216,11 @@ class SignUpControllerSpec extends ObjectBehavior
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->byInvitationAction(
-            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
-        )->shouldReturn($response);
+        $this->byInvitationAction($request, 'user', 'main', SignUpByInvitationType::class)->shouldReturn($response);
     }
 
     function it_by_invitation_action(
+        ParameterBagInterface $bag,
         UserInterface $user,
         ByInvitationSignUpUserCommand $command,
         UserCommandBus $commandBus,
@@ -233,6 +237,9 @@ class SignUpControllerSpec extends ObjectBehavior
         FormFactoryInterface $formFactory,
         FormLoginAuthenticator $formLoginAuthenticator
     ) {
+        $bag->get('invitation-token')->willReturn('invitation-token');
+        $request->query = $bag;
+
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
         $userDto = [
             'email'    => 'bengor@user.com',
@@ -275,12 +282,11 @@ class SignUpControllerSpec extends ObjectBehavior
             'main'
         )->shouldBeCalled()->willReturn($response);
 
-        $this->byInvitationAction(
-            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
-        )->shouldReturn($response);
+        $this->byInvitationAction($request, 'user', 'main', SignUpByInvitationType::class)->shouldReturn($response);
     }
 
     function it_does_not_sign_up_by_invitation_action(
+        ParameterBagInterface $bag,
         Request $request,
         ContainerInterface $container,
         FormInterface $form,
@@ -292,6 +298,9 @@ class SignUpControllerSpec extends ObjectBehavior
         UserOfInvitationTokenHandler $handler,
         UserSymfonyDataTransformer $dataTransformer
     ) {
+        $bag->get('invitation-token')->willReturn('invitation-token');
+        $request->query = $bag;
+
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
         $userDto = [
             'email'    => 'bengor@user.com',
@@ -324,22 +333,24 @@ class SignUpControllerSpec extends ObjectBehavior
             'form'  => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
-        $this->byInvitationAction(
-            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
-        )->shouldReturn($response);
+        $this->byInvitationAction($request, 'user', 'main', SignUpByInvitationType::class)->shouldReturn($response);
     }
 
     function it_does_not_render_because_invitation_token_does_not_exist(
+        ParameterBagInterface $bag,
         Request $request,
         ContainerInterface $container,
         UserOfInvitationTokenHandler $handler
     ) {
+        $bag->get('invitation-token')->willReturn('invitation-token');
+        $request->query = $bag;
+
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
         $container->get('bengor_user.user.by_invitation_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($invitationTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
         $this->shouldThrow(NotFoundHttpException::class)->duringByInvitationAction(
-            $request, 'invitation-token', 'user', 'main', SignUpByInvitationType::class
+            $request, 'user', 'main', SignUpByInvitationType::class
         );
     }
 }
