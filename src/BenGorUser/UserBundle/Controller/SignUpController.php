@@ -94,6 +94,8 @@ class SignUpController extends Controller
             $user = $dataTransformer->read();
         } catch (UserDoesNotExistException $exception) {
             throw $this->createNotFoundException();
+        } catch (\InvalidArgumentException $exception) {
+            throw $this->createNotFoundException();
         }
 
         $form = $this->createForm(SignUpByInvitationType::class, null, [
