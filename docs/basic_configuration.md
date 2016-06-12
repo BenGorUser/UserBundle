@@ -47,12 +47,14 @@ public function registerBundles()
         // First bridges and then the UserBundle
         
         // Bridges
-        new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
         new BenGorUser\TwigBridgeBundle\TwigBridgeBundle(),
-        new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
         new BenGorUser\SymfonyRoutingBridgeBundle\SymfonyRoutingBridgeBundle(),
         new BenGorUser\SymfonySecurityBridgeBundle\SymfonySecurityBridgeBundle(),
+        
+        new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
+        new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
         new BenGorUser\SimpleBusBridgeBundle\SimpleBusBridgeBundle(),
+        new BenGorUser\SimpleBusBridgeBundle\SimpleBusDoctrineORMBridgeBundle()
         
         // User bundle
         new BenGorUser\UserBundle\BenGorUserBundle(),

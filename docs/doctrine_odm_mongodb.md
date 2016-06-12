@@ -27,9 +27,13 @@ public function registerBundles()
     $bundles = [
         // ...
         new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+        // ...
+        new BenGorUser\DoctrineODMMongoDBBridgeBundle\DoctrineODMMongoDBBridgeBundle(),  
         
-        // BenGor stuff...
-        new BenGorUser\DoctrineODMMongoDBBridgeBundle\DoctrineODMMongoDBBridgeBundle(),    
+        // In case we are using SimpleBus as Bus adapter
+        new BenGorUser\SimpleBusBridgeBundle\SimpleBusBridgeBundle(),
+        new BenGorUser\SimpleBusBridgeBundle\SimpleBusDoctrineODMMongoDBBridgeBundle(),
+        
         new BenGorUser\UserBundle\BenGorUserBundle(),
         // ...
     ];
@@ -74,7 +78,43 @@ ben_gor_user:
             persistence: doctrine_odm_mongodb
             firewall: main
 ```
-All about **security** and **routes** work in the same way that explains in the [basic configuration](basic_configuration.md)
+
+The `security.yml` file is the same that the basic configuration but you need to change FQCN of User class in the
+`encoders` section:
+```yml
+# app/config/security.yml
+
+security:
+    encoders:
+        AppBundle\Document\User: bcrypt
+    providers:
+        bengor_user:
+            id: bengor_user.user.provider
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            pattern: ^/user
+            guard:
+                authenticators:
+                    - bengor_user.user.form_login_authenticator
+            provider: bengor_user
+            form_login:
+                check_path: bengor_user_user_login_check
+                login_path: bengor_user_user_login
+                failure_path: bengor_user_user_login
+            logout:
+                path: bengor_user_user_logout
+                target: /
+    access_control:
+        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/sign-up, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/enable, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/, role: ROLE_USER }
+```
+All about **routes** work in the same way that explains in the [basic configuration](basic_configuration.md)
 chapter.
 
 - Back to the [index](index.md).
