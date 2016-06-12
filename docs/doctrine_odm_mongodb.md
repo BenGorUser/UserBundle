@@ -9,7 +9,7 @@ properly.
 
 Firstly, install the bundle with Composer
 ```shell
-$ composer require doctrine/mongodb-odm-bundle
+$ composer require bengor-user/doctrine-odm-mongodb-bridge-bundle
 ```
 Next, register the annotations library by adding the following to the autoloader
 (below the existing `AnnotationRegistry::registerLoader` line) in the `app/autoload.php` file
@@ -18,9 +18,9 @@ use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 
 AnnotationDriver::registerAnnotationClasses();
 ```
-Then, enable the bundle in the `app/config/AppKernel.php`:
+Once the bundle has been installed enable it in the AppKernel:
 ```php
-<?php
+// app/config/AppKernel.php
 
 public function registerBundles()
 {
@@ -29,29 +29,16 @@ public function registerBundles()
         new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
         
         // BenGor stuff...
-            
+        new BenGorUser\DoctrineODMMongoDBBridgeBundle\DoctrineODMMongoDBBridgeBundle(),    
         new BenGorUser\UserBundle\BenGorUserBundle(),
         // ...
     ];
 }
 ```
-To get started, you'll need some basic configuration that sets up the document manager. The
-easiest way is to enable auto_mapping, which will activate the MongoDB ODM across your application:
-```yml
-doctrine_mongodb:
-    connections:
-        default:
-            server: mongodb://localhost:27017
-            options: {}
-    default_database: symfony_db
-    document_managers:
-        default:
-            auto_mapping: true
-```
-Instead of ORM that needs inside `src/AppBundle/Entity` directory, the MongoDB's Doctrine
-ODM needs the models be inside `src/AppBundle/Document` folder.
+Instead of ORM that needs inside `src/AppBundle/Entity` directory, the MongoDB's Doctrine ODM needs the models be
+inside `src/AppBundle/Document` folder.
 ```php
-<?php
+// src/AppBundle/Document/User.php
 
 namespace AppBundle\Document;
 
@@ -64,6 +51,28 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 class User extends BaseUser
 {
 }
+```
+To get started, you'll need some basic configuration that sets up the document manager. The easiest way is to enable
+`auto_mapping`, which will activate the MongoDB ODM across your application:
+```yml
+# app/config/config.yml
+
+doctrine_mongodb:
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            options: {}
+    default_database: bengor_user_db
+    document_managers:
+        default:
+            auto_mapping: true
+
+ben_gor_user:
+    user_class:
+        user:
+            class: AppBundle\Document\User
+            persistence: doctrine_odm_mongodb
+            firewall: main
 ```
 All about **security** and **routes** work in the same way that explains in the [basic configuration](basic_configuration.md)
 chapter.
