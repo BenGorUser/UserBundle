@@ -7,7 +7,7 @@ ben_gor_user:
         user:
             class: ~                           # Required
             firewall: ~                        # Required
-            persistence: doctrine_orm          # Also, it can be "doctrine_odm_mongodb" or "sql"
+            persistence: doctrine_orm          # Also, it can be "doctrine_odm_mongodb"
             default_roles:
                 - ROLE_USER
             use_cases:
