@@ -37,7 +37,7 @@
             </trans-unit>
             <trans-unit id="change_password.form_old_password_label">
                 <source>change_password.form_old_password_label</source>
-                <target>Actual password</target>
+                <target>Current password</target>
             </trans-unit>
             <trans-unit id="change_password.form_password_first_option_label">
                 <source>change_password.form_password_first_option_label</source>
