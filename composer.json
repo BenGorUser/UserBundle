@@ -18,10 +18,10 @@
     ],
     "require": {
         "php": "^5.5 || ^7.0",
-        "bengor-user/user": "0.6.x-dev",
-        "bengor-user/symfony-routing-bridge-bundle": "dev-master",
-        "bengor-user/symfony-security-bridge-bundle": "dev-master",
-        "bengor-user/twig-bridge-bundle": "dev-master",
+        "bengor-user/symfony-routing-bridge-bundle": "^1.0",
+        "bengor-user/symfony-security-bridge-bundle": "^1.0",
+        "bengor-user/twig-bridge-bundle": "^1.0",
+        "bengor-user/user": "^0.6",
         "symfony/form": "^2.8 || ^3.0",
         "symfony/framework-bundle": "^2.8 || ^3.0",
         "symfony/security-bundle": "^2.8 || ^3.0"
@@ -45,9 +45,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.6.x-dev"
+            "dev-master": "1.0.x-dev"
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
