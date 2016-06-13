@@ -16,6 +16,8 @@ use BenGorUser\UserBundle\Form\Type\RemoveType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -39,6 +41,16 @@ class RemoveTypeSpec extends ObjectBehavior
     function it_extends_abstract_type()
     {
         $this->shouldHaveType(AbstractType::class);
+    }
+
+    function it_builds_form(FormBuilderInterface $builder)
+    {
+        $builder->add('submit', SubmitType::class, [
+            'label'              => 'remove.form_submit_button',
+            'translation_domain' => 'BenGorUser',
+        ])->shouldBeCalled()->willReturn($builder);
+
+        $this->buildForm($builder, []);
     }
 
     function it_configures_options(OptionsResolver $resolver)

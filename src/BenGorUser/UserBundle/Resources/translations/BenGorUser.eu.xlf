@@ -108,6 +108,11 @@
                 <source>security.view_submit_button</source>
                 <target>Sartu</target>
             </trans-unit>
+
+            <trans-unit id="remove.form_submit_button">
+                <source>remove.form_submit_button</source>
+                <target>Ezabatu</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
