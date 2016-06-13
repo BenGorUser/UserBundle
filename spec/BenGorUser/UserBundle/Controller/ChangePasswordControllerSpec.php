@@ -79,7 +79,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
-        $templating->renderResponse('@BenGorUser/change_password/change_password.html.twig', [
+        $templating->renderResponse('@BenGorUser/change_password/default.html.twig', [
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 
@@ -143,7 +143,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->has('templating')->shouldBeCalled()->willReturn(true);
         $container->get('templating')->shouldBeCalled()->willReturn($templating);
         $form->createView()->shouldBeCalled()->willReturn($formView);
-        $templating->renderResponse('@BenGorUser/change_password/change_password.html.twig', [
+        $templating->renderResponse('@BenGorUser/change_password/default.html.twig', [
             'form' => $formView,
         ], null)->shouldBeCalled()->willReturn($response);
 

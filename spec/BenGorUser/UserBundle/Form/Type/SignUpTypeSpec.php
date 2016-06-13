@@ -45,12 +45,14 @@ class SignUpTypeSpec extends ObjectBehavior
         $builder->add('email', EmailType::class)->shouldBeCalled()->willReturn($builder);
         $builder->add('password', RepeatedType::class, [
             'type'            => PasswordType::class,
+            'options'         => ['translation_domain' => 'BenGorUser'],
             'invalid_message' => 'sign_up.form_password_invalid_message',
             'first_options'   => ['label' => 'sign_up.form_password_first_option_label'],
             'second_options'  => ['label' => 'sign_up.form_password_second_option_label'],
         ])->shouldBeCalled()->willReturn($builder);
         $builder->add('submit', SubmitType::class, [
-            'label' => 'sign_up.form_submit_button',
+            'label'              => 'sign_up.form_submit_button',
+            'translation_domain' => 'BenGorUser',
         ])->shouldBeCalled()->willReturn($builder);
 
         $this->buildForm($builder, ['roles' => ['ROLE_USER']]);

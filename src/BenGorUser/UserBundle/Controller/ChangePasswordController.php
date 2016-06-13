@@ -58,7 +58,7 @@ class ChangePasswordController extends Controller
             }
         }
 
-        return $this->render('@BenGorUser/change_password/change_password.html.twig', [
+        return $this->render('@BenGorUser/change_password/default.html.twig', [
             'form' => $form->createView(),
         ]);
     }

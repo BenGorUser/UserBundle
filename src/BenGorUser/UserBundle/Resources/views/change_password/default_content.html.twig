@@ -1,11 +1,11 @@
-{% extends '@BenGorUser/layout.html.twig' %}
+{% trans_default_domain 'BenGorUser' %}
 
-{% block bengor_user_content %}
+<section>
     {% if app.session.flashbag.peekAll|length > 0 %}
         {% for type, messages in app.session.flashbag.all %}
             {% for message in messages %}
                 <div class="{{ type ? type : '' }}">
-                    {{ message|trans({}, domain|default('messages')) }}
+                    {{ message | trans }}
                 </div>
             {% endfor %}
         {% endfor %}
@@ -15,4 +15,4 @@
     {{ form_widget(form) }}
 
     {{ form_end(form) }}
-{% endblock %}
+</section>

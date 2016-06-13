@@ -1,6 +1,5 @@
-{% extends '@BenGorUser/sign_up/default.html.twig' %}
+{% extends '@BenGorUser/layout.html.twig' %}
 
 {% block bengor_user_content %}
-    <p>{{ email }}:</p>
-    {{ parent() }}
+    {% include '@BenGorUser/sign_up/by_invitation_content.html.twig' %}
 {% endblock %}

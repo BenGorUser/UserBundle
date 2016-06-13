@@ -13,6 +13,9 @@
 namespace spec\BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
+use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
+use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
@@ -24,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -113,6 +117,42 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $userProvider->loadUserByUsername('bengor@user.com')->shouldBeCalled()->willReturn($user);
 
         $this->getUser($credentials, $userProvider)->shouldReturn($user);
+    }
+
+    function it_does_not_get_user_because_user_does_not_exist(
+        UserProviderInterface $userProvider,
+        UserCommandBus $commandBus,
+        LogInUserCommand $credentials
+    ) {
+        $commandBus->handle($credentials)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
+
+        $this->shouldThrow(
+            new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message')
+        )->duringGetUser($credentials, $userProvider);
+    }
+
+    function it_does_not_get_user_because_user_is_inactive(
+        UserProviderInterface $userProvider,
+        UserCommandBus $commandBus,
+        LogInUserCommand $credentials
+    ) {
+        $commandBus->handle($credentials)->shouldBeCalled()->willThrow(UserInactiveException::class);
+
+        $this->shouldThrow(
+            new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message')
+        )->duringGetUser($credentials, $userProvider);
+    }
+
+    function it_does_not_get_user_because_password_is_invalid(
+        UserProviderInterface $userProvider,
+        UserCommandBus $commandBus,
+        LogInUserCommand $credentials
+    ) {
+        $commandBus->handle($credentials)->shouldBeCalled()->willThrow(UserPasswordInvalidException::class);
+
+        $this->shouldThrow(
+            new CustomUserMessageAuthenticationException('security.form_invalid_credentials_invalid_message')
+        )->duringGetUser($credentials, $userProvider);
     }
 
     function it_checks_credentials(LogInUserCommand $credentials, User $user)

@@ -6,6 +6,11 @@
                 <source>sign_up.form_password_invalid_message</source>
                 <target>The password fields must match</target>
             </trans-unit>
+
+            <trans-unit id="change_password.form_password_invalid_message">
+                <source>change_password.form_password_invalid_message</source>
+                <target>The password fields must match</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

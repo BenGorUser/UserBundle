@@ -43,12 +43,14 @@ class ChangePasswordByRequestRememberPasswordTypeSpec extends ObjectBehavior
     {
         $builder->add('newPlainPassword', RepeatedType::class, [
             'type'            => PasswordType::class,
+            'options'         => ['translation_domain' => 'BenGorUser'],
             'invalid_message' => 'change_password.form_password_invalid_message',
             'first_options'   => ['label' => 'change_password.form_password_first_option_label'],
             'second_options'  => ['label' => 'change_password.form_password_second_option_label'],
         ])->shouldBeCalled()->willReturn($builder);
         $builder->add('submit', SubmitType::class, [
-            'label' => 'change_password.form_submit_button',
+            'label'              => 'change_password.form_submit_button',
+            'translation_domain' => 'BenGorUser',
         ])->shouldBeCalled()->willReturn($builder);
 
         $this->buildForm($builder, ['remember_password_token' => 'the-remember_password_token']);

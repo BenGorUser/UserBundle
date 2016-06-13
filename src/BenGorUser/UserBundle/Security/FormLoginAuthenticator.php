@@ -13,6 +13,8 @@
 namespace BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
+use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
@@ -20,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -114,10 +117,12 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         try {
             $this->commandBus->handle($credentials);
+        } catch (UserInactiveException $exception) {
+            throw new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message');
+        } catch (UserDoesNotExistException $exception) {
+            throw new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message');
         } catch (UserPasswordInvalidException $exception) {
-            // User DTO instantiation is needed to continue the correct Guard flow. Then, the process
-            // will break in "checkCredentials" method throwing the correct error message.
-            return new User('bengor@user.com', '0', ['ROLE_USER']);
+            throw new CustomUserMessageAuthenticationException('security.form_invalid_credentials_invalid_message');
         }
 
         return $userProvider->loadUserByUsername($credentials->email());
@@ -128,7 +133,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return '0' !== $user->getPassword();
+        return true;
     }
 
     /**

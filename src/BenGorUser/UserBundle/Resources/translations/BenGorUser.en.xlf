@@ -35,9 +35,9 @@
                 <source>change_password.form_submit_button</source>
                 <target>Change password</target>
             </trans-unit>
-            <trans-unit id="change_password.form_password_invalid_message">
-                <source>change_password.form_password_invalid_message</source>
-                <target>The password fields must match</target>
+            <trans-unit id="change_password.form_old_password_label">
+                <source>change_password.form_old_password_label</source>
+                <target>Actual password</target>
             </trans-unit>
             <trans-unit id="change_password.form_password_first_option_label">
                 <source>change_password.form_password_first_option_label</source>
@@ -95,6 +95,14 @@
             <trans-unit id="security.view_password_label">
                 <source>security.view_password_label</source>
                 <target>Password</target>
+            </trans-unit>
+            <trans-unit id="security.form_user_not_found_invalid_message">
+                <source>security.form_user_not_found_invalid_message</source>
+                <target>User could not be found</target>
+            </trans-unit>
+            <trans-unit id="security.form_invalid_credentials_invalid_message">
+                <source>security.form_invalid_credentials_invalid_message</source>
+                <target>Invalid credentials</target>
             </trans-unit>
             <trans-unit id="security.view_submit_button">
                 <source>security.view_submit_button</source>
