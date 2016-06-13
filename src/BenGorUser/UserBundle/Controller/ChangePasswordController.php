@@ -45,22 +45,18 @@ class ChangePasswordController extends Controller
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
-
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash(
-                        'error',
-                        $this->get('translator')->trans('change_password.error_flash_user_password_invalid')
-                    );
+                    $this->addFlash('error', $this->get('translator')->trans(
+                        'change_password.error_flash_user_password_invalid'
+                    ));
                 }
             }
         }
 
-        return $this->render('@BenGorUser/change_password/default.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('@BenGorUser/change_password/default.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -100,15 +96,13 @@ class ChangePasswordController extends Controller
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
                     $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
-
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
-                    $this->addFlash(
-                        'error',
-                        $this->get('translator')->trans('change_password.error_flash_user_password_invalid')
-                    );
+                    $this->addFlash('error', $this->get('translator')->trans(
+                        'change_password.error_flash_user_password_invalid'
+                    ));
                 }
             }
         }

@@ -39,7 +39,6 @@ class EnableController extends Controller
         if (null === $confirmationToken) {
             throw $this->createNotFoundException();
         }
-
         try {
             $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
                 new EnableUserCommand($confirmationToken)

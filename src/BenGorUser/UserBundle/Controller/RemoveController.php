@@ -50,8 +50,6 @@ class RemoveController extends Controller
             }
         }
 
-        return $this->render('@BenGorUser/remove/remove.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('@BenGorUser/remove/remove.html.twig', ['form' => $form->createView()]);
     }
 }
