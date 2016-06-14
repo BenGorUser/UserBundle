@@ -14,6 +14,9 @@ framework:
 
 By default we recommend the following installation that will add the following adapters to the user bundle.
 
+* Routing: [SymfonySecurity](https://github.com/BenGorUser/SymfonyRoutingBridgeBundle)
+* Security: [SymfonySecurity](https://github.com/BenGorUser/SymfonySecurityBridgeBundle)
+* Ui: [Twig](https://github.com/BenGorUser/TwigBridgeBundle)
 * Persistence: [DoctrineORM](https://github.com/BenGorUser/DoctrineORMBridgeBundle)
 * Mailer: [SwiftMailer](https://github.com/BenGorUser/SwiftMailerBridgeBundle)
 * Bus: [SimpleBus](https://github.com/BenGorUser/SimpleBusBridgeBundle)
@@ -22,7 +25,10 @@ By default we recommend the following installation that will add the following a
 {
     "require": {
         "bengor-user/user-bundle": "^0.6",
-        
+
+        "bengor-user/symfony-routing-bridge-bundle": "^1.0",
+        "bengor-user/symfony-security-bridge-bundle": "^1.0",
+        "bengor-user/twig-bridge-bundle": "^1.0",
         "bengor-user/doctrine-orm-bridge-bundle": "~1.0",
         "bengor-user/swift-mailer-bridge-bundle": "~1.0",
         "bengor-user/simple-bus-bridge-bundle": "~1.0"
@@ -30,7 +36,8 @@ By default we recommend the following installation that will add the following a
 } 
 ```
 
-> Some other adapters for [persistence](adapters_persistence.md), [mailers](adapters_mailers.md) and 
+> Some other adapters for [routing](adapters_routing.md), [security](adapters_security.md),
+[ui](adapters_ui.md), [persistence](adapters_persistence.md), [mailers](adapters_mailers.md) and 
 [buses](adapters_buses.md) are available.
 
 Once the bundle has been installed enable it in the AppKernel:
@@ -50,7 +57,6 @@ public function registerBundles()
         new BenGorUser\TwigBridgeBundle\TwigBridgeBundle(),
         new BenGorUser\SymfonyRoutingBridgeBundle\SymfonyRoutingBridgeBundle(),
         new BenGorUser\SymfonySecurityBridgeBundle\SymfonySecurityBridgeBundle(),
-        
         new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
         new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
         new BenGorUser\SimpleBusBridgeBundle\SimpleBusBridgeBundle(),

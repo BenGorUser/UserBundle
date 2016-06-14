@@ -18,9 +18,6 @@
     ],
     "require": {
         "php": "^5.5 || ^7.0",
-        "bengor-user/symfony-routing-bridge-bundle": "^1.0",
-        "bengor-user/symfony-security-bridge-bundle": "^1.0",
-        "bengor-user/twig-bridge-bundle": "^1.0",
         "bengor-user/user": "^0.6",
         "symfony/form": "^2.8 || ^3.0",
         "symfony/framework-bundle": "^2.8 || ^3.0",
