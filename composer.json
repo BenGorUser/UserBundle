@@ -21,7 +21,8 @@
         "bengor-user/user": "^0.6",
         "symfony/form": "^2.8 || ^3.0",
         "symfony/framework-bundle": "^2.8 || ^3.0",
-        "symfony/security-bundle": "^2.8 || ^3.0"
+        "symfony/security-bundle": "^2.8 || ^3.0",
+        "symfony/twig-bundle": "^2.8 || ^3.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.11",
