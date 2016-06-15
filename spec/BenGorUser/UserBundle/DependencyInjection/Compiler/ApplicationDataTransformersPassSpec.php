@@ -42,13 +42,14 @@ class ApplicationDataTransformersPassSpec extends ObjectBehavior
         $container->getParameter('bengor_user.config')->shouldBeCalled()->willReturn([
             'user_class' => [
                 'user' => [
-                    'class'         => 'AppBundle\Entity\User',
-                    'firewall'      => 'main',
-                    'persistence'   => 'doctrine_orm',
-                    'default_roles' => [
+                    'class'            => 'AppBundle\Entity\User',
+                    'firewall'         => 'main',
+                    'persistence'      => 'doctrine_orm',
+                    'data_transformer' => 'BenGorUser\\User\\Application\\DataTransformer\\UserDTODataTransformer',
+                    'default_roles'    => [
                         'ROLE_USER',
                     ],
-                    'use_cases'     => [
+                    'use_cases'        => [
                         'security'        => [
                             'enabled' => true,
                         ],
@@ -64,7 +65,7 @@ class ApplicationDataTransformersPassSpec extends ObjectBehavior
                             'enabled' => true,
                         ],
                     ],
-                    'routes'        => [
+                    'routes'           => [
                         'security'                  => [
                             'login'                     => [
                                 'name' => 'bengor_user_user_login',

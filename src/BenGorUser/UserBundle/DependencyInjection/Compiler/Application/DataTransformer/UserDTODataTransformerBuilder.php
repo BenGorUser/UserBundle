@@ -16,6 +16,7 @@ use BenGorUser\User\Application\DataTransformer\UserDTODataTransformer;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\ApplicationBuilder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * User DTO data transformer builder.
@@ -39,14 +40,23 @@ class UserDTODataTransformerBuilder implements ApplicationBuilder
     protected $container;
 
     /**
+     * The FQCN or the service id of user data transformer.
+     *
+     * @var string
+     */
+    protected $dataTransformer;
+
+    /**
      * Constructor.
      *
-     * @param ContainerBuilder $container     The container builder
-     * @param array            $configuration The configuration tree
+     * @param ContainerBuilder $container       The container builder
+     * @param string           $dataTransformer The FQCN or the service id of user data transformer
+     * @param array            $configuration   The configuration tree
      */
-    public function __construct(ContainerBuilder $container, array $configuration = [])
+    public function __construct(ContainerBuilder $container, $dataTransformer, array $configuration = [])
     {
         $this->container = $container;
+        $this->dataTransformer = $dataTransformer;
         $this->configuration = $configuration;
     }
 
@@ -55,11 +65,13 @@ class UserDTODataTransformerBuilder implements ApplicationBuilder
      */
     public function build($user)
     {
+        $dataTransformer = class_exists($this->dataTransformer)
+            ? new Definition($this->dataTransformer)
+            : new Reference($this->dataTransformer);
+
         $this->container->setDefinition(
             'bengor.user.application.data_transformer.' . $user . '_dto',
-            new Definition(
-                UserDTODataTransformer::class
-            )
+            $dataTransformer
         )->setPublic(false);
 
         $this->container->setAlias(
