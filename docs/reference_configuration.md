@@ -8,6 +8,7 @@ ben_gor_user:
             class: ~                           # Required
             firewall: ~                        # Required
             persistence: doctrine_orm          # Also, it can be "doctrine_odm_mongodb"
+            data_transformer: BenGorUser\User\Application\DataTransformer\UserDTODataTransformer
             default_roles:
                 - ROLE_USER
             use_cases:

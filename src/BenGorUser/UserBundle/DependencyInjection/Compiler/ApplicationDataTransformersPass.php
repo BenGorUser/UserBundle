@@ -35,7 +35,7 @@ class ApplicationDataTransformersPass implements CompilerPassInterface
 
         foreach ($config['user_class'] as $key => $user) {
             (new UserDTODataTransformerBuilder(
-                $container
+                $container, $user['data_transformer']
             ))->build($key);
         }
     }
