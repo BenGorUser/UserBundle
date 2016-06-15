@@ -12,7 +12,7 @@ ben_gor_user:
             firewall: main
             use_cases:
                 sign_up:
-                    type: default  # Also, it can be "with_confirmation", "by_invitation" or "by_invitation_with_confirmation"
+                    type: default  # Also, it can be "with_confirmation", "by_invitation"
 ```
 
 ##Default
