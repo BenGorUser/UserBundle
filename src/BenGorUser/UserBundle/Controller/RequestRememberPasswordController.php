@@ -41,15 +41,16 @@ class RequestRememberPasswordController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('request_remember_password.success_flash'));
+                    $this->addFlash('notice', $this->get('translator')->trans(
+                        'request_remember_password.success_flash', [], 'BenGorUser'
+                    ));
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserDoesNotExistException $exception) {
-                    $this->addFlash(
-                        'error',
-                        $this->get('translator')->trans('request_remember_password.error_flash_user_does_not_exist')
-                    );
+                    $this->addFlash('error', $this->get('translator')->trans(
+                        'request_remember_password.error_flash_user_does_not_exist', [], 'BenGorUser'
+                    ));
                 }
             }
         }

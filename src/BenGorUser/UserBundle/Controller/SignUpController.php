@@ -46,7 +46,9 @@ class SignUpController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
+                    $this->addFlash('notice', $this->get('translator')->trans(
+                        'sign_up.success_flash', [], 'BenGorUser'
+                    ));
 
                     return $this
                         ->get('security.authentication.guard_handler')
@@ -59,7 +61,9 @@ class SignUpController extends Controller
                             $firewall
                         );
                 } catch (UserAlreadyExistException $exception) {
-                    $this->addFlash('error', $this->get('translator')->trans('sign_up.error_flash_user_already_exist'));
+                    $this->addFlash('error', $this->get('translator')->trans(
+                        'sign_up.error_flash_user_already_exist', [], 'BenGorUser'
+                    ));
                 }
             }
         }
@@ -106,7 +110,9 @@ class SignUpController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                $this->addFlash('notice', $this->get('translator')->trans('sign_up.success_flash'));
+                $this->addFlash('notice', $this->get('translator')->trans(
+                    'sign_up.success_flash', [], 'BenGorUser'
+                ));
 
                 return $this
                     ->get('security.authentication.guard_handler')

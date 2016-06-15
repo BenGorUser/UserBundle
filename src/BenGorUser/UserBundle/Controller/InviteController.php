@@ -43,13 +43,15 @@ class InviteController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('invite.success_flash'));
+                    $this->addFlash('notice', $this->get('translator')->trans(
+                        'invite.success_flash', [], 'BenGorUser'
+                    ));
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserInvitationAlreadyAcceptedException $exception) {
                     $this->addFlash('error', $this->get('translator')->trans(
-                        'invite.error_flash_user_invitation_already_accepted'
+                        'invite.error_flash_user_invitation_already_accepted', [], 'BenGorUser'
                     ));
                 }
             }
