@@ -40,7 +40,7 @@ class UserDTODataTransformerBuilder implements ApplicationBuilder
     protected $container;
 
     /**
-     * The FQCN or service id of user data transformer.
+     * The FQCN or the service id of user data transformer.
      *
      * @var string
      */
@@ -50,7 +50,7 @@ class UserDTODataTransformerBuilder implements ApplicationBuilder
      * Constructor.
      *
      * @param ContainerBuilder $container       The container builder
-     * @param string           $dataTransformer The FQCN of user data transformer
+     * @param string           $dataTransformer The FQCN or the service id of user data transformer
      * @param array            $configuration   The configuration tree
      */
     public function __construct(ContainerBuilder $container, $dataTransformer, array $configuration = [])
