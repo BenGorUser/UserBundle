@@ -29,9 +29,9 @@ By default we recommend the following installation that will add the following a
         "bengor-user/symfony-routing-bridge-bundle": "^1.0",
         "bengor-user/symfony-security-bridge-bundle": "^1.0",
         "bengor-user/twig-bridge-bundle": "^1.0",
-        "bengor-user/doctrine-orm-bridge-bundle": "~1.0",
-        "bengor-user/swift-mailer-bridge-bundle": "~1.0",
-        "bengor-user/simple-bus-bridge-bundle": "~1.0"
+        "bengor-user/doctrine-orm-bridge-bundle": "^1.0",
+        "bengor-user/swift-mailer-bridge-bundle": "^1.0",
+        "bengor-user/simple-bus-bridge-bundle": "^1.0"
     }
 } 
 ```
@@ -60,7 +60,7 @@ public function registerBundles()
         new BenGorUser\SwiftMailerBridgeBundle\SwiftMailerBridgeBundle(),
         new BenGorUser\DoctrineORMBridgeBundle\DoctrineORMBridgeBundle(),
         new BenGorUser\SimpleBusBridgeBundle\SimpleBusBridgeBundle(),
-        new BenGorUser\SimpleBusBridgeBundle\SimpleBusDoctrineORMBridgeBundle()
+        new BenGorUser\SimpleBusBridgeBundle\SimpleBusDoctrineORMBridgeBundle(),
         
         // User bundle
         new BenGorUser\UserBundle\BenGorUserBundle(),
