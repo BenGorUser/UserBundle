@@ -44,13 +44,15 @@ class ChangePasswordController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
+                    $this->addFlash('notice', $this->get('translator')->trans(
+                        'change_password.success_flash', [], 'BenGorUser'
+                    ));
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
                     $this->addFlash('error', $this->get('translator')->trans(
-                        'change_password.error_flash_user_password_invalid'
+                        'change_password.error_flash_user_password_invalid', [], 'BenGorUser'
                     ));
                 }
             }
@@ -95,13 +97,15 @@ class ChangePasswordController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('change_password.success_flash'));
+                    $this->addFlash('notice', $this->get('translator')->trans(
+                        'change_password.success_flash', [], 'BenGorUser'
+                    ));
                     if (null !== $successRoute) {
                         return $this->redirectToRoute($successRoute);
                     }
                 } catch (UserPasswordInvalidException $exception) {
                     $this->addFlash('error', $this->get('translator')->trans(
-                        'change_password.error_flash_user_password_invalid'
+                        'change_password.error_flash_user_password_invalid', [], 'BenGorUser'
                     ));
                 }
             }

@@ -43,9 +43,13 @@ class EnableController extends Controller
             $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
                 new EnableUserCommand($confirmationToken)
             );
-            $this->addFlash('notice', $this->get('translator')->trans('enable.success_flash'));
+            $this->addFlash('notice', $this->get('translator')->trans(
+                'enable.success_flash', [], 'BenGorUser'
+            ));
         } catch (UserTokenNotFoundException $exception) {
-            $this->addFlash('error', $this->get('translator')->trans('enable.error_flash_user_token_not_found'));
+            $this->addFlash('error', $this->get('translator')->trans(
+                'enable.error_flash_user_token_not_found', [], 'BenGorUser'
+            ));
         }
 
         return $this->redirectToRoute($successRoute);

@@ -41,11 +41,15 @@ class RemoveController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('bengor_user.' . $userClass . '.command_bus')->handle($form->getData());
-                    $this->addFlash('notice', $this->get('translator')->trans('remove.success_flash'));
+                    $this->addFlash('notice', $this->get('translator')->trans(
+                        'remove.success_flash', [], 'BenGorUser'
+                    ));
 
                     return $this->redirectToRoute($successRoute);
                 } catch (UserDoesNotExistException $exception) {
-                    $this->addFlash('error', $this->get('translator')->trans('remove.error_flash_user_does_not_exist'));
+                    $this->addFlash('error', $this->get('translator')->trans(
+                        'remove.error_flash_user_does_not_exist', [], 'BenGorUser'
+                    ));
                 }
             }
         }
