@@ -35,7 +35,7 @@ class UserSymfonyDataTransformer implements UserDataTransformer
      */
     public function write($aUser)
     {
-        if (!isset($aUser['email'], $aUser['encoded_password'], $aUser['roles'])) {
+        if (!isset($aUser['email'], $aUser['roles'])) {
             throw new \InvalidArgumentException(
                 'The user DTO must have at least keys of "email", "encoded_password" and "roles"'
             );
