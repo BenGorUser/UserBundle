@@ -40,6 +40,14 @@ By default we recommend the following installation that will add the following a
 [ui](adapters_ui.md), [persistence](adapters_persistence.md), [mailers](adapters_mailers.md) and 
 [buses](adapters_buses.md) are available.
 
+To install the desired adapters and the bundle itself run the following in the project root:
+
+```bash
+$ composer update
+```
+
+> Make sure you have [composer](http://getcomposer.org) globally installed 
+
 Once the bundle has been installed enable it in the AppKernel:
 
 ```php

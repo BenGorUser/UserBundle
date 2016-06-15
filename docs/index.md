@@ -4,6 +4,7 @@
     * [Using an existing use case](usage_existing_use_cases.md)
     * [Using an existing event subscriber](usage_events_subscribers.md)
     * [Using routes by default](usage_routes_by_default.md)
+    * [Using an existing sign up type](usage_existing_sign_up_type.md)
     * [Using console commands](usage_console_commands.md)
     * [Multiple user entities](usage_multiple_users.md)
     * [MongoDB's Doctrine ODM](doctrine_odm_mongodb.md)

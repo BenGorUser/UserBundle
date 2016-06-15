@@ -8,7 +8,7 @@ In the tag name you will need to change `your_user_type` by your user type and i
 add a fully qualified name you want to listen to.
 
 > A whole list of default events is available in the 
-[BenGorUser's standalone library docs](https://github.com/BenGorUser/User/blob/master/docs/events.md)  
+[BenGorUser's standalone library docs](https://github.com/BenGorUser/User/blob/master/docs/events.md)
 
 ```yml
 app.invited_mailer_subscriber:
