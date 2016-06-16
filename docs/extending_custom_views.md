@@ -50,11 +50,6 @@ The above diagram contains a significant feature: the uses cases are separated b
 directory does in BenGorUser library; inside use cases has two templates: the first one *extends the base layout and
 includes the child content template*, and the second one *contains the content of the view*. 
 
-Remember that the template names are not configurable, but it provides two ways to override the templates of a bundle.
-* Define a new template of the same name in the `app/Resources/BenGorUserBundle` directory maintaining the folder
-structure.
-* Create a new bundle that is defined as a child of BenGorUserBundle
-
 It is highly recommended that you override the `Resources/views/layout.html.twig` template so that the pages provided by
 the BenGorUserBundle have a similar look and feel to the rest of your application. It is very common to extends your
 application base layout as follows:
@@ -120,22 +115,8 @@ In this way you can easily change the content of, for example, by invitation sig
 ```
 > Note that the `/sign_up/by_invitation.html.twig` has not been overridden.
 
-Instead of customize the templates using `app/Resources/BenGorUserBundle` directory, you can declare your bundle as a
-child of BenGorUserBundle as follows and override the custom templates in `src/AppBundle/Resources/BenGorUserBundle`
-directory.
-```php
-// src/AppBundle/AppBundle.php
+Form more info about **overriding bundle templates** visit this [link][1] of official Symfony docs.
 
-namespace AppBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class AppBundle extends Bundle
-{
-    public function getParent()
-    {
-        return 'BenGorUserBundle';
-    }
-}
-```
 - Back to the [index](index.md).
+
+[1]: http://symfony.com/doc/current/book/templating.html#overriding-bundle-templates
