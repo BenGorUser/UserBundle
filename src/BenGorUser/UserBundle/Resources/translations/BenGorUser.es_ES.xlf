@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="es-ES" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="sign_up.success_flash" approved="yes">
+        <source>sign_up.success_flash</source>
+        <target xml:lang="es-ES">El proceso de registro se completó de forma satisfactoria</target>
+      </trans-unit>
+      <trans-unit id="sign_up.error_flash_user_already_exist" approved="yes">
+        <source>sign_up.error_flash_user_already_exist</source>
+        <target xml:lang="es-ES">El email ya está en uso</target>
+      </trans-unit>
+      <trans-unit id="sign_up.form_submit_button" approved="yes">
+        <source>sign_up.form_submit_button</source>
+        <target xml:lang="es-ES">Regístrate</target>
+      </trans-unit>
+      <trans-unit id="sign_up.form_password_first_option_label" approved="yes">
+        <source>sign_up.form_password_first_option_label</source>
+        <target xml:lang="es-ES">Contraseña</target>
+      </trans-unit>
+      <trans-unit id="sign_up.form_password_second_option_label" approved="yes">
+        <source>sign_up.form_password_second_option_label</source>
+        <target xml:lang="es-ES">Repetir contraseña</target>
+      </trans-unit>
+      <trans-unit id="change_password.success_flash" approved="yes">
+        <source>change_password.success_flash</source>
+        <target xml:lang="es-ES">El cambio de contraseña se ha efectuado correctamente</target>
+      </trans-unit>
+      <trans-unit id="change_password.error_flash_user_password_invalid" approved="yes">
+        <source>change_password.error_flash_user_password_invalid</source>
+        <target xml:lang="es-ES">La contraseña actual no es correcta</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_submit_button" approved="yes">
+        <source>change_password.form_submit_button</source>
+        <target xml:lang="es-ES">Cambiar contraseña</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_old_password_label" approved="yes">
+        <source>change_password.form_old_password_label</source>
+        <target xml:lang="es-ES">Contraseña actual</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_password_first_option_label" approved="yes">
+        <source>change_password.form_password_first_option_label</source>
+        <target xml:lang="es-ES">Contraseña</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_password_second_option_label" approved="yes">
+        <source>change_password.form_password_second_option_label</source>
+        <target xml:lang="es-ES">Repetir contraseña</target>
+      </trans-unit>
+      <trans-unit id="enable.success_flash" approved="yes">
+        <source>enable.success_flash</source>
+        <target xml:lang="es-ES">La cuenta se ha activado correctamente</target>
+      </trans-unit>
+      <trans-unit id="enable.error_flash_user_token_not_found" approved="yes">
+        <source>enable.error_flash_user_token_not_found</source>
+        <target xml:lang="es-ES">El token de confirmación es inválido</target>
+      </trans-unit>
+      <trans-unit id="invite.success_flash" approved="yes">
+        <source>invite.success_flash</source>
+        <target xml:lang="es-ES">La invitación se ha generado correctamente</target>
+      </trans-unit>
+      <trans-unit id="invite.error_flash_user_invitation_already_accepted" approved="yes">
+        <source>invite.error_flash_user_invitation_already_accepted</source>
+        <target xml:lang="es-ES">La invitación ya ha sido aceptada</target>
+      </trans-unit>
+      <trans-unit id="remove.success_flash" approved="yes">
+        <source>remove.success_flash</source>
+        <target xml:lang="es-ES">La cuenta se ha borrado definitivamente</target>
+      </trans-unit>
+      <trans-unit id="remove.error_flash_user_does_not_exist" approved="yes">
+        <source>remove.error_flash_user_does_not_exist</source>
+        <target xml:lang="es-ES">El usuario no existe</target>
+      </trans-unit>
+      <trans-unit id="request_remember_password.success_flash" approved="yes">
+        <source>request_remember_password.success_flash</source>
+        <target xml:lang="es-ES">La petición de recordar contraseña se ha generado correctamente</target>
+      </trans-unit>
+      <trans-unit id="request_remember_password.error_flash_user_does_not_exist" approved="yes">
+        <source>request_remember_password.error_flash_user_does_not_exist</source>
+        <target xml:lang="es-ES">El email no existe</target>
+      </trans-unit>
+      <trans-unit id="request_remember_password.view_content" approved="yes">
+        <source>request_remember_password.view_content</source>
+        <target xml:lang="es-ES">Ahora, puedes actualizar la contraseña de forma segura</target>
+      </trans-unit>
+      <trans-unit id="security.view_email_label" approved="yes">
+        <source>security.view_email_label</source>
+        <target xml:lang="es-ES">Email</target>
+      </trans-unit>
+      <trans-unit id="security.view_password_label" approved="yes">
+        <source>security.view_password_label</source>
+        <target xml:lang="es-ES">Contraseña</target>
+      </trans-unit>
+      <trans-unit id="security.form_user_not_found_invalid_message" approved="yes">
+        <source>security.form_user_not_found_invalid_message</source>
+        <target xml:lang="es-ES">Usuario desconocido</target>
+      </trans-unit>
+      <trans-unit id="security.form_invalid_credentials_invalid_message" approved="yes">
+        <source>security.form_invalid_credentials_invalid_message</source>
+        <target xml:lang="es-ES">Credenciales incorrectas</target>
+      </trans-unit>
+      <trans-unit id="security.view_submit_button" approved="yes">
+        <source>security.view_submit_button</source>
+        <target xml:lang="es-ES">Entra</target>
+      </trans-unit>
+      <trans-unit id="remove.form_submit_button" approved="yes">
+        <source>remove.form_submit_button</source>
+        <target xml:lang="es-ES">Eliminar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
