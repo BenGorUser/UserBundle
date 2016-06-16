@@ -12,7 +12,6 @@
 
 namespace BenGorUser\UserBundle\DependencyInjection\Compiler\Application\DataTransformer;
 
-use BenGorUser\User\Application\DataTransformer\UserDTODataTransformer;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\ApplicationBuilder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
