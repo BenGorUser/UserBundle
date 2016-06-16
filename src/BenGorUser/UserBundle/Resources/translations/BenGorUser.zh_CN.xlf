@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="zh-CN" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="sign_up.success_flash">
+        <source>sign_up.success_flash</source>
+        <target xml:lang="zh-CN" state="needs-translation">sign_up.success_flash</target>
+      </trans-unit>
+      <trans-unit id="sign_up.error_flash_user_already_exist">
+        <source>sign_up.error_flash_user_already_exist</source>
+        <target xml:lang="zh-CN" state="needs-translation">sign_up.error_flash_user_already_exist</target>
+      </trans-unit>
+      <trans-unit id="sign_up.form_submit_button">
+        <source>sign_up.form_submit_button</source>
+        <target xml:lang="zh-CN" state="needs-translation">sign_up.form_submit_button</target>
+      </trans-unit>
+      <trans-unit id="sign_up.form_password_first_option_label">
+        <source>sign_up.form_password_first_option_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">sign_up.form_password_first_option_label</target>
+      </trans-unit>
+      <trans-unit id="sign_up.form_password_second_option_label">
+        <source>sign_up.form_password_second_option_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">sign_up.form_password_second_option_label</target>
+      </trans-unit>
+      <trans-unit id="change_password.success_flash">
+        <source>change_password.success_flash</source>
+        <target xml:lang="zh-CN" state="needs-translation">change_password.success_flash</target>
+      </trans-unit>
+      <trans-unit id="change_password.error_flash_user_password_invalid">
+        <source>change_password.error_flash_user_password_invalid</source>
+        <target xml:lang="zh-CN" state="needs-translation">change_password.error_flash_user_password_invalid</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_submit_button">
+        <source>change_password.form_submit_button</source>
+        <target xml:lang="zh-CN" state="needs-translation">change_password.form_submit_button</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_old_password_label">
+        <source>change_password.form_old_password_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">change_password.form_old_password_label</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_password_first_option_label">
+        <source>change_password.form_password_first_option_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">change_password.form_password_first_option_label</target>
+      </trans-unit>
+      <trans-unit id="change_password.form_password_second_option_label">
+        <source>change_password.form_password_second_option_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">change_password.form_password_second_option_label</target>
+      </trans-unit>
+      <trans-unit id="enable.success_flash">
+        <source>enable.success_flash</source>
+        <target xml:lang="zh-CN" state="needs-translation">enable.success_flash</target>
+      </trans-unit>
+      <trans-unit id="enable.error_flash_user_token_not_found">
+        <source>enable.error_flash_user_token_not_found</source>
+        <target xml:lang="zh-CN" state="needs-translation">enable.error_flash_user_token_not_found</target>
+      </trans-unit>
+      <trans-unit id="invite.success_flash">
+        <source>invite.success_flash</source>
+        <target xml:lang="zh-CN" state="needs-translation">invite.success_flash</target>
+      </trans-unit>
+      <trans-unit id="invite.error_flash_user_invitation_already_accepted">
+        <source>invite.error_flash_user_invitation_already_accepted</source>
+        <target xml:lang="zh-CN" state="needs-translation">invite.error_flash_user_invitation_already_accepted</target>
+      </trans-unit>
+      <trans-unit id="remove.success_flash">
+        <source>remove.success_flash</source>
+        <target xml:lang="zh-CN" state="needs-translation">remove.success_flash</target>
+      </trans-unit>
+      <trans-unit id="remove.error_flash_user_does_not_exist">
+        <source>remove.error_flash_user_does_not_exist</source>
+        <target xml:lang="zh-CN" state="needs-translation">remove.error_flash_user_does_not_exist</target>
+      </trans-unit>
+      <trans-unit id="request_remember_password.success_flash">
+        <source>request_remember_password.success_flash</source>
+        <target xml:lang="zh-CN" state="needs-translation">request_remember_password.success_flash</target>
+      </trans-unit>
+      <trans-unit id="request_remember_password.error_flash_user_does_not_exist">
+        <source>request_remember_password.error_flash_user_does_not_exist</source>
+        <target xml:lang="zh-CN" state="needs-translation">request_remember_password.error_flash_user_does_not_exist</target>
+      </trans-unit>
+      <trans-unit id="request_remember_password.view_content">
+        <source>request_remember_password.view_content</source>
+        <target xml:lang="zh-CN" state="needs-translation">request_remember_password.view_content</target>
+      </trans-unit>
+      <trans-unit id="security.view_email_label">
+        <source>security.view_email_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">security.view_email_label</target>
+      </trans-unit>
+      <trans-unit id="security.view_password_label">
+        <source>security.view_password_label</source>
+        <target xml:lang="zh-CN" state="needs-translation">security.view_password_label</target>
+      </trans-unit>
+      <trans-unit id="security.form_user_not_found_invalid_message">
+        <source>security.form_user_not_found_invalid_message</source>
+        <target xml:lang="zh-CN" state="needs-translation">security.form_user_not_found_invalid_message</target>
+      </trans-unit>
+      <trans-unit id="security.form_invalid_credentials_invalid_message">
+        <source>security.form_invalid_credentials_invalid_message</source>
+        <target xml:lang="zh-CN" state="needs-translation">security.form_invalid_credentials_invalid_message</target>
+      </trans-unit>
+      <trans-unit id="security.view_submit_button">
+        <source>security.view_submit_button</source>
+        <target xml:lang="zh-CN" state="needs-translation">security.view_submit_button</target>
+      </trans-unit>
+      <trans-unit id="remove.form_submit_button">
+        <source>remove.form_submit_button</source>
+        <target xml:lang="zh-CN" state="needs-translation">remove.form_submit_button</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
