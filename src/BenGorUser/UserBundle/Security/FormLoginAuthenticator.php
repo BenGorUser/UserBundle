@@ -14,6 +14,7 @@ namespace BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
 use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
@@ -117,6 +118,8 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         try {
             $this->commandBus->handle($credentials);
+        } catch (UserEmailInvalidException $exception) {
+            throw new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message');
         } catch (UserInactiveException $exception) {
             throw new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message');
         } catch (UserDoesNotExistException $exception) {

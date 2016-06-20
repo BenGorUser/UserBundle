@@ -14,6 +14,7 @@ namespace spec\BenGorUser\UserBundle\Security;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
 use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
@@ -152,6 +153,18 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new CustomUserMessageAuthenticationException('security.form_invalid_credentials_invalid_message')
+        )->duringGetUser($credentials, $userProvider);
+    }
+
+    function it_does_not_get_user_because_email_is_invalid(
+        UserProviderInterface $userProvider,
+        UserCommandBus $commandBus,
+        LogInUserCommand $credentials
+    ) {
+        $commandBus->handle($credentials)->shouldBeCalled()->willThrow(UserEmailInvalidException::class);
+
+        $this->shouldThrow(
+            new CustomUserMessageAuthenticationException('security.form_user_not_found_invalid_message')
         )->duringGetUser($credentials, $userProvider);
     }
 
