@@ -61,18 +61,18 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     private $loginRoute;
 
     /**
-     * The success redirection route name.
-     *
-     * @var string
-     */
-    private $successRedirectionRoute;
-
-    /**
      * The user URL generator.
      *
      * @var UserUrlGenerator
      */
     private $urlGenerator;
+
+    /**
+     * The success redirection route name.
+     *
+     * @var string
+     */
+    protected $successRedirectionRoute;
 
     /**
      * Constructor.

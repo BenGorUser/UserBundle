@@ -8,7 +8,9 @@ framework:
     translator: { fallbacks: ["%locale%"] }
 ```
 
-> For more information about translations, check [Symfony documentation][1].
+> For more information about translations, check
+[Symfony documentation](https://symfony.com/doc/current/book/translation.html) and
+[available BenGorUser translations](https://github.com/BenGorUser/UserBundle/tree/master/src/BenGorUser/UserBundle/Resources/translations).
 
 # Getting started
 
@@ -190,5 +192,3 @@ With this basic configuration you have single user login, logout and registratio
 - For **multiple users** check [this guide](usage_multiple_users.md).
 - In order to use **MongoDB's Doctrine ODM** as persistence layer follow [this chapter](doctrine_odm_mongodb.md).
 - Back to the [index](index.md).
-
-[1]: https://symfony.com/doc/current/book/translation.html
