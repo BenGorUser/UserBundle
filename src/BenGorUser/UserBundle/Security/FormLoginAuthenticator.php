@@ -20,6 +20,7 @@ use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use BenGorUser\User\Domain\Model\UserUrlGenerator;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -86,9 +87,17 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         $this->urlGenerator = $aUserUrlGenerator;
         $this->commandBus = $aCommandBus;
 
-        if (false === isset($routes['login'], $routes['login_check'], $routes['success_redirection_route'])) {
+        if (false === isset(
+                $routes['login'],
+                $routes['login_check'],
+                $routes['success_redirection_route'],
+                $routes['success_redirection_route']['type'],
+                $routes['success_redirection_route']['route']
+            )
+        ) {
             throw new \InvalidArgumentException(
-                '"routes" array should have "login", "login_check" and "success_redirection_route" keys'
+                '"routes" array should have "login", "login_check" and "success_redirection_route" ' .
+                'keys. Also, "success_redirection_route" should have "type" and "route" keys'
             );
         }
         $this->loginRoute = $routes['login'];
@@ -162,7 +171,14 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
             ]);
         }
 
-        return parent::onAuthenticationSuccess($request, $token, $providerKey);
+        $targetPath = $request->getSession()->get('_security.' . $providerKey . '.target_path');
+        if (!$targetPath || $this->successRedirectionRoute['type'] === 'force') {
+            $targetPath = $this->urlGenerator->generate(
+                $this->successRedirectionRoute['route'], [], UserUrlGenerator::ABSOLUTE_PATH
+            );
+        }
+
+        return new RedirectResponse($targetPath);
     }
 
     /**
@@ -178,6 +194,5 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getDefaultSuccessRedirectUrl()
     {
-        return $this->urlGenerator->generate($this->successRedirectionRoute, [], UserUrlGenerator::ABSOLUTE_PATH);
     }
 }

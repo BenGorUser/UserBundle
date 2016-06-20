@@ -33,8 +33,8 @@ class SecurityRoutesLoaderBuilder extends RoutesLoaderBuilder
     protected function sanitize(array $configuration)
     {
         foreach ($configuration as $key => $config) {
-            if (null === $config['success_redirection_route']) {
-                $configuration[$key]['success_redirection_route'] = $this->defaultSuccessRedirectionRoute($key);
+            if (null === $config['success_redirection_route']['route']) {
+                $configuration[$key]['success_redirection_route']['route'] = $this->defaultSuccessRedirectionRoute($key);
             }
             if (null === $config['login']['name']) {
                 $configuration[$key]['login']['name'] = $this->defaultLoginRouteName($key);

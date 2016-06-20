@@ -38,7 +38,7 @@ class SecurityRoutesLoader extends RoutesLoader
             $config['login']['path'],
             [
                 '_controller'  => 'BenGorUserBundle:Security:login',
-                'successRoute' => $config['success_redirection_route'],
+                'successRoute' => $config['success_redirection_route']['route'],
             ],
             [],
             [],
