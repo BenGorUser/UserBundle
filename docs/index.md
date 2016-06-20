@@ -12,7 +12,7 @@
     * [Create custom use case](extending_create_custom_use_case.md)
     * [Create custom subscriber](extending_create_custom_subscriber.md)
     * [Customize URLs](extending_customize_urls.md)
-    * Custom views
+    * [Custom views](extending_custom_views.md)
 * Reference
     * [Service reference](reference_services.md)
     * [Configuration reference](reference_configuration.md)
