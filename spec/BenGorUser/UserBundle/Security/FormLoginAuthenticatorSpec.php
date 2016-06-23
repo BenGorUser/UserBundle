@@ -46,7 +46,7 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
             'login'                     => 'bengor_user_user_security_login',
             'login_check'               => 'bengor_user_user_security_login_check',
             'success_redirection_route' => [
-                'type'  => 'default',
+                'type'  => 'referer',
                 'route' => 'bengor_user_user_security_homepage',
             ],
         ]);

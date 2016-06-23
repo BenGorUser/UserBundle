@@ -79,7 +79,7 @@ class SecurityServicesPassSpec extends ObjectBehavior
                                 'path' => '/user/logout',
                             ],
                             'success_redirection_route' => [
-                                'type'  => 'default',
+                                'type'  => 'referer',
                                 'route' => 'bengor_user_user_homepage',
                             ],
                         ],
