@@ -33,7 +33,9 @@ ben_gor_user:
                     logout:
                         name: bengor_user_user_logout
                         path: /user/logout
-                    success_redirection_route: bengor_user_user_homepage
+                    success_redirection_route:
+                        type: referer          # Also, it can be "force"
+                        route: bengor_user_user_homepage
                 sign_up:
                     name: bengor_user_user_sign_up
                     path: /user/sign-up

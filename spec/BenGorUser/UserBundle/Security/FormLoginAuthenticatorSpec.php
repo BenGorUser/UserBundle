@@ -45,7 +45,10 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
         $this->beConstructedWith($urlGenerator, $commandBus, [
             'login'                     => 'bengor_user_user_security_login',
             'login_check'               => 'bengor_user_user_security_login_check',
-            'success_redirection_route' => 'bengor_user_user_security_homepage',
+            'success_redirection_route' => [
+                'type'  => 'referer',
+                'route' => 'bengor_user_user_security_homepage',
+            ],
         ]);
     }
 
