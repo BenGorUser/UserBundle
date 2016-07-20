@@ -8,6 +8,23 @@
 [![Latest Stable Version](https://poser.pugx.org/bengor-user/user-bundle/v/stable.svg)](https://packagist.org/packages/bengor-user/user-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/bengor-user/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor-user/user-bundle)
 
+Following the [basic configuration guide](docs/basic_configuration.md), in 2 minutes you will have the following
+fully tested **multiple user type** features in your Symfony application:
+
+ * User registration
+    * Basic
+    * With confirmation
+    * By invitation
+ * Change password
+    * Basic
+    * Without old password
+    * Using Remember password
+ * Log in / log out
+ * User removal
+ * Role management
+    * Grant
+    * Revoke
+    
 ##Requirements
 PHP >= 5.5</br>
 Symfony >= 2.8 

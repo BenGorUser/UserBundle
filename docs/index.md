@@ -1,5 +1,12 @@
 # BenGorUserBundle documentation
 * [Basic configuration](basic_configuration.md)
+* Configuring
+    * [Configuring user registration strategy](configuring_user_registration_strategy.md)
+    * [Configuring password change strategy](configuring_password_change_strategy.md)
+    * [Disabling login/logout](configuring_disabling_login_logout.md)
+    * [Disabling user removal](configuring_disabling_user_removal.md)
+    * [Configuring default roles](configuring_default_roles.md)
+    * [Configuring routes used](configuring_routes_used.md)
 * Usage
     * [Using an existing use case](usage_existing_use_cases.md)
     * [Using an existing event subscriber](usage_events_subscribers.md)
