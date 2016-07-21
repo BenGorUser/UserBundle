@@ -42,7 +42,6 @@ bengor_user.user.symfony_password_encoder                BenGorUser\SymfonySecur
 
 bengor_user.user.repository                              BenGorUser\DoctrineORMBridge\Infrastructure\Persistence\DoctrineORMUserRepository
                                                          BenGorUser\DoctrineODMBridge\Infrastructure\Persistence\DoctrineODMUserRepository
-                                                         BenGorUser\User\Infrastructure\Persistence\Sql\SqlUserRepository
 
 bengor_user.mailable_factory_invite                      BenGorUser\TwigBridge\Infrastructure\Mailing\TwigUserMailableFactory
 bengor_user.mailable_factory_request_remember_password   BenGorUser\TwigBridge\Infrastructure\Mailing\TwigUserMailableFactory
