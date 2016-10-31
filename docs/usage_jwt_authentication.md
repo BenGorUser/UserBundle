@@ -92,8 +92,8 @@ security:
         - { path: ^/user/, role: ROLE_USER }
 ```
 
-The built-in solution of JWT that provides BenGorUserBundle works with Basic Authorization. To make work
-this kind of requests in the different clients you should check the following alternatives:
+The built-in solution of JWT that provides BenGorUserBundle works with Basic Authorization. To
+generate the token in the different clients you should check the following alternatives:
 
 In the **Advance REST Client** you need to check the edit button and fill the modal form.
 
@@ -101,8 +101,9 @@ In the **Advance REST Client** you need to check the edit button and fill the mo
 
 In the **JavaScript** code with the `fetch` API:
 ```js
-fetch('http://bengor-user-bundle-rocks.com', {
+fetch('http://bengor-user-bundle-rocks.com/user/api/token', {
   headers: {
+    method: 'POST',
     Authorization: `Basic ${btoa('bengor@user.com:123456')}`
   }
 });
