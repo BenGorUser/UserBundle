@@ -15,6 +15,7 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\ChangePasswordRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\EnableRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\InviteRoutesLoaderBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\JWTRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\RemoveRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\RequestRememberPasswordRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
@@ -45,6 +46,7 @@ class RoutesPass implements CompilerPassInterface
         $signUpConfiguration = [];
         $removeConfiguration = [];
         $requestRememberPasswordConfiguration = [];
+        $jwtConfiguration = [];
 
         foreach ($config['user_class'] as $key => $user) {
             $changePasswordConfiguration[$key] = array_merge(
@@ -77,6 +79,10 @@ class RoutesPass implements CompilerPassInterface
                 $user['use_cases']['change_password'],
                 $user['routes']['request_remember_password']
             );
+            $jwtConfiguration[$key] = array_merge(
+                $user['use_cases']['jwt'],
+                $user['routes']['jwt']
+            );
         }
 
         (new ChangePasswordRoutesLoaderBuilder($container, $changePasswordConfiguration))->build();
@@ -86,5 +92,6 @@ class RoutesPass implements CompilerPassInterface
         (new SignUpRoutesLoaderBuilder($container, $signUpConfiguration))->build();
         (new RemoveRoutesLoaderBuilder($container, $removeConfiguration))->build();
         (new RequestRememberPasswordRoutesLoaderBuilder($container, $requestRememberPasswordConfiguration))->build();
+        (new JWTRoutesLoaderBuilder($container, $jwtConfiguration))->build();
     }
 }

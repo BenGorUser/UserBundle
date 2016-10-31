@@ -62,6 +62,9 @@ class RoutesPassSpec extends ObjectBehavior
                         'remove'          => [
                             'enabled' => true,
                         ],
+                        'jwt'             => [
+                            'enabled' => false,
+                        ],
                     ],
                     'routes'        => [
                         'security'                  => [
@@ -111,6 +114,12 @@ class RoutesPassSpec extends ObjectBehavior
                             'path'                      => '/user/remove',
                             'success_redirection_route' => null,
                         ],
+                        'jwt'                       => [
+                            'new_token' => [
+                                'name' => 'bengor_user_user_jwt_new_token',
+                                'path' => '/user/api/token',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -143,6 +152,10 @@ class RoutesPassSpec extends ObjectBehavior
         $container->hasDefinition('bengor.user_bundle.routing.request_remember_password_routes_loader')
             ->shouldBeCalled()->willReturn(true);
         $container->getDefinition('bengor.user_bundle.routing.request_remember_password_routes_loader')
+            ->shouldBeCalled()->willReturn($definition);
+        $container->hasDefinition('bengor.user_bundle.routing.jwt_routes_loader')
+            ->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('bengor.user_bundle.routing.jwt_routes_loader')
             ->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);

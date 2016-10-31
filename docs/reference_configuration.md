@@ -22,6 +22,8 @@ ben_gor_user:
                     type: default              # Also, it can be "by_request_remember_password"
                 remove:
                     enabled: true
+                jwt:
+                    enabled: false
             routes:
                 security:
                     login:
@@ -59,6 +61,10 @@ ben_gor_user:
                     name: bengor_user_user_remove
                     path: /user/remove
                     success_redirection_route: bengor_user_user_homepage
+                jwt:
+                    new_token:
+                        name: bengor_user_user_jwt_new_token
+                        path: /user/api/token
 ```
 
 - Back to the [index](index.md).

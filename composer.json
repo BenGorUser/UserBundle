@@ -26,6 +26,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.11",
+        "lexik/jwt-authentication-bundle": "^2.0",
         "phpspec/phpspec": "^2.5"
     },
     "scripts": {

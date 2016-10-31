@@ -12,7 +12,6 @@
 
 namespace spec\BenGorUser\UserBundle\DependencyInjection\Compiler;
 
-use BenGorUser\User\Domain\Model\User;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\SecurityServicesPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -63,6 +62,9 @@ class SecurityServicesPassSpec extends ObjectBehavior
                         'remove'          => [
                             'enabled' => true,
                         ],
+                        'jwt'             => [
+                            'enabled' => false,
+                        ],
                     ],
                     'routes'        => [
                         'security'                  => [
@@ -79,7 +81,6 @@ class SecurityServicesPassSpec extends ObjectBehavior
                                 'path' => '/user/logout',
                             ],
                             'success_redirection_route' => [
-                                'type'  => 'referer',
                                 'route' => 'bengor_user_user_homepage',
                             ],
                         ],
@@ -113,6 +114,12 @@ class SecurityServicesPassSpec extends ObjectBehavior
                             'path'                      => '/user/remove',
                             'success_redirection_route' => null,
                         ],
+                        'jwt'                       => [
+                            'new_token' => [
+                                'name' => 'bengor_user_user_jwt_new_token',
+                                'path' => '/user/api/token',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -131,6 +138,8 @@ class SecurityServicesPassSpec extends ObjectBehavior
             'bengor_user.user.form_login_authenticator',
             'bengor.user_bundle.security.authenticator.form_login_user_authenticator'
         )->shouldBeCalled();
+
+        $container->has('lexik_jwt_authentication.encoder.default')->shouldBeCalled()->willReturn(false);
 
         $container->getDefinition('bengor.user_bundle.security.user_symfony_data_transformer')
             ->shouldBeCalled()->willReturn($definition);
