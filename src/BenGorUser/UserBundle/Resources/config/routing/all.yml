@@ -26,3 +26,6 @@ bengor_user_remove:
 
 bengor_user_request_remember_password:
     resource: request_remember_password.yml
+
+bengor_user_jwt:
+    resource: jwt.yml

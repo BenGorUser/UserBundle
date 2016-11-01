@@ -62,3 +62,11 @@ services:
         public: false
         tags:
             - { name: routing.loader }
+
+    bengor.user_bundle.routing.jwt_routes_loader:
+        class: BenGorUser\UserBundle\Routing\JWTRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }

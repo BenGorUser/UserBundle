@@ -20,6 +20,7 @@ fully tested **multiple user type** features in your Symfony application:
     * Without old password
     * Using Remember password
  * Log in / log out
+ * JWT authentication
  * User removal
  * Role management
     * Grant

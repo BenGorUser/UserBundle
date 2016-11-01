@@ -14,6 +14,7 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
+use BenGorUser\UserBundle\Security\JWTAuthenticator;
 use BenGorUser\UserBundle\Security\UserProvider;
 use BenGorUser\UserBundle\Security\UserSymfonyDataTransformer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -42,6 +43,10 @@ class SecurityServicesPass implements CompilerPassInterface
                     $container,
                     [$key => $config['user_class'][$key]['routes']['security']]
                 ))->configuration(),
+                $key
+            );
+            $this->jwtAuthenticator(
+                $container,
                 $key
             );
             $this->userSymfonyDataTransformer($container, $key);
@@ -76,6 +81,34 @@ class SecurityServicesPass implements CompilerPassInterface
         $container->setAlias(
             'bengor_user.' . $user . '.form_login_authenticator',
             'bengor.user_bundle.security.authenticator.form_login_' . $user . '_authenticator'
+        );
+    }
+
+    /**
+     * Registers service of the JWT authenticator and its alias,
+     * only if LexikJWTAuthenticationBundle is enabled.
+     *
+     * @param ContainerBuilder $container The container builder
+     * @param string           $user      The user name
+     */
+    private function jwtAuthenticator(ContainerBuilder $container, $user)
+    {
+        if (!$container->has('lexik_jwt_authentication.encoder.default')) {
+            return;
+        }
+
+        $container->setDefinition(
+            'bengor.user_bundle.security.authenticator.jwt_' . $user . '_authenticator',
+            new Definition(
+                JWTAuthenticator::class, [
+                    $container->getDefinition('lexik_jwt_authentication.encoder.default'),
+                ]
+            )
+        )->setPublic(false);
+
+        $container->setAlias(
+            'bengor_user.' . $user . '.jwt_authenticator',
+            'bengor.user_bundle.security.authenticator.jwt_' . $user . '_authenticator'
         );
     }
 
