@@ -15,6 +15,9 @@ bengor_user_enable:
 bengor_user_invite:
     resource: invite.yml
 
+bengor_user_jwt:
+    resource: jwt.yml
+
 bengor_user_security:
     resource: security.yml
 
@@ -27,5 +30,5 @@ bengor_user_remove:
 bengor_user_request_remember_password:
     resource: request_remember_password.yml
 
-bengor_user_jwt:
-    resource: jwt.yml
+bengor_user_resend_invitation:
+    resource: resend_invitation.yml

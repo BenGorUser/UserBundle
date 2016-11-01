@@ -18,6 +18,7 @@ use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\InviteRoutesLoade
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\JWTRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\RemoveRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\RequestRememberPasswordRoutesLoaderBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\ResendInvitationRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SignUpRoutesLoaderBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -42,6 +43,7 @@ class RoutesPass implements CompilerPassInterface
         $changePasswordConfiguration = [];
         $enableConfiguration = [];
         $inviteConfiguration = [];
+        $resendInvitationConfiguration = [];
         $securityConfiguration = [];
         $signUpConfiguration = [];
         $removeConfiguration = [];
@@ -61,6 +63,10 @@ class RoutesPass implements CompilerPassInterface
             $inviteConfiguration[$key] = array_merge(
                 $user['use_cases']['sign_up'],
                 $user['routes']['invite']
+            );
+            $resendInvitationConfiguration[$key] = array_merge(
+                $user['use_cases']['sign_up'],
+                $user['routes']['resend_invitation']
             );
             $securityConfiguration[$key] = array_merge(
                 $user['use_cases']['security'],
@@ -88,6 +94,7 @@ class RoutesPass implements CompilerPassInterface
         (new ChangePasswordRoutesLoaderBuilder($container, $changePasswordConfiguration))->build();
         (new EnableRoutesLoaderBuilder($container, $enableConfiguration))->build();
         (new InviteRoutesLoaderBuilder($container, $inviteConfiguration))->build();
+        (new ResendInvitationRoutesLoaderBuilder($container, $resendInvitationConfiguration))->build();
         (new SecurityRoutesLoaderBuilder($container, $securityConfiguration))->build();
         (new SignUpRoutesLoaderBuilder($container, $signUpConfiguration))->build();
         (new RemoveRoutesLoaderBuilder($container, $removeConfiguration))->build();

@@ -38,6 +38,11 @@ services:
         tags:
             - { name: form.type }
 
+    bengor.user.form.type.resend_invitation:
+        class: BenGorUser\UserBundle\Form\Type\ResendInvitationType
+        tags:
+            - { name: form.type }
+
     bengor.user.form.type.sign_up_by_invitation:
         class: BenGorUser\UserBundle\Form\Type\SignUpByInvitationType
         tags:

@@ -201,6 +201,7 @@ class SignUpUserCommandBuilder extends CommandBuilder
     private function byInvitationSpecification($user)
     {
         (new InviteUserCommandBuilder($this->container, $this->persistence))->build($user);
+        (new ResendInvitationUserCommandBuilder($this->container, $this->persistence))->build($user);
 
         return [
             'command'          => ByInvitationSignUpUserCommand::class,

@@ -58,9 +58,21 @@
         <source>invite.success_flash</source>
         <target xml:lang="no" state="needs-translation">invite.success_flash</target>
       </trans-unit>
-      <trans-unit id="invite.error_flash_user_invitation_already_accepted">
-        <source>invite.error_flash_user_invitation_already_accepted</source>
-        <target xml:lang="no" state="needs-translation">invite.error_flash_user_invitation_already_accepted</target>
+      <trans-unit id="invite.error_flash_user_already_exists">
+        <source>invite.error_flash_user_already_exists</source>
+        <target xml:lang="no" state="needs-translation">invite.error_flash_user_already_exists</target>
+      </trans-unit>
+      <trans-unit id="resend_invitation.success_flash">
+        <source>resend_invitation.success_flash</source>
+        <target xml:lang="no" state="needs-translation">resend_invitation.success_flash</target>
+      </trans-unit>
+      <trans-unit id="resend_invitation.error_flash_user_does_not_exist">
+        <source>resend_invitation.error_flash_user_does_not_exist</source>
+        <target xml:lang="no" state="needs-translation">resend_invitation.error_flash_user_does_not_exist</target>
+      </trans-unit>
+      <trans-unit id="resend_invitation.error_flash_user_invitation_already_accepted">
+        <source>resend_invitation.error_flash_user_invitation_already_accepted</source>
+        <target xml:lang="no" state="needs-translation">resend_invitation.error_flash_user_invitation_already_accepted</target>
       </trans-unit>
       <trans-unit id="remove.success_flash">
         <source>remove.success_flash</source>

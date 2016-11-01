@@ -19,6 +19,9 @@ views
    |       |
    |       |---- invite.html.twig
    |       |---- invite_content.html.twig
+   |       |
+   |       |---- resend_invitation.html.twig
+   |       |---- resend_invitation_content.html.twig
    |
    |---- remove
    |        |

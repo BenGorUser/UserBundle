@@ -31,16 +31,8 @@ services:
         tags:
             - { name: routing.loader }
 
-    bengor.user_bundle.routing.security_routes_loader:
-        class: BenGorUser\UserBundle\Routing\SecurityRoutesLoader
-        arguments:
-            - []
-        public: false
-        tags:
-            - { name: routing.loader }
-
-    bengor.user_bundle.routing.sign_up_routes_loader:
-        class: BenGorUser\UserBundle\Routing\SignUpRoutesLoader
+    bengor.user_bundle.routing.jwt_routes_loader:
+        class: BenGorUser\UserBundle\Routing\JWTRoutesLoader
         arguments:
             - []
         public: false
@@ -63,8 +55,25 @@ services:
         tags:
             - { name: routing.loader }
 
-    bengor.user_bundle.routing.jwt_routes_loader:
-        class: BenGorUser\UserBundle\Routing\JWTRoutesLoader
+    bengor.user_bundle.routing.resend_invitation_routes_loader:
+        class: BenGorUser\UserBundle\Routing\ResendInvitationRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+
+    bengor.user_bundle.routing.security_routes_loader:
+        class: BenGorUser\UserBundle\Routing\SecurityRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.sign_up_routes_loader:
+        class: BenGorUser\UserBundle\Routing\SignUpRoutesLoader
         arguments:
             - []
         public: false
