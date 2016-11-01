@@ -12,7 +12,6 @@
 
 namespace spec\BenGorUser\UserBundle\DependencyInjection\Compiler;
 
-use BenGorUser\User\Domain\Model\User;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\RoutesPass;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -94,6 +93,11 @@ class RoutesPassSpec extends ObjectBehavior
                             'path'                      => '/user/invite',
                             'success_redirection_route' => null,
                         ],
+                        'resend_invitation'                    => [
+                            'name'                      => 'bengor_user_user_resend_invitation',
+                            'path'                      => '/user/resend-invitation',
+                            'success_redirection_route' => null,
+                        ],
                         'enable'                    => [
                             'name'                      => 'bengor_user_user_enable',
                             'path'                      => '/user/confirmation-token',
@@ -136,6 +140,10 @@ class RoutesPassSpec extends ObjectBehavior
         $container->hasDefinition('bengor.user_bundle.routing.invite_routes_loader')
             ->shouldBeCalled()->willReturn(true);
         $container->getDefinition('bengor.user_bundle.routing.invite_routes_loader')
+            ->shouldBeCalled()->willReturn($definition);
+        $container->hasDefinition('bengor.user_bundle.routing.resend_invitation_routes_loader')
+            ->shouldBeCalled()->willReturn(true);
+        $container->getDefinition('bengor.user_bundle.routing.resend_invitation_routes_loader')
             ->shouldBeCalled()->willReturn($definition);
         $container->hasDefinition('bengor.user_bundle.routing.security_routes_loader')
             ->shouldBeCalled()->willReturn(true);

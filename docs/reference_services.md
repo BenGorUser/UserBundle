@@ -22,6 +22,7 @@ bengor_user.user.enable                                  alias for "bengor.user.
 bengor_user.user.log_out                                 alias for "bengor.user.application.command.log_out_user"
 bengor_user.user.remove                                  alias for "bengor.user.application.command.remove_user"
 bengor_user.user.invite                                  alias for "bengor.user.application.command.invite_user"
+bengor_user.user.resend_invitation                       alias for "bengor.user.application.command.resend_invitation_user"
 bengor_user.user.sign_up                                 alias for "bengor.user.application.command.sign_up_user"
 bengor_user.user.sign_up_default                         alias for "bengor.user.application.command.sign_up_user_default"
 
@@ -63,7 +64,8 @@ bengor.user.application.command.log_in_user                                  Ben
 bengor.user.application.command.enable_user                                  BenGorUser\User\Application\Command\Enable\EnableUserHandler
 bengor.user.application.command.log_out_user                                 BenGorUser\User\Application\Command\LogOut\LogOutUserHandler
 bengor.user.application.command.remove_user                                  BenGorUser\User\Application\Command\Remove\RemoveUserHandler
-bengor.user.application.command.invite_user                                  BenGorUser\User\Application\Command\SignUp\InviteUserHandler
+bengor.user.application.command.invite_user                                  BenGorUser\User\Application\Command\Invite\InviteUserHandler
+bengor.user.application.command.resend_invitation_user                       BenGorUser\User\Application\Command\Invite\ResendInvitationUserHandler
 bengor.user.application.command.sign_up_user                                 BenGorUser\User\Application\Command\SignUp\SignUpUserHandler
 bengor.user.application.command.sign_up_user_default                         BenGorUser\User\Application\Command\SignUp\SignUpUserHandler
 
@@ -73,6 +75,7 @@ bengor.user.command.create_user_command                                      Ben
 bengor.user.form.type.change_password                                        BenGorUser\UserBundle\Form\Type\ChangePasswordType
 bengor.user.form.type.change_password_by_request_remember_password           BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType
 bengor.user.form.type.invite                                                 BenGorUser\UserBundle\Form\Type\InviteType
+bengor.user.form.type.resend_invitation                                      BenGorUser\UserBundle\Form\Type\ResendInvitationType
 bengor.user.form.type.remove                                                 BenGorUser\UserBundle\Form\Type\RemoveType
 bengor.user.form.type.request_remember_password                              BenGorUser\UserBundle\Form\Type\RequestRememberPasswordType
 bengor.user.form.type.sign_up                                                BenGorUser\UserBundle\Form\Type\SignUpType

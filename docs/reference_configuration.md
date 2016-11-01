@@ -45,6 +45,10 @@ ben_gor_user:
                     name: bengor_user_user_invite
                     path: /user/invite
                     success_redirection_route: ~
+                resend_invitation:
+                    name: bengor_user_user_resend_invitation
+                    path: /user/resend-invitation
+                    success_redirection_route: ~
                 enable:
                     name: bengor_user_user_enable
                     path: /user/enable?confirmation-token={confirmation-token}

@@ -16,6 +16,7 @@ use BenGorUser\User\Application\Command\Invite\InviteUserCommand;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Controller\InviteController;
 use BenGorUser\UserBundle\Form\Type\InviteType;
+use BenGorUser\UserBundle\Form\Type\ResendInvitationType;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -142,5 +143,95 @@ class InviteControllerSpec extends ObjectBehavior
         ], null)->shouldBeCalled()->willReturn($response);
 
         $this->inviteAction($request, 'user')->shouldReturn($response);
+    }
+
+    function it_renders_resend_invitation_action(
+        Request $request,
+        ContainerInterface $container,
+        TwigEngine $templating,
+        Response $response,
+        FormView $formView,
+        FormInterface $form,
+        FormFactoryInterface $formFactory
+    ) {
+        $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
+        $formFactory->create(ResendInvitationType::class, null, [])->shouldBeCalled()->willReturn($form);
+
+        $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
+
+        $container->has('templating')->shouldBeCalled()->willReturn(true);
+        $container->get('templating')->shouldBeCalled()->willReturn($templating);
+        $form->createView()->shouldBeCalled()->willReturn($formView);
+        $templating->renderResponse('@BenGorUser/invite/resend_invitation.html.twig', [
+            'form' => $formView,
+        ], null)->shouldBeCalled()->willReturn($response);
+
+        $this->resendInvitationAction($request, 'user')->shouldReturn($response);
+    }
+
+    function it_resends_invitation_action(
+        UserCommandBus $commandBus,
+        InviteUserCommand $command,
+        Request $request,
+        ContainerInterface $container,
+        Session $session,
+        FlashBagInterface $flashBag,
+        FormInterface $form,
+        FormFactoryInterface $formFactory,
+        TwigEngine $templating,
+        Response $response,
+        FormView $formView,
+        Translator $translator
+    ) {
+        $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
+        $formFactory->create(ResendInvitationType::class, null, [])->shouldBeCalled()->willReturn($form);
+
+        $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
+        $form->isValid()->shouldBeCalled()->willReturn(true);
+
+        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $form->getData()->shouldBeCalled()->willReturn($command);
+        $commandBus->handle($command)->shouldBeCalled();
+
+        $container->get('translator')->shouldBeCalled()->willReturn($translator);
+        $container->has('session')->shouldBeCalled()->willReturn(true);
+        $container->get('session')->shouldBeCalled()->willReturn($session);
+        $session->getFlashBag()->shouldBeCalled()->willReturn($flashBag);
+
+        $container->has('templating')->shouldBeCalled()->willReturn(true);
+        $container->get('templating')->shouldBeCalled()->willReturn($templating);
+        $form->createView()->shouldBeCalled()->willReturn($formView);
+        $templating->renderResponse('@BenGorUser/invite/resend_invitation.html.twig', [
+            'form' => $formView,
+        ], null)->shouldBeCalled()->willReturn($response);
+
+        $this->resendInvitationAction($request, 'user');
+    }
+
+    function it_does_not_resend_invitation_action(
+        Request $request,
+        ContainerInterface $container,
+        TwigEngine $templating,
+        Response $response,
+        FormView $formView,
+        FormInterface $form,
+        FormFactoryInterface $formFactory
+    ) {
+        $container->get('form.factory')->shouldBeCalled()->willReturn($formFactory);
+        $formFactory->create(ResendInvitationType::class, null, [])->shouldBeCalled()->willReturn($form);
+
+        $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
+        $form->isValid()->shouldBeCalled()->willReturn(false);
+
+        $container->has('templating')->shouldBeCalled()->willReturn(true);
+        $container->get('templating')->shouldBeCalled()->willReturn($templating);
+        $form->createView()->shouldBeCalled()->willReturn($formView);
+        $templating->renderResponse('@BenGorUser/invite/resend_invitation.html.twig', [
+            'form' => $formView,
+        ], null)->shouldBeCalled()->willReturn($response);
+
+        $this->resendInvitationAction($request, 'user')->shouldReturn($response);
     }
 }
