@@ -46,6 +46,21 @@ class DefaultSignUpUserCommandBuilder extends SignUpUserCommandBuilder
     /**
      * {@inheritdoc}
      */
+    public function build($user)
+    {
+        $this->register($user);
+
+        $this->container->setAlias(
+            $this->aliasDefinitionName($user),
+            $this->definitionName($user)
+        );
+
+        return $this->container;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function sanitize($specificationName)
     {
         return 'defaultSpecification';

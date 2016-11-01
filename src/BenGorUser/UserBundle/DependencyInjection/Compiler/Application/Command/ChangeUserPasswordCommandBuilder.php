@@ -53,6 +53,30 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
     /**
      * {@inheritdoc}
      */
+    public function build($user)
+    {
+        $enabled = array_key_exists('enabled', $this->configuration) ? $this->configuration['enabled'] : true;
+        if (false === $enabled) {
+            (new WithoutOldPasswordChangeUserPasswordCommandBuilder(
+                $this->container, $this->persistence
+            ))->build($user);
+
+            return;
+        }
+
+        $this->register($user);
+
+        $this->container->setAlias(
+            $this->aliasDefinitionName($user),
+            $this->definitionName($user)
+        );
+
+        return $this->container;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function sanitize($specificationName)
     {
         if ('by_request_remember_password' === $specificationName) {
