@@ -20,6 +20,7 @@ app.invited_mailer_subscriber:
         - bengor_user_your_user_type_sign_up
     tags:
         - { name: bengor_user_your_user_type_event_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserInvited }
+        - { name: bengor_user_your_user_type_event_subscriber, subscribes_to: BenGorUser\User\Domain\Model\Event\UserInvitationTokenRegenerated }
 
 app.registered_mailer_subscriber:
     class: BenGorUser\User\Domain\Event\UserRegisteredMailerSubscriber

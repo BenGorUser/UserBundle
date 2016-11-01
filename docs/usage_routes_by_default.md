@@ -13,6 +13,8 @@ bengor_user_user_logout                      GET         /user/logout
 bengor_user_user_sign_up                     GET|POST    /user/sign-up
 bengor_user_user_remove                      GET|POST    /user/remove
 bengor_user_user_request_remember_password   GET|POST    /user/remember-password
+bengor_user_user_resend_invitation           GET|POST    /user/resend-invitation
+bengor_user_user_new_token                   POST        /user/api/token
 
 ```
 

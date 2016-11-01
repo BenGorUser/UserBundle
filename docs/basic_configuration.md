@@ -26,14 +26,14 @@ By default we recommend the following installation that will add the following a
 ```
 {
     "require": {
-        "bengor-user/user-bundle": "^0.6",
+        "bengor-user/user-bundle": "^0.7",
 
-        "bengor-user/symfony-routing-bridge-bundle": "^1.0",
-        "bengor-user/symfony-security-bridge-bundle": "^1.0",
-        "bengor-user/twig-bridge-bundle": "^1.0",
-        "bengor-user/doctrine-orm-bridge-bundle": "^1.0",
-        "bengor-user/swift-mailer-bridge-bundle": "^1.0",
-        "bengor-user/simple-bus-bridge-bundle": "^1.0"
+        "bengor-user/symfony-routing-bridge-bundle": "^1.0.1",
+        "bengor-user/symfony-security-bridge-bundle": "^1.0.1",
+        "bengor-user/twig-bridge-bundle": "^1.0.1",
+        "bengor-user/doctrine-orm-bridge-bundle": "^1.1.0",
+        "bengor-user/swift-mailer-bridge-bundle": "^1.0.1",
+        "bengor-user/simple-bus-bridge-bundle": "^1.0.1"
     }
 } 
 ```

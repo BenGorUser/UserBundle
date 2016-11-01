@@ -4,6 +4,8 @@ Apart of the normal authentication via form login, this bundle comes with some p
 authentication in an easy way. For that purpose, the bundle needs the
 [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle). This chapters shows the
 correct way to become BenGorUserBundle compatible with JWT authentication.
+
+For more information about this bundle please, check its [documentation](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md).
  
 Install the *LexikJWTAuthenticationBundle*:
 ```bash
