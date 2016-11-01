@@ -15,6 +15,7 @@ namespace BenGorUser\UserBundle\Controller;
 use BenGorUser\User\Application\Query\UserOfInvitationTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserAlreadyExistException;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Domain\Model\Exception\UserTokenExpiredException;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,6 +98,8 @@ class SignUpController extends Controller
             $dataTransformer->write($user);
             $user = $dataTransformer->read();
         } catch (UserDoesNotExistException $exception) {
+            throw $this->createNotFoundException();
+        } catch (UserTokenExpiredException $exception) {
             throw $this->createNotFoundException();
         } catch (\InvalidArgumentException $exception) {
             throw $this->createNotFoundException();

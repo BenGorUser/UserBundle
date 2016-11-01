@@ -15,6 +15,7 @@ namespace BenGorUser\UserBundle\Controller;
 use BenGorUser\User\Application\Query\UserOfRememberPasswordTokenQuery;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
+use BenGorUser\User\Domain\Model\Exception\UserTokenExpiredException;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType;
 use BenGorUser\UserBundle\Form\Type\ChangePasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -85,6 +86,8 @@ class ChangePasswordController extends Controller
             $dataTransformer = $this->get('bengor_user.' . $userClass . '.symfony_data_transformer');
             $dataTransformer->write($user);
             $user = $dataTransformer->read();
+        } catch (UserTokenExpiredException $exception) {
+            throw $this->createNotFoundException();
         } catch (UserDoesNotExistException $exception) {
             throw $this->createNotFoundException();
         }

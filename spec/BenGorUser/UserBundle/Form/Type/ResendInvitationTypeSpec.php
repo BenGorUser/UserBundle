@@ -14,7 +14,6 @@ namespace spec\BenGorUser\UserBundle\Form\Type;
 
 use BenGorUser\UserBundle\Form\Type\ResendInvitationType;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
