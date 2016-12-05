@@ -36,6 +36,7 @@ lexik_jwt_authentication:
     public_key_path: "%kernel.root_dir%/../var/jwt/public.pem"
     pass_phrase: ""
     token_ttl: 3600
+    user_identity_field: email
 ```
 After that, updated the BenGorUserBundle's configuration itself:
 ```yml
@@ -70,7 +71,7 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - bengor_user.user.jwt_authenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
             provider: bengor_user
         main:
             anonymous: ~
