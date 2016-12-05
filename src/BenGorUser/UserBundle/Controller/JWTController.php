@@ -14,12 +14,12 @@ namespace BenGorUser\UserBundle\Controller;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
+use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
 use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * JWT controller.
@@ -46,6 +46,8 @@ class JWTController extends Controller
                 )
             );
         } catch (UserDoesNotExistException $exception) {
+            return new JsonResponse('', 404);
+        } catch (UserEmailInvalidException $exception) {
             return new JsonResponse('', 404);
         } catch (UserInactiveException $exception) {
             return new JsonResponse('', 404);
