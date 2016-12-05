@@ -46,11 +46,11 @@ class JWTController extends Controller
                 )
             );
         } catch (UserDoesNotExistException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse('', 404);
         } catch (UserInactiveException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse('', 404);
         } catch (UserPasswordInvalidException $exception) {
-            throw new BadCredentialsException();
+            return new JsonResponse('', 400);
         }
         $token = $this->get('lexik_jwt_authentication.encoder')->encode(['email' => $request->getUser()]);
 
