@@ -46,11 +46,11 @@ class JWTController extends Controller
                 )
             );
         } catch (UserDoesNotExistException $exception) {
-            return new JsonResponse('', 404);
+            return new JsonResponse('', 400);
         } catch (UserEmailInvalidException $exception) {
-            return new JsonResponse('', 404);
+            return new JsonResponse('', 400);
         } catch (UserInactiveException $exception) {
-            return new JsonResponse('', 404);
+            return new JsonResponse('Inactive user', 400);
         } catch (UserPasswordInvalidException $exception) {
             return new JsonResponse('', 400);
         }
