@@ -50,6 +50,9 @@ security:
         AppBundle\Entity\User: bcrypt
         AppBundle\Entity\Employee: bcrypt
     providers:
+        chain_provider:
+            chain:
+                providers: [bengor_user, bengor_employee]
         bengor_user:
             id: bengor_user.user.provider
         bengor_employee:
