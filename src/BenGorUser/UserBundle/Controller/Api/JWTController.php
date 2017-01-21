@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\Controller;
+namespace BenGorUser\UserBundle\Controller\Api;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
