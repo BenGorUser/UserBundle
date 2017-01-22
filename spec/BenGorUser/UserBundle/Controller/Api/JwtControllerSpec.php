@@ -14,7 +14,7 @@ namespace spec\BenGorUser\UserBundle\Controller\Api;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
-use BenGorUser\UserBundle\Controller\Api\JWTController;
+use BenGorUser\UserBundle\Controller\Api\JwtController;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -37,7 +37,7 @@ class JwtControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(JWTController::class);
+        $this->shouldHaveType(JwtController::class);
     }
 
     function it_extends_controller()
