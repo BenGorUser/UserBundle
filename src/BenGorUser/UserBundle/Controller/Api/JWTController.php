@@ -54,7 +54,7 @@ class JWTController extends Controller
         } catch (UserPasswordInvalidException $exception) {
             return new JsonResponse('', 400);
         }
-        $token = $this->get('lexik_jwt_authentication.encoder')->encode(['email' => $request->getUser()]);
+        $token = $this->get('lexik_jwt_authentication.encoder.default')->encode(['email' => $request->getUser()]);
 
         return new JsonResponse(['token' => $token]);
     }

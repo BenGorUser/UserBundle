@@ -46,7 +46,6 @@ class ChangePasswordController extends Controller
         ])->getForm();
 
         return $this->processForm($form, $request, $userClass);
-
     }
 
     /**

@@ -39,10 +39,13 @@ class EnableController extends Controller
         if (null === $confirmationToken) {
             throw $this->createNotFoundException();
         }
+
         try {
             $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
                 new EnableUserCommand($confirmationToken)
             );
+
+            return new JsonResponse();
         } catch (UserTokenNotFoundException $exception) {
             return new JsonResponse(
                 sprintf(
@@ -52,7 +55,5 @@ class EnableController extends Controller
                 400
             );
         }
-
-        return new JsonResponse();
     }
 }
