@@ -10,23 +10,24 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\Routing;
+namespace BenGorUser\UserBundle\Routing\Api;
 
+use BenGorUser\UserBundle\Routing\SignUpRoutesLoader as BaseSignUpRoutesLoader;
 use Symfony\Component\Routing\Route;
 
 /**
- * JWT routes loader class.
+ * Sing up user routes loader class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class JWTRoutesLoader extends RoutesLoader
+class SignUpRoutesLoader extends BaseSignUpRoutesLoader
 {
     /**
      * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_jwt' === $type;
+        return 'bengor_user_sign_up' === $type;
     }
 
     /**
@@ -34,11 +35,12 @@ class JWTRoutesLoader extends RoutesLoader
      */
     protected function register($user, array $config)
     {
-        $this->routes->add($config['new_token']['name'], new Route(
-            $config['new_token']['path'],
+        $this->routes->add($config['api_name'], new Route(
+            $config['api_path'],
             [
-                '_controller'  => 'BenGorUserBundle:JWT:newToken',
-                'userClass'    => $user,
+                '_controller' => 'BenGorUserBundle:Api\SignUp:' . $config['api_type'],
+                'userClass'   => $user,
+                'formType'    => $this->formType,
             ],
             [],
             [],

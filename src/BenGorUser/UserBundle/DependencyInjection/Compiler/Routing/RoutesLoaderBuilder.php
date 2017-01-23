@@ -91,6 +91,12 @@ abstract class RoutesLoaderBuilder
             if (null === $config['path']) {
                 $configuration[$key]['path'] = $this->defaultRoutePath($key);
             }
+            if (null === $config['api_name']) {
+                $configuration[$key]['api_name'] = $this->defaultRouteName($key);
+            }
+            if (null === $config['api_path']) {
+                $configuration[$key]['api_path'] = $this->defaultRoutePath($key);
+            }
         }
 
         return $configuration;
@@ -124,4 +130,35 @@ abstract class RoutesLoaderBuilder
      * @return string
      */
     abstract protected function definitionName();
+
+    /**
+     * Gets the service definition API name.
+     *
+     * @return string
+     */
+    protected function definitionApiName()
+    {
+    }
+
+    /**
+     * Gets the route loader's default API route name.
+     *
+     * @param string $user The user name
+     *
+     * @return string
+     */
+    protected function defaultApiRouteName($user)
+    {
+    }
+
+    /**
+     * Gets the route loader's default API route path.
+     *
+     * @param string $user The user name
+     *
+     * @return string
+     */
+    protected function defaultApiRoutePath($user)
+    {
+    }
 }

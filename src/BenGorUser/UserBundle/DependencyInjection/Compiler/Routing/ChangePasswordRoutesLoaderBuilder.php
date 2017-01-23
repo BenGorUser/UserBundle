@@ -42,4 +42,28 @@ class ChangePasswordRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return sprintf('/%s/change-password', $user);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_change_password_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_change_password', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/change-password', $user);
+    }
 }

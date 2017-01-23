@@ -30,6 +30,30 @@ class SecurityRoutesLoaderBuilder extends RoutesLoaderBuilder
     /**
      * {@inheritdoc}
      */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.jwt_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_new_token', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/%s/api/token', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function sanitize(array $configuration)
     {
         foreach ($configuration as $key => $config) {
@@ -53,6 +77,12 @@ class SecurityRoutesLoaderBuilder extends RoutesLoaderBuilder
             }
             if (null === $config['logout']['path']) {
                 $configuration[$key]['logout']['path'] = $this->defaultLogoutRoutePath($key);
+            }
+            if (null === $config['jwt']['name']) {
+                $configuration[$key]['jwt']['name'] = $this->defaultApiRouteName($key);
+            }
+            if (null === $config['jwt']['path']) {
+                $configuration[$key]['jwt']['path'] = $this->defaultApiRoutePath($key);
             }
         }
 

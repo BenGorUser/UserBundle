@@ -31,14 +31,6 @@ services:
         tags:
             - { name: routing.loader }
 
-    bengor.user_bundle.routing.jwt_routes_loader:
-        class: BenGorUser\UserBundle\Routing\JWTRoutesLoader
-        arguments:
-            - []
-        public: false
-        tags:
-            - { name: routing.loader }
-
     bengor.user_bundle.routing.remove_routes_loader:
         class: BenGorUser\UserBundle\Routing\RemoveRoutesLoader
         arguments:
@@ -74,6 +66,71 @@ services:
 
     bengor.user_bundle.routing.sign_up_routes_loader:
         class: BenGorUser\UserBundle\Routing\SignUpRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+### API
+    bengor.user_bundle.routing.api_change_password_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\ChangePasswordRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_enable_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\EnableRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_invite_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\InviteRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_jwt_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\JwtRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_remove_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\RemoveRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_request_remember_password_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\RequestRememberPasswordRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_resend_invitation_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\ResendInvitationRoutesLoader
+        arguments:
+            - []
+        public: false
+        tags:
+            - { name: routing.loader }
+
+    bengor.user_bundle.routing.api_sign_up_routes_loader:
+        class: BenGorUser\UserBundle\Routing\Api\SignUpRoutesLoader
         arguments:
             - []
         public: false
