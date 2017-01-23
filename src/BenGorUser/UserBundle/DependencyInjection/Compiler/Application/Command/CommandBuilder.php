@@ -73,8 +73,14 @@ abstract class CommandBuilder implements ApplicationBuilder
      */
     public function build($user)
     {
-        $enabled = array_key_exists('enabled', $this->configuration) ? $this->configuration['enabled'] : true;
-        if (false === $enabled) {
+        $enabled = array_key_exists('enabled', $this->configuration)
+            ? $this->configuration['enabled']
+            : true;
+        $apiEnabled = array_key_exists('api_enabled', $this->configuration)
+            ? $this->configuration['api_enabled']
+            : false;
+
+        if (false === $enabled && false === $apiEnabled) {
             return;
         }
 

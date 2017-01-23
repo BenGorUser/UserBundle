@@ -27,7 +27,7 @@ class SignUpRoutesLoader extends BaseSignUpRoutesLoader
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_sign_up' === $type;
+        return 'bengor_user_sign_up_api' === $type;
     }
 
     /**

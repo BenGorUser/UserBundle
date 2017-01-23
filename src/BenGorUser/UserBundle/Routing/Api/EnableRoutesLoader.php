@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Routing\Api;
 
-use BenGorUser\UserBundle\Routing\EnableRoutesLoader as BaseEnableRoutesLoader;
+use BenGorUser\UserBundle\Routing\RoutesLoader;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -20,8 +20,16 @@ use Symfony\Component\Routing\Route;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class EnableRoutesLoader extends BaseEnableRoutesLoader
+class EnableRoutesLoader extends RoutesLoader
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        return 'bengor_user_enable_api' === $type;
+    }
+
     /**
      * {@inheritdoc}
      */

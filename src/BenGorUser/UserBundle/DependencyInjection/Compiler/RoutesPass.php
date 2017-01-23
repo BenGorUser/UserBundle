@@ -53,7 +53,6 @@ class RoutesPass implements CompilerPassInterface
                 $user['use_cases']['change_password'],
                 $user['routes']['change_password']
             );
-
             $enableConfiguration[$key] = array_merge(
                 $user['use_cases']['sign_up'],
                 $user['routes']['enable']

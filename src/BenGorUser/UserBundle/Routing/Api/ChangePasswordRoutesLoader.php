@@ -25,6 +25,14 @@ class ChangePasswordRoutesLoader extends BaseChangePasswordRoutesLoader
     /**
      * {@inheritdoc}
      */
+    public function supports($resource, $type = null)
+    {
+        return 'bengor_user_change_password_api' === $type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function register($user, array $config)
     {
         $this->routes->add(

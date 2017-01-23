@@ -55,12 +55,24 @@ abstract class RoutesLoaderBuilder
      */
     public function build()
     {
-        if (!$this->container->hasDefinition($this->definitionName())) {
-            return;
+        if ($this->container->hasDefinition($this->definitionName())) {
+            $this->container->getDefinition(
+                $this->definitionName()
+            )->replaceArgument(0, array_unique($this->configuration, SORT_REGULAR));
         }
-        $this->container->getDefinition(
-            $this->definitionName()
-        )->replaceArgument(0, array_unique($this->configuration, SORT_REGULAR));
+        if ($this->container->hasDefinition($this->definitionApiName())) {
+            foreach ($this->configuration as $key => $config) {
+                $this->configuration[$key]['enabled'] = $config['api_enabled'];
+
+                if (array_key_exists('type', $config)) {
+                    $this->configuration[$key]['type'] = $config['api_type'];
+                }
+            }
+
+            $this->container->getDefinition(
+                $this->definitionApiName()
+            )->replaceArgument(0, array_unique($this->configuration, SORT_REGULAR));
+        }
 
         return $this->container;
     }
@@ -92,10 +104,10 @@ abstract class RoutesLoaderBuilder
                 $configuration[$key]['path'] = $this->defaultRoutePath($key);
             }
             if (null === $config['api_name']) {
-                $configuration[$key]['api_name'] = $this->defaultRouteName($key);
+                $configuration[$key]['api_name'] = $this->defaultApiRoutePath($key);
             }
             if (null === $config['api_path']) {
-                $configuration[$key]['api_path'] = $this->defaultRoutePath($key);
+                $configuration[$key]['api_path'] = $this->defaultApiRouteName($key);
             }
         }
 

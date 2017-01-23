@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Routing\Api;
 
-use BenGorUser\UserBundle\Routing\RemoveRoutesLoader as BaseRemoveRoutesLoader;
+use BenGorUser\UserBundle\Routing\RoutesLoader;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -20,8 +20,16 @@ use Symfony\Component\Routing\Route;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RemoveRoutesLoader extends BaseRemoveRoutesLoader
+class RemoveRoutesLoader extends RoutesLoader
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        return 'bengor_user_remove_api' === $type;
+    }
+
     /**
      * {@inheritdoc}
      */

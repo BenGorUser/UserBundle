@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Routing\Api;
 
-use BenGorUser\UserBundle\Routing\ResendInvitationRoutesLoader as BaseResendInvitationRoutesLoader;
+use BenGorUser\UserBundle\Routing\RoutesLoader;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -20,8 +20,16 @@ use Symfony\Component\Routing\Route;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class ResendInvitationRoutesLoader extends BaseResendInvitationRoutesLoader
+class ResendInvitationRoutesLoader extends RoutesLoader
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        return 'bengor_user_resend_invitation_api' === $type;
+    }
+
     /**
      * {@inheritdoc}
      */

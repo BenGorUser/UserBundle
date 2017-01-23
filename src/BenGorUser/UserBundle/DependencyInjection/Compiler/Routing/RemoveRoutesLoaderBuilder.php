@@ -31,6 +31,12 @@ class RemoveRoutesLoaderBuilder extends RoutesLoaderBuilder
             if (null === $config['path']) {
                 $configuration[$key]['path'] = $this->defaultRoutePath($key);
             }
+            if (null === $config['api_name']) {
+                $configuration[$key]['api_name'] = $this->defaultApiRouteName($key);
+            }
+            if (null === $config['api_path']) {
+                $configuration[$key]['api_path'] = $this->defaultApiRoutePath($key);
+            }
             if (null === $config['success_redirection_route']) {
                 $configuration[$key]['success_redirection_route'] = $this->defaultSuccessRedirectionRoute($key);
             }

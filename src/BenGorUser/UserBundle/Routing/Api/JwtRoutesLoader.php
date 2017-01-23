@@ -27,7 +27,7 @@ class JwtRoutesLoader extends RoutesLoader
      */
     public function supports($resource, $type = null)
     {
-        return 'bengor_user_security' === $type;
+        return 'bengor_user_jwt' === $type;
     }
 
     /**

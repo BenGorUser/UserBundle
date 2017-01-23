@@ -9,3 +9,7 @@
 bengor_user_enable_routes:
     resource: .
     type: bengor_user_enable
+
+bengor_user_enable_api_routes:
+    resource: .
+    type: bengor_user_enable_api

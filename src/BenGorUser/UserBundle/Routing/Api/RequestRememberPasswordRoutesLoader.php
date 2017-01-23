@@ -12,7 +12,7 @@
 
 namespace BenGorUser\UserBundle\Routing\Api;
 
-use BenGorUser\UserBundle\Routing\RequestRememberPasswordRoutesLoader as BaseRequestRememberPasswordRoutesLoader;
+use BenGorUser\UserBundle\Routing\RoutesLoader;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -20,8 +20,16 @@ use Symfony\Component\Routing\Route;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class RequestRememberPasswordRoutesLoader extends BaseRequestRememberPasswordRoutesLoader
+class RequestRememberPasswordRoutesLoader extends RoutesLoader
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        return 'bengor_user_request_remember_password_api' === $type;
+    }
+
     /**
      * {@inheritdoc}
      */
