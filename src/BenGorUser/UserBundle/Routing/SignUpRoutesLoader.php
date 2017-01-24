@@ -29,7 +29,7 @@ class SignUpRoutesLoader extends RoutesLoader
      *
      * @var string
      */
-    private $formType;
+    protected $formType;
 
     /**
      * {@inheritdoc}

@@ -28,7 +28,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  *
- * @deprecated Deprecated since version 0.7.1, to be removed in 0.8.0.
+ * @deprecated Deprecated since version 0.7.1, to be removed in 0.8.0
  */
 class JWTAuthenticator extends AbstractGuardAuthenticator
 {

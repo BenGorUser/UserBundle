@@ -10,9 +10,9 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\BenGorUser\UserBundle\Routing;
+namespace spec\BenGorUser\UserBundle\Routing\Api;
 
-use BenGorUser\UserBundle\Routing\JWTRoutesLoader;
+use BenGorUser\UserBundle\Routing\Api\JwtRoutesLoader;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class JWTRoutesLoaderSpec extends ObjectBehavior
+class JwtRoutesLoaderSpec extends ObjectBehavior
 {
     function let()
     {
@@ -38,7 +38,7 @@ class JWTRoutesLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(JWTRoutesLoader::class);
+        $this->shouldHaveType(JwtRoutesLoader::class);
     }
 
     function it_implements_loader_interface()

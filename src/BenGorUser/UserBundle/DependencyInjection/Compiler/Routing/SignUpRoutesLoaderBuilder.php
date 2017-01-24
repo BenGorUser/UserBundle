@@ -42,4 +42,28 @@ class SignUpRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return sprintf('/%s/sign-up', $user);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_sign_up_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_sign_up', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/sign-up', $user);
+    }
 }

@@ -42,4 +42,28 @@ class InviteRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return sprintf('/%s/invite', $user);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_invite_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_invite', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/invite', $user);
+    }
 }

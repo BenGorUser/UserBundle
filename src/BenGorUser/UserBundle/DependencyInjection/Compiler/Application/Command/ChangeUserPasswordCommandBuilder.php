@@ -131,7 +131,7 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
      *
      * @param string $user The user name
      *
-     * @return Definition
+     * @return array
      */
     private function defaultSpecification($user)
     {
@@ -146,7 +146,7 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
      *
      * @param string $user The user name
      *
-     * @return Definition
+     * @return array
      */
     private function byRequestRememberPasswordSpecification($user)
     {

@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BenGorUser\UserBundle\Controller;
+namespace BenGorUser\UserBundle\Controller\Api;
 
 use BenGorUser\User\Application\Command\LogIn\LogInUserCommand;
 use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class JWTController extends Controller
+class JwtController extends Controller
 {
     /**
      * Generates new token action.
@@ -54,7 +54,7 @@ class JWTController extends Controller
         } catch (UserPasswordInvalidException $exception) {
             return new JsonResponse('', 400);
         }
-        $token = $this->get('lexik_jwt_authentication.encoder')->encode(['email' => $request->getUser()]);
+        $token = $this->get('lexik_jwt_authentication.encoder.default')->encode(['email' => $request->getUser()]);
 
         return new JsonResponse(['token' => $token]);
     }

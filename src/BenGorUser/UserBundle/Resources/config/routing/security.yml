@@ -9,3 +9,7 @@
 bengor_user_security_routes:
     resource: .
     type: bengor_user_security
+
+bengor_user_jwt_routes:
+    resource: .
+    type: bengor_user_jwt

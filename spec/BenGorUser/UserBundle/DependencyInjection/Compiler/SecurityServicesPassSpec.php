@@ -49,7 +49,8 @@ class SecurityServicesPassSpec extends ObjectBehavior
                     ],
                     'use_cases'     => [
                         'security'        => [
-                            'enabled' => true,
+                            'enabled'     => true,
+                            'api_enabled' => false,
                         ],
                         'sign_up'         => [
                             'enabled' => true,
@@ -61,9 +62,6 @@ class SecurityServicesPassSpec extends ObjectBehavior
                         ],
                         'remove'          => [
                             'enabled' => true,
-                        ],
-                        'jwt'             => [
-                            'enabled' => false,
                         ],
                     ],
                     'routes'        => [
@@ -82,6 +80,10 @@ class SecurityServicesPassSpec extends ObjectBehavior
                             ],
                             'success_redirection_route' => [
                                 'route' => 'bengor_user_user_homepage',
+                            ],
+                            'jwt'                       => [
+                                'name' => 'bengor_user_user_jwt_new_token',
+                                'path' => '/user/api/token',
                             ],
                         ],
                         'sign_up'                   => [
@@ -113,12 +115,6 @@ class SecurityServicesPassSpec extends ObjectBehavior
                             'name'                      => 'bengor_user_user_remove',
                             'path'                      => '/user/remove',
                             'success_redirection_route' => null,
-                        ],
-                        'jwt'                       => [
-                            'new_token' => [
-                                'name' => 'bengor_user_user_jwt_new_token',
-                                'path' => '/user/api/token',
-                            ],
                         ],
                     ],
                 ],

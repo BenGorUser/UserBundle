@@ -31,6 +31,12 @@ class RemoveRoutesLoaderBuilder extends RoutesLoaderBuilder
             if (null === $config['path']) {
                 $configuration[$key]['path'] = $this->defaultRoutePath($key);
             }
+            if (null === $config['api_name']) {
+                $configuration[$key]['api_name'] = $this->defaultApiRouteName($key);
+            }
+            if (null === $config['api_path']) {
+                $configuration[$key]['api_path'] = $this->defaultApiRoutePath($key);
+            }
             if (null === $config['success_redirection_route']) {
                 $configuration[$key]['success_redirection_route'] = $this->defaultSuccessRedirectionRoute($key);
             }
@@ -61,6 +67,30 @@ class RemoveRoutesLoaderBuilder extends RoutesLoaderBuilder
     protected function defaultRoutePath($user)
     {
         return sprintf('/%s/remove', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_remove_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_remove', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/remove', $user);
     }
 
     /**

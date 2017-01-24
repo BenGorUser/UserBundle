@@ -60,6 +60,30 @@ class EnableRoutesLoaderBuilder extends RoutesLoaderBuilder
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_enable_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_enable', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/enable', $user);
+    }
+
+    /**
      * Gets the route loader's default success redirection route.
      *
      * @param string $user The user name

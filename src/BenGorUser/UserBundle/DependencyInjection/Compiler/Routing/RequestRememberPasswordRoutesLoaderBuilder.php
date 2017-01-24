@@ -42,4 +42,28 @@ class RequestRememberPasswordRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return sprintf('/%s/remember-password', $user);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_request_remember_password_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_remember_password', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/remember-password', $user);
+    }
 }

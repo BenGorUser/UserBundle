@@ -42,4 +42,28 @@ class ResendInvitationRoutesLoaderBuilder extends RoutesLoaderBuilder
     {
         return sprintf('/%s/resend-invitation', $user);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function definitionApiName()
+    {
+        return 'bengor.user_bundle.routing.api_resend_invitation_routes_loader';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRouteName($user)
+    {
+        return sprintf('bengor_user_%s_api_resend_invitation', $user);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultApiRoutePath($user)
+    {
+        return sprintf('/api/%s/resend-invitation', $user);
+    }
 }

@@ -67,11 +67,12 @@ abstract class RoutesLoader implements LoaderInterface
         if (true === $this->loaded) {
             throw new \RuntimeException('Do not add this loader twice');
         }
-        if (empty($this->config)) {
-            return;
-        }
 
         $this->routes = new RouteCollection();
+        if (empty($this->config)) {
+            return $this->routes;
+        }
+
         foreach ($this->config as $user => $config) {
             if (false === array_key_exists('enabled', $config)) {
                 throw new \RuntimeException('"enabled" key must be defined');
