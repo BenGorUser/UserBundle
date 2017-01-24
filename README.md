@@ -9,7 +9,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/bengor-user/user-bundle/v/unstable.svg)](https://packagist.org/packages/bengor-user/user-bundle)
 
 Following the [basic configuration guide](docs/basic_configuration.md), in 2 minutes you will have the following
-fully tested **multiple user type** features in your Symfony application:
+fully tested **multiple user type** and **multiple renderers** (HTML / JSON) features in your Symfony application:
 
  * User registration
     * Basic
