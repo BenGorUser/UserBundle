@@ -81,19 +81,13 @@ class SignUpControllerSpec extends ObjectBehavior
             ['csrf_protection' => false, 'roles' => ['ROLE_USER']]
         )->shouldBeCalled()->willReturn($formBuilder);
         $formBuilder->getForm()->shouldBeCalled()->willReturn($form);
-
-        $form->get('email')->shouldBeCalled()->willReturn($formChild);
-        $formChild->getData()->shouldBeCalled()->willReturn('bengor@user.com');
-        $container->get('bengor_user.user.provider')->shouldBeCalled()->willReturn($userProvider);
-        $userProvider->loadUserByUsername('bengor@user.com')->shouldBeCalled()->willReturn([
-            'email' => 'bengor@user.com',
-        ]);
-
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
         $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
+        $command->email()->shouldBeCalled()->willReturn('bengor@user.com');
+        $command->password()->shouldBeCalled()->willReturn('123456');
         $commandBus->handle($command)->shouldBeCalled();
         $commandBus->handle(Argument::type(LogInUserCommand::class))->shouldBeCalled();
 
@@ -109,8 +103,6 @@ class SignUpControllerSpec extends ObjectBehavior
         ContainerInterface $container,
         FormInterface $form,
         FormFactoryInterface $formFactory,
-        UserProviderInterface $userProvider,
-        FormInterface $formChild,
         FormError $error
     ) {
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
@@ -124,12 +116,6 @@ class SignUpControllerSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn($formBuilder);
         $formBuilder->getForm()->shouldBeCalled()->willReturn($form);
 
-        $form->get('email')->shouldBeCalled()->willReturn($formChild);
-        $formChild->getData()->shouldBeCalled()->willReturn('bengor@user.com');
-        $container->get('bengor_user.user.provider')->shouldBeCalled()->willReturn($userProvider);
-        $userProvider->loadUserByUsername('bengor@user.com')->shouldBeCalled()->willReturn([
-            'email' => 'bengor@user.com',
-        ]);
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(false);
 

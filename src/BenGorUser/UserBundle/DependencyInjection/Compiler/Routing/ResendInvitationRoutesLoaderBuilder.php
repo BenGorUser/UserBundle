@@ -64,6 +64,6 @@ class ResendInvitationRoutesLoaderBuilder extends RoutesLoaderBuilder
      */
     protected function defaultApiRoutePath($user)
     {
-        return sprintf('/api/%s/resend_invitation', $user);
+        return sprintf('/api/%s/resend-invitation', $user);
     }
 }

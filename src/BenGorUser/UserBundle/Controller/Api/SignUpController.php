@@ -22,7 +22,6 @@ use BenGorUser\User\Domain\Model\Exception\UserTokenExpiredException;
 use BenGorUser\UserBundle\Form\FormErrorSerializer;
 use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -53,11 +52,37 @@ class SignUpController extends Controller
             'csrf_protection' => false,
         ])->getForm();
 
-        $user = $this->get('bengor_user.' . $userClass . '.provider')->loadUserByUsername(
-            $form->get('email')->getData()
-        );
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $commandBus = $this->get('bengor_user.' . $userClass . '.command_bus');
+            $email = $form->getData()->email();
 
-        return $this->processForm($form, $request, $userClass, $user);
+            try {
+                $commandBus->handle(
+                    $form->getData()
+                );
+
+                $commandBus->handle(
+                    new LogInUserCommand(
+                        $email,
+                        $form->getData()->password()
+                    )
+                );
+            } catch (UserDoesNotExistException $exception) {
+                throw new NotFoundHttpException();
+            } catch (UserInactiveException $exception) {
+                throw new NotFoundHttpException();
+            } catch (UserPasswordInvalidException $exception) {
+                throw new BadCredentialsException();
+            } catch (UserAlreadyExistException $exception) {
+                throw new BadCredentialsException();
+            }
+            $token = $this->get('lexik_jwt_authentication.encoder.default')->encode(['email' => $email]);
+
+            return new JsonResponse(['token' => $token]);
+        }
+
+        return new JsonResponse(FormErrorSerializer::errors($form), 400);
     }
 
     /**
@@ -91,11 +116,6 @@ class SignUpController extends Controller
             'csrf_protection'  => false,
         ])->getForm();
 
-        return $this->processForm($form, $request, $userClass, $user);
-    }
-
-    private function processForm(FormInterface $form, Request $request, $userClass, $user)
-    {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $commandBus = $this->get('bengor_user.' . $userClass . '.command_bus');

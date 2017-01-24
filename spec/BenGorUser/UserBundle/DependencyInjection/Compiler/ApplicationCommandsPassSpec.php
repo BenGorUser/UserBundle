@@ -81,6 +81,10 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
                             'success_redirection_route' => [
                                 'route' => 'bengor_user_user_homepage',
                             ],
+                            'jwt'                       => [
+                                'name' => 'bengor_user_user_jwt_new_token',
+                                'path' => '/user/api/token',
+                            ],
                         ],
                         'sign_up'                   => [
                             'name'                      => 'bengor_user_user_sign_up',
