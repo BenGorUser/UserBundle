@@ -48,8 +48,13 @@ ben_gor_user:
             class: AppBundle\Entity\User
             firewall: main
             use_cases:
-                jwt:
-                    enabled: true
+                security:
+                    api_enabled: true
+            routes:
+                security:
+                    jwt:
+                        name: bengor_user_user_jwt
+                        path: /user/api/token
 ```
 In order to make compatible with the new JWT authentication system you should update the `security.yml`:
 ```yml

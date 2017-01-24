@@ -2,6 +2,8 @@
 
 ##v0.7.x to v0.8.x
 
+* The jwt use case is removed from the configuration tree and it has been integrated inside the security block.
+Check it out the [configuration reference](docs/reference_configuration.md) for more info.
 * JwtAuthenticator does not exist anymore so, you need to update your security.yml with lexik jwt authenticator service 
 id.
 ```yml

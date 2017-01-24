@@ -8,6 +8,7 @@ To get the diff between two versions, go to https://github.com/BenGorUser/UserBu
 ##v0.8.0
 * Added Api integration with json render responses apart of the html render responses.
 * Removed deprecated JWT Authenticator.
+* Remove HHVM support.
 
 ##v0.7.4
 * Changed JwtController response code from 404 to 400.
