@@ -10,7 +10,7 @@ ben_gor_user:
         your_user:
             # ...
             use_cases:
-                registration:
+                sign_up:
                     type: <your-desired-type>
             # ...
 ```
