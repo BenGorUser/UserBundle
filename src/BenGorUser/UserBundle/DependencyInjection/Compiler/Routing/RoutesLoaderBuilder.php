@@ -104,10 +104,10 @@ abstract class RoutesLoaderBuilder
                 $configuration[$key]['path'] = $this->defaultRoutePath($key);
             }
             if (null === $config['api_name']) {
-                $configuration[$key]['api_name'] = $this->defaultApiRoutePath($key);
+                $configuration[$key]['api_name'] = $this->defaultApiRouteName($key);
             }
             if (null === $config['api_path']) {
-                $configuration[$key]['api_path'] = $this->defaultApiRouteName($key);
+                $configuration[$key]['api_path'] = $this->defaultApiRoutePath($key);
             }
         }
 

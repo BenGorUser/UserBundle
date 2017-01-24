@@ -32,7 +32,7 @@ class SecurityRoutesLoaderBuilder extends RoutesLoaderBuilder
      */
     protected function definitionApiName()
     {
-        return 'bengor.user_bundle.routing.jwt_routes_loader';
+        return 'bengor.user_bundle.routing.api_jwt_routes_loader';
     }
 
     /**
