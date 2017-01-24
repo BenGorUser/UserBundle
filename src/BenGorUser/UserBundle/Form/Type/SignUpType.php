@@ -88,7 +88,6 @@ class SignUpType extends AbstractType
                     $this->roles
                 );
             },
-
         ]);
     }
 }
