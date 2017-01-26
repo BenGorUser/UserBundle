@@ -34,16 +34,11 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
         $command = $this->{$this->specification}($user)['command'];
         $handler = $this->{$this->specification}($user)['handler'];
 
-        $this->container->setDefinition(
-            $this->definitionName($user),
-            (new Definition(
-                $handler, $this->handlerArguments($user)
-            ))->addTag(
-                'bengor_user_' . $user . '_command_bus_handler', [
-                    'handles' => $command,
-                ]
-            )
-        );
+        $apiCommand = $this->{$this->apiSpecification}($user)['command'];
+        $apiHandler = $this->{$this->apiSpecification}($user)['handler'];
+
+        $this->registerCommandHandler($user, $handler, $command);
+        $this->registerCommandHandler($user, $apiHandler, $apiCommand);
 
         (new WithoutOldPasswordChangeUserPasswordCommandBuilder(
             $this->container, $this->persistence
@@ -56,7 +51,8 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
     public function build($user)
     {
         $enabled = array_key_exists('enabled', $this->configuration) ? $this->configuration['enabled'] : true;
-        if (false === $enabled) {
+        $apiEnabled = array_key_exists('api_enabled', $this->configuration) ? $this->configuration['api_enabled'] : true;
+        if (false === $enabled && false === $apiEnabled) {
             (new WithoutOldPasswordChangeUserPasswordCommandBuilder(
                 $this->container, $this->persistence
             ))->build($user);
@@ -156,5 +152,19 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
             'command' => ByRequestRememberPasswordChangeUserPasswordCommand::class,
             'handler' => ByRequestRememberPasswordChangeUserPasswordHandler::class,
         ];
+    }
+
+    private function registerCommandHandler($user, $handler, $command)
+    {
+        $this->container->setDefinition(
+            $this->definitionName($user),
+            (new Definition(
+                $handler, $this->handlerArguments($user)
+            ))->addTag(
+                'bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => $command,
+                ]
+            )
+        );
     }
 }

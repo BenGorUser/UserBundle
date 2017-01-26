@@ -53,12 +53,14 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
                             'enabled' => true,
                         ],
                         'sign_up'         => [
-                            'enabled' => true,
-                            'type'    => 'default',
+                            'enabled'  => true,
+                            'type'     => 'default',
+                            'api_type' => 'default',
                         ],
                         'change_password' => [
-                            'enabled' => true,
-                            'type'    => 'default',
+                            'enabled'  => true,
+                            'type'     => 'default',
+                            'api_type' => 'default',
                         ],
                         'remove'          => [
                             'enabled' => true,

@@ -51,6 +51,13 @@ abstract class CommandBuilder implements ApplicationBuilder
     protected $specification;
 
     /**
+     * The specification name.
+     *
+     * @var string
+     */
+    protected $apiSpecification;
+
+    /**
      * Constructor.
      *
      * @param ContainerBuilder $container     The container builder
@@ -65,6 +72,9 @@ abstract class CommandBuilder implements ApplicationBuilder
 
         if (true === array_key_exists('type', $configuration)) {
             $this->specification = $this->sanitize($configuration['type']);
+        }
+        if (true === array_key_exists('api_type', $configuration)) {
+            $this->apiSpecification = $this->sanitize($configuration['api_type']);
         }
     }
 

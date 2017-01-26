@@ -83,6 +83,9 @@ abstract class RoutesLoader implements LoaderInterface
             if (true === array_key_exists('type', $config)) {
                 $config['type'] = $this->sanitize($config['type']);
             }
+            if (true === array_key_exists('api_type', $config)) {
+                $config['api_type'] = $this->sanitize($config['api_type']);
+            }
             $this->register($user, $config);
         }
         $this->loaded = true;

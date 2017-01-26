@@ -37,17 +37,14 @@ class SignUpUserCommandBuilder extends CommandBuilder
         $handler = $this->{$this->specification}($user)['handler'];
         $handlerArguments = $this->{$this->specification}($user)['handlerArguments'];
 
-        $this->container->setDefinition(
-            $this->definitionName($user),
-            (new Definition(
-                $handler, $handlerArguments)
-            )->addTag('bengor_user_' . $user . '_command_bus_handler', [
-                    'handles' => $command,
-                ]
-            )
-        );
+        $apiCommand = $this->{$this->apiSpecification}($user)['command'];
+        $apiHandler = $this->{$this->apiSpecification}($user)['handler'];
+        $apiHandlerArguments = $this->{$this->apiSpecification}($user)['handlerArguments'];
 
-        if ($this->specification !== 'defaultSpecification') {
+        $this->registerCommandHandler($user, $handler, $handlerArguments, $command);
+        $this->registerCommandHandler($user, $apiHandler, $apiHandlerArguments, $apiCommand);
+
+        if ($this->specification !== 'defaultSpecification' && $this->apiSpecification !== 'defaultSpecification') {
             (new DefaultSignUpUserCommandBuilder($this->container, $this->persistence))->build($user);
         }
     }
@@ -58,7 +55,8 @@ class SignUpUserCommandBuilder extends CommandBuilder
     public function build($user)
     {
         $enabled = array_key_exists('enabled', $this->configuration) ? $this->configuration['enabled'] : true;
-        if (false === $enabled) {
+        $apiEnabled = array_key_exists('api_enabled', $this->configuration) ? $this->configuration['api_enabled'] : true;
+        if (false === $enabled && false === $apiEnabled) {
             (new DefaultSignUpUserCommandBuilder($this->container, $this->persistence))->build($user);
 
             return;
@@ -208,5 +206,18 @@ class SignUpUserCommandBuilder extends CommandBuilder
             'handler'          => ByInvitationSignUpUserHandler::class,
             'handlerArguments' => $this->invitationHandlerArguments($user),
         ];
+    }
+
+    private function registerCommandHandler($user, $handler, $handlerArguments, $command)
+    {
+        $this->container->setDefinition(
+            $this->definitionName($user),
+            (new Definition(
+                $handler, $handlerArguments)
+            )->addTag('bengor_user_' . $user . '_command_bus_handler', [
+                    'handles' => $command,
+                ]
+            )
+        );
     }
 }
