@@ -24,37 +24,50 @@ ben_gor_user:
                     success_redirection_route:
                         type: referer          # Also, it can be "force"
                         route: bengor_user_user_homepage
+                    jwt:
+                        name: bengor_user_user_jwt
+                        path: /user/api/token
                 sign_up:
                     name: bengor_user_user_sign_up
                     path: /user/sign-up
+                    api_name: bengor_user_user_api_sign_up
+                    api_path: /api/user/sign-up
                 invite:
                     name: bengor_user_user_invite
                     path: /user/invite
                     success_redirection_route: ~
+                    api_name: bengor_user_user_api_invite
+                    api_path: /api/user/invite
                 resend_invitation:
                     name: bengor_user_user_resend_invitation
                     path: /user/resend-invitation
                     success_redirection_route: ~
+                    api_name: bengor_user_user_api_resend_invitation
+                    api_path: /api/user/resend-invitation
                 enable:
                     name: bengor_user_user_enable
                     path: /user/enable?confirmation-token={confirmation-token}
                     success_redirection_route: bengor_user_user_homepage
+                    api_name: bengor_user_user_api_enable
+                    api_path: /api/user/sign-up
                 change_password:
                     name: bengor_user_user_change_password
                     path: /user/change-password
                     success_redirection_route: ~
+                    api_name: bengor_user_user_api_change_password
+                    api_path: /api/user/change-password
                 request_remember_password:
                     name: bengor_user_user_request_remember_password
                     path: /user/remember-password
                     success_redirection_route: ~
+                    api_name: bengor_user_user_api_remember_password
+                    api_path: /api/user/remember-password
                 remove:
                     name: bengor_user_user_remove
                     path: /user/remove
                     success_redirection_route: bengor_user_user_homepage
-                jwt:
-                    new_token:
-                        name: bengor_user_user_jwt_new_token
-                        path: /user/api/token
+                    api_name: bengor_user_user_api_remove
+                    api_path: /api/user/remove
             # ...
 ```
 
