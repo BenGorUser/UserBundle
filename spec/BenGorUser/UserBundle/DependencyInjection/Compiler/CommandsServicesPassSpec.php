@@ -124,6 +124,12 @@ class CommandsServicesPassSpec extends ObjectBehavior
         $container->findDefinition('bengor.user.command.change_user_password_command')
             ->shouldBeCalled()->willReturn($definition);
         $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
+        $container->findDefinition('bengor.user.command.purge_outdated_user_invitation_tokens_command')
+            ->shouldBeCalled()->willReturn($definition);
+        $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
+        $container->findDefinition('bengor.user.command.purge_outdated_user_remember_password_tokens_command')
+            ->shouldBeCalled()->willReturn($definition);
+        $definition->setArguments(Argument::type('array'))->shouldBeCalled()->willReturn($definition);
 
         $this->process($container);
     }
