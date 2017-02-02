@@ -11,6 +11,7 @@ To get the diff between two versions, go to https://github.com/BenGorUser/UserBu
 * Rewritten the UserUrlGenerator's associated service.
   * More info in the new documentation's event subscriber section and inside UPGRADE.md file.
 * Upgraded PHP-CS Fixer.
+* Fixed bug that generate a infinite loop with Twig template includes.
 * [Travis CI] Dropped support for HHVM and added for PHP 7.1.
 
 ##v0.7.4
