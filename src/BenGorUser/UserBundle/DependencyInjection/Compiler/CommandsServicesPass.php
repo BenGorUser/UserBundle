@@ -49,6 +49,22 @@ class CommandsServicesPass implements CompilerPassInterface
                     ),
                     $key,
                 ]);
+
+            $container->findDefinition('bengor.user.command.purge_outdated_' . $key . '_invitation_tokens_command')
+                ->setArguments([
+                    $container->getDefinition(
+                        'bengor_user.' . $key . '.command_bus'
+                    ),
+                    $key,
+                ]);
+
+            $container->findDefinition('bengor.user.command.purge_outdated_' . $key . '_remember_password_tokens_command')
+                ->setArguments([
+                    $container->getDefinition(
+                        'bengor_user.' . $key . '.command_bus'
+                    ),
+                    $key,
+                ]);
         }
     }
 }

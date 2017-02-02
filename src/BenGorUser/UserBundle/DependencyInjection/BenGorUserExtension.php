@@ -14,6 +14,8 @@ namespace BenGorUser\UserBundle\DependencyInjection;
 
 use BenGorUser\UserBundle\Command\ChangePasswordCommand;
 use BenGorUser\UserBundle\Command\CreateUserCommand;
+use BenGorUser\UserBundle\Command\PurgeOutdatedInvitationTokensCommand;
+use BenGorUser\UserBundle\Command\PurgeOutdatedRememberPasswordTokensCommand;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -62,6 +64,16 @@ class BenGorUserExtension extends Extension
         $container->setDefinition(
             'bengor.user.command.change_' . $user . '_password_command',
             (new Definition(ChangePasswordCommand::class))->addTag('console.command')
+        );
+
+        $container->setDefinition(
+            'bengor.user.command.purge_outdated_' . $user . '_invitations_tokens_command',
+            (new Definition(PurgeOutdatedInvitationTokensCommand::class))->addTag('console.command')
+        );
+
+        $container->setDefinition(
+            'bengor.user.command.purge_outdated_' . $user . '_remember_password_tokens_command',
+            (new Definition(PurgeOutdatedRememberPasswordTokensCommand::class))->addTag('console.command')
         );
     }
 }

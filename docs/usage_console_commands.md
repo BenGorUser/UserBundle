@@ -3,8 +3,10 @@
 Right now two Symfony commands are available and both are [user type](usage_multiple_users.md) aware. 
 
 ```
-bengor:user:your_user_type:change-password        Change user's password.
-bengor:user:your_user_type:create                 Create a user.
+bengor:user:your_user_type:change-password                             Changes user's password.
+bengor:user:your_user_type:create                                      Creates a user.
+bengor:user:your_user_type:purge-outdated-invitation-tokens            Purges outdated invitation tokens.
+bengor:user:your_user_type:purge-outdated-remember-password-tokens     Purges outdated remember password tokens.
 ```
 
 Run them as you would usually do with any Symfony command in the project root:
