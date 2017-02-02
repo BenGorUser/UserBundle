@@ -7,6 +7,7 @@ To get the diff between two versions, go to https://github.com/BenGorUser/UserBu
 
 ##v0.8.0
 * Added Api integration with json render responses apart of the html render responses.
+* Added two Symfony console commands that purge outdated invitation tokens and remember password tokens.
 * Removed deprecated JWT Authenticator.
 * Rewritten the UserUrlGenerator's associated service.
   * More info in the new documentation's event subscriber section and inside UPGRADE.md file.

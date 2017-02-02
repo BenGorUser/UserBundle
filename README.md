@@ -25,6 +25,9 @@ fully tested **multiple user type** and **multiple renderers** (HTML / JSON) fea
  * Role management
     * Grant
     * Revoke
+ * Purge outdated tokens
+    * Invitation token
+    * Remember password token
     
 ##Requirements
 PHP >= 5.5</br>
