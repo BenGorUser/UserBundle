@@ -121,8 +121,7 @@ class SecurityServicesPassSpec extends ObjectBehavior
             ],
         ]);
 
-        $container->getDefinition('bengor.user.infrastructure.routing.symfony_url_generator')
-            ->shouldBeCalled()->willReturn($definition);
+        $container->getDefinition('router.default')->shouldBeCalled()->willReturn($definition);
         $container->getDefinition('bengor_user.user.command_bus')
             ->shouldBeCalled()->willReturn($definition);
         $definition->setPublic(false)->shouldBeCalled()->willReturn($definition);
@@ -134,8 +133,6 @@ class SecurityServicesPassSpec extends ObjectBehavior
             'bengor_user.user.form_login_authenticator',
             'bengor.user_bundle.security.authenticator.form_login_user_authenticator'
         )->shouldBeCalled();
-
-        $container->has('lexik_jwt_authentication.encoder.default')->shouldBeCalled()->willReturn(false);
 
         $container->getDefinition('bengor.user_bundle.security.user_symfony_data_transformer')
             ->shouldBeCalled()->willReturn($definition);

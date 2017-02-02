@@ -67,7 +67,7 @@ class BenGorUserExtension extends Extension
         );
 
         $container->setDefinition(
-            'bengor.user.command.purge_outdated_' . $user . '_invitations_tokens_command',
+            'bengor.user.command.purge_outdated_' . $user . '_invitation_tokens_command',
             (new Definition(PurgeOutdatedInvitationTokensCommand::class))->addTag('console.command')
         );
 

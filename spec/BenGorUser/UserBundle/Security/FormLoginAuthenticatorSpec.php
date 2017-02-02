@@ -17,7 +17,6 @@ use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
 use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
-use BenGorUser\User\Domain\Model\UserUrlGenerator;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use BenGorUser\UserBundle\Security\FormLoginAuthenticator;
 use BenGorUser\UserBundle\Security\User;
@@ -26,6 +25,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -40,7 +40,7 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  */
 class FormLoginAuthenticatorSpec extends ObjectBehavior
 {
-    function let(UserUrlGenerator $urlGenerator, UserCommandBus $commandBus)
+    function let(UrlGeneratorInterface $urlGenerator, UserCommandBus $commandBus)
     {
         $this->beConstructedWith($urlGenerator, $commandBus, [
             'login'                     => 'bengor_user_user_security_login',
@@ -63,7 +63,7 @@ class FormLoginAuthenticatorSpec extends ObjectBehavior
     }
 
     function it_throws_invalid_argument_exception_when_routes_are_not_provided(
-        UserUrlGenerator $urlGenerator,
+        UrlGeneratorInterface $urlGenerator,
         UserCommandBus $commandBus
     ) {
         $this->beConstructedWith($urlGenerator, $commandBus, []);

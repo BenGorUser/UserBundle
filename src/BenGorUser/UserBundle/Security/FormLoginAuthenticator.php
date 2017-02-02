@@ -17,11 +17,11 @@ use BenGorUser\User\Domain\Model\Exception\UserDoesNotExistException;
 use BenGorUser\User\Domain\Model\Exception\UserEmailInvalidException;
 use BenGorUser\User\Domain\Model\Exception\UserInactiveException;
 use BenGorUser\User\Domain\Model\Exception\UserPasswordInvalidException;
-use BenGorUser\User\Domain\Model\UserUrlGenerator;
 use BenGorUser\User\Infrastructure\CommandBus\UserCommandBus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -62,9 +62,9 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     private $loginRoute;
 
     /**
-     * The user URL generator.
+     * The URL generator.
      *
-     * @var UserUrlGenerator
+     * @var UrlGeneratorInterface
      */
     private $urlGenerator;
 
@@ -78,13 +78,13 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Constructor.
      *
-     * @param UserUrlGenerator $aUserUrlGenerator The user URL generator
-     * @param UserCommandBus   $aCommandBus       The command bus
-     * @param array            $routes            The routes related with security (login, login_check and logout)
+     * @param UrlGeneratorInterface $anUrlGenerator The URL generator
+     * @param UserCommandBus        $aCommandBus    The command bus
+     * @param array                 $routes         The routes related with security (login, login_check and logout)
      */
-    public function __construct(UserUrlGenerator $aUserUrlGenerator, UserCommandBus $aCommandBus, array $routes)
+    public function __construct(UrlGeneratorInterface $anUrlGenerator, UserCommandBus $aCommandBus, array $routes)
     {
-        $this->urlGenerator = $aUserUrlGenerator;
+        $this->urlGenerator = $anUrlGenerator;
         $this->commandBus = $aCommandBus;
 
         if (false === isset(
@@ -174,7 +174,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         $targetPath = $request->getSession()->get('_security.' . $providerKey . '.target_path');
         if (!$targetPath || $this->successRedirectionRoute['type'] === 'force') {
             $targetPath = $this->urlGenerator->generate(
-                $this->successRedirectionRoute['route'], [], UserUrlGenerator::ABSOLUTE_PATH
+                $this->successRedirectionRoute['route'], [], UrlGeneratorInterface::ABSOLUTE_PATH
             );
         }
 
@@ -186,7 +186,7 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate($this->loginRoute, [], UserUrlGenerator::ABSOLUTE_PATH);
+        return $this->urlGenerator->generate($this->loginRoute, [], UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
