@@ -184,6 +184,24 @@ class ApplicationCommandsPassSpec extends ObjectBehavior
             'bengor.user.application.command.remove_user'
         )->shouldBeCalled();
 
+        $container->setDefinition(
+            'bengor.user.application.command.purge_outdated_user_invitation_tokens',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.user.purge_outdated_invitation_tokens',
+            'bengor.user.application.command.purge_outdated_user_invitation_tokens'
+        )->shouldBeCalled();
+
+        $container->setDefinition(
+            'bengor.user.application.command.purge_outdated_user_remember_password_tokens',
+            Argument::type(Definition::class)
+        )->shouldBeCalled()->willReturn($definition);
+        $container->setAlias(
+            'bengor_user.user.purge_outdated_remember_password_tokens',
+            'bengor.user.application.command.purge_outdated_user_remember_password_tokens'
+        )->shouldBeCalled();
+
         $this->process($container);
     }
 }

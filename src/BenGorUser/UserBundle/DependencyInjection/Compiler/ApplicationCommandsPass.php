@@ -15,6 +15,8 @@ namespace BenGorUser\UserBundle\DependencyInjection\Compiler;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\ChangeUserPasswordCommandBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\LogInUserCommandBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\LogOutUserCommandBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\PurgeOutdatedInvitationTokensUserCommandBuilder;
+use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\PurgeOutdatedRememberPasswordTokensUserCommandBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\RemoveUserCommandBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Application\Command\SignUpUserCommandBuilder;
 use BenGorUser\UserBundle\DependencyInjection\Compiler\Routing\SecurityRoutesLoaderBuilder;
@@ -66,6 +68,9 @@ class ApplicationCommandsPass implements CompilerPassInterface
             (new RemoveUserCommandBuilder(
                 $container, $user['persistence'], $user['use_cases']['remove']
             ))->build($key);
+
+            (new PurgeOutdatedInvitationTokensUserCommandBuilder($container, $user['persistence']))->build($key);
+            (new PurgeOutdatedRememberPasswordTokensUserCommandBuilder($container, $user['persistence']))->build($key);
         }
     }
 }

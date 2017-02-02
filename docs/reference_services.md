@@ -51,8 +51,6 @@ bengor_user.mailable_factory_sign_up                     BenGorUser\TwigBridge\I
 bengor_user.mailer_mandrill                              BenGorUser\User\Infrastructure\Mailing\Mailer\Mandrill\MandrillUserMailer
 bengor_user.mailer_swift_mailer                          BenGorUser\SwiftMailerBridge\Infrastructure\Mailing\SwiftMailerUserMailer
 
-bengor_user.symfony_url_generator                        BenGorUser\SymfonyRoutingBridge\Infrastructure\Routing\SymfonyUserUrlGenerator
-
 
 
 // Creates by Symfony DIC to the correct use of the bundle. Please, don't use them.
@@ -71,6 +69,8 @@ bengor.user.application.command.sign_up_user_default                         Ben
 
 bengor.user.command.change_user_password_command                             BenGorUser\UserBundle\Command\ChangePasswordCommand
 bengor.user.command.create_user_command                                      BenGorUser\UserBundle\Command\CreateUserCommand
+bengor.user.command.purge_outdated_user_invitation_tokens_command            BenGorUser\UserBundle\Command\PurgeOutdatedInvitationTokensCommand                                     
+bengor.user.command.purge_outdated_user_remember_password_tokens_command     BenGorUser\UserBundle\Command\PurgeOutdatedRememberPasswordTokensCommand  
 
 bengor.user.form.type.change_password                                        BenGorUser\UserBundle\Form\Type\ChangePasswordType
 bengor.user.form.type.change_password_by_request_remember_password           BenGorUser\UserBundle\Form\Type\ChangePasswordByRequestRememberPasswordType
