@@ -20,6 +20,8 @@ bengor_user.user.user.request_remember_password          alias for "bengor.user.
 bengor_user.user.log_in                                  alias for "bengor.user.application.command.log_in_user"
 bengor_user.user.enable                                  alias for "bengor.user.application.command.enable_user"
 bengor_user.user.log_out                                 alias for "bengor.user.application.command.log_out_user"
+bengor_user.user.purge_outdated_invitation_tokens        alias for "bengor.user.application.command.purge_outdated_user_invitation_tokens"                       
+bengor_user.user.purge_outdated_remember_password_tokens alias for "bengor.user.application.command.purge_outdated_user_remember_password_tokens"   
 bengor_user.user.remove                                  alias for "bengor.user.application.command.remove_user"
 bengor_user.user.invite                                  alias for "bengor.user.application.command.invite_user"
 bengor_user.user.resend_invitation                       alias for "bengor.user.application.command.resend_invitation_user"
@@ -61,6 +63,9 @@ bengor.user.application.command.request_user_remember_password_token         Ben
 bengor.user.application.command.log_in_user                                  BenGorUser\User\Application\Command\LogIn\LogInUserHandler
 bengor.user.application.command.enable_user                                  BenGorUser\User\Application\Command\Enable\EnableUserHandler
 bengor.user.application.command.log_out_user                                 BenGorUser\User\Application\Command\LogOut\LogOutUserHandler
+bengor.user.application.command.purge_outdated_user_invitation_tokens        BenGorUser\User\Application\Command\PurgeOutdatedTokens\PurgeOutdatedInvitationTokensUserHandler        
+bengor.user.application.command.purge_outdated_user_remember_password_tokens BenGorUser\User\Application\Command\PurgeOutdatedTokens\PurgeOutdatedRememberPasswordTokensUserHandler  
+
 bengor.user.application.command.remove_user                                  BenGorUser\User\Application\Command\Remove\RemoveUserHandler
 bengor.user.application.command.invite_user                                  BenGorUser\User\Application\Command\Invite\InviteUserHandler
 bengor.user.application.command.resend_invitation_user                       BenGorUser\User\Application\Command\Invite\ResendInvitationUserHandler
