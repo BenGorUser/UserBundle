@@ -1,14 +1,17 @@
 #CHANGELOG
 
-This changelog references the relevant changes (bug and security fixes) done in 0.x minor versions.
+This changelog references the relevant changes done between versions.
 
 To get the diff for a specific change, go to https://github.com/BenGorUser/UserBundle/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/BenGorUser/UserBundle/compare/v0.6.0...v0.7.0
+To get the diff between two versions, go to https://github.com/BenGorUser/UserBundle/compare/v0.7.0...v0.8.0
 
 ##v0.8.0
 * Added Api integration with json render responses apart of the html render responses.
 * Removed deprecated JWT Authenticator.
-* Remove HHVM support.
+* Rewritten the UserUrlGenerator's associated service.
+  * More info in the new documentation's event subscriber section and inside UPGRADE.md file.
+* Upgraded PHP-CS Fixer.
+* [Travis CI] Dropped support for HHVM and added for PHP 7.1.
 
 ##v0.7.4
 * Changed JwtController response code from 404 to 400.
