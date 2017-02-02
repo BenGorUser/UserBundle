@@ -124,9 +124,11 @@ you want to add a new handlers.
 app.user.command.subscribe_to_newsletter_handler:
     class: AppBundle\User\Command\SubscribeToNewsletterHandler
     arguments:
-        - '@bengor_user.user.repository'
+        - "@bengor_user.user.repository"
     tags:
-        - { name: bengor_user_your_user_type_command_bus_handler, handles: AppBundle\User\Command\SubscribeToNewsletterCommand }
+        -
+            name: bengor_user_your_user_type_command_bus_handler
+            handles: AppBundle\User\Command\SubscribeToNewsletterCommand
 ```
 
 > Make sure you add the correct user repository (depending the user type) and the correct command bus handler replacing

@@ -16,7 +16,7 @@ framework:
 
 By default we recommend the following installation that will add the following adapters to the user bundle.
 
-* Routing: [SymfonySecurity](https://github.com/BenGorUser/SymfonyRoutingBridgeBundle)
+* Routing: [SymfonyRouting](https://github.com/BenGorUser/SymfonyRoutingBridgeBundle)
 * Security: [SymfonySecurity](https://github.com/BenGorUser/SymfonySecurityBridgeBundle)
 * Ui: [Twig](https://github.com/BenGorUser/TwigBridgeBundle)
 * Persistence: [DoctrineORM](https://github.com/BenGorUser/DoctrineORMBridgeBundle)
