@@ -20,8 +20,8 @@ use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Spec file of EnableController class.
@@ -50,7 +50,7 @@ class EnableControllerSpec extends ObjectBehavior
         $request->query = $bag;
         $bag->get('confirmation-token')->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->duringEnableAction($request, 'user');
+        $this->enableAction($request, 'user')->shouldReturnAnInstanceOf(JsonResponse::class);
     }
 
     function it_enable_action(
@@ -65,6 +65,6 @@ class EnableControllerSpec extends ObjectBehavior
         $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $commandBus->handle(Argument::type(EnableUserCommand::class))->shouldBeCalled();
 
-        $this->enableAction($request, 'user');
+        $this->enableAction($request, 'user')->shouldReturnAnInstanceOf(JsonResponse::class);
     }
 }

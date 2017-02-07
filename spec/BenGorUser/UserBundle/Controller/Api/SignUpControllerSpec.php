@@ -34,7 +34,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
@@ -245,8 +244,8 @@ class SignUpControllerSpec extends ObjectBehavior
         $container->get('bengor_user.user.by_invitation_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($invitationTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
-        $this->shouldThrow(NotFoundHttpException::class)->duringByInvitationAction(
-            $request, 'user', SignUpByInvitationType::class
+        $this->byInvitationAction($request, 'user', SignUpByInvitationType::class)->shouldReturnAnInstanceOf(
+            JsonResponse::class
         );
     }
 }

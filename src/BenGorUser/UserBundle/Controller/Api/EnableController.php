@@ -37,7 +37,7 @@ class EnableController extends Controller
     {
         $confirmationToken = $request->query->get('confirmation-token');
         if (null === $confirmationToken) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(null, 404);
         }
 
         try {

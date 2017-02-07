@@ -30,7 +30,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Spec file of ChangePasswordController class.
@@ -209,6 +208,6 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         $container->get('bengor_user.user.by_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);
 
-        $this->shouldThrow(NotFoundHttpException::class)->duringByRequestRememberPasswordAction($request, 'user');
+        $this->byRequestRememberPasswordAction($request, 'user')->shouldReturnAnInstanceOf(JsonResponse::class);
     }
 }

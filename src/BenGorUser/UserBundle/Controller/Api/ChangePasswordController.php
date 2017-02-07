@@ -67,9 +67,9 @@ class ChangePasswordController extends Controller
                 new UserOfRememberPasswordTokenQuery($rememberPasswordToken)
             );
         } catch (UserTokenExpiredException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(null, 404);
         } catch (UserDoesNotExistException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(null, 404);
         }
 
         $form = $this->get('form.factory')->createNamedBuilder(

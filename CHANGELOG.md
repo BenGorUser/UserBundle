@@ -5,6 +5,9 @@ This changelog references the relevant changes done between versions.
 To get the diff for a specific change, go to https://github.com/BenGorUser/UserBundle/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/BenGorUser/UserBundle/compare/v0.7.0...v0.8.0
 
+##v0.8.1
+* Removed HTTP exceptions from Api controllers and added JsonResponse as return objects.
+
 ##v0.8.0
 * Added Api integration with json render responses apart of the html render responses.
 * Added two Symfony console commands that purge outdated invitation tokens and remember password tokens.

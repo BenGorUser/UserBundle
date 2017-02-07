@@ -24,8 +24,6 @@ use BenGorUser\UserBundle\Form\Type\SignUpByInvitationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * Sign up user controller.
@@ -69,13 +67,13 @@ class SignUpController extends Controller
                     )
                 );
             } catch (UserDoesNotExistException $exception) {
-                throw new NotFoundHttpException();
+                return new JsonResponse(null, 404);
             } catch (UserInactiveException $exception) {
-                throw new NotFoundHttpException();
+                return new JsonResponse(null, 404);
             } catch (UserPasswordInvalidException $exception) {
-                throw new BadCredentialsException();
+                return new JsonResponse('Bad credentials', 400);
             } catch (UserAlreadyExistException $exception) {
-                throw new BadCredentialsException();
+                return new JsonResponse('Bad credentials', 400);
             }
             $token = $this->get('lexik_jwt_authentication.encoder.default')->encode(['email' => $email]);
 
@@ -103,11 +101,11 @@ class SignUpController extends Controller
                 new UserOfInvitationTokenQuery($invitationToken)
             );
         } catch (UserDoesNotExistException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(null, 404);
         } catch (UserTokenExpiredException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(null, 404);
         } catch (\InvalidArgumentException $exception) {
-            throw $this->createNotFoundException();
+            return new JsonResponse(null, 404);
         }
 
         $form = $this->get('form.factory')->createNamedBuilder('', SignUpByInvitationType::class, null, [
@@ -131,13 +129,13 @@ class SignUpController extends Controller
                     )
                 );
             } catch (UserDoesNotExistException $exception) {
-                throw new NotFoundHttpException();
+                return new JsonResponse(null, 404);
             } catch (UserInactiveException $exception) {
-                throw new NotFoundHttpException();
+                return new JsonResponse(null, 404);
             } catch (UserPasswordInvalidException $exception) {
-                throw new BadCredentialsException();
+                return new JsonResponse('Bad credentials', 400);
             } catch (UserAlreadyExistException $exception) {
-                throw new BadCredentialsException();
+                return new JsonResponse('Bad credentials', 400);
             }
             $token = $this->get('lexik_jwt_authentication.encoder.default')->encode(['email' => $user['email']]);
 
