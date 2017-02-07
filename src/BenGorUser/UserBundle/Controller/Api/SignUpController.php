@@ -68,12 +68,11 @@ class SignUpController extends Controller
                 );
             } catch (UserDoesNotExistException $exception) {
                 return new JsonResponse(null, 404);
-            } catch (UserInactiveException $exception) {
-                return new JsonResponse(null, 404);
             } catch (UserPasswordInvalidException $exception) {
                 return new JsonResponse('Bad credentials', 400);
             } catch (UserAlreadyExistException $exception) {
                 return new JsonResponse('Bad credentials', 400);
+            } catch (UserInactiveException $exception) {
             }
             $token = $this->get('lexik_jwt_authentication.encoder.default')->encode(['email' => $email]);
 
