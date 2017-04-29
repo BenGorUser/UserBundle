@@ -5,6 +5,9 @@ This changelog references the relevant changes done between versions.
 To get the diff for a specific change, go to https://github.com/BenGorUser/UserBundle/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/BenGorUser/UserBundle/compare/v0.7.0...v0.8.0
 
+## v0.8.3
+* Removed country from translation files.
+
 ## v0.8.2
 * Updated Twig include notation to improve the inheritance of the templates between bundles.
 
