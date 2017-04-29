@@ -1,4 +1,4 @@
-#Using existing use cases
+# Using existing use cases
 
 To use one of the existing commands you just need to select the proper bus and select the command you
 want to use. One bus is created for each [user type](usage_multiple_users.md) so select the correct one.

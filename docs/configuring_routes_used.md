@@ -1,4 +1,4 @@
-#Configuring routes used
+# Configuring routes used
 
 This bundle generates all routes required to perform all the use cases on the fly. By default name and paths for each
 use case have been defined as you can see in the following configuration file:

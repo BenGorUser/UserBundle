@@ -1,4 +1,4 @@
-#Configuring password change strategy
+# Configuring password change strategy
 
 To select the desired type of password change strategy, you need to modify your user's config as follows:
 

@@ -1,4 +1,4 @@
-#Configuring user registration strategy
+# Configuring user registration strategy
 
 To select the desired type of user registration strategy, you need to modify your user's config as follows:
 

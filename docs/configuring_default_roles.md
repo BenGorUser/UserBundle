@@ -1,4 +1,4 @@
-#Configuring default roles
+# Configuring default roles
 
 You can define a list of default roles for new users. Just add the following in your user config file
 

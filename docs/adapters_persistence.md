@@ -1,4 +1,4 @@
-#Persistence adapters
+# Persistence adapters
 
 The following persistence adapters are available:
 

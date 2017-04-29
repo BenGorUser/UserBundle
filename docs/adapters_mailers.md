@@ -1,4 +1,4 @@
-#Mailer adapters
+# Mailer adapters
 
 The following mailer adapters are available:
 

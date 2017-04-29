@@ -1,4 +1,4 @@
-#Using JWT authentication
+# Using JWT authentication
 
 Apart of the normal authentication via form login, this bundle comes with some predefined basics to use JWT
 authentication in an easy way. For that purpose, the bundle needs the

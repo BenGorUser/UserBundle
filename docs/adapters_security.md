@@ -1,4 +1,4 @@
-#Security adapters
+# Security adapters
 
 The following bus adapters are available:
 

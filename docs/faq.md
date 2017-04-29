@@ -1,4 +1,4 @@
-#FAQ
+# FAQ
 
 **I can't call methods in the entity such as login, logout, invite using user stored inside the session**
 

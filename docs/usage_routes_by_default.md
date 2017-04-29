@@ -1,4 +1,4 @@
-#Using default routes
+# Using default routes
 
 This bundle creates a group of routes for each declared user type.
 > The following list shows the ones that are created by default for "user" user_type.

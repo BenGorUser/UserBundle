@@ -1,4 +1,4 @@
-#Disabling login/logout
+# Disabling login/logout
 
 In case you don`t need user login/logout features, change the config to disable url generation for the given user class
 

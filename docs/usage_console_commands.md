@@ -1,4 +1,4 @@
-#Using console commands
+# Using console commands
 
 Right now two Symfony commands are available and both are [user type](usage_multiple_users.md) aware. 
 
