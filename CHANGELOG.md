@@ -5,6 +5,10 @@ This changelog references the relevant changes done between versions.
 To get the diff for a specific change, go to https://github.com/BenGorUser/UserBundle/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/BenGorUser/UserBundle/compare/v0.7.0...v0.8.0
 
+## v0.8.4
+* Updated token references in the HTTP controllers. Be careful, this changes introduce BC breaks in order
+that the `SymfonyRoutingBundle`'s version is less than v1.1.0, so please check it out. 
+
 ## v0.8.3
 * Removed country from translation files.
 

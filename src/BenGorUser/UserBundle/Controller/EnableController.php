@@ -35,7 +35,7 @@ class EnableController extends Controller
      */
     public function enableAction(Request $request, $userClass, $successRoute)
     {
-        $confirmationToken = $request->query->get('confirmation-token');
+        $confirmationToken = $request->query->get('token');
         if (null === $confirmationToken) {
             throw $this->createNotFoundException();
         }

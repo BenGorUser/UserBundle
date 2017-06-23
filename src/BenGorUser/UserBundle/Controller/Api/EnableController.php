@@ -35,7 +35,7 @@ class EnableController extends Controller
      */
     public function enableAction(Request $request, $userClass)
     {
-        $confirmationToken = $request->query->get('confirmation-token');
+        $confirmationToken = $request->query->get('token');
         if (null === $confirmationToken) {
             return new JsonResponse(null, 404);
         }

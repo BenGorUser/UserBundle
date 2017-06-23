@@ -164,7 +164,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         FormFactoryInterface $formFactory
     ) {
         $request->query = $bag;
-        $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
+        $bag->get('token')->shouldBeCalled()->willReturn('remember-password-token');
         $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
         $userDto = [
             'email'    => 'bengor@user.com',
@@ -215,7 +215,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         Translator $translator
     ) {
         $request->query = $bag;
-        $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
+        $bag->get('token')->shouldBeCalled()->willReturn('remember-password-token');
         $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
         $userDto = [
             'email'    => 'bengor@user.com',
@@ -273,7 +273,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $request->query = $bag;
-        $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
+        $bag->get('token')->shouldBeCalled()->willReturn('remember-password-token');
         $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
         $userDto = [
             'email'    => 'bengor@user.com',
@@ -318,7 +318,7 @@ class ChangePasswordControllerSpec extends ObjectBehavior
         UserOfRememberPasswordTokenHandler $handler
     ) {
         $request->query = $bag;
-        $bag->get('remember-password-token')->shouldBeCalled()->willReturn('remember-password-token');
+        $bag->get('token')->shouldBeCalled()->willReturn('remember-password-token');
         $rememberPasswordTokenQuery = new UserOfRememberPasswordTokenQuery('remember-password-token');
         $container->get('bengor_user.user.by_remember_password_token_query')->shouldBeCalled()->willReturn($handler);
         $handler->__invoke($rememberPasswordTokenQuery)->shouldBeCalled()->willThrow(UserDoesNotExistException::class);

@@ -34,7 +34,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Spec file of SignUpController class.
@@ -65,10 +64,8 @@ class SignUpControllerSpec extends ObjectBehavior
         Request $request,
         ContainerInterface $container,
         FormInterface $form,
-        FormInterface $formChild,
         FormFactoryInterface $formFactory,
-        JWTEncoderInterface $encoder,
-        UserProviderInterface $userProvider
+        JWTEncoderInterface $encoder
     ) {
         $container->getParameter('bengor_user.user_default_roles')->shouldBeCalled()->willReturn(['ROLE_USER']);
 
@@ -138,7 +135,7 @@ class SignUpControllerSpec extends ObjectBehavior
         FormBuilderInterface $formBuilder,
         JWTEncoderInterface $encoder
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
@@ -192,7 +189,7 @@ class SignUpControllerSpec extends ObjectBehavior
         FormBuilderInterface $formBuilder,
         FormError $error
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
@@ -237,7 +234,7 @@ class SignUpControllerSpec extends ObjectBehavior
         ContainerInterface $container,
         UserOfInvitationTokenHandler $handler
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');

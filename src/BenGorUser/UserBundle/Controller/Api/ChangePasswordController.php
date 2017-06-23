@@ -59,7 +59,7 @@ class ChangePasswordController extends Controller
      */
     public function byRequestRememberPasswordAction(Request $request, $userClass)
     {
-        $rememberPasswordToken = $request->query->get('remember-password-token');
+        $rememberPasswordToken = $request->query->get('token');
         try {
             // we need to know if the remember password token given exists in
             // database, in case that it isn't, it throws 404.

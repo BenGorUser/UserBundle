@@ -85,7 +85,7 @@ class SignUpController extends Controller
      */
     public function byInvitationAction(Request $request, $userClass, $firewall)
     {
-        $invitationToken = $request->query->get('invitation-token');
+        $invitationToken = $request->query->get('token');
         try {
             // we need to know if the invitation token given exists in
             // database, in case that it isn't, it throws 404.

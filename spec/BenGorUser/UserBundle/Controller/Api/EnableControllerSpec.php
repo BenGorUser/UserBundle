@@ -48,7 +48,7 @@ class EnableControllerSpec extends ObjectBehavior
     function it_does_not_enable_because_confirmation_token_is_not_provided(Request $request, ParameterBagInterface $bag)
     {
         $request->query = $bag;
-        $bag->get('confirmation-token')->shouldBeCalled()->willReturn(null);
+        $bag->get('token')->shouldBeCalled()->willReturn(null);
 
         $this->enableAction($request, 'user')->shouldReturnAnInstanceOf(JsonResponse::class);
     }
@@ -60,7 +60,7 @@ class EnableControllerSpec extends ObjectBehavior
         UserCommandBus $commandBus
     ) {
         $request->query = $bag;
-        $bag->get('confirmation-token')->shouldBeCalled()->willReturn('confirmation-token');
+        $bag->get('token')->shouldBeCalled()->willReturn('confirmation-token');
 
         $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
         $commandBus->handle(Argument::type(EnableUserCommand::class))->shouldBeCalled();

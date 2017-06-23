@@ -183,7 +183,7 @@ class SignUpControllerSpec extends ObjectBehavior
         FormInterface $form,
         FormFactoryInterface $formFactory
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
@@ -237,7 +237,7 @@ class SignUpControllerSpec extends ObjectBehavior
         FormFactoryInterface $formFactory,
         FormLoginAuthenticator $formLoginAuthenticator
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
@@ -298,7 +298,7 @@ class SignUpControllerSpec extends ObjectBehavior
         UserOfInvitationTokenHandler $handler,
         UserSymfonyDataTransformer $dataTransformer
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
@@ -342,7 +342,7 @@ class SignUpControllerSpec extends ObjectBehavior
         ContainerInterface $container,
         UserOfInvitationTokenHandler $handler
     ) {
-        $bag->get('invitation-token')->willReturn('invitation-token');
+        $bag->get('token')->willReturn('invitation-token');
         $request->query = $bag;
 
         $invitationTokenQuery = new UserOfInvitationTokenQuery('invitation-token');
