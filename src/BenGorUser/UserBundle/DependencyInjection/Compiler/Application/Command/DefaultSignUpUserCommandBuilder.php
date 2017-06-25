@@ -29,14 +29,14 @@ class DefaultSignUpUserCommandBuilder extends SignUpUserCommandBuilder
     /**
      * {@inheritdoc}
      */
-    public function register($user)
+    public function register($user, $isApi = false)
     {
         $this->container->setDefinition(
-            $this->definitionName($user),
+            $this->definition($user, $isApi),
             (new Definition(
                 SignUpUserHandler::class, $this->handlerArguments($user)
             ))->addTag(
-                'bengor_user_' . $user . '_command_bus_handler', [
+                $this->commandHandlerTag($user, $isApi), [
                     'handles' => SignUpUserCommand::class,
                 ]
             )
@@ -48,12 +48,12 @@ class DefaultSignUpUserCommandBuilder extends SignUpUserCommandBuilder
      */
     public function build($user)
     {
-        $this->register($user);
-
-        $this->container->setAlias(
-            $this->aliasDefinitionName($user),
-            $this->definitionName($user)
-        );
+        if (true === $this->enabled) {
+            $this->doBuild($user);
+        }
+        if (true === $this->apiEnabled) {
+            $this->doBuild($user, true);
+        }
 
         return $this->container;
     }

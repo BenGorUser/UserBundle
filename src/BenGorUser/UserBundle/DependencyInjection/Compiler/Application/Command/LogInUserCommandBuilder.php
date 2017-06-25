@@ -26,10 +26,10 @@ class LogInUserCommandBuilder extends CommandBuilder
     /**
      * {@inheritdoc}
      */
-    public function register($user)
+    public function register($user, $isApi = false)
     {
         $this->container->setDefinition(
-            $this->definitionName($user),
+            $this->definition($user, $isApi),
             (new Definition(
                 LogInUserHandler::class, [
                     $this->container->getDefinition(
@@ -40,7 +40,7 @@ class LogInUserCommandBuilder extends CommandBuilder
                     ),
                 ]
             ))->addTag(
-                'bengor_user_' . $user . '_command_bus_handler', [
+                $this->commandHandlerTag($user, $isApi), [
                     'handles' => LogInUserCommand::class,
                 ]
             )

@@ -70,7 +70,7 @@ class InviteControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.api_command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
         $commandBus->handle($command)->shouldBeCalled();
         $command->id()->shouldBeCalled()->willReturn('user-id');
@@ -126,7 +126,7 @@ class InviteControllerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
-        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.api_command_bus')->shouldBeCalled()->willReturn($commandBus);
         $form->getData()->shouldBeCalled()->willReturn($command);
         $commandBus->handle($command)->shouldBeCalled();
 

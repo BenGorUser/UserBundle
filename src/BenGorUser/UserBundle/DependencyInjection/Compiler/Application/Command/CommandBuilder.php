@@ -23,6 +23,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 abstract class CommandBuilder implements ApplicationBuilder
 {
     /**
+     * Flag that tells if the use case is enabled or not.
+     *
+     * @var bool
+     */
+    protected $enabled;
+
+    /**
+     * Flag that tells if the api version of the use case is enabled or not.
+     *
+     * @var bool
+     */
+    protected $apiEnabled;
+
+    /**
      * Configuration array.
      *
      * @var array
@@ -70,6 +84,13 @@ abstract class CommandBuilder implements ApplicationBuilder
         $this->persistence = $persistence;
         $this->configuration = $configuration;
 
+        $this->enabled = array_key_exists('enabled', $this->configuration)
+            ? $this->configuration['enabled']
+            : true;
+        $this->apiEnabled = array_key_exists('api_enabled', $this->configuration)
+            ? $this->configuration['api_enabled']
+            : false;
+
         if (true === array_key_exists('type', $configuration)) {
             $this->specification = $this->sanitize($configuration['type']);
         }
@@ -83,22 +104,31 @@ abstract class CommandBuilder implements ApplicationBuilder
      */
     public function build($user)
     {
-        $enabled = array_key_exists('enabled', $this->configuration)
-            ? $this->configuration['enabled']
-            : true;
-        $apiEnabled = array_key_exists('api_enabled', $this->configuration)
-            ? $this->configuration['api_enabled']
-            : false;
-
-        if (false === $enabled && false === $apiEnabled) {
-            return;
+        if (true === $this->enabled) {
+            $this->doBuild($user);
+        }
+        if (true === $this->apiEnabled) {
+            $this->doBuild($user, true);
         }
 
-        $this->register($user);
+        return $this->container;
+    }
+
+    /**
+     * Wraps the service registration and the alias addtion.
+     *
+     * @param string $user  The user name
+     * @param bool   $isApi Flag that tells if it is api version or not
+     *
+     * @return ContainerBuilder
+     */
+    protected function doBuild($user, $isApi = false)
+    {
+        $this->register($user, $isApi);
 
         $this->container->setAlias(
-            $this->aliasDefinitionName($user),
-            $this->definitionName($user)
+            $this->alias($user, $isApi),
+            $this->definition($user, $isApi)
         );
 
         return $this->container;
@@ -114,6 +144,27 @@ abstract class CommandBuilder implements ApplicationBuilder
     protected function sanitize($specificationName)
     {
         return $specificationName . 'Specification';
+    }
+
+    protected function definition($user, $isApi = false)
+    {
+        $definition = $this->definitionName($user);
+        $definition .= $isApi ? '_api' : '';
+
+        return $definition;
+    }
+
+    protected function alias($user, $isApi = false)
+    {
+        $alias = $this->aliasDefinitionName($user);
+        $alias .= $isApi ? '_api' : '';
+
+        return $alias;
+    }
+
+    protected function commandHandlerTag($user, $isApi = false)
+    {
+        return 'bengor_user_' . $user . $isApi ? '_api' : '' . '_command_bus_handler';
     }
 
     /**
@@ -137,7 +188,8 @@ abstract class CommandBuilder implements ApplicationBuilder
     /**
      * Registers the command into container.
      *
-     * @param string $user The user name
+     * @param string $user  The user name
+     * @param bool   $isApi Flag that tells if it is api version or not
      */
-    abstract protected function register($user);
+    abstract protected function register($user, $isApi = false);
 }

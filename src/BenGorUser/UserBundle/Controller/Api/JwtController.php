@@ -39,7 +39,7 @@ class JwtController extends Controller
     public function newTokenAction(Request $request, $userClass)
     {
         try {
-            $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
+            $this->get('bengor_user.' . $userClass . '.api_command_bus')->handle(
                 new LogInUserCommand(
                     $request->getUser(),
                     $request->getPassword()

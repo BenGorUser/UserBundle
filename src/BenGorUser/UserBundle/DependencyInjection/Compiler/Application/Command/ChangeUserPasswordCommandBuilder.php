@@ -29,19 +29,16 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
     /**
      * {@inheritdoc}
      */
-    public function register($user)
+    public function register($user, $isApi = false)
     {
-        $command = $this->{$this->specification}($user)['command'];
-        $handler = $this->{$this->specification}($user)['handler'];
+        $command = $this->{$isApi ? $this->apiSpecification : $this->specification}($user)['command'];
+        $handler = $this->{$isApi ? $this->apiSpecification : $this->specification}($user)['handler'];
 
-        $apiCommand = $this->{$this->apiSpecification}($user)['command'];
-        $apiHandler = $this->{$this->apiSpecification}($user)['handler'];
-
-        $this->registerCommandHandler($user, $handler, $command);
-        $this->registerCommandHandler($user, $apiHandler, $apiCommand);
+        $this->registerCommandHandler($user, $handler, $command, $isApi);
 
         (new WithoutOldPasswordChangeUserPasswordCommandBuilder(
-            $this->container, $this->persistence
+            $this->container,
+            $this->persistence
         ))->build($user);
     }
 
@@ -50,24 +47,16 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
      */
     public function build($user)
     {
-        $enabled = array_key_exists('enabled', $this->configuration) ? $this->configuration['enabled'] : true;
-        $apiEnabled = array_key_exists('api_enabled', $this->configuration) ? $this->configuration['api_enabled'] : true;
-        if (false === $enabled && false === $apiEnabled) {
+        if (false === $this->enabled && false === $this->apiEnabled) {
             (new WithoutOldPasswordChangeUserPasswordCommandBuilder(
-                $this->container, $this->persistence
+                $this->container,
+                $this->persistence
             ))->build($user);
 
-            return;
+            return $this->container;
         }
 
-        $this->register($user);
-
-        $this->container->setAlias(
-            $this->aliasDefinitionName($user),
-            $this->definitionName($user)
-        );
-
-        return $this->container;
+        return parent::build($user);
     }
 
     /**
@@ -154,14 +143,14 @@ class ChangeUserPasswordCommandBuilder extends CommandBuilder
         ];
     }
 
-    private function registerCommandHandler($user, $handler, $command)
+    private function registerCommandHandler($user, $handler, $command, $isApi = false)
     {
         $this->container->setDefinition(
-            $this->definitionName($user),
+            $this->definition($user, $isApi),
             (new Definition(
                 $handler, $this->handlerArguments($user)
             ))->addTag(
-                'bengor_user_' . $user . '_command_bus_handler', [
+                $this->commandHandlerTag($user, $isApi), [
                     'handles' => $command,
                 ]
             )

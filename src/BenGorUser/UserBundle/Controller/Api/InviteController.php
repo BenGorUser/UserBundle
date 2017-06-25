@@ -47,7 +47,7 @@ class InviteController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             try {
-                $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
+                $this->get('bengor_user.' . $userClass . '.api_command_bus')->handle(
                     $form->getData()
                 );
 
@@ -87,7 +87,7 @@ class InviteController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             try {
-                $this->get('bengor_user.' . $userClass . '.command_bus')->handle(
+                $this->get('bengor_user.' . $userClass . '.api_command_bus')->handle(
                     $form->getData()
                 );
 

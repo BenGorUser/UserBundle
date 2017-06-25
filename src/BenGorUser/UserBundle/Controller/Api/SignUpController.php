@@ -52,7 +52,7 @@ class SignUpController extends Controller
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $commandBus = $this->get('bengor_user.' . $userClass . '.command_bus');
+            $commandBus = $this->get('bengor_user.' . $userClass . '.api_command_bus');
             $email = $form->getData()->email();
 
             try {
@@ -115,7 +115,7 @@ class SignUpController extends Controller
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $commandBus = $this->get('bengor_user.' . $userClass . '.command_bus');
+            $commandBus = $this->get('bengor_user.' . $userClass . '.api_command_bus');
 
             try {
                 $commandBus->handle(

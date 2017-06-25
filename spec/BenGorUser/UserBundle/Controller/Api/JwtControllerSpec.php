@@ -54,7 +54,7 @@ class JwtControllerSpec extends ObjectBehavior
         $request->getUser()->shouldBeCalled()->willReturn('bengor@user.com');
         $request->getPassword()->shouldBeCalled()->willReturn('123456');
 
-        $container->get('bengor_user.user.command_bus')->shouldBeCalled()->willReturn($commandBus);
+        $container->get('bengor_user.user.api_command_bus')->shouldBeCalled()->willReturn($commandBus);
         $commandBus->handle(Argument::type(LogInUserCommand::class))->shouldBeCalled();
 
         $container->get('lexik_jwt_authentication.encoder.default')->shouldBeCalled()->willReturn($encoder);
