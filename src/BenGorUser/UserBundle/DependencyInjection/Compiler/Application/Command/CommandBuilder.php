@@ -164,7 +164,9 @@ abstract class CommandBuilder implements ApplicationBuilder
 
     protected function commandHandlerTag($user, $isApi = false)
     {
-        return 'bengor_user_' . $user . $isApi ? '_api' : '' . '_command_bus_handler';
+        $apiPartName = $isApi ? '_api' : '';
+
+        return 'bengor_user_' . $user . $apiPartName . '_command_bus_handler';
     }
 
     /**
